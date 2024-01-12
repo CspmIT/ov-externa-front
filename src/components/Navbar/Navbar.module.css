@@ -1,0 +1,53 @@
+  .shadowDark {
+    background: linear-gradient(145deg, #23282c, #1e2125);
+    box-shadow: 17px 0px 23px #1a1d20,
+      -17px -17px 23px #282d32, inset 5px 5px 4px #1e2226,
+      inset -5px -5px 4px #24282c;
+  }
+
+  .shadowLight {
+    box-shadow: 7px 7px 15px -10px #bbcfda, -4px -4px 13px #ffffff,
+      inset 7px 7px 3px rgba(209, 217, 230, 0.35),
+      inset -11px -11px 3px rgba(255, 255, 255, 0.3)
+  }
+
+  .btnDark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+  }
+
+  .btnDark:hover {
+    opacity: 0.8;
+  }
+
+  .change {
+    animation-name: change;
+    animation-duration: 1s;
+    animation-direction: alternate;
+  }
+
+  @keyframes change {
+    0% {
+      transform: scale(1);
+    }
+
+    100% {
+      transform: scale(1.4);
+    }
+  }
+
+  .btnNavbar::after {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+  }

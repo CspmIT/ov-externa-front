@@ -1,0 +1,121 @@
+.card {
+    position: relative;
+    border-radius: 2.5em;
+    padding: 2em;
+    transition: transform 0.4s ease;
+    margin: 0.5rem;
+    width: 30%;
+}
+
+.cardsCoop {
+    background-size: cover;
+    width: 450px;
+    position: relative;
+    display: inline-block;
+    border-radius: 25px;
+    background-position-x: 50%;
+}
+
+.cardpacksI {
+    background-image: url('https://app.coopmorteros.coop/public/images/coopate/boton_INTERNET.png');
+}
+
+.cardpacksF {
+    background-image: url('https://app.coopmorteros.coop/public/images/coopate/boton_FUTBOL.png');
+}
+
+.shadowCards {
+    box-shadow: 2px 2px 2px #fcd34d;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5em;
+    height: 100%;
+    transition: transform 0.4s ease;
+}
+
+.cardTop,
+.cardBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardTop p,
+.cardTop .cardTitle,
+.cardBottom p,
+.cardBottom .cardTitle {
+    margin: 0;
+}
+
+/* .cardTitle {
+    font-weight: bold;
+} */
+
+.cardTop p,
+.cardBottom p {
+    font-weight: 300;
+}
+
+.cardBottom {
+    align-items: flex-end;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 90px;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    margin-bottom: 1.5rem;
+}
+
+.cardImage .icon  {
+    width: 2.3em;
+    height: 2.3em;
+    transition: transform 0.4s ease;
+    padding: 0.5rem;
+    border-radius: 100%;
+}
+
+.cardImage svg  {
+    width: 1.3em;
+    height: 1.3em;
+}
+
+.cardHover:hover {
+    cursor: pointer;
+    transform: scale(0.97);
+}
+
+.cardHover:hover .cardContent {
+    transform: scale(0.96);
+}
+
+.cardHover:hover .cardImage .icon, .cardHover:hover .cardImage .icon svg {
+    transform: scale(1.05);
+}
+
+.cardHover:active {
+    transform: scale(0.9);
+}
+
+.hoverCardFijas:hover{
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 1206px) {
+    .card {
+        width: 47%;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .card {
+        width: 100%;
+    }
+}
