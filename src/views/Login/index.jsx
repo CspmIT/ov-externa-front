@@ -61,7 +61,7 @@ const Login = () => {
               <Button props={{ class: "text-black bg-yellow-300 hover:bg-yellow-400 focus:bg-yellow-400 m-2", text: "Ingresar", type: "submit" }} />
 
               <Link to={"/Register"}>
-                <Button props={{ class: "text-black bg-white hover:bg-yellow-400 focus:bg-yellow-400 m-2", text: "Registrarme" }} />
+                <Button props={{ class: "text-black bg-white hover:bg-yellow-400 focus:bg-yellow-400 m-2", text: "Registrarme", type: "button" }} />
               </Link>
             </div>
           </form>
