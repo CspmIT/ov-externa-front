@@ -54,7 +54,7 @@ function App() {
   }
   return (
     <div className="w-screen h-screen overflow-y-auto overflow-y-hidden">
-      <Navbar />
+      {user && <Navbar />}
       <Routes>
         {user ? (
           <>
