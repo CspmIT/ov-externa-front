@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -17,6 +17,7 @@ import MyServicesD from "./views/MyServices/detail";
 import ConsumptionSimulator from "./views/ConsumptionSimulator";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import LevelUp3 from "./views/LevelUp/leveltres";
+import Footer from "./components/Footer";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -52,8 +53,8 @@ function App() {
     rutes.push(...menus);
   }
   return (
-    <div className="w-screen h-screen overflow-y-hidden">
-      {user && <Navbar />}
+    <div className="w-screen h-screen overflow-y-auto overflow-y-hidden">
+      <Navbar />
       <Routes>
         {user ? (
           <>
@@ -71,6 +72,7 @@ function App() {
           </>
         )}
       </Routes>
+      <Footer />
     </div>
   );
 }
