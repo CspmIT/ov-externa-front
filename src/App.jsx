@@ -1,40 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Login from './views/Login'
-import { Route, Routes } from 'react-router-dom'
-import Home from './views/Home'
-import NotFound from './views/NotFound'
-import Register from './views/Register'
-import Navbar from './components/Navbar'
-import Information from './views/Information'
-import Invoice from './views/Invoice'
-import Payments from './views/Payments'
-import Handle from './views/Handle'
-import MyServices from './views/MyServices'
-import MyServicesD from './views/MyServices/detail'
-import ConsumptionSimulator from './views/ConsumptionSimulator'
-import LevelUp2 from './views/LevelUp/leveldos'
-import LevelUp3 from './views/LevelUp/leveltres'
-
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import Login from "./views/Login";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Home from "./views/Home";
+import NotFound from "./views/NotFound";
+import Register from "./views/Register";
+import Navbar from "./components/Navbar";
+import Information from "./views/Information";
+import Invoice from "./views/Invoice";
+import Payments from "./views/Payments";
+import Handle from "./views/Handle";
+import MyServices from "./views/MyServices";
+import MyServicesD from "./views/MyServices/detail";
+import ConsumptionSimulator from "./views/ConsumptionSimulator";
+import LevelUp2 from "./views/LevelUp/leveldos";
+import LevelUp3 from "./views/LevelUp/leveltres";
 
 function App() {
-  const rutes = [{ name: '/Login', element: <Login /> },
-  { name: '/', element: <Home /> }, { name: '/*', element: <NotFound /> }, { name: '/Register', element: <Register /> },
-  { name: '/Information', element: <Information /> }, { name: '/Invoice', element: <Invoice /> }, { name: '/Payments', element: <Payments /> },
-  { name: '/Handle', element: <Handle /> }, {name: '/MyServices', element: <MyServices />}, {name: '/ConsumptionSimulator', element: <ConsumptionSimulator />},
-  {name: '/detail', element: <MyServicesD />},  {name: '/LevelUp2', element: <LevelUp2 />},  {name: '/LevelUp3', element: <LevelUp3 />}];
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("usuario");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  let rutes = [
+    { name: "/", element: <Home /> },
+    { name: "/*", element: <NotFound /> },
+    { name: "/Information", element: <Information /> },
+  ];
+
+  if (user) {
+    let menus = [];
+    if (user["level"] == 1) {
+      menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
+    } else {
+      if (user["level"] == 2) {
+        menus.push({ name: "/LevelUp3", element: <LevelUp3 /> });
+      } else {
+        //menus.push({ name: "/ManageServices", element: <ManageServices /> });
+      }
+      menus.push(
+        { name: "/Invoice", element: <Invoice /> },
+        { name: "/MyServices", element: <MyServices /> },
+        { name: "/Payments", element: <Payments /> },
+        { name: "/Handle", element: <Handle /> },
+        { name: "/ConsumptionSimulator", element: <ConsumptionSimulator /> },
+        { name: "/detail", element: <MyServicesD /> }
+      );
+    }
+    rutes.push(...menus);
+  }
   return (
-    <div className='w-screen h-screen overflow-y-hidden'>
-      <Navbar />
+    <div className="w-screen h-screen overflow-y-hidden">
+      {user && <Navbar />}
       <Routes>
-        {rutes.map((rute) => (
-          <Route key={rute.name} path={rute.name} element={rute.element} />
-        ))}
+        {user ? (
+          <>
+            <Route key="login" path="/Login" element={<Navigate to="/" />} />
+            <Route key="register" path="/Register" element={<Navigate to="/" />} />
+            {rutes.map((rute) => (
+              <Route key={rute.name} path={rute.name} element={rute.element} />
+            ))}
+          </>
+        ) : (
+          <>
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Register" element={<Register />} />
+            <Route path="/" element={<Navigate to="/Login" />} />
+          </>
+        )}
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
