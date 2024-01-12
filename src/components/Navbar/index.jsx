@@ -37,19 +37,21 @@ const Navbar = () => {
     setIconmode(dark == "" ? <IoIosSunny className="change text-2xl" /> : <FaMoon className="change" />);
     setshadowMode(dark == "" ? styles.shadowDark : styles.shadowLight);
     dark == "" ? document.body.classList.add('dark') : document.body.classList.remove('dark');
-    }
+  }
 
   const itemsData = [
-    { name: 'Inicio', icon: <FaHouse />, link: '/'},
-    { name: 'Archivo', icon: <FaArchive />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'acueduct', list: [{name: "Mis Facturas", link: "/Invoice"}, {name: "Mis Pagos", link: "/Payments"}, {name: "Mis Servicios", link: "/MyServices"}, {name: "Mis Consumos", link: "algo"}, {name: "Mis Trámites", link: "/Handle"}]  },
-    { name: 'Acueducto', icon: <FaTint />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'acueduct', list: [{name: "Vincular Cuenta", link: "algo"}, {name: "Desvincular Cuenta", link: "algo"}] },
+    { name: 'Inicio', icon: <FaHouse />, link: '/' },
+    { name: 'Archivo', icon: <FaArchive />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'acueduct', list: [{ name: "Mis Facturas", link: "/Invoice" }, { name: "Mis Pagos", link: "/Payments" }, { name: "Mis Servicios", link: "/MyServices" }, { name: "Mis Consumos", link: "algo" }, { name: "Mis Trámites", link: "/Handle" }] },
+    { name: 'Acueducto', icon: <FaTint />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'acueduct', list: [{ name: "Vincular Cuenta", link: "algo" }, { name: "Desvincular Cuenta", link: "algo" }] },
     { name: 'Turnos Online', icon: <FaCalendarCheck />, link: '/Information' },
     { name: 'Simulador de Consumo', icon: <FaBolt />, link: '/ConsumptionSimulator' },
+    { name: 'Subir de nivel', icon: <FaBolt />, link: '/LevelUp3' },
+    { name: 'Subir a nivel 3', icon: <FaBolt />, link: '/LevelUp2' },
     { name: 'Información Últil', icon: <FaInfoCircle />, link: '/Information' },
-    { name: 'Administrar Servicios', icon: <FaServer />, link: '/Information'},
-    { name: 'Coopate', icon: <FaDumpster />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'coopate', list: [{name: "Beneficios", link: "algo"}, {name: "Mis Canjes", link: "algo"}, {name: "Términos y Condiciones", link: "algo"}, {name: "Comercios", link: "algo"}] },
-    { name: 'Sumate a Nosotros', icon: <FaAddressCard />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'cv', list: [{name: "Mi CV", link: "algo"}, {name: "Busquedas Laborales", link: "algo"}, {name: "Mis Postulaciones", link: "algo"}] },
-    { name: 'Dejanos tu Opinión', icon: <FaComments />, link: '/Information'}
+    { name: 'Administrar Servicios', icon: <FaServer />, link: '/ManageServices' },
+    { name: 'Coopate', icon: <FaDumpster />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'coopate', list: [{ name: "Beneficios", link: "algo" }, { name: "Mis Canjes", link: "algo" }, { name: "Términos y Condiciones", link: "algo" }, { name: "Comercios", link: "algo" }] },
+    { name: 'Sumate a Nosotros', icon: <FaAddressCard />, dropdown: true, iconDropdown: <IoMdArrowDropdown />, idDrop: 'cv', list: [{ name: "Mi CV", link: "algo" }, { name: "Busquedas Laborales", link: "algo" }, { name: "Mis Postulaciones", link: "algo" }] },
+    { name: 'Dejanos tu Opinión', icon: <FaComments />, link: '/Information' }
   ];
 
   return (

@@ -15,6 +15,8 @@ import Handle from './views/Handle'
 import MyServices from './views/MyServices'
 import MyServicesD from './views/MyServices/detail'
 import ConsumptionSimulator from './views/ConsumptionSimulator'
+import LevelUp2 from './views/LevelUp/leveldos'
+import LevelUp3 from './views/LevelUp/leveltres'
 
 
 function App() {
@@ -22,7 +24,7 @@ function App() {
   { name: '/', element: <Home /> }, { name: '/*', element: <NotFound /> }, { name: '/Register', element: <Register /> },
   { name: '/Information', element: <Information /> }, { name: '/Invoice', element: <Invoice /> }, { name: '/Payments', element: <Payments /> },
   { name: '/Handle', element: <Handle /> }, {name: '/MyServices', element: <MyServices />}, {name: '/ConsumptionSimulator', element: <ConsumptionSimulator />},
-  {name: '/detail', element: <MyServicesD />}];
+  {name: '/detail', element: <MyServicesD />},  {name: '/LevelUp2', element: <LevelUp2 />},  {name: '/LevelUp3', element: <LevelUp3 />}];
   return (
     <div className='w-screen h-screen overflow-y-hidden'>
       <Navbar />

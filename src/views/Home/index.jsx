@@ -23,7 +23,8 @@ import Alert from '../../components/Alert';
 
 const Home = () => {
   const swalHelp = () => {
-
+    const modal = document.getElementById('alertHelp');
+    modal.classList.toggle('show-modal');
   }
 
   return (
