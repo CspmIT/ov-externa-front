@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Login from './views/Login'
 import { Route, Routes } from 'react-router-dom'
@@ -17,6 +14,7 @@ import MyServicesD from './views/MyServices/detail'
 import ConsumptionSimulator from './views/ConsumptionSimulator'
 import LevelUp2 from './views/LevelUp/leveldos'
 import LevelUp3 from './views/LevelUp/leveltres'
+import Footer from './components/Footer'
 
 
 function App() {
@@ -26,13 +24,14 @@ function App() {
   { name: '/Handle', element: <Handle /> }, {name: '/MyServices', element: <MyServices />}, {name: '/ConsumptionSimulator', element: <ConsumptionSimulator />},
   {name: '/detail', element: <MyServicesD />},  {name: '/LevelUp2', element: <LevelUp2 />},  {name: '/LevelUp3', element: <LevelUp3 />}];
   return (
-    <div className='w-screen h-screen overflow-y-hidden'>
+    <div className='w-screen h-screen overflow-y-auto overflow-y-hidden'>
       <Navbar />
       <Routes>
         {rutes.map((rute) => (
           <Route key={rute.name} path={rute.name} element={rute.element} />
         ))}
       </Routes>
+      <Footer />
     </div>
   )
 }
