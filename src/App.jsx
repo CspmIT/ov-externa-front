@@ -1,9 +1,8 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import Login from "./views/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
+{/* ----------------- VISTAS ----------------- */ }
+import Login from "./views/Login";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
 import Register from "./views/Register";
@@ -18,6 +17,7 @@ import ConsumptionSimulator from "./views/ConsumptionSimulator";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import LevelUp3 from "./views/LevelUp/leveltres";
 import Footer from "./components/Footer";
+import ManageServices from "./views/ManageServices";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -39,7 +39,7 @@ function App() {
       if (user["level"] == 2) {
         menus.push({ name: "/LevelUp3", element: <LevelUp3 /> });
       } else {
-        //menus.push({ name: "/ManageServices", element: <ManageServices /> });
+        menus.push({ name: "/ManageServices", element: <ManageServices /> });
       }
       menus.push(
         { name: "/Invoice", element: <Invoice /> },

@@ -26,11 +26,10 @@ import ButtonAnimate from '../../components/ButtonAnimate';
 import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import { Link } from 'react-router-dom';
-import Footer from '../../components/Footer';
 
 
 const Home = () => {
-  var level = 1;
+  var level = 3;
   const swalHelp = () => {
     const modal = document.getElementById('alertHelp');
     modal.classList.toggle('show-modal');
@@ -56,7 +55,7 @@ const Home = () => {
               <p>Hola <b>Julieta Soledad</b>, te damos la bienvenida a tu</p>
               <h2>Oficina Virtual</h2>
             </div>
-            <div className='flex w-full flex-wrap w-full'>
+            <div className='flex w-full flex-wrap'>
 
               <div className='w-full md:w-1/2 lg:w-1/4'>
                 <Link to={'/LevelUp2'}>
@@ -121,7 +120,7 @@ const Home = () => {
           </>
         ) : (
           <>
-            <div className='flex w-full flex-wrap lg:w-3/4 md:1/2 w-full'>
+            <div className='flex w-full flex-wrap lg:w-3/4 md:1/2'>
               <div className={`${styles.card} ${styles.shadowCards} bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
                 <img src='https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png' className='w-full' />
                 <div className='pt-4 w-3/4'>
@@ -162,19 +161,20 @@ const Home = () => {
             <div className='flex w-full flex-wrap mt-10 justify-center'>
               <p className='w-full m-2 text-center'>Si seleccionas todas las facturas podras acceder a estos beneficios</p>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksI} lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-                {/* <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/> */}
+                <input disabled id="checkbox2" type="checkbox" name="checkbok_benefit_coopate"/>
                 <h5 className="text-white mt-14"><b>300 MEGAS</b> al precio de 100 Megas</h5>
                 <p className="text-white" id="precio_futbol">Promo válida por 3 meses</p>
               </div>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksF}  lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-                {/* <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/> */}
+                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/>
                 <h4 className="text-white mt-14"><b>GRATIS POR 1 MES</b></h4>
                 <p className="text-white text-right p-6" id="precio_futbol">Ahorrás: <b>$3000</b></p>
               </div>
             </div>
             <div className='flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-800'>
               <h3 className='w-full text-left mb-5'>Facturas Impagas
-                <div onClick={swalHelp} className='float-right'>
+                <div onClick={swalHelp} className='float-right flex'>
+                  <Button props={{ class: 'text-black bg-gradient-to-r hover:bg-gradient-to-l from-green-400 to-green-600 m-2', text: `Comprar Energía` }} />
                   <ButtonAnimate props={{ icon: <FaQuestion className='text-white' />, text: 'Ayuda', bgIcon: 'bg-gray-400', color: 'text-white' }} />
                 </div>
               </h3>

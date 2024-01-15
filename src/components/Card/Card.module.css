@@ -24,6 +24,14 @@
     background-image: url('https://app.coopmorteros.coop/public/images/coopate/boton_FUTBOL.png');
 }
 
+.cardpacksF input, .cardpacksI input{
+    position: relative;
+    left: 11rem;
+    top: 4rem;
+    width: 30px;
+    height: 30px;    
+}
+
 .shadowCards {
     box-shadow: 2px 2px 2px #fcd34d;
 }
@@ -119,3 +127,10 @@
         width: 100%;
     }
 }
+
+@media (max-width: 460px) {
+    .cardpacksI input, .cardpacksF input {
+      left: 8rem;
+      top: 1rem;
+    }
+  }
