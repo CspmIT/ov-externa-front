@@ -19,17 +19,20 @@ import { FaAddressCard } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaArrowAltCircleUp } from "react-icons/fa";
-{/* ----------------- ESTILOS ----------------- */ }
-import styles from '../../components/Card/Card.module.css'
-import stylesWater from './Home.module.css'
-{/* ----------------- COMPONENTES ----------------- */ }
-import Card from '../../components/Card';
-import ButtonAnimate from '../../components/ButtonAnimate';
-import Alert from '../../components/Alert';
-import Button from '../../components/Button';
-import { Link } from 'react-router-dom';
-import Footer from '../../components/Footer';
-
+{
+  /* ----------------- ESTILOS ----------------- */
+}
+import styles from "../../components/Card/Card.module.css";
+import stylesWater from "./Home.module.css";
+{
+  /* ----------------- COMPONENTES ----------------- */
+}
+import Card from "../../components/Card";
+import ButtonAnimate from "../../components/ButtonAnimate";
+import Alert from "../../components/Alert";
+import Button from "../../components/Button";
+import { Link } from "react-router-dom";
+import Footer from "../../components/Footer";
 
 const Home = () => {
   var level = JSON.parse(localStorage.getItem("usuario")).level;
@@ -60,15 +63,41 @@ const Home = () => {
               </p>
               <h2>Oficina Virtual</h2>
             </div>
-            <div className='flex w-full flex-wrap w-full'>
-
-              <div className='w-full md:w-1/2 lg:w-1/4'>
-                <Link to={'/LevelUp2'}>
-                  <Card props={{ phone: '', title: 'Subir al', subtitle: 'Nivel 2', icon: <FaArrowAltCircleUp className='w-full' />, color: 'text-green-500', bgIcon: 'bg-green-400', colorIcon: 'text-green-900', bg: 'bg-white', positionBtn: 'absolute', widht: 'w-auto' }} />
-                </Link>              </div>
-              <div className='w-full md:w-1/2 lg:w-1/4'>
-                <Link to={'/Information'}>
-                  <Card props={{ phone: 'hidden', title: 'Información', subtitle: 'Útil', icon: <FaInfoCircle className='w-full' />, color: 'text-sky-500', bgIcon: 'bg-sky-300', colorIcon: 'text-sky-900', bg: 'bg-white', positionBtn: 'absolute', widht: 'w-auto' }} />
+            <div className="flex w-full flex-wrap">
+              <div className="w-full md:w-1/2 lg:w-1/4">
+                <Link to={"/LevelUp2"}>
+                  <Card
+                    props={{
+                      phone: "",
+                      title: "Subir al",
+                      subtitle: "Nivel 2",
+                      icon: <FaArrowAltCircleUp className="w-full" />,
+                      color: "text-green-500",
+                      bgIcon: "bg-green-400",
+                      colorIcon: "text-green-900",
+                      bg: "bg-white",
+                      positionBtn: "absolute",
+                      widht: "w-auto",
+                    }}
+                  />
+                </Link>{" "}
+              </div>
+              <div className="w-full md:w-1/2 lg:w-1/4">
+                <Link to={"/Information"}>
+                  <Card
+                    props={{
+                      phone: "hidden",
+                      title: "Información",
+                      subtitle: "Útil",
+                      icon: <FaInfoCircle className="w-full" />,
+                      color: "text-sky-500",
+                      bgIcon: "bg-sky-300",
+                      colorIcon: "text-sky-900",
+                      bg: "bg-white",
+                      positionBtn: "absolute",
+                      widht: "w-auto",
+                    }}
+                  />
                 </Link>
               </div>
               <div className="w-full md:w-1/2 lg:w-1/4">
@@ -163,7 +192,7 @@ const Home = () => {
           </>
         ) : (
           <>
-            <div className='flex w-full flex-wrap lg:w-3/4 md:1/2 w-full'>
+            <div className="flex w-full flex-wrap lg:w-3/4 md:1/2">
               <div className={`${styles.card} ${styles.shadowCards} bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
                 <img src="https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png" className="w-full" />
                 <div className="pt-4 w-3/4">
@@ -270,19 +299,28 @@ const Home = () => {
               <p className="w-full m-2 text-center">Si seleccionas todas las facturas podras acceder a estos beneficios</p>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksI} lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
                 {/* <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/> */}
-                <h5 className="text-white mt-14"><b>300 MEGAS</b> al precio de 100 Megas</h5>
-                <p className="text-white" id="precio_futbol">Promo válida por 3 meses</p>
+                <h5 className="text-white mt-14">
+                  <b>300 MEGAS</b> al precio de 100 Megas
+                </h5>
+                <p className="text-white" id="precio_futbol">
+                  Promo válida por 3 meses
+                </p>
               </div>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksF}  lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
                 {/* <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/> */}
-                <h4 className="text-white mt-14"><b>GRATIS POR 1 MES</b></h4>
-                <p className="text-white text-right p-6" id="precio_futbol">Ahorrás: <b>$3000</b></p>
+                <h4 className="text-white mt-14">
+                  <b>GRATIS POR 1 MES</b>
+                </h4>
+                <p className="text-white text-right p-6" id="precio_futbol">
+                  Ahorrás: <b>$3000</b>
+                </p>
               </div>
             </div>
-            <div className='flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-800'>
-              <h3 className='w-full text-left mb-5'>Facturas Impagas
-                <div onClick={swalHelp} className='float-right'>
-                  <ButtonAnimate props={{ icon: <FaQuestion className='text-white' />, text: 'Ayuda', bgIcon: 'bg-gray-400', color: 'text-white' }} />
+            <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-800">
+              <h3 className="w-full text-left mb-5">
+                Facturas Impagas
+                <div onClick={swalHelp} className="float-right">
+                  <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
                 </div>
               </h3>
               <div className={`relative overflow-x-auto w-full rounded-xl ${styles.shadowCards}`}>
