@@ -33,24 +33,16 @@ const Login = () => {
 
     try {
       const responseData = await request(url, data);
-      console.log("Respuesta recibida:", responseData);
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-    /* try {
-      const response = await axios.post("https://desarrollo.coopmorteros.coop/TestReact/prueba", {
-        email,
-        password,
-      });
-      if (response.data === "Error") {
+      if (responseData === "Error") {
         alert("No existe el usuario");
         return;
       }
-      localStorage.setItem("usuario", JSON.stringify(response.data));
+      localStorage.setItem("usuario", JSON.stringify(responseData));
       window.location.reload();
     } catch (error) {
-      console.error("Error al enviar la solicitud POST:", error);
-    } */
+      console.error("Error en la solicitud:", error);
+      return;
+    }
   };
   return (
     <div className="flex flex-row h-full justify-center items-center">
