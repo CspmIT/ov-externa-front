@@ -53,7 +53,7 @@ function App() {
     rutes.push(...menus);
   }
   return (
-    <div className="w-screen h-screen overflow-y-auto overflow-y-hidden">
+    <div className="w-screen h-screen overflow-y-auto">
       {user && <Navbar />}
       <Routes>
         {user ? (
