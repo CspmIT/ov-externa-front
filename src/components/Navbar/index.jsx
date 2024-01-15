@@ -130,7 +130,7 @@ const Navbar = () => {
           </ul>
         </div>
       </aside>
-      <div className="sm:ml-56 z-10 fixed will-change-auto max-w-full">
+      <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} max-w-full`}>
         <nav className=" dark:bg-zinc-950 bg-white">
           <div className="mx-auto px-2 sm:px-6 lg:px-5 ">
             <div className="relative flex h-16 items-center justify-between">

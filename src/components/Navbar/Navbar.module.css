@@ -51,3 +51,11 @@
     border-bottom: 0;
     border-left: .3em solid transparent;
   }
+
+  .widthNab {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    width: stretch; 
+    /* width: 100%;  */
+  }
