@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import Login from "./views/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -53,7 +51,7 @@ function App() {
     rutes.push(...menus);
   }
   return (
-    <div className="w-screen h-screen overflow-y-auto overflow-y-hidden">
+    <div className="w-screen h-screen overflow-y-auto">
       {user && <Navbar />}
       <Routes>
         {user ? (

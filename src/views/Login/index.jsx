@@ -9,7 +9,7 @@ import { TbEye, TbEyeClosed } from "react-icons/tb";
 }
 import InputGroup from "../../components/InputGroup";
 import Button from "../../components/Button";
-import axios from "axios";
+import request from "../../routes/request";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +28,16 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = "TestReact/prueba";
+    const data = { email, password };
+
     try {
+      const responseData = await request(url, data);
+      console.log("Respuesta recibida:", responseData);
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+    /* try {
       const response = await axios.post("https://desarrollo.coopmorteros.coop/TestReact/prueba", {
         email,
         password,
@@ -41,7 +50,7 @@ const Login = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error al enviar la solicitud POST:", error);
-    }
+    } */
   };
   return (
     <div className="flex flex-row h-full justify-center items-center">
