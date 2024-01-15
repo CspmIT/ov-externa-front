@@ -12,7 +12,7 @@ const leveldos = () => {
     { id: 8, name: 'Corrientes' }, { id: 9, name: 'Entre Ríos' }, { id: 10, name: 'Formosa' }]
 
     return (
-        <div className='p-2 pb-10 sm:pl-64 overflow-y-auto h-full bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 mb-10'>
+        <div className='p-2 pb-10 sm:pl-64'>
             <div className='flex flex-wrap w-full'>
                 <p className='py-10 leading-7'>
                     Hola {usuario}, estás a unos pasos de subir al Nivel 2. Para esto, te vamos a pedir una serie de datos necesarios para validar tu identidad y así poder usar tu Oficina Virtual aprovechando todos los beneficios.

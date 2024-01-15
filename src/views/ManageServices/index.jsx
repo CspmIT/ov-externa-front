@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 
 const ManageServices = () => {
     return (
-        <div className='p-2 pb-10 sm:pl-64 overflow-y-auto h-full bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 mb-10'>
+        <div className='p-2 sm:pl-64'>
             <h2 className="text-center m-5">Administrar Servicios</h2>
             <hr />
             <div className={`${styles.spanCards} flex flex-wrap justify-center h-1/3 items-center`}>

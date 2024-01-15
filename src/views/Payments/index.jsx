@@ -11,7 +11,7 @@ import ButtonAnimate from '../../components/ButtonAnimate'
 
 const Payments = () => {
     return (
-        <div className='p-2 sm:pl-64 overflow-y-auto h-full bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 pb-16'>
+        <div className='p-2 sm:pl-64'>
             <div className='flex w-full flex-wrap mt-10 justify-center rounded-xl pt-5 p-10 bg-white dark:bg-zinc-800'>
                 <h3 className='w-full text-left mb-5'>Mis Pagos
                     <div className='float-right'>

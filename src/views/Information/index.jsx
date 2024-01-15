@@ -29,7 +29,7 @@ const Information = () => {
   };
 
   return (
-    <div className="p-2 sm:pl-64 overflow-y-auto h-full bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 pb-16">
+    <div className="p-2 sm:pl-64">
       <h2 className="text-center m-5">Información Útil</h2>
       <div onClick={() => dropModehidden()} className={`cursor-pointer mt-10 mb-5 rounded-xl p-10 bg-gray-200 dark:bg-zinc-800`}>
         <h5>Tutoriales Nivel 3{iconMode}</h5>

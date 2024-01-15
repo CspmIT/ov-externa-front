@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   return (
-    <div className="p-2 pb-10 sm:pl-64 overflow-y-auto h-full bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 mb-10">
+    <div className="p-2 sm:pl-64">
       <div className="flex flex-wrap w-full">
         {level == 1 ? (
           <>
@@ -298,7 +298,7 @@ const Home = () => {
             <div className="flex w-full flex-wrap mt-10 justify-center">
               <p className="w-full m-2 text-center">Si seleccionas todas las facturas podras acceder a estos beneficios</p>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksI} lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-                {/* <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/> */}
+                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/>
                 <h5 className="text-white mt-14">
                   <b>300 MEGAS</b> al precio de 100 Megas
                 </h5>
@@ -307,7 +307,7 @@ const Home = () => {
                 </p>
               </div>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksF}  lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-                {/* <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/> */}
+                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/>
                 <h4 className="text-white mt-14">
                   <b>GRATIS POR 1 MES</b>
                 </h4>
@@ -319,7 +319,8 @@ const Home = () => {
             <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-800">
               <h3 className="w-full text-left mb-5">
                 Facturas Impagas
-                <div onClick={swalHelp} className="float-right">
+                <div onClick={swalHelp} className="float-right flex">
+                  <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
                   <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
                 </div>
               </h3>
