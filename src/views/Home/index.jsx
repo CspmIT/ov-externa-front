@@ -298,7 +298,7 @@ const Home = () => {
             <div className="flex w-full flex-wrap mt-10 justify-center">
               <p className="w-full m-2 text-center">Si seleccionas todas las facturas podras acceder a estos beneficios</p>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksI} lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/>
+                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate" />
                 <h5 className="text-white mt-14">
                   <b>300 MEGAS</b> al precio de 100 Megas
                 </h5>
@@ -307,7 +307,7 @@ const Home = () => {
                 </p>
               </div>
               <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksF}  lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate"/>
+                <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate" />
                 <h4 className="text-white mt-14">
                   <b>GRATIS POR 1 MES</b>
                 </h4>
@@ -320,7 +320,7 @@ const Home = () => {
               <h3 className="w-full text-left mb-5">
                 Facturas Impagas
                 <div onClick={swalHelp} className="float-right flex">
-                  <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
+                  <Button props={{ class: "text-black bg-gradient-to-r from-green-400 to-green-600 hover:bg-gradient-to-l from-green-400 to-green-600 m-2 text-sm", text: `Comprar Energía` }} />
                   <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
                 </div>
               </h3>

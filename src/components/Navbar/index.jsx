@@ -21,6 +21,7 @@ import { FaFileAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { IoIosSunny } from "react-icons/io";
+import { FaCircleArrowUp } from "react-icons/fa6";
 
 const Navbar = () => {
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
@@ -77,8 +78,8 @@ const Navbar = () => {
     },
     { name: "Turnos Online", icon: <FaCalendarCheck />, link: "/Information", level: [1, 2, 3] },
     { name: "Simulador de Consumo", icon: <FaBolt />, link: "/ConsumptionSimulator", level: [2, 3] },
-    { name: "Subir de nivel", icon: <FaBolt />, link: "/LevelUp3", level: [1] },
-    { name: "Subir a nivel 3", icon: <FaBolt />, link: "/LevelUp2", level: [2] },
+    { name: "Subir a nivel 2", icon: <FaCircleArrowUp />, link: "/LevelUp2", level: [1] },
+    { name: "Subir a nivel 3", icon: <FaCircleArrowUp />, link: "/LevelUp3", level: [2, 3] },
     { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
     { name: "Administrar Servicios", icon: <FaServer />, link: "/ManageServices", level: [3] },
     {
@@ -115,7 +116,7 @@ const Navbar = () => {
     <div>
       {/* bg-amber-300 */}
       <aside id="navbarHidden" className="fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-        <div className="h-full px-3 py-4 overflow-y-auto bg-amber-300 noScrollbar">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar">
           <div className="m-2">
             <img src="https://app.coopmorteros.coop/public/images/logos/Ofi_Virtual_Negro.png" />
           </div>
@@ -130,7 +131,7 @@ const Navbar = () => {
           </ul>
         </div>
       </aside>
-      <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} max-w-full`}>
+      <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} top-0 max-w-full`}>
         <nav className=" dark:bg-zinc-950 bg-white">
           <div className="mx-auto px-2 sm:px-6 lg:px-5 ">
             <div className="relative flex h-16 items-center justify-between">

@@ -16,6 +16,7 @@ import MyServicesD from "./views/MyServices/detail";
 import ConsumptionSimulator from "./views/ConsumptionSimulator";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import LevelUp3 from "./views/LevelUp/leveltres";
+import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import Footer from "./components/Footer";
 import ManageServices from "./views/ManageServices";
 
@@ -34,12 +35,13 @@ function App() {
   if (user) {
     let menus = [];
     if (user["level"] == 1) {
-      menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
+        menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
     } else {
       if (user["level"] == 2) {
         menus.push({ name: "/LevelUp3", element: <LevelUp3 /> });
       } else {
-        menus.push({ name: "/ManageServices", element: <ManageServices /> });
+        // menus.push({ name: "/ManageServices", element: <ManageServices /> });
+        menus.push({ name: "/ManageServices", element: <ManageServices /> }, { name: "/LevelUp3", element: <LevelUp3 /> }, { name: "/authentication", element: <Authentication /> });
       }
       menus.push(
         { name: "/Invoice", element: <Invoice /> },
@@ -53,7 +55,7 @@ function App() {
     rutes.push(...menus);
   }
   return (
-    <div className="w-screen h-screen overflow-y-auto noScrollbar bg-gray-100 dark:bg-zinc-900 dark:text-gray-300">
+    <div className="w-screen h-screen overflow-y-auto noScrollbar bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 pt-24">
      {user && <Navbar />}
       <Routes>
         {user ? (
@@ -72,7 +74,7 @@ function App() {
           </>
         )}
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

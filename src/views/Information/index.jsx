@@ -34,9 +34,8 @@ const Information = () => {
       <div onClick={() => dropModehidden()} className={`cursor-pointer mt-10 mb-5 rounded-xl p-10 bg-gray-200 dark:bg-zinc-800`}>
         <h5>Tutoriales Nivel 3{iconMode}</h5>
         <div className={`w-full flex flex-wrap justify-center ${dropMode}`}>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/SubirNivel3.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",
@@ -53,9 +52,8 @@ const Information = () => {
               />
             </a>
           </div>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/CambiarPlanInternet.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",
@@ -72,9 +70,8 @@ const Information = () => {
               />
             </a>
           </div>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/CambiarCredencialesWiFi.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",
@@ -91,9 +88,8 @@ const Information = () => {
               />
             </a>
           </div>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/ActivarPackTV.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",
@@ -364,7 +360,7 @@ const Information = () => {
       <div className={`mt-10 rounded-xl p-10 bg-gray-200 dark:bg-zinc-800`}>
         <h5>Instructivos</h5>
         <div className={`w-full flex flex-wrap justify-center`}>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/RegistroV2.0.pdf" target="_bank">
               <Card
                 props={{
@@ -382,9 +378,8 @@ const Information = () => {
               />
             </a>
           </div>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/SubirDeNivelV1.0.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",
@@ -401,9 +396,8 @@ const Information = () => {
               />
             </a>
           </div>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/EfectuarPagosV3.0.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",
@@ -420,9 +414,8 @@ const Information = () => {
               />
             </a>
           </div>
-          <div className="w-full md:w-1/4">
+          <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/TurnosOnlineV2.0.pdf" target="_bank">
-              {" "}
               <Card
                 props={{
                   phone: "",

@@ -7,7 +7,7 @@ const SelectGroup = ({ showPass, props }) => {
             {props.label && (
                 <label className='block font-semibold ml-1 mb-2 dark:text-white'>{props.label}</label>
             )}
-            <select name={props.name} className='block bg-white dark:bg-zinc-700 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'>
+            <select name={props.name} className='block bg-white dark:bg-zinc-800 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'>
             <option className='robotoCondensed' value=''>Seleccionar...</option>
             {props.options.map((item, index) => (
                 <option className='robotoCondensed' value={item.id}>{item.name}</option>

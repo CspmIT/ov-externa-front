@@ -1,3 +1,30 @@
-.spanCards span{
+.spanCards span {
     font-size: 1.6rem;
+}
+
+.cssTyping .animacionCuadro {
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.cssTyping .animacionCuadro:nth-child(1) {
+    width: 100%;
+    text-align: center;
+    animation: type 3s steps(40) infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes type {
+    0% {
+        width: 0;
+    }
+
+    1% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

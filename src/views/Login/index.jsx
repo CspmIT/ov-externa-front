@@ -28,7 +28,7 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = "TestReact/prueba";
+    const url = "TestReact/login";
     const data = { email, password };
 
     try {
