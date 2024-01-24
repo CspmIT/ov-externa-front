@@ -59,10 +59,10 @@ const Login = () => {
               props={{ label: "Contraseña", ph: "Ingrese una Contraseña", type: pass, req: true, btnIcon: iconEye }}
             />
             <div className="w-full flex justify-center">
-              <Button props={{ class: "text-black bg-yellow-300 hover:bg-yellow-400 focus:bg-yellow-400 m-2", text: "Ingresar", type: "submit" }} />
+              <Button props={{ class: "text-black botonPrincipal m-2", text: "Ingresar", type: "submit" }} />
 
               <Link to={"/Register"}>
-                <Button props={{ class: "text-black bg-white hover:bg-yellow-400 focus:bg-yellow-400 m-2", text: "Registrarme", type: "button" }} />
+                <Button props={{ class: "text-black botonesAceptar m-2", text: "Registrarme", type: "button" }} />
               </Link>
             </div>
           </form>

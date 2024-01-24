@@ -156,7 +156,7 @@ const Navbar = () => {
                     <button
                       id="dropdownNavbarLink"
                       data-dropdown-toggle="dropdownNavbar"
-                      className={`${styles.btnNavbar} text-gray-900 bg-amber-300 font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto max-w-48`}
+                      className={`${styles.btnNavbar} text-gray-900 fondoPrincipal font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto max-w-48`}
                     >
                       <div className="overflow-hidden">
                         <span className="whitespace-nowrap">COSTAMAGNA FABIAN NESTOR</span>

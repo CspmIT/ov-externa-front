@@ -19,9 +19,9 @@ const Payments = () => {
                     </div>
                 </h3>
                 <p><i>*Sólo se muestran los Pagos realizados en nuestra plataforma.</i></p>
-                <div className={`relative overflow-x-auto w-full rounded-xl ${styles.shadowCards}`} >
+                <div className={`relative overflow-x-auto w-full rounded-xl shadowCards`} >
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                        <thead className="text-xs text-gray-700 uppercase bg-yellow-300">
+                        <thead className="text-xs text-gray-700 uppercase fondoPrincipal">
                             <tr>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Cuenta

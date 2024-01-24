@@ -43,7 +43,7 @@ const Information = () => {
                   subtitle: "Nivel 3?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -61,7 +61,7 @@ const Information = () => {
                   subtitle: "Plan de Internet?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -79,7 +79,7 @@ const Information = () => {
                   subtitle: "Credenciales de WIFI?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -97,7 +97,7 @@ const Information = () => {
                   subtitle: "Pack de TV?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -110,7 +110,7 @@ const Information = () => {
       </div>
       <div className="w-full flex flex-wrap justify-center">
         <div className="w-full md:w-1/2">
-          <div className={`${Cardstyles.card} ${Cardstyles.shadowCards} ${Cardstyles.cardHover} bg-white dark:bg-zinc-700 w-auto `}>
+          <div className={`${Cardstyles.card} shadowCards ${Cardstyles.cardHover} bg-white dark:bg-zinc-700 w-auto `}>
             <h5>Requisitos para Altas de Servicios</h5>
             <Carousel>
               <div>
@@ -126,7 +126,7 @@ const Information = () => {
           </div>
         </div>
         <div className="w-full md:w-1/2">
-          <div className={`${Cardstyles.card} ${Cardstyles.shadowCards} ${Cardstyles.cardHover} bg-white dark:bg-zinc-700 w-auto`}>
+          <div className={`${Cardstyles.card} shadowCards ${Cardstyles.cardHover} bg-white dark:bg-zinc-700 w-auto`}>
             <h5>Requisitos para Bajas de Servicios</h5>
             <Carousel>
               <div>
@@ -369,7 +369,7 @@ const Information = () => {
                   subtitle: "REGISTRO?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -387,7 +387,7 @@ const Information = () => {
                   subtitle: "NIVEL?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -405,7 +405,7 @@ const Information = () => {
                   subtitle: "PAGO?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",
@@ -423,7 +423,7 @@ const Information = () => {
                   subtitle: "TURNO?",
                   icon: <FaQuestion className="w-full" />,
                   color: "text-yellow-500",
-                  bgIcon: "bg-yellow-400",
+                  bgIcon: "fondoPrincipal",
                   colorIcon: "text-yellow-900",
                   widht: "w-auto",
                   bg: "bg-white",

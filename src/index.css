@@ -31,9 +31,13 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.robotoCondensed{
+.robotoCondensed {
     font-family: "Roboto-Condensed" !important;
-} 
+}
+
+.AeromaticsRegular {
+    font-family: "Aeromatics-Regular";
+}
 
 h1,
 h2,
@@ -84,13 +88,72 @@ h6 {
     font-size: 1rem;
 }
 
-
 @layer utilities {
     .noScrollbar::-webkit-scrollbar {
         display: none;
     }
+
     .noScrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+}
+
+.colorPrincipal {
+    color: #a16207;
+}
+
+.fondoPrincipal {
+    background-color: #fef08a;
+}
+
+.botonPrincipal {
+    background-color: #fef08a;
+    color: #a16207;
+}
+
+.botonesAceptar {
+    background-color: rgb(134 239 172) !important;
+    color: #15803d !important;
+    font-weight: bold;
+}
+
+.botonesCancelar {
+    background-color: rgb(252 165 165) !important;
+    color: #b91c1c !important;
+    font-weight: bold;
+}
+
+.botonesAceptar:focus, .botonesCancelar:focus {
+    box-shadow: 0 0 0 2px rgba(139, 139, 139, 0.5) !important;
+}
+
+.botonPrincipal:hover,
+.botonesAceptar:hover,
+.botonesCancelar:hover,
+.hoverBtn:hover {
+    scale: 1.05;
+}
+
+.shadowCards {
+    box-shadow: 2px 2px 2px #fde047a3;
+}
+
+.btnlevel3{
+    position: absolute;
+    bottom: 3rem;
+    right: 1rem;
+    background-color: rgb(96 165 250) !important;
+}
+
+.swalModoOscuro {
+    color: #e5e7eb !important;
+    background-color: #27272a !important;
+}
+
+.fondoAlertNaranja{
+    background-color: #f59b19 !important;
+}
+.fondoAlertRosa{
+    background-color: #e64577 !important;
 }
