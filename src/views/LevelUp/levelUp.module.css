@@ -6,6 +6,11 @@
     left: 9%;
 }
 
+.videoCompleto {
+    width: 400px;
+    height: 300px;
+}
+
 @media(max-width: 550px) {
     .imagenRecuadro {
         top: 30% !important;
