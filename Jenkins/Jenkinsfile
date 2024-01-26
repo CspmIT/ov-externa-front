@@ -25,7 +25,7 @@ pipeline {
                             sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f service-ovexterna.yaml"
                         } else {
                             echo "Deployment does not exist, creating..."
-                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f deployment-ovexterna-jenkins.yaml"
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f deployment-ovexterna.yaml"
                         }
                             sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true delete rs --selector=app=react-app-ov --dry-run=client -o name | xargs kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true delete --ignore-not-found=true"
 
