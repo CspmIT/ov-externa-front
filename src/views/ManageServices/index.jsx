@@ -187,7 +187,7 @@ const ManageServices = () => {
                 </div>
                 <div className='w-full flex justify-center mt-10'>
                     <Link to={'/Information'}>
-                        <Button props={{ class: 'text-black bg-yellow-400 hover:bg-white focus:bg-yellow-400 m-2', text: `Ver Tutoriales Nivel 3` }} />
+                        <Button props={{ class: 'botonPrincipal m-2', text: `Ver Tutoriales Nivel 3` }} />
                     </Link>
                 </div>
             </div>
@@ -237,7 +237,7 @@ const ManageServices = () => {
                     <div className='w-full mt-10'>
                         <div className={`w-auto ${styles.cssTyping}`}>
                             <h4 className={`${styles.animacionCuadro} mb-1 text-white`} >
-                                <strong className={`${iconMode['color']}`}>  MEJORÁ TU {iconMode['type'] == 'INT' ? 'VELOCIDAD' : 'EXPERIENCIA'}! </strong>
+                                <strong className={iconMode['color']}>  MEJORÁ TU {iconMode['type'] == 'INT' ? 'VELOCIDAD' : 'EXPERIENCIA'}! </strong>
                             </h4><br />
                             <p className='text-center'>{iconMode['type'] == 'INT' ? 'Te recomendamos los siguientes planes: ' : 'Packs Recomendados:'}</p>
                         </div>
@@ -270,12 +270,13 @@ const ManageServices = () => {
                                                     ))}
                                                 </div>
                                             )}
-                                            <Button props={{ class: 'text-black bg-yellow-400 hover:bg-white focus:bg-yellow-400 m-2 mt-7 text-sm w-full', text: `ACTIVALO AHORA` }} />
+                                            <Button props={{ class: 'text-black botonPrincipal m-2 mt-7 text-sm w-full', text: `ACTIVALO AHORA` }} />
                                         </div>
                                     ),
                                     widht: "w-auto",
                                     bg: "bg-white",
                                     positionBtn: "absolute",
+                                    hover: 'false'
                                 }}
                             />
                         </div>
@@ -292,16 +293,17 @@ const ManageServices = () => {
                                         <div className="w-full text-center flex flex-wrap">
                                             <img src='https://app.coopmorteros.coop/public/images/otros/SENSA.png' alt='img' className='w-full' />
                                             <div className='w-1/2 p-2'>
-                                                <Button props={{ class: 'text-black bg-yellow-400 hover:bg-white focus:bg-yellow-400 m-2 mt-7 text-sm w-full', text: `CREAR SENSA` }} />
+                                                <Button props={{ class: 'botonPrincipal m-2 mt-7 text-sm w-full', text: `CREAR SENSA` }} />
                                             </div>
                                             <div className='w-1/2 p-2'>
-                                                <Button props={{ class: 'text-black bg-yellow-400 hover:bg-white focus:bg-yellow-400 m-2 mt-7 text-sm w-full', text: `INICIAR SESIÓN` }} />
+                                                <Button props={{ class: 'botonPrincipal m-2 mt-7 text-sm w-full', text: `INICIAR SESIÓN` }} />
                                             </div>
                                         </div>
                                     ),
                                     widht: "w-1/3",
                                     bg: "bg-white",
                                     positionBtn: "absolute",
+                                    hover: 'false'
                                 }}
                             />
                         </div>

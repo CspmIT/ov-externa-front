@@ -11,8 +11,18 @@ const FileUpload = forwardRef((props, ref) => {
 
     const handleCapture = async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const isSmallScreen = window.innerWidth < 550;
 
+            let constraints = { video: true };
+
+            if (isSmallScreen) {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                if (videoDevices.length >= 2) {
+                    constraints = { video: { deviceId: { exact: videoDevices[1].deviceId } } };
+                }
+            }
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
                 setvideoMostrar('');
@@ -90,7 +100,7 @@ const FileUpload = forwardRef((props, ref) => {
                     />
                     <div className='justify-center flex w-full'>
                         <div onClick={resetFile}>
-                            <Button props={{ class: 'text-white border border-red-500 bg-gradient-to-b from-red-500 to-red-900 m-2', text: `Borrar Foto` }} />
+                            <Button props={{ class: 'botonesCancelar m-2', text: `Borrar Foto` }} />
                         </div>
                     </div>
                 </div>
@@ -102,10 +112,10 @@ const FileUpload = forwardRef((props, ref) => {
                         <p className='w-full text-center md:hidden'>Encuadra el {name} del DNI en el marco</p>
                         <img className={`${styles.marco}`} src='https://app.coopmorteros.coop/public/images/otros/lector_DNI.png' />
                         <div id={name} onClick={handleCaptureImage}>
-                            <Button props={{ class: 'text-white border border-orange-500 bg-gradient-to-b from-orange-500 to-orange-900 m-2', text: `Capturar ${name}` }} />
+                            <Button props={{ class: 'bg-orange-300 text-orange-700 hoverBtn m-2', text: `Capturar ${name}` }} />
                         </div>
                         <div onClick={handleStopCapture}>
-                            <Button props={{ class: 'text-white border border-purple-500 bg-gradient-to-b from-purple-500 to-purple-900 m-2', text: `Cancelar` }} />
+                            <Button props={{ class: 'text-indigo-700 bg-indigo-300 hoverBtn m-2', text: `Cancelar` }} />
                         </div>
                     </div>
                 </div>

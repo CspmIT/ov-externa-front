@@ -193,7 +193,7 @@ const Home = () => {
         ) : (
           <>
             <div className="flex w-full flex-wrap lg:w-3/4 md:1/2">
-              <div className={`${styles.card} ${styles.shadowCards} bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
+              <div className={`${styles.card} shadowCards bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
                 <img src="https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png" className="w-full" />
                 <div className="pt-4 w-3/4">
                   <p>
@@ -278,7 +278,7 @@ const Home = () => {
                   positionBtn: "absolute",
                 }}
               />
-              <div className={`${styles.card} ${styles.shadowCards} ${styles.cardHover} bg-white dark:bg-zinc-700`}>
+              <div className={`${styles.card} shadowCards ${styles.cardHover} bg-white dark:bg-zinc-700`}>
                 <img src="https://app.coopmorteros.coop/public/images/coopate/iso_Coopate-02.png" className="w-3/4" />
               </div>
             </div>
@@ -324,9 +324,9 @@ const Home = () => {
                   <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
                 </div>
               </h3>
-              <div className={`relative overflow-x-auto w-full rounded-xl ${styles.shadowCards}`}>
+              <div className={`relative overflow-x-auto w-full rounded-xl shadowCards`}>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <thead className="text-xs text-gray-700 uppercase bg-yellow-300">
+                  <thead className="text-xs text-gray-700 uppercase fondoPrincipal">
                     <tr>
                       <th scope="col" className="px-6 py-3 text-center">
                         Tipo
@@ -421,9 +421,9 @@ const Home = () => {
             <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl mb-10 p-10 bg-white dark:bg-zinc-800">
               <h3 className="w-full text-left mb-5">Facturas Acueducto Impagas</h3>
               <p>* El Pago realizado de las Facturas podrá verse reflejado dentro de las próximas 48hs hábiles.</p>
-              <div className={`relative overflow-x-auto w-full rounded-xl ${styles.shadowCards}`}>
+              <div className={`relative overflow-x-auto w-full rounded-xl shadowCards`}>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <thead className="text-xs text-gray-700 uppercase bg-yellow-300">
+                  <thead className="text-xs text-gray-700 uppercase fondoPrincipal">
                     <tr>
                       <th scope="col" className="px-6 py-3 text-center">
                         Tipo

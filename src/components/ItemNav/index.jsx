@@ -6,7 +6,7 @@ const ItemNav = ({ props, isActive, onButtonClick }) => {
       {props.link ? (
         <Link to={props.link}>
           <a
-            className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900  transition duration-75 rounded-lg group ${isActive ? 'bg-amber-300 text-slate-950' : 'hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200'}`}
+            className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900  transition duration-75 rounded-lg group ${isActive ? 'fondoPrincipal text-slate-950' : 'hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200'}`}
             aria-controls={props.dropdown && props.idDrop}
             data-collapse-toggle={props.dropdown && props.idDrop}
             onClick={onButtonClick}
@@ -20,7 +20,7 @@ const ItemNav = ({ props, isActive, onButtonClick }) => {
           </a>
         </Link>
       ) : (
-        <div className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group ${isActive ? 'bg-amber-300 text-slate-950' : 'hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200'}`} onClick={onButtonClick}>
+        <div className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group ${isActive ? 'fondoPrincipal text-slate-950' : 'hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200'}`} onClick={onButtonClick}>
           {props.icon}
           <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{props.name}</span>
           {props.dropdown && (
