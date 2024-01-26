@@ -309,7 +309,7 @@ const index = () => {
                                                         text: `ACTIVALO AHORA`,
                                                     }}
                                                 />
-                                                <label className="mt-2">*Válido para una compra o servicio.</label>
+                                                <label className="mt-2">*Válido para una compra o servicio</label>
                                                 {cummulativeText}
                                             </div>
                                         ),
