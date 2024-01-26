@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ovexterna-service
+  labels:
+    app: react-app-ov
+spec:
+  selector:
+    app: react-app-ov
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
+      nodePort: 31079
+  type: LoadBalancer
