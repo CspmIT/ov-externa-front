@@ -22,16 +22,16 @@ pipeline {
                         if (deploymentExists) {
                             echo "Deployment exists, updating..."
                             sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true rollout restart deployment ovexterna-deployment -n default"
-                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f service-ovexterna.yaml"
                         } else {
                             echo "Deployment does not exist, creating..."
-                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f deployment-ovexterna.yaml"
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f Jenkins/deployment-ovexterna.yaml"
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f Jenkins/service-ovexterna.yaml"
                         }
                             sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true delete rs --selector=app=react-app-ov --dry-run=client -o name | xargs kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true delete --ignore-not-found=true"
 
                         // Apply service and ingress
                         
-                        sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f ingress-ovexterna-jenkins.yaml"
+                        sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f Jenkins/ingress-ovexterna-jenkins.yaml"
                     }
                 }
             }
