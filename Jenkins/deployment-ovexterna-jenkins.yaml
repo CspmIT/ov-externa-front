@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ovexterna
+  name: ovexterna-deployment
   labels:
-    app: react-app
+    app: react-app-ov
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: react-app
+      app: react-app-ov
   template:
     metadata:
       labels:
-        app: react-app
+        app: react-app-ov
     spec:
       containers:
-      - name: react-app
+      - name: react-app-ov
         image: coopmorteros/ovexterna
         ports:
         - containerPort: 8082

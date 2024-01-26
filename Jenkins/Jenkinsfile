@@ -7,26 +7,33 @@ pipeline {
       }
     }
 
-    stage('Deploy react-app') {
-      steps {
-        withCredentials(bindings: [
-                      string(credentialsId: 'kubernete-jenkis-server-account', variable: 'api_token')
-                      ]) {
-                       sh '''kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true get deployment ovexterna -n default
-                          if [ $? -eq 0 ]
-                          then
-                              echo "Deployment exists, updating..."
-                              kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true rollout restart -n default deployment ovexterna
-                          else
-                              echo "Deployment does not exist, creating..."
-                              kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f deployment-ovexterna-jenkins.yaml
-                              kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f service-ovexterna.yaml
-                          fi
-                              kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f ingress-ovexterna-jenkins.yaml'''
-        }
+    stage('Deploy react-app-ov') {
+            steps {
+                withCredentials(bindings: [
+                    string(credentialsId: 'kubernete-jenkis-server-account', variable: 'api_token')
+                ]) {
+                    script {
+                        // Check if the deployment already exists in the cluster
+                        def deploymentExists = sh (
+                            script: "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true get deployment ovexterna-deployment -n default",
+                            returnStatus: true
+                        ) == 0
 
-        }
-      }
+                        if (deploymentExists) {
+                            echo "Deployment exists, updating..."
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true rollout restart deployment ovexterna-deployment -n default"
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f service-ovexterna.yaml"
+                        } else {
+                            echo "Deployment does not exist, creating..."
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f deployment-ovexterna-jenkins.yaml"
+                        }
+                            sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true delete rs --selector=app=react-app-ov --dry-run=client -o name | xargs kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true delete --ignore-not-found=true"
 
-    }
+                        // Apply service and ingress
+                        
+                        sh "kubectl --token $api_token --server https://168.196.255.154:6443 --insecure-skip-tls-verify=true apply -f ingress-ovexterna-jenkins.yaml"
+                    }
+                }
+            }
+        }
   }

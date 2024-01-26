@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: ovexterna-service
   labels:
-    app: react-app
+    app: react-app-ov
 spec:
   selector:
-    app: react-app
+    app: react-app-ov
   ports:
     - protocol: TCP
       port: 80
