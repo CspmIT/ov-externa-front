@@ -79,7 +79,7 @@ const Navbar = () => {
     { name: "Turnos Online", icon: <FaCalendarCheck />, link: "/Information", level: [1, 2, 3] },
     { name: "Simulador de Consumo", icon: <FaBolt />, link: "/ConsumptionSimulator", level: [2, 3] },
     { name: "Subir a nivel 2", icon: <FaCircleArrowUp />, link: "/LevelUp2", level: [1] },
-    { name: "Subir a nivel 3", icon: <FaCircleArrowUp />, link: "/LevelUp3", level: [2, 3] },
+    { name: "Subir a nivel 3", icon: <FaCircleArrowUp />, link: "/LevelUp3", level: [2] },
     { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
     { name: "Administrar Servicios", icon: <FaServer />, link: "/ManageServices", level: [3] },
     {
@@ -90,10 +90,10 @@ const Navbar = () => {
       idDrop: "coopate",
       level: [3],
       list: [
-        { name: "Beneficios", link: "algo" },
-        { name: "Mis Canjes", link: "algo" },
-        { name: "Términos y Condiciones", link: "algo" },
-        { name: "Comercios", link: "algo" },
+        { name: "Beneficios", link: "/Coopate" },
+        { name: "Mis Canjes", link: "/Coopate/Canjes" },
+        { name: "Términos y Condiciones", link: "/Coopate/Terminos" },
+        { name: "Comercios", link: "/Coopate/Comercios" },
       ],
     },
     {

@@ -16,7 +16,7 @@ const Card = ({ props }) => {
       </div>
       <div className={styles.cardContent}>
         <div className={styles.cardTop}>
-          <div className='w-full'>{props.title} {props.title ? <br /> : ''} <span className={`${props.color}`}>{props.subtitle}</span></div>
+          <div className='w-full'>{props.title} {props.title ? <br /> : ''} <span className={`${props.color} ${props.text ? props.text : ''}`}>{props.subtitle}</span></div>
         </div>
       </div>
 

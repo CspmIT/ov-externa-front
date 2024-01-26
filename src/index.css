@@ -26,7 +26,7 @@
 
 html {
     font-family: "Roboto-Condensed";
-    line-height: 1.15;
+    line-height: 1.5;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -88,6 +88,10 @@ h6 {
     font-size: 1rem;
 }
 
+ol {
+    list-style-type: decimal;
+}
+
 @layer utilities {
     .noScrollbar::-webkit-scrollbar {
         display: none;
@@ -124,7 +128,8 @@ h6 {
     font-weight: bold;
 }
 
-.botonesAceptar:focus, .botonesCancelar:focus {
+.botonesAceptar:focus,
+.botonesCancelar:focus {
     box-shadow: 0 0 0 2px rgba(139, 139, 139, 0.5) !important;
 }
 
@@ -139,7 +144,7 @@ h6 {
     box-shadow: 2px 2px 2px #fde047a3;
 }
 
-.btnlevel3{
+.btnlevel3 {
     position: absolute;
     bottom: 3rem;
     right: 1rem;
@@ -151,9 +156,10 @@ h6 {
     background-color: #27272a !important;
 }
 
-.fondoAlertNaranja{
+.fondoAlertNaranja {
     background-color: #f59b19 !important;
 }
-.fondoAlertRosa{
+
+.fondoAlertRosa {
     background-color: #e64577 !important;
 }

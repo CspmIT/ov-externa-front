@@ -31,7 +31,7 @@ const ItemNav = ({ props, isActive, onButtonClick }) => {
       )}
       {props.dropdown && (
         <>
-          <ul id={props.idDrop} className={`p-2 bg-white rounded dark:bg-zinc-950 m-2 space-y-2 relative ${isActive ? 'block' : 'hidden'}`}>
+          <ul id={props.idDrop} className={`p-2 bg-white rounded dark:bg-zinc-950 m-2 relative ${isActive ? 'block' : 'hidden'}`}>
             {props.list.map((item, index) => (
               <li key={index}>
                 <Link to={item.link}>
