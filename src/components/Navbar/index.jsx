@@ -22,6 +22,8 @@ import { FaPlus } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { IoIosSunny } from "react-icons/io";
 import { FaCircleArrowUp } from "react-icons/fa6";
+import Dropdown from "../Dropdown";
+import DropdownImage from "../DropdownImage";
 
 const Navbar = () => {
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
@@ -153,29 +155,7 @@ const Navbar = () => {
                     <div className="pl-3 pr-4 py-2 md:p-0 font-medium flex dark:text-white items-center justify-between w-full md:w-auto text-gray-900">
                       <FaUser />
                     </div>
-                    <button
-                      id="dropdownNavbarLink"
-                      data-dropdown-toggle="dropdownNavbar"
-                      className={`${styles.btnNavbar} text-gray-900 fondoPrincipal font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto max-w-48`}
-                    >
-                      <div className="overflow-hidden">
-                        <span className="whitespace-nowrap">COSTAMAGNA FABIAN NESTOR</span>
-                      </div>
-                    </button>
-                    <div id="dropdownNavbar" className="hidden bg-white text-base z-10 list-none divide-y divide-gray-100 rounded shadow my-4 w-44">
-                      <ul className="py-1" aria-labelledby="dropdownLargeButton">
-                        <li>
-                          <a href="#" className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">
-                            GONZALES RAUL AMERICO
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">
-                            MARCELA DEL VALLE FURRER
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <Dropdown props={{ titleColor: "bg-amber-300 text-gray-900 hover:bg-amber-400", childrenColor: "text-gray-700 dark:text-white block hover:bg-gray-800" }} />
                     <span href="#" className="text-gray-900 font-medium px-2 dark:text-white hidden md:flex items-center justify-between w-full md:w-auto">
                       <FaFileAlt className="mr-2" /> {JSON.parse(localStorage.getItem("usuario")).customer}
                     </span>
@@ -208,51 +188,7 @@ const Navbar = () => {
                     />
                   </svg>
                 </button>
-                <div className="relative ml-3">
-                  <div>
-                    <button
-                      type="button"
-                      className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      id="user-menu-button"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                    >
-                      <span className="absolute -inset-1.5"></span>
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </button>
-                  </div>
-                  <div
-                    className="absolute right-0 z-10 mt-2 space-y-2 w-48 origin-top-right rounded-md bg-white py-3 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-zinc-800 hidden"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabIndex="-1"
-                  >
-                    <a
-                      href="#"
-                      className="px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-0"
-                    >
-                      <FaUser className="mr-2" /> Perfil
-                    </a>
-                    <a
-                      href="#"
-                      className="px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-1"
-                    >
-                      <FaSignOutAlt className="mr-2" /> Cerrar Sesión
-                    </a>
-                  </div>
-                </div>
+                <DropdownImage />
               </div>
             </div>
           </div>
