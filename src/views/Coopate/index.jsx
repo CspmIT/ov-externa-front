@@ -146,9 +146,9 @@ const index = () => {
     },
     ]
 
-    // useEffect(() => {
-    //     pintar(html);
-    // })
+    useEffect(() => {
+        pintar(html);
+    }, [html]);
 
 
     var getTitle = function (val) {
@@ -197,7 +197,7 @@ const index = () => {
 
         if (val.type == 3) {
             if (val.ammount_old !== "") {
-                ammount_old = `<p class='tachado m-0'>$ ${val.ammount_old}</p>`;
+                ammount_old = `<p className='tachado m-0'>$ ${val.ammount_old}</p>`;
             }
             subtitle = "$" + val.ammount_new;
             return subtitle;
@@ -208,7 +208,7 @@ const index = () => {
     var getOldAmount = function (val) {
         var ammount_old = "";
         if (val.type == 3 && val.ammount_old !== "") {
-            ammount_old = `<p class='tachado m-0 p-2'>$ ${val.ammount_old}</p>`;
+            ammount_old = `<p className='tachado m-0 p-2'>$ ${val.ammount_old}</p>`;
             return ammount_old;
         }
         return ammount_old;
@@ -218,7 +218,7 @@ const index = () => {
         var met_pago = "";
         var pago = val.pay == 1 ? "Efectivo" : val.pay == 2 ? "Crédito" : val.pay == 3 ? "Débito" : val.pay == 4 ? "Todos" : val.pay == 5 ? "Tarjetas Locales" : val.pay == 6 ? "Efectivo o Tarjetas Locales" : "";
         if (pago != "") {
-            met_pago = `<span class="font_Roboto-BoldCondensedItalic" style="color: #804f79">Método de Pago:</span> ${pago}`;
+            met_pago = `<span className="font_Roboto-BoldCondensedItalic" style="color: #804f79">Método de Pago:</span> ${pago}`;
             return met_pago;
         }
         return met_pago;
@@ -227,153 +227,160 @@ const index = () => {
     var getCummulative = function (val) {
         var cummulative = "";
         if (val.cumulative == 2) {
-            cummulative = `<p class="font_Roboto-LightItalic">Acumulable con otras promos vigentes</p>`;
+            cummulative = `<p className="font_Roboto-LightItalic">Acumulable con otras promos vigentes</p>`;
         } else {
-            cummulative = `<p class="font_Roboto-LightItalic">No acumulable con otras promos vigentes</p>`;
+            cummulative = `<p className="font_Roboto-LightItalic">No acumulable con otras promos vigentes</p>`;
         }
         return cummulative;
     };
 
-//     var pintar = function (html, div) {
-//         dropModehidden();
-//         if (html.length == 0) {
-//             document.getElementById(div).html("<p>No hay Beneficios disponibles</p>");
-//         } else {
-//             var benefits = "";
-//             var activos;
-//             let status_active = employeeAccess == 1 ? 1 : statusActive;
-//             {userCreateManagement !== "8264" ? (
-//                     <>
-//                         {status_active === 0 && (
-//                             setLabelInactive(
-//                                 <label className="text-red-400 text-center w-full">
-//                                     <b>Debes llegar al 100% para poder acceder a los Beneficios</b>
-//                                 </label>
-//                             )
-//                         )}
-//                         {beneficiosActivos.length >= 4 && (
-//                             setLabelInactive(
-//                                 <label className="text-red-400 text-center w-full">
-//                                     <b>Ya activaste 4 beneficios, canjealos y volvé por más!</b>
-//                                 </label>
-//                             )
-//                         )}
-//                     </>
-//                 ) : (
-//                 html.map((val) => {
-//                     let found = activos.find((obj) => obj.id === val.id);
-//                     if (found === undefined) {
-//                         const titlePreview = getTitle(val);
-//                         const subtitle = getSubTitle(val);
-//                         const ammountOld = getOldAmount(val);
-//                         const metPago = getMetPago(val);
-//                         const cummulativeText = getCummulative(val);
+    var pintar = function (html) {
+        let benefitsElements = [];
+        if (html.length == 0) {
+            setLabelInactive(
+                <label className="text-red-400 text-center w-full">
+                    <b>No hay Beneficios disponibles</b>
+                </label>
+            )
+        } else {
+            var activos;
+            let status_active = employeeAccess == 1 ? 1 : statusActive;
+            {
+                userCreateManagement !== "8264" ? (
+                    <>
+                        {status_active === 0 && (
+                            setLabelInactive(
+                                <label className="text-red-400 text-center w-full">
+                                    <b>Debes llegar al 100% para poder acceder a los Beneficios</b>
+                                </label>
+                            )
+                        )}
+                        {beneficiosActivos.length >= 4 && (
+                            setLabelInactive(
+                                <label className="text-red-400 text-center w-full">
+                                    <b>Ya activaste 4 beneficios, canjealos y volvé por más!</b>
+                                </label>
+                            )
+                        )}
+                    </>
+                ) : (
+                    benefitsElements = html.map((val) => {
+                        let found = activos.find((obj) => obj.id === val.id);
+                        if (found === undefined) {
+                            const titlePreview = getTitle(val);
+                            const subtitle = getSubTitle(val);
+                            const ammountOld = getOldAmount(val);
+                            const metPago = getMetPago(val);
+                            const cummulativeText = getCummulative(val);
 
-//                         const dateFinishPreview = val.date_finish;
-//                         const hs = dateFinishPreview.split(" ");
-//                         const info = hs[0].split("-").reverse().join("/");
+                            const dateFinishPreview = val.date_finish;
+                            const hs = dateFinishPreview.split(" ");
+                            const info = hs[0].split("-").reverse().join("/");
 
-//                         const margen = val.type === 3 ? "ml-3" : "";
+                            const margen = val.type === 3 ? "ml-3" : "";
 
-//                         return (
-//                             <Card
-//                                 key={val.id}
-//                                 props={{
-//                                     phone: "",
-//                                     subtitle: (
-//                                         <div className="w-full text-center">
-//                                             <img src={val.img_name} alt="img" className="w-full mb-5" />
-//                                             <p className="w-full bg-gray-100 dark:bg-zinc-800 px-4 py-2 mt-2">
-//                                                 {val.address}
-//                                             </p>
-//                                             <hr className="my-1" />
-//                                             <h5 className="uppercase text-orange-700">{titlePreview}</h5>
-//                                             <div className="flex flex-wrap justify-center">
-//                                                 {ammountOld}
-//                                                 <p className={`m-0 p-2 ${margen}`}>{subtitle}</p>
-//                                             </div>
-//                                             <div className="my-3 text-center">
-//                                                 <p className="m-0">{metPago}</p>
-//                                                 <p className="m-0">
-//                                                     <span className="text-purple-700">Vigente hasta: </span>
-//                                                     {info}
-//                                                 </p>
-//                                             </div>
-//                                             <Button
-//                                                 props={{
-//                                                     class: "text-black botonPrincipal m-2 mt-7 text-sm w-full",
-//                                                     text: `ACTIVALO AHORA`,
-//                                                 }}
-//                                             />
-//                                             <label class="mt-2">*Válido para una compra o servicio.</label>
-//                                             {cummulativeText}
-//                                         </div>
-//                                     ),
-//                                     widht: "w-auto",
-//                                     bg: "bg-white",
-//                                     positionBtn: "absolute",
-//                                     hover: "false",
-//                                 }}
-//                             />
-//                         );
-//                     }
-//                     return null; 
-//                 })
-//             )
-//             }
-//         }
-//         setBeneficios(benefits);
-//     }
-// };
-
-
-return (
-    <div className="p-2 sm:pl-64">
-        <img width="100%" src="https://app.coopmorteros.coop/public/images/coopate/Header.png" alt="" />
-        <hr />
-        <div class="w-full p-10">
-            <h4 className='text-pink-400'><b>Activá tus cupones, y disfrutá de muchos descuentos y promociones!</b></h4>
-            <div class="w-full flex flex-wrap">
-                <div class="w-1/2 p-0">
-                    <h5><b>Acceder a ellos es fácil:</b></h5>
-                    <ol className='ml-10'>
-                        <li>Ser <strong> Nivel 3 </strong> de Oficina Virtual</li>
-                        <li>Aboná todas tus Facturas por Oficina Virtual antes del Primer Vencimiento</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="w-full flex flex-wrap justify-center">
-                <div onClick={() => dropModehidden()} className={`cursor-pointer mt-10 mb-5 rounded-xl p-3 text-white bg-pink-400`}>
-                    <h5 className='m-0'>Ver Categorías{iconMode}</h5>
-                </div>
-                <div className={`w-full flex flex-wrap justify-center p-7 pt-0 ${dropMode}`}>
-                    <p className='cursor-pointer w-full text-center'><u>ver todos los Beneficios</u></p>
-                    {catergories.map((item, index) => {
-                        return <div key={index} className='w-full md:w-1/2 lg:w-1/4'>
-                            <Card
-                                props={{
-                                    phone: "",
-                                    subtitle: item.name,
-                                    icon: item.icon,
-                                    color: "text-lime-500",
-                                    bgIcon: "bg-lime-500",
-                                    colorIcon: "bg-lime-500",
-                                    widht: "w-auto",
-                                    bg: "bg-white",
-                                    positionBtn: "absolute",
-                                    text: "text-xl"
-                                }}
-                            />
-                        </div>
+                            return (
+                                <Card
+                                    key={val.id}
+                                    props={{
+                                        phone: "",
+                                        subtitle: (
+                                            <div className="w-full text-center">
+                                                <img src={val.img_name} alt="img" className="w-full mb-5" />
+                                                <p className="w-full bg-gray-100 dark:bg-zinc-800 px-4 py-2 mt-2">
+                                                    {val.address}
+                                                </p>
+                                                <hr className="my-1" />
+                                                <h5 className="uppercase text-orange-700">{titlePreview}</h5>
+                                                <div className="flex flex-wrap justify-center">
+                                                    {ammountOld}
+                                                    <p className={`m-0 p-2 ${margen}`}>{subtitle}</p>
+                                                </div>
+                                                <div className="my-3 text-center">
+                                                    <p className="m-0">{metPago}</p>
+                                                    <p className="m-0">
+                                                        <span className="text-purple-700">Vigente hasta: </span>
+                                                        {info}
+                                                    </p>
+                                                </div>
+                                                <Button
+                                                    props={{
+                                                        class: "text-black botonPrincipal m-2 mt-7 text-sm w-full",
+                                                        text: `ACTIVALO AHORA`,
+                                                    }}
+                                                />
+                                                <label className="mt-2">*Válido para una compra o servicio.</label>
+                                                {cummulativeText}
+                                            </div>
+                                        ),
+                                        widht: "w-auto",
+                                        bg: "bg-white",
+                                        positionBtn: "absolute",
+                                        hover: "false",
+                                    }}
+                                />
+                            );
+                        }
+                        return null;
                     })
-                    }
+                )
+            }
+            const benefitsContainer = document.getElementById('benefitsContainer');
+            benefitsElements.forEach((element) => {
+                ReactDOM.createPortal(element, benefitsContainer);
+            });
+
+        }
+    }
+
+    return (
+        <div className="p-2 sm:pl-64">
+            <img width="100%" src="https://app.coopmorteros.coop/public/images/coopate/Header.png" alt="" />
+            <hr />
+            <div className="w-full p-10">
+                <h4 className='text-pink-400'><b>Activá tus cupones, y disfrutá de muchos descuentos y promociones!</b></h4>
+                <div className="w-full flex flex-wrap">
+                    <div className="w-1/2 p-0">
+                        <h5><b>Acceder a ellos es fácil:</b></h5>
+                        <ol className='ml-10'>
+                            <li>Ser <strong> Nivel 3 </strong> de Oficina Virtual</li>
+                            <li>Aboná todas tus Facturas por Oficina Virtual antes del Primer Vencimiento</li>
+                        </ol>
+                    </div>
                 </div>
-                {labelInactive}
-                {Beneficios}
+                <div className="w-full flex flex-wrap justify-center">
+                    <div onClick={() => dropModehidden()} className={`cursor-pointer mt-10 mb-5 rounded-xl p-3 bg-pink-200 text-pink-400`}>
+                        <h5 className='m-0'>Ver Categorías{iconMode}</h5>
+                    </div>
+                    <div className={`w-full flex flex-wrap justify-center p-7 pt-0 ${dropMode}`}>
+                        <p className='cursor-pointer w-full text-center'><u>ver todos los Beneficios</u></p>
+                        {catergories.map((item, index) => {
+                            return <div key={index} className='w-full md:w-1/2 lg:w-1/4'>
+                                <Card
+                                    props={{
+                                        phone: "",
+                                        subtitle: item.name,
+                                        icon: item.icon,
+                                        color: "text-lime-500",
+                                        bgIcon: "bg-lime-500",
+                                        colorIcon: "bg-lime-500",
+                                        widht: "w-auto",
+                                        bg: "bg-white",
+                                        positionBtn: "absolute",
+                                        text: "text-xl"
+                                    }}
+                                />
+                            </div>
+                        })
+                        }
+                    </div>
+                    {labelInactive}
+                    <div className="w-full flex flex-wrap justify-center" id="benefitsContainer">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-)
+    )
 }
 
 export default index
