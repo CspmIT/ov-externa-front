@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+/* ----------------- ICONOS ----------------- */
 import { FaHouse } from "react-icons/fa6";
 import { FaArchive } from "react-icons/fa";
 import { FaTint } from "react-icons/fa";
@@ -13,17 +14,19 @@ import { FaComments } from "react-icons/fa6";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { FaMoon } from "react-icons/fa";
-import styles from "./Navbar.module.css";
-import ItemNav from "../../components/ItemNav";
 import { FaUser } from "react-icons/fa";
 import { FaLayerGroup } from "react-icons/fa";
 import { FaFileAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import { FaSignOutAlt } from "react-icons/fa";
 import { IoIosSunny } from "react-icons/io";
 import { FaCircleArrowUp } from "react-icons/fa6";
+/* ----------------- ESTILOS ----------------- */
+import styles from "./Navbar.module.css";
+/* ----------------- COMPONENTES ----------------- */
+import ItemNav from "../../components/ItemNav";
 import Dropdown from "../Dropdown";
 import DropdownImage from "../DropdownImage";
+
 
 const Navbar = () => {
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
@@ -132,7 +135,7 @@ const Navbar = () => {
           </ul>
         </div>
       </aside>
-      {/* <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} top-0 max-w-full`}>
+      <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} top-0 max-w-full`}>
         <nav className=" dark:bg-zinc-950 bg-white">
           <div className="mx-auto px-2 sm:px-6 lg:px-5 ">
             <div className="relative flex h-16 items-center justify-between">
@@ -192,7 +195,7 @@ const Navbar = () => {
             </div>
           </div>
         </nav>
-      </div> */}
+      </div>
     </div>
   );
 };
