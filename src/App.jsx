@@ -19,9 +19,9 @@ import LevelUp3 from "./views/LevelUp/leveltres";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import Coopate from "./views/Coopate/index";
 import Terminos from "./views/Coopate/condition";
-// import Canjes from "./views/Coopate/myExchanges";
-// import Comercios from "./views/Coopate/comerce";
-import Footer from "./components/Footer";
+import Canjes from "./views/Coopate/myExchanges";
+import Comercios from "./views/Coopate/comerce";
+// import Footer from "./components/Footer";
 import ManageServices from "./views/ManageServices";
 
 function App() {
@@ -48,9 +48,9 @@ function App() {
         menus.push({ name: "/ManageServices", element: <ManageServices /> },
           { name: "/authentication", element: <Authentication /> },
           { name: "/Coopate", element: <Coopate /> },
-          //  { name: "/Coopate/Canjes", element: <Canjes /> }, 
-          { name: "/Coopate/Terminos", element: <Terminos /> }
-          //  { name: "/Coopate/Comercios", element: <Comercios /> }
+           { name: "/Coopate/Canjes", element: <Canjes /> }, 
+          { name: "/Coopate/Terminos", element: <Terminos /> },
+          { name: "/Coopate/Comercios", element: <Comercios /> }
         );
       }
       menus.push(
@@ -65,7 +65,7 @@ function App() {
     rutes.push(...menus);
   }
   return (
-    <div className="w-screen h-screen overflow-y-auto noScrollbar bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700 pt-24">
+    <div className="w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
       {user && <Navbar />}
       <Routes>
         {user ? (

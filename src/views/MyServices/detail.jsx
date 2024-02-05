@@ -10,7 +10,7 @@ import ButtonAnimate from '../../components/ButtonAnimate';
 
 const detail = () => {
     return (
-        <div className='p-2 sm:pl-64'>
+        <div className='p-2 sm:pl-64 pt-20'>
             <h2 className='text-center m-5'>Servicio (Nombre del Servicio)</h2>
             <h3 className='w-full text-left mb-5'>Facturas Impagas
                 <div className='float-right'>
