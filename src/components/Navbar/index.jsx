@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+/* ----------------- ICONOS ----------------- */
 import { FaHouse } from "react-icons/fa6";
 import { FaArchive } from "react-icons/fa";
 import { FaTint } from "react-icons/fa";
@@ -13,17 +14,19 @@ import { FaComments } from "react-icons/fa6";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { FaMoon } from "react-icons/fa";
-import styles from "./Navbar.module.css";
-import ItemNav from "../../components/ItemNav";
 import { FaUser } from "react-icons/fa";
 import { FaLayerGroup } from "react-icons/fa";
 import { FaFileAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import { FaSignOutAlt } from "react-icons/fa";
 import { IoIosSunny } from "react-icons/io";
 import { FaCircleArrowUp } from "react-icons/fa6";
+/* ----------------- ESTILOS ----------------- */
+import styles from "./Navbar.module.css";
+/* ----------------- COMPONENTES ----------------- */
+import ItemNav from "../../components/ItemNav";
 import Dropdown from "../Dropdown";
 import DropdownImage from "../DropdownImage";
+
 
 const Navbar = () => {
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
@@ -116,7 +119,6 @@ const Navbar = () => {
 
   return (
     <div>
-      {/* bg-amber-300 */}
       <aside id="navbarHidden" className="fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
         <div className="h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar">
           <div className="m-2">

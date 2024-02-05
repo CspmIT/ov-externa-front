@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   return (
-    <div className="p-2 sm:pl-64">
+    <div className="p-2 sm:pl-64 pt-20">
       <div className="flex flex-wrap w-full">
         {level == 1 ? (
           <>
@@ -320,7 +320,7 @@ const Home = () => {
               <h3 className="w-full text-left mb-5">
                 Facturas Impagas
                 <div onClick={swalHelp} className="float-right flex">
-                  <Button props={{ class: "text-black bg-gradient-to-r from-green-400 to-green-600 hover:bg-gradient-to-l from-green-400 to-green-600 m-2 text-sm", text: `Comprar Energía` }} />
+                  <Button props={{ class: "text-blac bg-green-300 text-green-800  m-2 text-sm", text: `Comprar Energía` }} />
                   <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
                 </div>
               </h3>
