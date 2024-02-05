@@ -210,7 +210,7 @@ const authenticationPhotoSID = () => {
     };
 
     return (
-        <div className='p-2 pb-10 sm:pl-64'>
+        <div className='p-2 pb-10 sm:pl-64 pt-20'>
             <h2 className={`text-left mb-3`}> {title}
                 <Link to={'/LevelUp3'} onClick={handleStopCapture}>
                     <div className={`float-right ${style.btnSmall}`}>

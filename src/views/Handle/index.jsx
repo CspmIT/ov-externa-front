@@ -11,7 +11,7 @@ import ButtonAnimate from '../../components/ButtonAnimate'
 
 const Handle = () => {
     return (
-        <div className='p-2 sm:pl-64'>
+        <div className='p-2 sm:pl-64 pt-20'>
             <div className='flex w-full flex-wrap mt-10 justify-center rounded-xl pt-5 p-10 bg-white dark:bg-zinc-800'>
                 <h3 className='w-full text-left mb-5'>Mis Trámites
                     <div className='float-right'>

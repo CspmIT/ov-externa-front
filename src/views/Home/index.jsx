@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   return (
-    <div className="p-2 sm:pl-64">
+    <div className="p-2 sm:pl-64 pt-20">
       <div className="flex flex-wrap w-full">
         {level == 1 ? (
           <>
