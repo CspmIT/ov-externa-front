@@ -116,7 +116,6 @@ const Navbar = () => {
 
   return (
     <div>
-      {/* bg-amber-300 */}
       <aside id="navbarHidden" className="fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
         <div className="h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar">
           <div className="m-2">
@@ -133,7 +132,7 @@ const Navbar = () => {
           </ul>
         </div>
       </aside>
-      <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} top-0 max-w-full`}>
+      {/* <div className={`sm:ml-56 z-10 fixed ${styles.widthNab} top-0 max-w-full`}>
         <nav className=" dark:bg-zinc-950 bg-white">
           <div className="mx-auto px-2 sm:px-6 lg:px-5 ">
             <div className="relative flex h-16 items-center justify-between">
@@ -193,7 +192,7 @@ const Navbar = () => {
             </div>
           </div>
         </nav>
-      </div>
+      </div> */}
     </div>
   );
 };
