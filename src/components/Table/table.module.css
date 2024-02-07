@@ -1,0 +1,22 @@
+.bodyTable {
+    max-width: 100%;
+}
+
+.boxTitle {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+}
+
+.ButtonAdd {
+    float: inline-end;
+    padding: 0px;
+}
+
+.MuiDataGrid-columnHeaderTitleContainer {
+    color: red !important;
+}

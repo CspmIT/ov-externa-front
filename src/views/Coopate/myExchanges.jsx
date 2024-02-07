@@ -195,7 +195,7 @@ const myExchanges = () => {
   const colorPalette = ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0', '#FF9800', '#2196F3'];
 
   return (
-    <div className="p-2 sm:pl-64 pt-20">
+    <div>
       <h2 className="m-5 text-center">Mis Canjes</h2>
       <hr />
       <div className="w-full p-10">

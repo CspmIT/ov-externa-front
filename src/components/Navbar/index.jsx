@@ -37,6 +37,11 @@ const Navbar = () => {
   const [dark, setDark] = useState(userDark);
   const [iconMode, setIconMode] = useState(<FaMoon className="change" />);
   const [shadowMode, setShadowMode] = useState(dark ? "styles.shadowDark" : "styles.shadowLight");
+  const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuVisible((prevVisibility) => !prevVisibility);
+  };
 
   useEffect(() => {
     if (dark) {
@@ -109,9 +114,9 @@ const Navbar = () => {
       idDrop: "cv",
       level: [1, 2, 3],
       list: [
-        { name: "Mi CV", link: "algo" },
-        { name: "Busquedas Laborales", link: "algo" },
-        { name: "Mis Postulaciones", link: "algo" },
+        { name: "Mi CV", link: "/myCV" },
+        { name: "Busquedas Laborales", link: "/jobSerach" },
+        { name: "Mis Postulaciones", link: "/myPostulation" }
       ],
     },
     { name: "Dejanos tu Opinión", icon: <FaComments />, link: "/Information", level: [2, 3] },
@@ -119,7 +124,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <aside id="navbarHidden" className="fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+      <aside id="mobileMenu" className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}>
         <div className="h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar">
           <div className="m-2">
             <img src="https://app.coopmorteros.coop/public/images/logos/Ofi_Virtual_Negro.png" />
@@ -141,13 +146,12 @@ const Navbar = () => {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <button
-                  data-drawer-target="navbarHidden"
-                  data-drawer-toggle="navbarHidden"
-                  aria-controls="navbarHidden"
+                  onClick={toggleMobileMenu}
+                  aria-controls="mobileMenu"
+                  aria-expanded={isMobileMenuVisible}
                   type="button"
                   className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 >
-                  <span className="sr-only">Open sidebar</span>
                   <HiMiniBars3BottomLeft />
                 </button>
               </div>

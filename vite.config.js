@@ -10,6 +10,6 @@ export default defineConfig({
     },
     host: true, // necesario para que funcione el mapeo de puertos del contenedor Docker
     strictPort: true,
-    port: 8082, // puedes reemplazar este puerto por cualquier otro
+    port: 3000, // puedes reemplazar este puerto por cualquier otro
   },
 })

@@ -26,7 +26,7 @@ const ConsumptionSimulator = () => {
     var number = 0;
     var numberE = 0;
     return (
-        <div className='p-2 sm:pl-64 pt-20'>
+        <div>
             <h2 className='text-center m-5'>Simulador de Consumo</h2>
             <hr className='mb-5' />
             <p>Te presentamos una nueva función para que puedas calcular un estimativo del consumo eléctrico.

@@ -23,7 +23,7 @@ const MyServices = () => {
     const accountsSS = [{ account: "333", statusService: 1, address: 'FLEMING (AL NORTE BV.25 DE MAYO) 751 ', service: 'Servicio de Banco de Sangre' }, { account: "8956", statusService: 0, address: 'FLEMING (AL NORTE BV.25 DE MAYO) 751 ', service: 'Servicio de Sepelio' }
     ]
     return (
-        <div className='p-2 sm:pl-64 pt-20'>
+        <div className=''>
             <h2 className='text-center m-5'>Mis Servicios</h2>
             <hr />
             <div className={`flex mt-2 mb-5 rounded-xl p-5 bg-gray-200 dark:bg-zinc-800`}>
