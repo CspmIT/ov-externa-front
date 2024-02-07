@@ -12,7 +12,7 @@ const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "center", 
+  justifyContent: "center",
   height: "100%",
   "& .ant-empty-img-1": {
     fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
@@ -104,16 +104,17 @@ const TableCustom = ({
 
   useEffect(() => {
     const updatedColumns = columns.map(column => {
-      if (column.field === 'pdf') {
+      if (column.field === 'url') {
         return {
           ...column,
-          renderCell: params => (
+          renderCell: params => {
+            const row = params.row;
             <div>
-              <button className="bg-blue-400 p-2 rounded text-white">
+              <a href={row.url}  className="bg-blue-400 p-2 rounded text-white">
                 <IconRenderer iconName={'FaFileAlt'} />
-              </button>
+              </a>
             </div>
-          ),
+          },
         };
       } else if (column.icon) {
         return {
@@ -122,10 +123,10 @@ const TableCustom = ({
             const row = params.row;
             let color;
             switch (row.status) {
-              case '0':
+              case 0:
                 color = 'text-red-500';
                 break;
-              case '1':
+              case 1:
                 color = 'text-yellow-500';
                 break;
               default:
@@ -139,8 +140,8 @@ const TableCustom = ({
             );
           },
         };
-      }else 
-      return column;
+      } else
+        return column;
     });
 
     setlistColumn(updatedColumns);
@@ -172,7 +173,7 @@ const TableCustom = ({
         pageSizeOptions={[5]}
         checkboxSelection={checks}
         className="bg-white dark:bg-zinc-900 text-gray-200 shadowCards"
-        locale={esES} 
+        locale={esES}
       />
     </div>
   );

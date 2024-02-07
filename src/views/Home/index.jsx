@@ -1,9 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import request from "../../routes/request";
-{
-  /* ----------------- ICONOS ----------------- */
-}
+{ /* ----------------- ICONOS ----------------- */}
 import { LuDollarSign } from "react-icons/lu";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import { FaReceipt } from "react-icons/fa";
@@ -17,14 +15,10 @@ import { FaAddressCard } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaArrowAltCircleUp } from "react-icons/fa";
-{
-  /* ----------------- ESTILOS ----------------- */
-}
+{/* ----------------- ESTILOS ----------------- */}
 import styles from "../../components/Card/Card.module.css";
 import stylesWater from "./Home.module.css";
-{
-  /* ----------------- COMPONENTES ----------------- */
-}
+{/* ----------------- COMPONENTES ----------------- */}
 import Card from "../../components/Card";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
@@ -38,7 +32,6 @@ const Home = () => {
     const modal = document.getElementById("alertHelp");
     modal.classList.toggle("show-modal");
   };
-
   const [statusModeA, setstatusModeA] = useState("");
   const [statusModeI, setstatusModeI] = useState("hidden");
   const [statusColorA, setstatusColorA] = useState(`dark:bg-zinc-800 bg-gray-200 `);
@@ -50,39 +43,23 @@ const Home = () => {
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
 
-
-  const searchData = async (e) => {
-    const socio = '58500';
-    const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=58500`;
-    try {
-      const responseData = await request(url, 'get');
-      console.log(responseData);
-      
-      // if (responseData === "Error") {
-      //   alert("No existe el usuario");
-      //   return;
-      // }
-      // localStorage.setItem("usuario", JSON.stringify(responseData));
-      // window.location.reload();
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-      return;
-    }
-  }
+  const [factures, setRows] = useState([]);
 
   useEffect(() => {
+    const searchData = async () => {
+      const socio = '58500';
+      const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
+      try {
+        const responseData = await request(url, 'get');
+        setRows(responseData);
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+      }
+    };
     searchData();
-  });
+  }, []);
 
-  // const rows = '';
-
-  const rows = [
-    { id: 1, type: 'TE', facture: 'FB-0008-00757661', periodo: '12/2023', vencimiento: '19/01/2024', ammount: '$ 16.855,51', pdf: '', status: '1' },
-    { id: 2, type: 'TE', facture: 'FB-0008-00757661', periodo: '12/2023', vencimiento: '19/01/2024', ammount: '$ 16.855,51', pdf: '', status: '1' },
-    { id: 3, type: 'TE', facture: 'FB-0008-00757661', periodo: '12/2023', vencimiento: '19/01/2024', ammount: '$ 16.855,51', pdf: '', status: '0' },
-    { id: 4, type: 'EN', facture: 'FB-0008-00757661', periodo: '12/2023', vencimiento: '19/01/2024', ammount: '$ 16.855,51', pdf: '', status: '0' },
-    { id: 5, type: 'SS', facture: 'FB-0008-00757661', periodo: '12/2023', vencimiento: '19/01/2024', ammount: '$ 16.855,51', pdf: '', status: '1' }
-  ];
+  const facturesAqueduct = [];
 
   return (
     <div className="flex flex-wrap w-full">
@@ -98,7 +75,8 @@ const Home = () => {
             <div className="w-full md:w-1/2 lg:w-1/4">
               <Link to={"/LevelUp2"}>
                 <Card
-                  props={{phone: "", title: "Subir al", subtitle: "Nivel 2", icon: <FaArrowAltCircleUp className="w-full" />, color: "text-green-500",
+                  props={{
+                    phone: "", title: "Subir al", subtitle: "Nivel 2", icon: <FaArrowAltCircleUp className="w-full" />, color: "text-green-500",
                     bgIcon: "bg-green-400", colorIcon: "text-green-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
                   }}
                 />
@@ -107,7 +85,8 @@ const Home = () => {
             <div className="w-full md:w-1/2 lg:w-1/4">
               <Link to={"/Information"}>
                 <Card
-                  props={{phone: "hidden", title: "Información", subtitle: "Útil", icon: <FaInfoCircle className="w-full" />, color: "text-sky-500",
+                  props={{
+                    phone: "hidden", title: "Información", subtitle: "Útil", icon: <FaInfoCircle className="w-full" />, color: "text-sky-500",
                     bgIcon: "bg-sky-300", colorIcon: "text-sky-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
                   }}
                 />
@@ -116,7 +95,8 @@ const Home = () => {
             <div className="w-full md:w-1/2 lg:w-1/4">
               <Link to={"/LevelUp2"}>
                 <Card
-                  props={{phone: "hidden", title: "Mi", subtitle: "Curriculum", icon: <FaAddressCard className="w-full" />, color: "text-red-500",
+                  props={{
+                    phone: "hidden", title: "Mi", subtitle: "Curriculum", icon: <FaAddressCard className="w-full" />, color: "text-red-500",
                     bgIcon: "bg-red-300", colorIcon: "text-res-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
                   }}
                 />
@@ -125,7 +105,8 @@ const Home = () => {
             <div className="w-full md:w-1/2 lg:w-1/4">
               <Link to={"/LevelUp2"}>
                 <Card
-                  props={{phone: "hidden", title: "Turnos", subtitle: "Online", icon: <FaCalendarCheck className="w-full" />, color: "text-blue-500",
+                  props={{
+                    phone: "hidden", title: "Turnos", subtitle: "Online", icon: <FaCalendarCheck className="w-full" />, color: "text-blue-500",
                     bgIcon: "bg-blue-300", colorIcon: "text-blue-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
                   }}
                 />
@@ -209,27 +190,32 @@ const Home = () => {
               </div>
             </div>
             <Card
-              props={{phone: "", title: "SALDO", subtitle: "$35.000", icon: <LuDollarSign className="w-full" />, color: "text-red-500",
+              props={{
+                phone: "", title: "SALDO", subtitle: "$35.000", icon: <LuDollarSign className="w-full" />, color: "text-red-500",
                 bgIcon: "bg-red-400", colorIcon: "text-red-900", bg: "bg-white", positionBtn: "absolute",
               }}
             />
             <Card
-              props={{phone: "hidden", title: "Mis", subtitle: "FACTURAS", icon: <FaFileInvoiceDollar className="w-full" />, color: "text-yellow-500",
+              props={{
+                phone: "hidden", title: "Mis", subtitle: "FACTURAS", icon: <FaFileInvoiceDollar className="w-full" />, color: "text-yellow-500",
                 bgIcon: "bg-yellow-300", colorIcon: "text-yellow-900", bg: "bg-white", positionBtn: "absolute",
               }}
             />
             <Card
-              props={{phone: "hidden", title: "Mis", subtitle: "PAGOS", icon: <FaReceipt className="w-full" />, color: "text-blue-500",
+              props={{
+                phone: "hidden", title: "Mis", subtitle: "PAGOS", icon: <FaReceipt className="w-full" />, color: "text-blue-500",
                 bgIcon: "bg-blue-300", colorIcon: "text-blue-900", bg: "bg-white", positionBtn: "absolute",
               }}
             />
             <Card
-              props={{phone: "hidden", title: "Mis", subtitle: "SERVICIOS", icon: <FaChartPie className="w-full" />, color: "text-sky-500",
+              props={{
+                phone: "hidden", title: "Mis", subtitle: "SERVICIOS", icon: <FaChartPie className="w-full" />, color: "text-sky-500",
                 bgIcon: "bg-sky-300", colorIcon: "text-sky-900", bg: "bg-white", positionBtn: "absolute",
               }}
             />
             <Card
-              props={{phone: "hidden", title: "Mis", subtitle: "CONSUMOS", icon: <FaChartBar className="w-full" />, color: "text-pink-500",
+              props={{
+                phone: "hidden", title: "Mis", subtitle: "CONSUMOS", icon: <FaChartBar className="w-full" />, color: "text-pink-500",
                 bgIcon: "bg-pink-300", colorIcon: "text-pink-900", bg: "bg-white", positionBtn: "absolute",
               }}
             />
@@ -287,15 +273,15 @@ const Home = () => {
                 ButtonAdd={{ active: false }}
                 columns={[
                   { field: "type", headerName: "TIPO", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "facture", headerName: "FACTURA", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "periodo", headerName: "PERÍODO", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "vencimiento", headerName: "VENCIMIENTO", type: "number", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "ammount", headerName: "IMPORTE", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "info", headerName: "!", headerClassName: 'fondoPrincipal', icon: 'FaCircle', flex: 0.5 },
-                  { field: "pdf", headerName: "", headerClassName: 'fondoPrincipal', flex: 0.5 },
+                  { field: "nrovoucher", headerName: "FACTURA", headerClassName: 'fondoPrincipal', flex: 1, },
+                  { field: "period", headerName: "PERÍODO", headerClassName: 'fondoPrincipal', flex: 1 },
+                  { field: "vto", headerName: "VENCIMIENTO", type: "number", headerClassName: 'fondoPrincipal', flex: 1 },
+                  { field: "amount", headerName: "IMPORTE", headerClassName: 'fondoPrincipal', flex: 1 },
+                  { field: "status", headerName: "!", headerClassName: 'fondoPrincipal', icon: 'FaCircle', flex: 0.5 },
+                  { field: "url", headerName: "", headerClassName: 'fondoPrincipal', flex: 0.5 },
                 ]}
                 checks={true}
-                rows={rows}
+                rows={factures}
               />
             </div>
           </div>
@@ -308,15 +294,15 @@ const Home = () => {
                 ButtonAdd={{ active: false }}
                 columns={[
                   { field: "type", headerName: "TIPO", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "facture", headerName: "FACTURA", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "periodo", headerName: "PERÍODO", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "vencimiento", headerName: "VENCIMIENTO", type: "number", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "ammount", headerName: "IMPORTE", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "info", headerName: "!", headerClassName: 'fondoPrincipal', icon: 'FaCircle', flex: 0.5, },
-                  { field: "pdf", headerName: "", headerClassName: 'fondoPrincipal', flex: 0.5, },
+                  { field: "nrovoucher", headerName: "FACTURA", headerClassName: 'fondoPrincipal', flex: 1, },
+                  { field: "period", headerName: "PERÍODO", headerClassName: 'fondoPrincipal', flex: 1, },
+                  { field: "vto", headerName: "VENCIMIENTO", type: "number", headerClassName: 'fondoPrincipal', flex: 1, },
+                  { field: "amount", headerName: "IMPORTE", headerClassName: 'fondoPrincipal', flex: 1, },
+                  { field: "status", headerName: "!", headerClassName: 'fondoPrincipal', icon: 'FaCircle', flex: 0.5, },
+                  { field: "url", headerName: "", headerClassName: 'fondoPrincipal', flex: 0.5, },
                 ]}
                 checks={true}
-                rows={rows}
+                rows={facturesAqueduct}
               />
             </div>
           </div>
