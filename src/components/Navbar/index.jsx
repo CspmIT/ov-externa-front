@@ -70,7 +70,7 @@ const Navbar = () => {
         { name: "Mis Facturas", link: "/Invoice" },
         { name: "Mis Pagos", link: "/Payments" },
         { name: "Mis Servicios", link: "/MyServices" },
-        { name: "Mis Consumos", link: "algo" },
+        { name: "Mis Consumos", link: "/MyConsumption" },
         { name: "Mis Trámites", link: "/Handle" },
       ],
     },

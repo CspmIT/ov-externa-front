@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import request from "../../routes/request";
-{ /* ----------------- ICONOS ----------------- */}
+{ /* ----------------- ICONOS ----------------- */ }
 import { LuDollarSign } from "react-icons/lu";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import { FaReceipt } from "react-icons/fa";
@@ -15,16 +15,18 @@ import { FaAddressCard } from "react-icons/fa";
 import { FaCalendarCheck } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaArrowAltCircleUp } from "react-icons/fa";
-{/* ----------------- ESTILOS ----------------- */}
+{/* ----------------- ESTILOS ----------------- */ }
 import styles from "../../components/Card/Card.module.css";
 import stylesWater from "./Home.module.css";
-{/* ----------------- COMPONENTES ----------------- */}
+{/* ----------------- COMPONENTES ----------------- */ }
 import Card from "../../components/Card";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import TableCustom from "../../components/Table";
+import Tables from "../../components/Tables";
+
 
 const Home = () => {
   var level = JSON.parse(localStorage.getItem("usuario")).level;
@@ -44,6 +46,7 @@ const Home = () => {
   };
 
   const [factures, setRows] = useState([]);
+  const [facturesAqueduct, setRowsAq] = useState([]);
 
   useEffect(() => {
     const searchData = async () => {
@@ -57,10 +60,20 @@ const Home = () => {
       }
     };
     searchData();
+
+    const searchDataAq = async () => {
+      const data = { "user": 1066, "customer": 903534 };
+      const url = `http://cooptech.com.ar:30888/api/getInvoiceAqueduct`;
+      try {
+        const responseData = await request(url, 'post', data);
+        setRowsAq(responseData);
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+      }
+    };
+    searchDataAq();
+
   }, []);
-
-  const facturesAqueduct = [];
-
   return (
     <div className="flex flex-wrap w-full">
       {level == 1 ? (
@@ -265,44 +278,25 @@ const Home = () => {
                 <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
               </div>
             </h3>
-            <div className={`relative overflow-x-auto w-full rounded-xl`}>
-              <TableCustom
-                styleCustom={{
-                  padding: "1rem",
-                }}
-                ButtonAdd={{ active: false }}
-                columns={[
-                  { field: "type", headerName: "TIPO", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "nrovoucher", headerName: "FACTURA", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "period", headerName: "PERÍODO", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "vto", headerName: "VENCIMIENTO", type: "number", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "amount", headerName: "IMPORTE", headerClassName: 'fondoPrincipal', flex: 1 },
-                  { field: "status", headerName: "!", headerClassName: 'fondoPrincipal', icon: 'FaCircle', flex: 0.5 },
-                  { field: "url", headerName: "", headerClassName: 'fondoPrincipal', flex: 0.5 },
-                ]}
-                checks={true}
+            <p>* El Pago realizado de las Facturas podrá verse reflejado dentro de las próximas 48hs hábiles.</p>
+            <div className={`relative overflow-x-auto w-full round shadowCards rounded-xl`}>
+              {/* <Tables columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']} rows={factures} showCheckboxes={true} /> */}
+              <Tables
+                columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']}
                 rows={factures}
+                showCheckboxes={true}
               />
             </div>
           </div>
-          <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl mb-10 p-10 bg-white dark:bg-zinc-800">
+          <div className="flex w-full flex-wrap mt-10 justify-center mb-10 p-10 bg-white dark:bg-zinc-800">
             <h3 className="w-full text-left mb-5">Facturas Acueducto Impagas</h3>
             <p>* El Pago realizado de las Facturas podrá verse reflejado dentro de las próximas 48hs hábiles.</p>
-            <div className={`relative overflow-x-auto w-full rounded-xl`}>
-              <TableCustom
-                styleCustom={{ padding: "1rem" }}
-                ButtonAdd={{ active: false }}
-                columns={[
-                  { field: "type", headerName: "TIPO", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "nrovoucher", headerName: "FACTURA", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "period", headerName: "PERÍODO", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "vto", headerName: "VENCIMIENTO", type: "number", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "amount", headerName: "IMPORTE", headerClassName: 'fondoPrincipal', flex: 1, },
-                  { field: "status", headerName: "!", headerClassName: 'fondoPrincipal', icon: 'FaCircle', flex: 0.5, },
-                  { field: "url", headerName: "", headerClassName: 'fondoPrincipal', flex: 0.5, },
-                ]}
-                checks={true}
+            <div className={`relative overflow-x-auto w-full shadowCards rounded-xl`}>
+              {/* <Tables columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']} rows={facturesAqueduct} showCheckboxes={true} /> */}
+              <Tables
+                columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!']}
                 rows={facturesAqueduct}
+                showCheckboxes={true}
               />
             </div>
           </div>

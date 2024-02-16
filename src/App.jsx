@@ -22,6 +22,7 @@ import Terminos from "./views/Coopate/condition";
 import Canjes from "./views/Coopate/myExchanges";
 import Comercios from "./views/Coopate/comerce";
 import ManageServices from "./views/ManageServices";
+import MyConsumption from "./views/MyConsumption";
 import myPostulation from "./views/Curriculum/myPostulation";
 import jobSerach from "./views/Curriculum/jobSerarchCV";
 import myCV from "./views/Curriculum/addCV";
@@ -49,7 +50,9 @@ function App() {
       menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
     } else {
       if (user["level"] == 2) {
-        menus.push({ name: "/LevelUp3", element: <LevelUp3 /> }, { name: "/authentication", element: <Authentication /> });
+        menus.push(
+          { name: "/LevelUp3", element: <LevelUp3 /> },
+          { name: "/authentication", element: <Authentication /> });
       } else {
         // menus.push({ name: "/ManageServices", element: <ManageServices /> });
         menus.push({ name: "/ManageServices", element: <ManageServices /> },
@@ -57,7 +60,8 @@ function App() {
           { name: "/Coopate", element: <Coopate /> },
           { name: "/Coopate/Canjes", element: <Canjes /> },
           { name: "/Coopate/Terminos", element: <Terminos /> },
-          { name: "/Coopate/Comercios", element: <Comercios /> }
+          { name: "/Coopate/Comercios", element: <Comercios /> },
+          { name: "/MyConsumption", element: <MyConsumption /> }
         );
       }
       menus.push(

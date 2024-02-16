@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import styles from "./table.module.css";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Checkbox } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import IconRenderer from "../../components/IconRenderer";
 import { DataGrid } from '@mui/x-data-grid';
 import { esES } from '@mui/material/locale';
-
 
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
@@ -92,15 +91,6 @@ const TableCustom = ({
   const [listColumn, setlistColumn] = useState([]);
   const [styleTable, setStyleTable] = useState({});
   const [heighRows, setHeighRows] = useState(56);
-  useEffect(() => {
-    setlistRows(rows);
-    setStyleTable({ ...styleCustom });
-    if (rows.length < 1) {
-      setHeighRows(80);
-    } else {
-      setHeighRows(56);
-    }
-  }, [rows, checks]);
 
   useEffect(() => {
     const updatedColumns = columns.map(column => {
@@ -109,11 +99,15 @@ const TableCustom = ({
           ...column,
           renderCell: params => {
             const row = params.row;
-            <div>
-              <a href={row.url}  className="bg-blue-400 p-2 rounded text-white">
-                <IconRenderer iconName={'FaFileAlt'} />
-              </a>
-            </div>
+            if (!row.isTitle) {
+              return (
+                <div>
+                  <button onClick={() => window.open(row.url, '_blank')} className="bg-blue-400 p-2 rounded text-white">
+                    <IconRenderer iconName={'FaFileAlt'} />
+                  </button>
+                </div>
+              );
+            }
           },
         };
       } else if (column.icon) {
@@ -121,31 +115,57 @@ const TableCustom = ({
           ...column,
           renderCell: params => {
             const row = params.row;
-            let color;
-            switch (row.status) {
-              case 0:
-                color = 'text-red-500';
-                break;
-              case 1:
-                color = 'text-yellow-500';
-                break;
-              default:
-                color = 'text-gray-500';
-                break;
+            if (!row.isTitle) {
+              let color;
+              switch (row.status) {
+                case 0:
+                  color = 'text-red-500';
+                  break;
+                case 1:
+                  color = 'text-yellow-500';
+                  break;
+                default:
+                  color = 'text-gray-500';
+                  break;
+              }
+              return (
+                <div>
+                  <IconRenderer iconName={column.icon} color={color} />
+                </div>
+              );
             }
-            return (
-              <div>
-                <IconRenderer iconName={column.icon} color={color} />
-              </div>
-            );
           },
         };
-      } else
+      } else {
         return column;
+      }
     });
 
     setlistColumn(updatedColumns);
   }, [columns]);
+
+
+  useEffect(() => {
+    const processedRows = Object.entries(rows).flatMap(([accountNumber, data]) => {
+      const titleRow = {
+        id: `account_${accountNumber}`,
+        type: `Cuenta N° ${accountNumber} - (Tel: ${data.data.phoneNumber})`,
+        isTitle: true,
+      };
+
+      const invoiceRows = data.invoice.map(invoice => ({
+        ...invoice,
+        account: data.data.account, // Añadir el número de cuenta a cada fila de la factura
+        isTitle: false,
+      }));
+
+      return [titleRow, ...invoiceRows];
+    });
+
+    setlistRows(processedRows);
+    setStyleTable({ ...styleCustom });
+    setHeighRows(processedRows.length < 1 ? 80 : 56);
+  }, [rows]);
 
 
   return (
@@ -162,20 +182,27 @@ const TableCustom = ({
         autoHeight={true}
         autoColumn={true}
         rows={listRows}
+        getRowHeight={() => 'auto'}
         columns={listColumn}
         slots={{ noRowsOverlay: CustomNoRowsOverlay }}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: 10 },
           },
         }}
         rowHeight={heighRows}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[10]}
         checkboxSelection={checks}
-        className="bg-white dark:bg-zinc-900 text-gray-200 shadowCards"
+        className="bg-white dark:bg-zinc-900 dark:text-gray-200 text-gray-900 shadowCards"
+        getRowClassName={(params) => params.row.isTitle ? 'bg-gray-200 noHover' : ''}
         locale={esES}
       />
     </div>
   );
 };
+
 export default TableCustom;
+
+
+
+

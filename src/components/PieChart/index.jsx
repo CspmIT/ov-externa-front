@@ -3,7 +3,6 @@ import { Pie } from 'react-chartjs-2';
 
 const index = ({ data, colorPalette, labels}) => {
     const dynamicColors = colorPalette.slice(0, data.length);
-
     const pieChartData = {
         labels: labels,
         datasets: [
@@ -13,7 +12,6 @@ const index = ({ data, colorPalette, labels}) => {
             },
         ],
     };
-
     const animatedOptions = {
         animation: {
             animateRotate: true,

@@ -164,3 +164,7 @@ ol {
 .fondoAlertRosa {
     background-color: #e64577 !important;
 }
+
+.noHover{
+    pointer-events: none;
+}

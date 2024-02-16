@@ -1,5 +1,7 @@
 .bodyTable {
     max-width: 100%;
+    white-space: pre-wrap !important;
+    line-height: 200px;
 }
 
 .boxTitle {
@@ -15,8 +17,4 @@
 .ButtonAdd {
     float: inline-end;
     padding: 0px;
-}
-
-.MuiDataGrid-columnHeaderTitleContainer {
-    color: red !important;
 }
