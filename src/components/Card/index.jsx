@@ -7,7 +7,7 @@ const Card = ({ props }) => {
     <div className={`${styles.card} ${props.hover == 'false' ? '' : styles.cardHover} ${props.shadow == 'false' ? '' : 'shadowCards'} ${props.bg} dark:bg-zinc-700 dark:text-gray-300 ${props.phone != "" ? 'hidden sm:block' : ''} ${props.widht != "" ? props.widht : ''}`}>
       {props.statusService !== undefined && (
         <>
-          <FaCircle className={`float-right mr-2 ${props.statusService == 0 ? 'text-green-500' : props.statusService == 1 ? 'text-red-500' : 'text-yellow-500'}`} />
+          <FaCircle className={`float-right mr-2 ${props.statusService == 0 ? 'text-red-500' : props.statusService == 1 ? 'text-green-500' : 'text-yellow-500'}`} />
         </>)} 
       <div className={`${styles.cardImage} ${props.positionBtn}`}>
         <div className={`${styles.icon} ${props.colorIcon} ${props.bgIcon}`} >

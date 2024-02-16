@@ -66,7 +66,7 @@ const leveltres = () => {
     };
 
     return (
-        <div className='p-2 pb-10 sm:pl-64 pt-20'>
+        <div>
             <div className={`${viewoneMode}`}>
                 <h2 className="text-left mb-3">Subir a Nivel 3</h2>
                 <hr />

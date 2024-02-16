@@ -30,7 +30,7 @@ const comerce = () => {
   }]
 
   return (
-    <div className="p-2 sm:pl-64 pt-20">
+    <div>
       <img width="100%" src="https://app.coopmorteros.coop/public/images/coopate/Header.png" alt="" />
       <hr />
       <h3 className='text-center mt-5'>COMERCIOS ADHERIDOS</h3>

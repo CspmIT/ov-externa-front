@@ -109,7 +109,7 @@ ol {
 }
 
 .fondoPrincipal {
-    background-color: #fef08a;
+    background-color: #fef08a !important;
 }
 
 .botonPrincipal {
@@ -163,4 +163,8 @@ ol {
 
 .fondoAlertRosa {
     background-color: #e64577 !important;
+}
+
+.noHover{
+    pointer-events: none;
 }

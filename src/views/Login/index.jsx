@@ -28,11 +28,10 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = "TestReact/login";
+    const url = "https://desarrollo.coopmorteros.coop/TestReact/login";
     const data = { email, password };
-
     try {
-      const responseData = await request(url, data);
+      const responseData = await request(url, 'post', data);
       if (responseData === "Error") {
         alert("No existe el usuario");
         return;

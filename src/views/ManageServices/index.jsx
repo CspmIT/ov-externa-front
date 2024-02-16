@@ -174,7 +174,7 @@ const ManageServices = () => {
     const viewtrheeModehidden = (type) => hideOtherViews(setViewtrheeMode, type);
     return (
         <div>
-            <div className={`p-2 sm:pl-64 pt-20 ${viewoneMode}`}>
+            <div className={`${viewoneMode}`}>
                 <h2 className="m-5">Administrar Servicios</h2>
                 <hr />
                 <div className={`${styles.spanCards} flex flex-wrap justify-center mt-10`}>
@@ -191,7 +191,7 @@ const ManageServices = () => {
                     </Link>
                 </div>
             </div>
-            <div className={`p-2 sm:pl-64 pt-20 ${viewtwoMode}`}>
+            <div className={`${viewtwoMode}`}>
                 <h2 className="m-5">Administrar Servicios
                     <div onClick={viewoneModehidden} className='float-right'>
                         <ButtonAnimate props={{ icon: <FaArrowLeft className='text-white' />, text: 'volver', bgIcon: 'bg-blue-400 mr-5', color: 'text-white' }} />
@@ -208,7 +208,7 @@ const ManageServices = () => {
                     </div>
                 </div>
             </div>
-            <div className={`p-2 sm:pl-64 pt-20 ${viewtrheeMode}`}>
+            <div className={`${viewtrheeMode}`}>
                 <h2 className=" m-5">Administrar Servicios
                     <div onClick={() => viewtwoModehidden(iconMode['type'])} className='float-right'>
                         <ButtonAnimate props={{ icon: <FaArrowLeft className='text-white' />, text: 'volver', bgIcon: 'bg-blue-400 mr-5', color: 'text-white' }} />

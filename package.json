@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.7",
+    "@mui/x-data-grid": "^6.19.3",
     "axios": "^1.6.2",
     "chart.js": "^4.4.1",
     "face-api.js": "^0.22.2",
@@ -22,7 +26,8 @@
     "react-icons": "^4.12.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.21.1",
-    "sweetalert2": "^11.10.4"
+    "sweetalert2": "^11.10.4",
+    "vite-plugin-style-import": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

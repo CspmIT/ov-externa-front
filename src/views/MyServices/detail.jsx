@@ -1,18 +1,34 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-{/* ----------------- ICONOS ----------------- */}
-import { FaCircle } from "react-icons/fa";
-import { FaBolt } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa6";
-{/* ----------------- COMPONENTES ----------------- */}
+import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { FaCircle, FaBolt, FaArrowLeft } from "react-icons/fa";
 import Card from '../../components/Card';
 import ButtonAnimate from '../../components/ButtonAnimate';
+import request from "../../routes/request";
 
-const detail = () => {
+const Detail = () => {
+    const location = useLocation();
+    const parametro = location.state?.parametro;
+    const codSum = location.state?.codSum;
+    const NameService = location.state?.NameService;
+    const [datos, setRowsDatos] = useState('');
+    useEffect(() => {
+        const searchData = async () => {
+            const data = { "cod_sum": codSum, "service": parametro };
+            const url = `http://cooptech.com.ar:30888/api/getDetailService`;
+            try {
+                const responseData = await request(url, 'post', data);
+                setRowsDatos(responseData);
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+            }
+        };
+        searchData();
+    }, [location]);
+    
     return (
-        <div className='p-2 sm:pl-64 pt-20'>
-            <h2 className='text-center m-5'>Servicio (Nombre del Servicio)</h2>
-            <h3 className='w-full text-left mb-5'>Facturas Impagas
+        <div>
+            <h2 className='text-center m-5'>Servicio: {NameService}</h2>
+            <h3 className='w-full text-left mb-5'>
                 <div className='float-right'>
                     <Link to='/MyServices'>
                         <ButtonAnimate props={{ icon: <FaArrowLeft className='text-white' />, text: 'volver', bgIcon: 'bg-blue-400 mr-5', color: 'text-white' }} />
@@ -27,11 +43,13 @@ const detail = () => {
             </div>
             <div className='w-full flex flex-wrap'>
                 <div className='w-full md:w-1/4 py-5'>
-                    <a><Card props={{ phone: '', title: <p className='text-center'> Dirección del domicilio 123 </p>, subtitle: ` Cuenta N°: 7545`, icon: <FaBolt className='float-start mr-2' />, color: 'text-green-600', bgIcon: 'bg-green-400', colorIcon: 'text-green-900', widht: 'w-auto', bg: 'bg-white', shadow: 'false', statusService: '0' }} /></a>
+                    <Link to={{ pathname: '/detail', state: { param: 'valor_de_prueba' }}}>
+                        <Card props={{ phone: '', title: <p className='text-center'> Dirección del domicilio 123 </p>, subtitle: ` Cuenta N°: 7545`, icon: <FaBolt className='float-start mr-2' />, color: 'text-green-600', bgIcon: 'bg-green-400', colorIcon: 'text-green-900', widht: 'w-auto', bg: 'bg-white', shadow: 'false', statusService: '0' }} />
+                    </Link>
                 </div>
             </div>
         </div>
     )
 }
 
-export default detail
+export default Detail;
