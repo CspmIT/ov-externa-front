@@ -230,7 +230,7 @@ const index = ({ val, props }) => {
                     subtitle: (
                         <div className="w-full text-center">
                             <div className={`w-full flex items-center justify-center ${style.ContenedorImg}`}>
-                                <img src={val.img_name} alt="img" className={`${style.imgBenefit} mb-3`} />
+                                <img src={`https://app.coopmorteros.coop/public/images_rewards/commerce/${val.img_name}`} alt="img" className={`${style.imgBenefit} mb-3`} />
                             </div>
                             <p className="w-full px-4 py-2 mt-2">
                                 {val.address}

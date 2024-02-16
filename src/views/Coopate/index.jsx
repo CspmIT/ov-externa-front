@@ -63,7 +63,7 @@ const index = () => {
         detail_type: "1",
         id: "1",
         id_cat: "3",
-        img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6543cf8b397e3.png",
+        img_name: "6543cf8b397e3.png",
         pay: "1",
         product: "cualquier prenda (excepto mallas y bikinis)",
         status: "1",
@@ -87,7 +87,7 @@ const index = () => {
         detail_type: "1",
         id: "2",
         id_cat: "3",
-        img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6544c3db66876.png",
+        img_name: "6544c3db66876.png",
         pay: "4",
         product: "1/4 kg de helado, todos los sabores",
         status: "1",
@@ -111,7 +111,7 @@ const index = () => {
         detail_type: "",
         id: "64",
         id_cat: "39",
-        img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/651bf30c3d3fb.png",
+        img_name: "651bf30c3d3fb.png",
         pay: "1",
         product: "TELA FIBRANA $1.990 el metro",
         status: "1",
@@ -135,7 +135,7 @@ const index = () => {
         detail_type: "",
         id: "7",
         id_cat: "3",
-        img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6544c737a7531.png",
+        img_name: "6544c737a7531.png",
         pay: "4",
         product: "Cena en el local // Bebida",
         status: "1",
@@ -159,7 +159,7 @@ const index = () => {
         detail_type: "1",
         id: "1",
         id_cat: "3",
-        img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6543cf8b397e3.png",
+        img_name: "6543cf8b397e3.png",
         pay: "1",
         product: "cualquier prenda (excepto mallas y bikinis)",
         status: "1",
@@ -233,7 +233,7 @@ const index = () => {
     }
 
     return (
-        <div className="p-2 sm:pl-64 pt-20">
+        <div>
             <img width="100%" src="https://app.coopmorteros.coop/public/images/coopate/Header.png" alt="" />
             <hr />
             <div className="w-full p-10">

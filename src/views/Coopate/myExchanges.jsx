@@ -26,7 +26,7 @@ const myExchanges = () => {
     detail_type: "1",
     id: "1",
     id_cat: "3",
-    img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6543cf8b397e3.png",
+    img_name: "6543cf8b397e3.png",
     pay: "1",
     product: "cualquier prenda (excepto mallas y bikinis)",
     stok_start: "50",
@@ -54,7 +54,7 @@ const myExchanges = () => {
     detail_type: "1",
     id: "2",
     id_cat: "3",
-    img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6544c3db66876.png",
+    img_name: "6544c3db66876.png",
     pay: "4",
     product: "1/4 kg de helado, todos los sabores",
     stok_start: "50",
@@ -82,7 +82,7 @@ const myExchanges = () => {
     detail_type: "",
     id: "64",
     id_cat: "39",
-    img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/651bf30c3d3fb.png",
+    img_name: "651bf30c3d3fb.png",
     pay: "1",
     product: "TELA FIBRANA $1.990 el metro",
     status: "3",
@@ -111,7 +111,7 @@ const myExchanges = () => {
     detail_type: "",
     id: "7",
     id_cat: "3",
-    img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6544c737a7531.png",
+    img_name: "6544c737a7531.png",
     pay: "4",
     product: "Cena en el local // Bebida",
     status: "2",
@@ -140,7 +140,7 @@ const myExchanges = () => {
     detail: "20%",
     detail_type: "1",
     id: "4",
-    img_name: "https://app.coopmorteros.coop/public/images_rewards/commerce/6543cf8b397e3.png",
+    img_name: "6543cf8b397e3.png",
     pay: "1",
     product: "cualquier prenda (excepto mallas y bikinis)",
     status: "3",
@@ -195,7 +195,7 @@ const myExchanges = () => {
   const colorPalette = ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0', '#FF9800', '#2196F3'];
 
   return (
-    <div className="p-2 sm:pl-64 pt-20">
+    <div>
       <h2 className="m-5 text-center">Mis Canjes</h2>
       <hr />
       <div className="w-full p-10">
