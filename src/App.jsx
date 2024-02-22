@@ -17,14 +17,6 @@ import ConsumptionSimulator from "./views/ConsumptionSimulator";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import LevelUp3 from "./views/LevelUp/leveltres";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
-import Coopate from "./views/Coopate/index";
-import Terminos from "./views/Coopate/condition";
-import Canjes from "./views/Coopate/myExchanges";
-import Comercios from "./views/Coopate/comerce";
-import ManageServices from "./views/ManageServices";
-import myPostulation from "./views/Curriculum/myPostulation";
-import jobSerach from "./views/Curriculum/jobSerarchCV";
-import myCV from "./views/Curriculum/addCV";
 import stylesNab from "./components/Navbar/Navbar.module.css";
 
 
@@ -52,13 +44,13 @@ function App() {
         menus.push({ name: "/LevelUp3", element: <LevelUp3 /> }, { name: "/authentication", element: <Authentication /> });
       } else {
         // menus.push({ name: "/ManageServices", element: <ManageServices /> });
-        menus.push({ name: "/ManageServices", element: <ManageServices /> },
-          { name: "/authentication", element: <Authentication /> },
-          { name: "/Coopate", element: <Coopate /> },
-          { name: "/Coopate/Canjes", element: <Canjes /> },
-          { name: "/Coopate/Terminos", element: <Terminos /> },
-          { name: "/Coopate/Comercios", element: <Comercios /> }
-        );
+        // menus.push({ name: "/ManageServices", element: <ManageServices /> },
+        //   { name: "/authentication", element: <Authentication /> },
+        //   { name: "/Coopate", element: <Coopate /> },
+        //   { name: "/Coopate/Canjes", element: <Canjes /> },
+        //   { name: "/Coopate/Terminos", element: <Terminos /> },
+        //   { name: "/Coopate/Comercios", element: <Comercios /> }
+        // );
       }
       menus.push(
         { name: "/Invoice", element: <Invoice /> },
@@ -67,9 +59,9 @@ function App() {
         { name: "/Handle", element: <Handle /> },
         { name: "/ConsumptionSimulator", element: <ConsumptionSimulator /> },
         { name: "/detail", element: <MyServicesD /> },
-        { name: "/myPostulation", element: <myPostulation /> },
-        { name: "/jobSerach", element: <jobSerach /> },
-        { name: "/myCV", element: <myCV /> }
+        // { name: "/myPostulation", element: <myPostulation /> },
+        // { name: "/jobSerach", element: <jobSerach /> },
+        // { name: "/myCV", element: <myCV /> }
       );
     }
     rutes.push(...menus);

@@ -4,7 +4,7 @@
     padding: 2em;
     transition: transform 0.4s ease;
     margin: 0.5rem;
-    width: 30%;
+    width: calc(20% - 1rem);
 }
 
 .cardsCoop {
