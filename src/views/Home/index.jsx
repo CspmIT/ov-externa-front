@@ -39,6 +39,8 @@ const Home = () => {
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
 
+  const [factures, setRows] = useState([]);
+
   useEffect(() => {
     searchData();
   }, []);
