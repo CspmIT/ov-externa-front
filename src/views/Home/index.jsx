@@ -1,32 +1,25 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+import { useState } from "react";
 import request from "../../routes/request";
-{ /* ----------------- ICONOS ----------------- */ }
+/* ----------------- ICONOS ----------------- */
+
 import { LuDollarSign } from "react-icons/lu";
-import { FaFileInvoiceDollar } from "react-icons/fa";
-import { FaReceipt } from "react-icons/fa";
-import { FaChartPie } from "react-icons/fa6";
-import { FaChartBar } from "react-icons/fa";
-import { FaQuestion } from "react-icons/fa";
-import { FaCheckCircle } from "react-icons/fa";
-import { FaExchangeAlt } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-import { FaAddressCard } from "react-icons/fa";
-import { FaCalendarCheck } from "react-icons/fa";
-import { FaInfoCircle } from "react-icons/fa";
-import { FaArrowAltCircleUp } from "react-icons/fa";
-{/* ----------------- ESTILOS ----------------- */ }
+import { FaChartPie, FaPlus } from "react-icons/fa6";
+import { FaFileInvoiceDollar, FaReceipt, FaChartBar, FaQuestion, FaExchangeAlt, FaAddressCard, FaCalendarCheck, FaInfoCircle, FaArrowAltCircleUp } from "react-icons/fa";
+
+/* ----------------- ESTILOS ----------------- */
+
 import styles from "../../components/Card/Card.module.css";
-import stylesWater from "./Home.module.css";
-{/* ----------------- COMPONENTES ----------------- */ }
+
+/* ----------------- COMPONENTES ----------------- */
+
 import Card from "../../components/Card";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
-import TableCustom from "../../components/Table";
-import Tables from "../../components/Tables";
-
+import TableInvoice from "../../components/TableNew";
+import ButtonFloating from "../../components/ButtonFloating";
 
 const Home = () => {
   var level = JSON.parse(localStorage.getItem("usuario")).level;
@@ -34,6 +27,7 @@ const Home = () => {
     const modal = document.getElementById("alertHelp");
     modal.classList.toggle("show-modal");
   };
+  const [invoices, setInvoices] = useState([]);
   const [statusModeA, setstatusModeA] = useState("");
   const [statusModeI, setstatusModeI] = useState("hidden");
   const [statusColorA, setstatusColorA] = useState(`dark:bg-zinc-800 bg-gray-200 `);
@@ -45,35 +39,26 @@ const Home = () => {
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
 
-  const [factures, setRows] = useState([]);
-  const [facturesAqueduct, setRowsAq] = useState([]);
-
   useEffect(() => {
-    const searchData = async () => {
-      const socio = '58500';
-      const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
-      try {
-        const responseData = await request(url, 'get');
-        setRows(responseData);
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      }
-    };
     searchData();
-
-    const searchDataAq = async () => {
-      const data = { "user": 1066, "customer": 903534 };
-      const url = `http://cooptech.com.ar:30888/api/getInvoiceAqueduct`;
-      try {
-        const responseData = await request(url, 'post', data);
-        setRowsAq(responseData);
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      }
-    };
-    searchDataAq();
-
   }, []);
+  const searchData = async () => {
+    const socio = "58500";
+    const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+    try {
+      const responseData = await request(url, "GET");
+      const rows = [];
+      for (const i in responseData) {
+        responseData[i].list.forEach((item) => {
+          rows.push({ ...item, account: responseData[i].data.account });
+        });
+      }
+      setInvoices(rows);
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
+
   return (
     <div className="flex flex-wrap w-full">
       {level == 1 ? (
@@ -89,8 +74,16 @@ const Home = () => {
               <Link to={"/LevelUp2"}>
                 <Card
                   props={{
-                    phone: "", title: "Subir al", subtitle: "Nivel 2", icon: <FaArrowAltCircleUp className="w-full" />, color: "text-green-500",
-                    bgIcon: "bg-green-400", colorIcon: "text-green-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
+                    phone: "",
+                    title: "Subir al",
+                    subtitle: "Nivel 2",
+                    icon: <FaArrowAltCircleUp className="w-full" />,
+                    color: "text-green-500",
+                    bgIcon: "bg-green-400",
+                    colorIcon: "text-green-900",
+                    bg: "bg-white",
+                    positionBtn: "absolute",
+                    widht: "w-auto",
                   }}
                 />
               </Link>{" "}
@@ -99,8 +92,16 @@ const Home = () => {
               <Link to={"/Information"}>
                 <Card
                   props={{
-                    phone: "hidden", title: "Información", subtitle: "Útil", icon: <FaInfoCircle className="w-full" />, color: "text-sky-500",
-                    bgIcon: "bg-sky-300", colorIcon: "text-sky-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
+                    phone: "hidden",
+                    title: "Información",
+                    subtitle: "Útil",
+                    icon: <FaInfoCircle className="w-full" />,
+                    color: "text-sky-500",
+                    bgIcon: "bg-sky-300",
+                    colorIcon: "text-sky-900",
+                    bg: "bg-white",
+                    positionBtn: "absolute",
+                    widht: "w-auto",
                   }}
                 />
               </Link>
@@ -109,8 +110,16 @@ const Home = () => {
               <Link to={"/LevelUp2"}>
                 <Card
                   props={{
-                    phone: "hidden", title: "Mi", subtitle: "Curriculum", icon: <FaAddressCard className="w-full" />, color: "text-red-500",
-                    bgIcon: "bg-red-300", colorIcon: "text-res-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
+                    phone: "hidden",
+                    title: "Mi",
+                    subtitle: "Curriculum",
+                    icon: <FaAddressCard className="w-full" />,
+                    color: "text-red-500",
+                    bgIcon: "bg-red-300",
+                    colorIcon: "text-res-900",
+                    bg: "bg-white",
+                    positionBtn: "absolute",
+                    widht: "w-auto",
                   }}
                 />
               </Link>
@@ -119,8 +128,16 @@ const Home = () => {
               <Link to={"/LevelUp2"}>
                 <Card
                   props={{
-                    phone: "hidden", title: "Turnos", subtitle: "Online", icon: <FaCalendarCheck className="w-full" />, color: "text-blue-500",
-                    bgIcon: "bg-blue-300", colorIcon: "text-blue-900", bg: "bg-white", positionBtn: "absolute", widht: "w-auto",
+                    phone: "hidden",
+                    title: "Turnos",
+                    subtitle: "Online",
+                    icon: <FaCalendarCheck className="w-full" />,
+                    color: "text-blue-500",
+                    bgIcon: "bg-blue-300",
+                    colorIcon: "text-blue-900",
+                    bg: "bg-white",
+                    positionBtn: "absolute",
+                    widht: "w-auto",
                   }}
                 />
               </Link>
@@ -181,7 +198,7 @@ const Home = () => {
         </>
       ) : (
         <>
-          <div className="flex w-full flex-wrap lg:w-3/4 md:1/2">
+          <div className="flex w-full flex-wrap md:1/2">
             <div className={`${styles.card} shadowCards bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
               <img src="https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png" className="w-full" />
               <div className="pt-4 w-3/4">
@@ -204,101 +221,82 @@ const Home = () => {
             </div>
             <Card
               props={{
-                phone: "", title: "SALDO", subtitle: "$35.000", icon: <LuDollarSign className="w-full" />, color: "text-red-500",
-                bgIcon: "bg-red-400", colorIcon: "text-red-900", bg: "bg-white", positionBtn: "absolute",
+                phone: "",
+                title: "SALDO",
+                subtitle: "$35.000",
+                icon: <LuDollarSign className="w-full" />,
+                color: "text-red-500",
+                bgIcon: "bg-red-400",
+                colorIcon: "text-red-900",
+                bg: "bg-white",
+                positionBtn: "absolute",
               }}
             />
             <Card
               props={{
-                phone: "hidden", title: "Mis", subtitle: "FACTURAS", icon: <FaFileInvoiceDollar className="w-full" />, color: "text-yellow-500",
-                bgIcon: "bg-yellow-300", colorIcon: "text-yellow-900", bg: "bg-white", positionBtn: "absolute",
+                phone: "hidden",
+                title: "Mis",
+                subtitle: "FACTURAS",
+                icon: <FaFileInvoiceDollar className="w-full" />,
+                color: "text-yellow-500",
+                bgIcon: "bg-yellow-300",
+                colorIcon: "text-yellow-900",
+                bg: "bg-white",
+                positionBtn: "absolute",
               }}
             />
             <Card
               props={{
-                phone: "hidden", title: "Mis", subtitle: "PAGOS", icon: <FaReceipt className="w-full" />, color: "text-blue-500",
-                bgIcon: "bg-blue-300", colorIcon: "text-blue-900", bg: "bg-white", positionBtn: "absolute",
+                phone: "hidden",
+                title: "Mis",
+                subtitle: "PAGOS",
+                icon: <FaReceipt className="w-full" />,
+                color: "text-blue-500",
+                bgIcon: "bg-blue-300",
+                colorIcon: "text-blue-900",
+                bg: "bg-white",
+                positionBtn: "absolute",
               }}
             />
             <Card
               props={{
-                phone: "hidden", title: "Mis", subtitle: "SERVICIOS", icon: <FaChartPie className="w-full" />, color: "text-sky-500",
-                bgIcon: "bg-sky-300", colorIcon: "text-sky-900", bg: "bg-white", positionBtn: "absolute",
+                phone: "hidden",
+                title: "Mis",
+                subtitle: "SERVICIOS",
+                icon: <FaChartPie className="w-full" />,
+                color: "text-sky-500",
+                bgIcon: "bg-sky-300",
+                colorIcon: "text-sky-900",
+                bg: "bg-white",
+                positionBtn: "absolute",
               }}
             />
             <Card
               props={{
-                phone: "hidden", title: "Mis", subtitle: "CONSUMOS", icon: <FaChartBar className="w-full" />, color: "text-pink-500",
-                bgIcon: "bg-pink-300", colorIcon: "text-pink-900", bg: "bg-white", positionBtn: "absolute",
+                phone: "hidden",
+                title: "Mis",
+                subtitle: "CONSUMOS",
+                icon: <FaChartBar className="w-full" />,
+                color: "text-pink-500",
+                bgIcon: "bg-pink-300",
+                colorIcon: "text-pink-900",
+                bg: "bg-white",
+                positionBtn: "absolute",
               }}
             />
-            <div className={`${styles.card} shadowCards ${styles.cardHover} bg-white dark:bg-zinc-700`}>
-              <img src="https://app.coopmorteros.coop/public/images/coopate/iso_Coopate-02.png" className="w-3/4" />
-            </div>
           </div>
-          <div className={`${styles.card} ${styles.cardHover} lg:w-1/4 md:1/2 w-full bg-white flex justify-center items-center dark:bg-zinc-700 md:m-0`}>
-            <div className={`${stylesWater.waterCard} ${stylesWater.playing}`}>
-              <div className={stylesWater.image}></div>
-              <div className={stylesWater.wave}></div>
-              <div className={stylesWater.wave}></div>
-              <div className={stylesWater.wave}></div>
-              <div className={stylesWater.infotop}>
-                <br />
-                <FaCheckCircle className={stylesWater.icon} />
-                1085m3
-              </div>
-            </div>
-          </div>
-          <div className="flex w-full flex-wrap mt-10 justify-center">
-            <p className="w-full m-2 text-center">Si seleccionas todas las facturas podras acceder a estos beneficios</p>
-            <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksI} lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-              <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate" />
-              <h5 className="text-white mt-14">
-                <b>300 MEGAS</b> al precio de 100 Megas
-              </h5>
-              <p className="text-white" id="precio_futbol">
-                Promo válida por 3 meses
-              </p>
-            </div>
-            <div id="card_tv" className={`${styles.cardsCoop} ${styles.cardpacksF}  lg:w-1/3 md:1/2 w-full text-center p-0 m-1`}>
-              <input disabled id="checkbox3" type="checkbox" name="checkbok_benefit_coopate" />
-              <h4 className="text-white mt-14">
-                <b>GRATIS POR 1 MES</b>
-              </h4>
-              <p className="text-white text-right p-6" id="precio_futbol">
-                Ahorrás: <b>$3000</b>
-              </p>
-            </div>
-          </div>
-          <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-800">
+
+          <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-700">
             <h3 className="w-full text-left mb-5">
               Facturas Impagas
               <div onClick={swalHelp} className="float-right flex">
-                <Button props={{ class: "text-blac bg-green-300 text-green-800  m-2 text-sm", text: `Comprar Energía` }} />
                 <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
               </div>
             </h3>
-            <p>* El Pago realizado de las Facturas podrá verse reflejado dentro de las próximas 48hs hábiles.</p>
-            <div className={`relative overflow-x-auto w-full round shadowCards rounded-xl`}>
-              {/* <Tables columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']} rows={factures} showCheckboxes={true} /> */}
-              <Tables
-                columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']}
-                rows={factures}
-                showCheckboxes={true}
-              />
+            <div className={`relative overflow-x-auto w-full rounded-xl  dark:bg-zinc-800`}>
+              <TableInvoice data={invoices} />
             </div>
-          </div>
-          <div className="flex w-full flex-wrap mt-10 justify-center mb-10 p-10 bg-white dark:bg-zinc-800">
-            <h3 className="w-full text-left mb-5">Facturas Acueducto Impagas</h3>
-            <p>* El Pago realizado de las Facturas podrá verse reflejado dentro de las próximas 48hs hábiles.</p>
-            <div className={`relative overflow-x-auto w-full shadowCards rounded-xl`}>
-              {/* <Tables columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']} rows={facturesAqueduct} showCheckboxes={true} /> */}
-              <Tables
-                columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!']}
-                rows={facturesAqueduct}
-                showCheckboxes={true}
-              />
-            </div>
+            <ButtonFloating />
           </div>
         </>
       )}

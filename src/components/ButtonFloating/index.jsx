@@ -1,9 +1,9 @@
 import React from 'react'
 
-const index = () => {
+const ButtonFloating = () => {
   return (
-    <div>index</div>
+    <div>ButtonFloating</div>
   )
 }
 
-export default index
+export default ButtonFloating

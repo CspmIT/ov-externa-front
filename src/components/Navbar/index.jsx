@@ -1,34 +1,19 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 /* ----------------- ICONOS ----------------- */
-import { FaHouse } from "react-icons/fa6";
-import { FaArchive } from "react-icons/fa";
-import { FaTint } from "react-icons/fa";
-import { FaCalendarCheck } from "react-icons/fa";
-import { FaBolt } from "react-icons/fa";
-import { FaInfoCircle } from "react-icons/fa";
-import { FaServer } from "react-icons/fa";
-import { FaDumpster } from "react-icons/fa";
-import { FaAddressCard } from "react-icons/fa";
-import { FaComments } from "react-icons/fa6";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { FaHouse, FaComments, FaPlus } from "react-icons/fa6";
+import { FaArchive, FaInfoCircle, FaMoon, FaUser, FaLayerGroup, FaFileAlt } from "react-icons/fa";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
-import { FaMoon } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { FaLayerGroup } from "react-icons/fa";
-import { FaFileAlt } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-import { IoIosSunny } from "react-icons/io";
-import { FaCircleArrowUp } from "react-icons/fa6";
+import { IoIosSunny, IoMdArrowDropdown } from "react-icons/io";
 /* ----------------- ESTILOS ----------------- */
 import styles from "./Navbar.module.css";
 /* ----------------- COMPONENTES ----------------- */
 import ItemNav from "../../components/ItemNav";
 import Dropdown from "../Dropdown";
 import DropdownImage from "../DropdownImage";
-
+import { UserContext } from "../../contexts/UserContext";
 
 const Navbar = () => {
+  const { darkMode, setDarkMode } = useContext(UserContext);
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
   const [activeItem, setActiveItem] = useState(null);
   const handleItemClick = (itemName) => {
@@ -44,11 +29,16 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("usuario"));
+    setDarkMode(!darkMode);
     if (dark) {
+      user.dark = 0;
       document.body.classList.add("dark");
     } else {
+      user.dark = 1;
       document.body.classList.remove("dark");
     }
+    localStorage.setItem("usuario", JSON.stringify(user));
   }, [dark]);
 
   const toggleDarkMode = () => {
@@ -70,61 +60,16 @@ const Navbar = () => {
         { name: "Mis Facturas", link: "/Invoice" },
         { name: "Mis Pagos", link: "/Payments" },
         { name: "Mis Servicios", link: "/MyServices" },
-        { name: "Mis Consumos", link: "/MyConsumption" },
-        { name: "Mis Trámites", link: "/Handle" },
+        { name: "Mis Consumos", link: "/MyServices" },
       ],
     },
-    {
-      name: "Acueducto",
-      icon: <FaTint />,
-      dropdown: true,
-      iconDropdown: <IoMdArrowDropdown />,
-      idDrop: "acueduct",
-      level: [2, 3],
-      list: [
-        { name: "Vincular Cuenta", link: "algo" },
-        { name: "Desvincular Cuenta", link: "algo" },
-      ],
-    },
-    { name: "Turnos Online", icon: <FaCalendarCheck />, link: "/Information", level: [1, 2, 3] },
-    { name: "Simulador de Consumo", icon: <FaBolt />, link: "/ConsumptionSimulator", level: [2, 3] },
-    { name: "Subir a nivel 2", icon: <FaCircleArrowUp />, link: "/LevelUp2", level: [1] },
-    { name: "Subir a nivel 3", icon: <FaCircleArrowUp />, link: "/LevelUp3", level: [2] },
     { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
-    { name: "Administrar Servicios", icon: <FaServer />, link: "/ManageServices", level: [3] },
-    {
-      name: "Coopate",
-      icon: <FaDumpster />,
-      dropdown: true,
-      iconDropdown: <IoMdArrowDropdown />,
-      idDrop: "coopate",
-      level: [3],
-      list: [
-        { name: "Beneficios", link: "/Coopate" },
-        { name: "Mis Canjes", link: "/Coopate/Canjes" },
-        { name: "Términos y Condiciones", link: "/Coopate/Terminos" },
-        { name: "Comercios", link: "/Coopate/Comercios" },
-      ],
-    },
-    {
-      name: "Sumate a Nosotros",
-      icon: <FaAddressCard />,
-      dropdown: true,
-      iconDropdown: <IoMdArrowDropdown />,
-      idDrop: "cv",
-      level: [1, 2, 3],
-      list: [
-        { name: "Mi CV", link: "/myCV" },
-        { name: "Busquedas Laborales", link: "/jobSerach" },
-        { name: "Mis Postulaciones", link: "/myPostulation" }
-      ],
-    },
     { name: "Dejanos tu Opinión", icon: <FaComments />, link: "/Information", level: [2, 3] },
   ];
 
   return (
     <div>
-      <aside id="mobileMenu" className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}>
+      <aside id="mobileMenu" className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}>
         <div className="h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar">
           <div className="m-2">
             <img src="https://app.coopmorteros.coop/public/images/logos/Ofi_Virtual_Negro.png" />
@@ -145,13 +90,7 @@ const Navbar = () => {
           <div className="mx-auto px-2 sm:px-6 lg:px-5 ">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <button
-                  onClick={toggleMobileMenu}
-                  aria-controls="mobileMenu"
-                  aria-expanded={isMobileMenuVisible}
-                  type="button"
-                  className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                >
+                <button onClick={toggleMobileMenu} aria-controls="mobileMenu" aria-expanded={isMobileMenuVisible} type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                   <HiMiniBars3BottomLeft />
                 </button>
               </div>
@@ -180,18 +119,11 @@ const Navbar = () => {
                 <button onClick={toggleDarkMode} className={`dark:text-white mr-2 ${styles.btnDark} ${shadowMode}`}>
                   {iconMode}
                 </button>
-                <button
-                  type="button"
-                  className="relative rounded-full p-1 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
+                <button type="button" className="relative rounded-full p-1 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">View notifications</span>
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                   </svg>
                 </button>
                 <DropdownImage />
