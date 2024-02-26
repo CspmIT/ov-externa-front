@@ -21,6 +21,7 @@ import LevelUp3 from "./views/LevelUp/leveltres";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import stylesNab from "./components/Navbar/Navbar.module.css";
 function App() {
+  
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("usuario");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -45,7 +46,7 @@ function App() {
   return (
       <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
         {user && <Navbar />}
-        <div className="flex-grow p-2 sm:pl-64 pt-20">
+        <div className={`flex-grow p-2 ${user ? 'sm:pl-64 pt-20' : ''} `}>
           <Routes>
             {user ? (
               <>
@@ -64,7 +65,7 @@ function App() {
             )}
           </Routes>
         </div>
-        <footer className={`p-2 sm:ml-56 bg-white dark:bg-zinc-950 dark:text-gray-300 ${stylesNab.widthNab} mt-auto`}>
+        <footer className={`p-2 ${user ? 'sm:ml-56' : ''} bg-white dark:bg-zinc-950 dark:text-gray-300 ${stylesNab.widthNab} mt-auto`}>
           <div className="w-full mx-auto max-w-screen-xl p-10 md:flex md:items-center md:justify-center">
             <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
               Versión 5.0 <br />

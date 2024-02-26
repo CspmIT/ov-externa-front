@@ -4,7 +4,7 @@ import { createContext, useState } from 'react';
 const UserContext = createContext();
 
 function UserProvider ({ children }) {
-  const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("usuario")).dark);
+  const [darkMode, setDarkMode] = useState(0);
   const [variable2, setVariable2] = useState('Valor inicial de variable2');
   const [variable3, setVariable3] = useState('Valor inicial de variable3');
 

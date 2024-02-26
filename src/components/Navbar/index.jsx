@@ -19,7 +19,7 @@ const Navbar = () => {
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
   };
-  const [dark, setDark] = useState(userDark);
+  const [dark, setDark] = useState(darkMode);
   const [iconMode, setIconMode] = useState(<FaMoon className="change" />);
   const [shadowMode, setShadowMode] = useState(dark ? "styles.shadowDark" : "styles.shadowLight");
   const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -29,16 +29,12 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("usuario"));
     setDarkMode(!darkMode);
     if (dark) {
-      user.dark = 0;
       document.body.classList.add("dark");
     } else {
-      user.dark = 1;
       document.body.classList.remove("dark");
     }
-    localStorage.setItem("usuario", JSON.stringify(user));
   }, [dark]);
 
   const toggleDarkMode = () => {
