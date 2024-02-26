@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 /* ----------------- ICONOS ----------------- */
 import { FaHouse, FaComments, FaPlus } from "react-icons/fa6";
 import { FaArchive, FaInfoCircle, FaMoon, FaUser, FaLayerGroup, FaFileAlt } from "react-icons/fa";
@@ -10,8 +10,10 @@ import styles from "./Navbar.module.css";
 import ItemNav from "../../components/ItemNav";
 import Dropdown from "../Dropdown";
 import DropdownImage from "../DropdownImage";
+import { UserContext } from "../../contexts/UserContext";
 
 const Navbar = () => {
+  const { darkMode, setDarkMode } = useContext(UserContext);
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
   const [activeItem, setActiveItem] = useState(null);
   const handleItemClick = (itemName) => {
@@ -27,11 +29,16 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("usuario"));
+    setDarkMode(!darkMode);
     if (dark) {
+      user.dark = 0;
       document.body.classList.add("dark");
     } else {
+      user.dark = 1;
       document.body.classList.remove("dark");
     }
+    localStorage.setItem("usuario", JSON.stringify(user));
   }, [dark]);
 
   const toggleDarkMode = () => {

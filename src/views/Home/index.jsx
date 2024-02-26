@@ -1,28 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import request from "../../routes/request";
 
-  /* ----------------- ICONOS ----------------- */
+/* ----------------- ICONOS ----------------- */
 
 import { LuDollarSign } from "react-icons/lu";
 import { FaChartPie, FaPlus } from "react-icons/fa6";
-import { FaFileInvoiceDollar, FaReceipt, FaChartBar, FaQuestion, FaCheckCircle,
-FaExchangeAlt, FaAddressCard, FaCalendarCheck, FaInfoCircle, FaArrowAltCircleUp } from "react-icons/fa";
+import { FaFileInvoiceDollar, FaReceipt, FaChartBar, FaQuestion, FaExchangeAlt, FaAddressCard, FaCalendarCheck, FaInfoCircle, FaArrowAltCircleUp } from "react-icons/fa";
 
-  /* ----------------- ESTILOS ----------------- */
+/* ----------------- ESTILOS ----------------- */
 
 import styles from "../../components/Card/Card.module.css";
-import stylesWater from "./Home.module.css";
 
-  /* ----------------- COMPONENTES ----------------- */
+/* ----------------- COMPONENTES ----------------- */
 
 import Card from "../../components/Card";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
-import { Link } from "react-router-dom";
-import TableCustom from "../../components/Table";
-import  TableNew from "../../components/TableNew";
+import { Link, NavLink } from "react-router-dom";
+import TableNew from "../../components/TableNew";
+import { Circle, Print } from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { UserContext } from "../../contexts/UserContext";
 
 const Home = () => {
   var level = JSON.parse(localStorage.getItem("usuario")).level;
@@ -40,18 +40,131 @@ const Home = () => {
     setstatusColorA(status == "active" ? `dark:bg-zinc-800 bg-gray-200` : `bg-white dark:bg-zinc-900`);
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
-
+  const { darkMode } = useContext(UserContext);
   const [factures, setFactures] = useState([]);
-
+  const columns = [
+    {
+      header: "Cuenta",
+      accessorKey: "account",
+    },
+    {
+      header: "Tipo",
+      accessorKey: "type",
+    },
+    {
+      header: "Factura",
+      accessorKey: "nrovoucher",
+    },
+    {
+      header: "Periodo",
+      accessorKey: "period",
+    },
+    {
+      header: "Vencimiento",
+      accessorKey: "vto",
+    },
+    {
+      header: "Importe",
+      accessorKey: "amount",
+      size: 45,
+      Cell: ({ row, cell }) => {
+        if (!row.original.subRows) {
+          return (
+            <Box
+              component="span"
+              sx={() => ({
+                color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+                fontWeight: 'bold',
+                fontSize: '15px',
+              })}
+            >
+              {cell.getValue()?.toLocaleString?.("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </Box>
+          );
+        }
+      },
+      Footer: ({ table }) => {
+        const total = table
+          .getSelectedRowModel()
+          .rows.map((item) => {
+            return item.original.amount;
+          })
+          .reduce((a, b) => {
+            return a + b;
+          }, 0);
+        return (
+          <Box   sx={() => ({
+            color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+            fontWeight: 'bold',
+          })} className={"text-xl"}>
+            Total:
+            <Box color="warning.main">
+              {total.toLocaleString?.("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </Box>
+          </Box>
+        );
+      },
+    },
+    {
+      header: "",
+      accessorKey: "status",
+      disableFilters: true,
+      size: 15,
+      enableGlobalFilter: false,
+      Cell: ({ row }) => {
+        if (!row.original.subRows) {
+          return (
+            <div>
+              <Circle className={`${row.original?.status == 1 ? "text-yellow-500" : "text-red-500"}`} />
+            </div>
+          );
+        }
+      },
+    },
+    {
+      header: "",
+      accessorKey: "url",
+      disableFilters: true,
+      enableGlobalFilter: false,
+      size: 15,
+      Cell: ({ row }) => {
+        if (row.original.url) {
+          return (
+            <NavLink target={row.original?.url ? row.original?.url : undefined} to={row.original?.url ? row.original?.url : undefined} rel="noopener">
+              <div className={"bg-blue-500 rounded text-center p-2  text-white m-0 w-11"}>
+                <Print />
+              </div>
+            </NavLink>
+          );
+        }
+      },
+    },
+  ];
   useEffect(() => {
     const searchData = async () => {
       const socio = "58500";
-      const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
+      const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
       try {
         const responseData = await request(url, "GET");
-        console.log(responseData);
-
-        setRows(responseData);
+        const rows = [];
+        for (const i in responseData) {
+          responseData[i].list.forEach((item) => {
+            //   console.log(item);
+            // rows.push({ subRows: [...responseData[i].list], account: responseData[i].data.account });
+            rows.push({ ...item, account: responseData[i].data.account });
+          });
+        }
+        setFactures(rows);
       } catch (error) {
         console.error("Error en la solicitud:", error);
       }
@@ -288,35 +401,17 @@ const Home = () => {
             />
           </div>
 
-          <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-800">
+          <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-700">
             <h3 className="w-full text-left mb-5">
               Facturas Impagas
               <div onClick={swalHelp} className="float-right flex">
                 <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
               </div>
             </h3>
-            <div className={`relative overflow-x-auto w-full rounded-xl`}>
-              {/* <TableCustom
-                styleCustom={{
-                  padding: "1rem",
-                }}
-                ButtonAdd={{ active: false }}
-                columns={[
-                  { field: "type", headerName: "TIPO", headerClassName: "fondoPrincipal", flex: 1 },
-                  { field: "nrovoucher", headerName: "FACTURA", headerClassName: "fondoPrincipal", flex: 1 },
-                  { field: "period", headerName: "PERÍODO", headerClassName: "fondoPrincipal", flex: 1 },
-                  { field: "vto", headerName: "VENCIMIENTO", type: "number", headerClassName: "fondoPrincipal", flex: 1 },
-                  { field: "amount", headerName: "IMPORTE", headerClassName: "fondoPrincipal", flex: 1 },
-                  { field: "status", headerName: "!", headerClassName: "fondoPrincipal", icon: "FaCircle", flex: 0.5 },
-                  { field: "url", headerName: "", headerClassName: "fondoPrincipal", flex: 0.5 },
-                ]}
-                checks={true}
-                rows={factures}
-              /> */}
-              <TableNew />
+            <div className={`relative overflow-x-auto w-full rounded-xl  dark:bg-zinc-800`}>
+              <TableNew data={factures} columns={columns} agrupacion={"account"} modo={statusColorA} />
             </div>
           </div>
-          
         </>
       )}
 
