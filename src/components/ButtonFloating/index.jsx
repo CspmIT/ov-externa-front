@@ -1,8 +1,11 @@
-import React from 'react'
-
+import { LuHome } from "react-icons/lu";
+import Button from "../Button"
+import styles from "./ButtonFloating.module.css";
 const ButtonFloating = () => {
   return (
-    <div>ButtonFloating</div>
+    <div>
+      <Button type={'button'} props={{"children":(<LuHome/>), "class": styles.ButtonFloating}} />
+    </div>
   )
 }
 
