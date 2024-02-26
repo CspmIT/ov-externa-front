@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+import { useState } from "react";
 import request from "../../routes/request";
-
 /* ----------------- ICONOS ----------------- */
 
 import { LuDollarSign } from "react-icons/lu";
@@ -18,11 +17,9 @@ import Card from "../../components/Card";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
-import { Link, NavLink } from "react-router-dom";
-import TableNew from "../../components/TableNew";
-import { Circle, Print } from "@mui/icons-material";
-import { Box } from "@mui/material";
-import { UserContext } from "../../contexts/UserContext";
+import { Link } from "react-router-dom";
+import TableInvoice from "../../components/TableNew";
+import ButtonFloating from "../../components/ButtonFloating";
 
 const Home = () => {
   var level = JSON.parse(localStorage.getItem("usuario")).level;
@@ -30,6 +27,7 @@ const Home = () => {
     const modal = document.getElementById("alertHelp");
     modal.classList.toggle("show-modal");
   };
+  const [invoices, setInvoices] = useState([]);
   const [statusModeA, setstatusModeA] = useState("");
   const [statusModeI, setstatusModeI] = useState("hidden");
   const [statusColorA, setstatusColorA] = useState(`dark:bg-zinc-800 bg-gray-200 `);
@@ -40,139 +38,26 @@ const Home = () => {
     setstatusColorA(status == "active" ? `dark:bg-zinc-800 bg-gray-200` : `bg-white dark:bg-zinc-900`);
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
-  const { darkMode } = useContext(UserContext);
-  const [factures, setFactures] = useState([]);
-  const columns = [
-    {
-      header: "Cuenta",
-      accessorKey: "account",
-    },
-    {
-      header: "Tipo",
-      accessorKey: "type",
-    },
-    {
-      header: "Factura",
-      accessorKey: "nrovoucher",
-    },
-    {
-      header: "Periodo",
-      accessorKey: "period",
-    },
-    {
-      header: "Vencimiento",
-      accessorKey: "vto",
-    },
-    {
-      header: "Importe",
-      accessorKey: "amount",
-      size: 45,
-      Cell: ({ row, cell }) => {
-        if (!row.original.subRows) {
-          return (
-            <Box
-              component="span"
-              sx={() => ({
-                color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-                fontWeight: 'bold',
-                fontSize: '15px',
-              })}
-            >
-              {cell.getValue()?.toLocaleString?.("es-AR", {
-                style: "currency",
-                currency: "ARS",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </Box>
-          );
-        }
-      },
-      Footer: ({ table }) => {
-        const total = table
-          .getSelectedRowModel()
-          .rows.map((item) => {
-            return item.original.amount;
-          })
-          .reduce((a, b) => {
-            return a + b;
-          }, 0);
-        return (
-          <Box   sx={() => ({
-            color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-            fontWeight: 'bold',
-          })} className={"text-xl"}>
-            Total:
-            <Box color="warning.main">
-              {total.toLocaleString?.("es-AR", {
-                style: "currency",
-                currency: "ARS",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </Box>
-          </Box>
-        );
-      },
-    },
-    {
-      header: "",
-      accessorKey: "status",
-      disableFilters: true,
-      size: 15,
-      enableGlobalFilter: false,
-      Cell: ({ row }) => {
-        if (!row.original.subRows) {
-          return (
-            <div>
-              <Circle className={`${row.original?.status == 1 ? "text-yellow-500" : "text-red-500"}`} />
-            </div>
-          );
-        }
-      },
-    },
-    {
-      header: "",
-      accessorKey: "url",
-      disableFilters: true,
-      enableGlobalFilter: false,
-      size: 15,
-      Cell: ({ row }) => {
-        if (row.original.url) {
-          return (
-            <NavLink target={row.original?.url ? row.original?.url : undefined} to={row.original?.url ? row.original?.url : undefined} rel="noopener">
-              <div className={"bg-blue-500 rounded text-center p-2  text-white m-0 w-11"}>
-                <Print />
-              </div>
-            </NavLink>
-          );
-        }
-      },
-    },
-  ];
+
   useEffect(() => {
-    const searchData = async () => {
-      const socio = "58500";
-      const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
-      try {
-        const responseData = await request(url, "GET");
-        const rows = [];
-        for (const i in responseData) {
-          responseData[i].list.forEach((item) => {
-            //   console.log(item);
-            // rows.push({ subRows: [...responseData[i].list], account: responseData[i].data.account });
-            rows.push({ ...item, account: responseData[i].data.account });
-          });
-        }
-        setFactures(rows);
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      }
-    };
     searchData();
   }, []);
-
-  const facturesAqueduct = [];
+  const searchData = async () => {
+    const socio = "58500";
+    const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+    try {
+      const responseData = await request(url, "GET");
+      const rows = [];
+      for (const i in responseData) {
+        responseData[i].list.forEach((item) => {
+          rows.push({ ...item, account: responseData[i].data.account });
+        });
+      }
+      setInvoices(rows);
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
 
   return (
     <div className="flex flex-wrap w-full">
@@ -409,8 +294,9 @@ const Home = () => {
               </div>
             </h3>
             <div className={`relative overflow-x-auto w-full rounded-xl  dark:bg-zinc-800`}>
-              <TableNew data={factures} columns={columns} agrupacion={"account"} modo={statusColorA} />
+              <TableInvoice data={invoices} />
             </div>
+            <ButtonFloating />
           </div>
         </>
       )}
