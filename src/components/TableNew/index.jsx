@@ -3,11 +3,11 @@ import { MRT_ToggleDensePaddingButton, MRT_ToggleFiltersButton, MRT_ToggleGlobal
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Circle, Print } from "@mui/icons-material";
-import { NavLink } from "react-router-dom";
-
-const TableInvoice = ({data}) => {
+import Button from "../Button";
+import Swal from "sweetalert2";
+import axios from "axios";
+const TableInvoice = ({ data, amountPay, ...prop }) => {
   const { darkMode } = useContext(UserContext);
-
   const columns = [
     {
       header: "Cuenta",
@@ -91,7 +91,7 @@ const TableInvoice = ({data}) => {
         if (!row.original.subRows) {
           return (
             <div>
-              <Circle className={`${row.original?.status == 1 ? "text-yellow-500" : "text-red-500"}`} />
+              <Circle className={`${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />
             </div>
           );
         }
@@ -106,85 +106,150 @@ const TableInvoice = ({data}) => {
       Cell: ({ row }) => {
         if (row.original.url) {
           return (
-            <NavLink target={row.original?.url ? row.original?.url : undefined} to={row.original?.url ? row.original?.url : undefined} rel="noopener">
-              <div className={"bg-blue-500 rounded text-center p-2  text-white m-0 w-11"}>
-                <Print />
-              </div>
-            </NavLink>
+            <Button
+              props={{ class: "bg-blue-500 rounded text-center   text-white " }}
+              onclick={() => {
+                controlUrl(`${row.original?.url ? row.original?.url : undefined}`);
+              }}
+            >
+              <Print />
+            </Button>
           );
         }
       },
     },
   ];
-  
-const table = useMaterialReactTable({
-        columns,
-        data,
-        initialState: {
-          density: "comfortable",
-          expanded: true,
-          grouping: ["account"],
-          pagination: { pageIndex: 0, pageSize: 20 },
-          sorting: [{ id: "account", desc: false }],
-          columnPinning: {
-            right: ["mrt-row-select"],
-          },
-        },
-        enableGrouping: true,
-        groupedColumnMode: "remove",
-        positionToolbarAlertBanner: "none",
-        positionToolbarDropZone: "none",
-        enableTopToolbar: true,
-        enableSelectAll: true,
-        enableStickyFooter: false,
-        enableStickyHeader: true,
-        enableRowSelection: true,
-        muiTableContainerProps: { sx: { maxHeight: 600 } },
-        muiTableBodyCellProps: () => ({
-          sx: () => ({
-            color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-            fontSize: "15px",
-          }),
-        }),
 
-        muiTableBodyRowProps: ({ row }) => {
-          return {
-            sx: {
-              backgroundColor: row.depth == 0 ? "#969696" : "transparent",
-              fontWeight: row.getIsExpanded() ? "bold" : "normal",
-            },
-          };
-        },
-        muiTableHeadCellProps: {
-          sx: {
-            color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-            fontSize: "18px",
-            fontWeight: "bold",
-          },
-        },
-        muiTablePaperProps: {
-          sx: {
-            baseBackgroundColor: darkMode ? "rgb(238, 238, 238)" : "rgb(99, 99, 99)",
-            padding: "10px",
-            boxShadow: `inset 1px 1px 6px ${darkMode ? "#d1d1d1bb" : "#838383ac"}, inset -3px  -3px 6px ${darkMode ? "#d1d1d1bb" : "#838383ac"}`,
-            borderRadius: "0.75rem",
-          },
-        },
-        mrtTheme: () => ({
-          baseBackgroundColor: darkMode ? "rgb(238, 238, 238)" : "rgb(99, 99, 99)",
-        }),
-        renderToolbarInternalActions: ({ table }) => (
-          <Box>
-            <MRT_ToggleGlobalFilterButton table={table} />
-            <MRT_ToggleDensePaddingButton table={table} />
-            <MRT_ToggleFiltersButton table={table} />
-          </Box>
-        ),
-      })
+  const controlUrl = async (url) => {
+    const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+    try {
+      const response = await axios({
+        method: "GET",
+        url: urlConsulta,
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+      });
+      window.open(url, "_blank");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "La factura aun no se encuentra disponible",
+        showConfirmButton: true,
+      });
+    }
+  };
+  //creo una constante con las configuracion inicial para poder modificar con props
+  const tableInitialState = {
+    density: "comfortable",
+    expanded: true,
+    pagination: { pageIndex: 0, pageSize: 100 },
+    sorting: [],
+    grouping: [],
+    columnPinning: {
+      right: ["mrt-row-select"],
+    },
+  };
+  //constrolo si llega un agrupacion por columna
+  if (prop.groupBy) {
+    tableInitialState.grouping.push(prop.groupBy);
+  }
+    //constrolo si llega un orden por columna
+  if (prop.orderBy) {
+    tableInitialState.sorting.push({ id: prop.orderBy, desc: false });
+  }
 
+
+  const table = useMaterialReactTable({
+    columns,
+    data,
+    initialState: tableInitialState,
+    groupedColumnMode: "remove",
+    positionToolbarAlertBanner: "none",
+    positionToolbarDropZone: "none",
+    enableTopToolbar: false,
+    enableStickyFooter: false,
+    enableStickyHeader: true,
+    enablePagination: false,
+
+    // muiTableContainerProps: { sx: { maxHeight: 50000 } },
+    //HABILITACION DE ROWS
+    enableBatchRowSelection: prop.checkbox ?? false,
+    enableMultiRowSelection: prop.checkbox ?? false,
+    enableRowSelection: prop.checkbox ?? false,
+    enableSelectAll: prop.checkbox ?? false,
+    enableSubRowSelection: prop.checkbox ?? false,
+
+    //HABILITACION DE COLUMNA
+    //si esta true te deja copiar el campo de la tabla
+    enableClickToCopy: false,
+    //habilita los 3 puntos para acciones por columna
+    enableColumnActions: false,
+    //habilita hacer drag and drop aunque faltan otras opciones para que funcione al 100%
+    enableColumnDragging: false,
+    //habilita el poder filtrar por todas las columnas
+    enableColumnFilter: false,
+    //activa un boton que te genera un modal para editar el campo en la tabla, pero hay que combinarlo con otra funcion para el guardado, actualizacion, etc.
+    enableEditing: false,
+    //permite agrupar por columnas
+    enableGrouping: true,
+    //junto con el de los 3 puntos de accion te permite ocultar columnas, o activando el toopbar
+    enableHiding: false,
+    //habilita el ordenamiento de columnas osea ordenar los datos por alguna columna en especifico
+    enableSorting: false,
+    muiTableBodyCellProps: () => ({
+      sx: () => ({
+        color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+        fontSize: "15px",
+      }),
+    }),
+
+    muiTableBodyRowProps: ({ row }) => {
+      return {
+        sx: {
+          backgroundColor: row.depth == 0 ? (darkMode ? "rgba(209, 213, 219, 0.482)" : "#0000004e") : "transparent",
+          fontWeight: row.getIsExpanded() ? "bold" : "normal",
+        },
+      };
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        background: "#fef08a !important",
+        fontSize: "18px",
+        fontWeight: "bold",
+      },
+    },
+    muiTopToolbarProps: {
+      sx: {
+        color: "black",
+      },
+    },
+
+    muiTablePaperProps: {
+      sx: {
+        margin: "10px",
+        boxShadow: `2px 3px 5px 0px #0000007f`,
+        borderRadius: "0.75rem",
+      },
+    },
+    mrtTheme: () => ({
+      baseBackgroundColor: darkMode ? "rgba(238, 238, 238, 0.39)" : "rgba(238, 238, 238, 0.11)",
+    }),
+
+    renderToolbarInternalActions: ({ table }) => (
+      <Box>
+        <MRT_ToggleGlobalFilterButton table={table} />
+        <MRT_ToggleDensePaddingButton table={table} />
+        <MRT_ToggleFiltersButton table={table} />
+      </Box>
+    ),
+  });
 
   useEffect(() => {
-    console.log(table.getSelectedRowModel().rows);
+    let values = 0;
+    table.getSelectedRowModel().rows.forEach((element) => {
+      values += element.original.amount;
+    });
+    values = values.toFixed(2);
+    if (amountPay) amountPay(values);
   }, [table.getState().rowSelection]);
 
   return <MaterialReactTable table={table} />;

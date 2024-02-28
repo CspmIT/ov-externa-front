@@ -1,9 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-{
-  /* ----------------- VISTAS ----------------- */
-}
+
+
 import Login from "./views/Login";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
@@ -15,9 +14,7 @@ import Payments from "./views/Payments";
 import Handle from "./views/Handle";
 import MyServices from "./views/MyServices";
 import MyServicesD from "./views/MyServices/detail";
-import ConsumptionSimulator from "./views/ConsumptionSimulator";
 import LevelUp2 from "./views/LevelUp/leveldos";
-import LevelUp3 from "./views/LevelUp/leveltres";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import stylesNab from "./components/Navbar/Navbar.module.css";
 function App() {
@@ -39,7 +36,7 @@ function App() {
     if (user["level"] == 1) {
       menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
     } else {
-      menus.push({ name: "/LevelUp3", element: <LevelUp3 /> }, { name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/ConsumptionSimulator", element: <ConsumptionSimulator /> }, { name: "/detail", element: <MyServicesD /> });
+      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> });
     }
     rutes.push(...menus);
   }

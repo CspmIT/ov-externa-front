@@ -17,7 +17,7 @@ import Card from "../../components/Card";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TableInvoice from "../../components/TableNew";
 import ButtonFloating from "../../components/ButtonFloating";
 
@@ -28,6 +28,7 @@ const Home = () => {
     modal.classList.toggle("show-modal");
   };
   const [invoices, setInvoices] = useState([]);
+  const [amountpay, setAmountpay] = useState(0);
   const [statusModeA, setstatusModeA] = useState("");
   const [statusModeI, setstatusModeI] = useState("hidden");
   const [statusColorA, setstatusColorA] = useState(`dark:bg-zinc-800 bg-gray-200 `);
@@ -38,13 +39,13 @@ const Home = () => {
     setstatusColorA(status == "active" ? `dark:bg-zinc-800 bg-gray-200` : `bg-white dark:bg-zinc-900`);
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
-
+const navigate = useNavigate();
   useEffect(() => {
     searchData();
   }, []);
   const searchData = async () => {
     const socio = "58500";
-    const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+    const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
     try {
       const responseData = await request(url, "GET");
       const rows = [];
@@ -58,7 +59,9 @@ const Home = () => {
       console.error("Error en la solicitud:", error);
     }
   };
-
+  const handleAmountPay = (amount) => {
+    setAmountpay(amount);
+  };
   return (
     <div className="flex flex-wrap w-full">
       {level == 1 ? (
@@ -234,6 +237,7 @@ const Home = () => {
             />
             <Card
               props={{
+                onclick: () => { navigate('/Invoice') },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "FACTURAS",
@@ -247,6 +251,7 @@ const Home = () => {
             />
             <Card
               props={{
+                onclick: () => { navigate('/Payments') },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "PAGOS",
@@ -260,6 +265,7 @@ const Home = () => {
             />
             <Card
               props={{
+                onclick: () => { navigate('/MyServices') },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "SERVICIOS",
@@ -273,6 +279,7 @@ const Home = () => {
             />
             <Card
               props={{
+                onclick: () => { navigate('/MyServices') },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "CONSUMOS",
@@ -293,10 +300,15 @@ const Home = () => {
                 <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
               </div>
             </h3>
-            <div className={`relative overflow-x-auto w-full rounded-xl  dark:bg-zinc-800`}>
-              <TableInvoice data={invoices} />
+            <div className={`relative overflow-x-auto w-full rounded-xl`}>
+              <TableInvoice data={invoices} groupBy={'account'} checkbox={true} amountPay={handleAmountPay} />
             </div>
-            <ButtonFloating />
+            {amountpay > 0 ? (
+              <ButtonFloating>
+                <p className="p-0 m-0">Pagar</p>
+                <p className="p-0 m-0">$ {amountpay}</p>
+              </ButtonFloating>
+            ) : null}
           </div>
         </>
       )}

@@ -6,19 +6,26 @@ import { FaQuestion } from "react-icons/fa";
 {/* ----------------- ESTILOS ----------------- */ }
 {/* ----------------- COMPONENTES ----------------- */ }
 import ButtonAnimate from '../../components/ButtonAnimate'
-import Tables from "../../components/Tables";
+import TableInvoice from '../../components/TableNew';
 
 const Invoice = () => {
 
-    const [factures, setRows] = useState([]);
+    const [invoice, setInvoice] = useState([]);
 
     useEffect(() => {
         const searchData = async () => {
             const socio = '58500';
-            const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+            const url = `http://localhost:8000/api/allfacturas?id_procoop=${socio}`;
+            // const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
             try {
                 const responseData = await request(url, 'get');
-                setRows(responseData);
+                const rows = [];
+                for (const i in responseData) {
+                  responseData[i].list.forEach((item) => {
+                    rows.push({ ...item, account: responseData[i].data.account });
+                  });
+                }
+                setInvoice(rows);
             } catch (error) {
                 console.error("Error en la solicitud:", error);
             }
@@ -34,8 +41,8 @@ const Invoice = () => {
                     <ButtonAnimate props={{ icon: <FaQuestion className='text-white' />, text: 'Ayuda', bgIcon: 'bg-gray-400', color: 'text-white' }} />
                 </div>
             </h3>
-            <div className={`relative overflow-x-auto w-full round shadowCards rounded-xl`}>
-                <Tables columns={['Tipo', 'Factura', 'Período', 'Vencimiento', 'importe', '!', '']} rows={factures} showCheckboxes={false} />
+            <div className={`relative overflow-x-auto w-full round  rounded-xl`}>
+                <TableInvoice data={invoice} groupBy={'account'} />    
             </div>
         </div>
     )

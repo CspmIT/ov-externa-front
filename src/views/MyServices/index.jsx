@@ -13,7 +13,7 @@ import { FaWifi } from "react-icons/fa";
 import DropdownServices from '../../components/DropdownServices';
 
 const MyServices = () => {
-
+    const entorno = import.meta.env.VITE_APP_ENTORNO;
     const [services, setRowsServices] = useState('');
     useEffect(() => {
         const searchData = async () => {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Button = ({ type, props }) => {
+const Button = ({ type, children, onclick, props }) => {
   return (
-    <button type={type} className={`${props?.class ? props.class : ""} py-2.5 px-4 font-semibold AeromaticsRegular rounded-xl shadow-md`}>
-      {props?.text || props?.children}
+    <button type={type} onClick={onclick} className={`${props?.class ? props.class : ""} py-2.5 px-4 font-semibold AeromaticsRegular rounded-xl shadow-md`}>
+      {props?.text || children}
     </button>
   );
 };

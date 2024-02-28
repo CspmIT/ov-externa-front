@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const DropdownImage = ({ props }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const navigator = useNavigate();'/login'
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -11,6 +13,7 @@ const DropdownImage = ({ props }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("usuario");
+    navigator('/login')
     window.location.reload();
   };
 
@@ -25,12 +28,10 @@ const DropdownImage = ({ props }) => {
           aria-haspopup="true"
           onClick={toggleDropdown}
         >
-          <span className="absolute -inset-1.5"></span>
-          <span className="sr-only">Open user menu</span>
           <img
             className="h-8 w-8 rounded-full"
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt=""
+            alt="imagen de perfil"
           />
         </button>
       </div>
