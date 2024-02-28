@@ -19,8 +19,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const MyServices = () => {
-  const [urlConsult, setUrlConsult] = useState("http://localhost:8000");
-  if (import.meta.env.VITE_APP_ENTORNO != "local") {
+  const [urlConsult, setUrlConsult] = useState("http://cooptech.com.ar:30888");
+  if (import.meta.env.VITE_APP_ENTORNO == "local") {
     setUrlConsult(import.meta.env.VITE_APP_URL);
   }
   const [services, setRowsServices] = useState("");

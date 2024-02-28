@@ -44,8 +44,8 @@ const Home = () => {
   useEffect(() => {
     searchData();
   }, []);
-  const [urlConsult, setUrlConsult] = useState("http://localhost:8000");
-  if (import.meta.env.VITE_APP_ENTORNO != "local") {
+  const [urlConsult, setUrlConsult] = useState("http://cooptech.com.ar:30888");
+  if (import.meta.env.VITE_APP_ENTORNO == "local") {
     setUrlConsult(import.meta.env.VITE_APP_URL);
   }
   const searchData = async () => {
