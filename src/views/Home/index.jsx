@@ -20,6 +20,7 @@ import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import TableInvoice from "../../components/TableNew";
 import ButtonFloating from "../../components/ButtonFloating";
+import { Skeleton } from "@mui/material";
 
 const Home = () => {
   var level = JSON.parse(localStorage.getItem("usuario")).level;
@@ -39,13 +40,17 @@ const Home = () => {
     setstatusColorA(status == "active" ? `dark:bg-zinc-800 bg-gray-200` : `bg-white dark:bg-zinc-900`);
     setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
   };
-const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     searchData();
   }, []);
+  const [urlConsult, setUrlConsult] = useState("http://localhost:8000");
+  if (import.meta.env.VITE_APP_ENTORNO != "local") {
+    setUrlConsult(import.meta.env.VITE_APP_URL);
+  }
   const searchData = async () => {
     const socio = "58500";
-    const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
+    const url = `${urlConsult}/api/facturas?id_procoop=${socio}`;
     try {
       const responseData = await request(url, "GET");
       const rows = [];
@@ -237,7 +242,9 @@ const navigate = useNavigate();
             />
             <Card
               props={{
-                onclick: () => { navigate('/Invoice') },
+                onclick: () => {
+                  navigate("/Invoice");
+                },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "FACTURAS",
@@ -251,7 +258,9 @@ const navigate = useNavigate();
             />
             <Card
               props={{
-                onclick: () => { navigate('/Payments') },
+                onclick: () => {
+                  navigate("/Payments");
+                },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "PAGOS",
@@ -265,7 +274,9 @@ const navigate = useNavigate();
             />
             <Card
               props={{
-                onclick: () => { navigate('/MyServices') },
+                onclick: () => {
+                  navigate("/MyServices");
+                },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "SERVICIOS",
@@ -279,7 +290,9 @@ const navigate = useNavigate();
             />
             <Card
               props={{
-                onclick: () => { navigate('/MyServices') },
+                onclick: () => {
+                  navigate("/MyServices");
+                },
                 phone: "hidden",
                 title: "Mis",
                 subtitle: "CONSUMOS",
@@ -293,16 +306,21 @@ const navigate = useNavigate();
             />
           </div>
 
-          <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl p-10 bg-white dark:bg-zinc-700">
-            <h3 className="w-full text-left mb-5">
-              Facturas Impagas
-              <div onClick={swalHelp} className="float-right flex">
-                <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
-              </div>
-            </h3>
-            <div className={`relative overflow-x-auto w-full rounded-xl`}>
-              <TableInvoice data={invoices} groupBy={'account'} checkbox={true} amountPay={handleAmountPay} />
+          <div className="flex w-full justify-between flex-wrap mt-10  rounded-xl p-10 bg-white dark:bg-zinc-700">
+            <h3 className=" text-left mb-5">Facturas Impagas</h3>
+            <div onClick={swalHelp} className="float-right flex">
+              <ButtonAnimate props={{ icon: <FaQuestion className="text-white" />, text: "Ayuda", bgIcon: "bg-gray-400", color: "text-white" }} />
             </div>
+            {invoices.length < 1 ? (
+              <>
+                <Skeleton variant="rectangular" width={"100%"} height={50} className="mb-1" />
+                <Skeleton variant="rectangular" width={"100%"} height={200} />
+              </>
+            ) : (
+              <div className={`relative overflow-x-auto w-full rounded-xl`}>
+                <TableInvoice data={invoices} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />
+              </div>
+            )}
             {amountpay > 0 ? (
               <ButtonFloating>
                 <p className="p-0 m-0">Pagar</p>

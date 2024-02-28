@@ -4,6 +4,7 @@ import { FaCircle, FaBolt, FaArrowLeft } from "react-icons/fa";
 import Card from '../../components/Card';
 import ButtonAnimate from '../../components/ButtonAnimate';
 import request from "../../routes/request";
+import LoaderComponent from '../../components/Loader';
 
 const Detail = () => {
     const location = useLocation();
@@ -27,6 +28,7 @@ const Detail = () => {
     
     return (
         <div>
+            {/* <LoaderComponent /> */}
             <h2 className='text-center m-5'>Servicio: {NameService}</h2>
             <h3 className='w-full text-left mb-5'>
                 <div className='float-right'>
