@@ -21,8 +21,8 @@ const Invoice = () => {
   useEffect(() => {
     const searchData = async () => {
       const socio = "58500";
-      const url = `http://localhost:8000/api/allfacturas?id_procoop=${socio}`;
-      // const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+      //const url = `http://localhost:8000/api/allfacturas?id_procoop=${socio}`;
+      const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
       try {
         const responseData = await request(url, "get");
         const rows = [];
