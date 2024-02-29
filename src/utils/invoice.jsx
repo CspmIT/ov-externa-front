@@ -1,0 +1,161 @@
+import { Box } from "@mui/material";
+import request from "../routes/request";
+import { Circle, Print } from "@mui/icons-material";
+import Button from "..//components/Button";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+
+export const columns = [
+  {
+    header: "Cuenta",
+    accessorKey: "account",
+  },
+  {
+    header: "Tipo",
+    accessorKey: "type",
+  },
+  {
+    header: "Factura",
+    accessorKey: "nrovoucher",
+  },
+  {
+    header: "Periodo",
+    accessorKey: "period",
+  },
+  {
+    header: "Vencimiento",
+    accessorKey: "vto",
+  },
+  {
+    header: "Importe",
+    accessorKey: "amount",
+    size: 45,
+    Cell: ({ row, cell }) => {
+      const { darkMode } = useContext(UserContext);
+      if (!row.original.subRows) {
+        return (
+          <Box
+            component="span"
+            sx={() => ({
+              color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+              fontWeight: "bold",
+              fontSize: "15px",
+            })}
+          >
+            {cell.getValue()?.toLocaleString?.("es-AR", {
+              style: "currency",
+              currency: "ARS",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Box>
+        );
+      }
+    },
+  },
+  {
+    header: "",
+    accessorKey: "status",
+    disableFilters: true,
+    size: 15,
+    enableGlobalFilter: false,
+    Cell: ({ row }) => {
+      if (!row.original.subRows) {
+        return (
+          <div>
+            <Circle className={`${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />
+          </div>
+        );
+      }
+    },
+  },
+  {
+    header: "",
+    accessorKey: "url",
+    disableFilters: true,
+    enableGlobalFilter: false,
+    size: 15,
+    Cell: ({ row }) => {
+      if (row.original.url) {
+        return (
+          <Button
+            props={{ class: "bg-blue-500 rounded text-center   text-white " }}
+            onclick={() => {
+              controlUrl(`${row.original?.url ? row.original?.url : undefined}`);
+            }}
+          >
+            <Print />
+          </Button>
+        );
+      }
+    },
+  },
+];
+
+export const InvoiceDeus = async () => {
+  const socio = "58500";
+  const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
+  try {
+    const responseData = await request(url, "GET");
+    const rows = [];
+    for (const i in responseData) {
+      responseData[i].list.forEach((item) => {
+        rows.push({ ...item, account: responseData[i].data.account });
+      });
+    }
+    return rows;
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+  }
+};
+
+export const controlUrl = async (url) => {
+  const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+  try {
+    const response = await axios({
+      method: "GET",
+      url: urlConsulta,
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+    });
+    window.open(url, "_blank");
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "La factura aun no se encuentra disponible",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const searchAllInvoice = async () => {
+  const socio = "903534";
+  const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+  try {
+    const responseData = await request(url, "get");
+    const rows = [];
+    for (const i in responseData) {
+      responseData[i].list.forEach((item) => {
+        rows.push({ ...item, account: responseData[i].data.account });
+      });
+    }
+    return rows;
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+  }
+};
+
+export const calcValues = (table) => {
+  let values = 0;
+  let value2 = 0;
+  table.getCoreRowModel().rows.forEach((element) => {
+    value2 += element.original.amount;
+  });
+  table.getSelectedRowModel().rows.forEach((element) => {
+    values += element.original.amount;
+  });
+  values = values.toFixed(2);
+  value2 = value2.toFixed(2);
+  return [values, value2];
+};

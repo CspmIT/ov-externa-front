@@ -1,44 +1,33 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import request from "../../routes/request";
 {
   /* ----------------- ICONOS ----------------- */
 }
 import { FaQuestion } from "react-icons/fa";
 {
-  /* ----------------- ESTILOS ----------------- */
-}
-{
   /* ----------------- COMPONENTES ----------------- */
 }
 import ButtonAnimate from "../../components/ButtonAnimate";
-import TableInvoice from "../../components/TableNew";
+import TableNew from "../../components/TableNew";
 import LoaderComponent from "../../components/Loader";
+import { columns, searchAllInvoice } from "../../utils/invoice";
 
 const Invoice = () => {
-  const [invoice, setInvoice] = useState([]);
+  const [invoice, setInvoices] = useState([]);
+
 
   useEffect(() => {
-    const searchData = async () => {
-      const socio = "58500";
-      //const url = `http://localhost:8000/api/allfacturas?id_procoop=${socio}`;
-      const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+    const allInvoice = async () => {
       try {
-        const responseData = await request(url, "get");
-        const rows = [];
-        for (const i in responseData) {
-          responseData[i].list.forEach((item) => {
-            rows.push({ ...item, account: responseData[i].data.account });
-          });
-        }
-
-        setInvoice(rows);
+        const data = await searchAllInvoice();
+        setInvoices(data);
       } catch (error) {
-        console.error("Error en la solicitud:", error);
+        console.error('Error al obtener datos:', error);
       }
     };
-    searchData();
+    allInvoice(); 
   }, []);
+
 
   return (
     <div className="flex w-full flex-wrap mt-10 justify-center rounded-xl pt-5 p-10 bg-white dark:bg-zinc-800">
@@ -50,7 +39,7 @@ const Invoice = () => {
       </h3>
       {invoice.length > 0 ? (
         <div className={`relative overflow-x-auto w-full round  rounded-xl`}>
-          <TableInvoice data={invoice} groupBy={"account"} />
+          <TableNew data={invoice} columns={columns}  groupBy={"account"} />
         </div>
       ) : (
         <LoaderComponent />
