@@ -125,7 +125,7 @@ const Home = () => {
                     color: "text-red-500",
                     bgIcon: "bg-red-300",
                     colorIcon: "text-res-900",
-                    bg: "bg-white",
+                    bg: "bg-white", 
                     positionBtn: "absolute",
                     widht: "w-auto",
                   }}
