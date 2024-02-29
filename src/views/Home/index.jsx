@@ -44,13 +44,9 @@ const Home = () => {
   useEffect(() => {
     searchData();
   }, []);
-  const [urlConsult, setUrlConsult] = useState("http://cooptech.com.ar:30888");
-  if (import.meta.env.VITE_APP_ENTORNO == "local") {
-    setUrlConsult(import.meta.env.VITE_APP_URL);
-  }
   const searchData = async () => {
     const socio = "58500";
-    const url = `${urlConsult}/api/facturas?id_procoop=${socio}`;
+    const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
     try {
       const responseData = await request(url, "GET");
       const rows = [];

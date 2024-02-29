@@ -19,15 +19,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const MyServices = () => {
-  const [urlConsult, setUrlConsult] = useState("http://cooptech.com.ar:30888");
-  if (import.meta.env.VITE_APP_ENTORNO == "local") {
-    setUrlConsult(import.meta.env.VITE_APP_URL);
-  }
   const [services, setRowsServices] = useState("");
   useEffect(() => {
     const searchData = async () => {
       const socio = "58500";
-      const url = `${urlConsult}/api/getService?id_procoop=${socio}`;
+      const url = `http://cooptech.com.ar:30888/api/getService?id_procoop=${socio}`;
       try {
         const response = await axios({
           method: "GET",
