@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { useTranslation } from "react-i18next";
 {
   /* ----------------- ICONOS ----------------- */
 }
@@ -19,7 +18,6 @@ import Cardstyles from "../../components/Card/Card.module.css";
 import Card from "../../components/Card";
 
 const Information = () => {
-  const { t } = useTranslation();
 
   const [dropMode, setdropMode] = useState("hidden");
   const [iconMode, seticonMode] = useState(<IoMdArrowDropdown className="float-end" />);

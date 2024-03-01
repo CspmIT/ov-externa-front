@@ -1,26 +1,59 @@
-import React from 'react'
-import { Bar } from 'react-chartjs-2';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
-const index = ({ data, labels }) => {
-    const colorPalette = ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0', '#FF9800', '#2196F3'];
-    const dynamicColors = colorPalette.slice(0, data.length);
-    const barChartData = {
-        labels: labels,
-        datasets: [
-            {
-                data: data,
-                backgroundColor: dynamicColors,
-            },
-        ],
-    };
-    // const animatedOptions = {
-    //     animation: {
-    //         animateRotate: false,
-    //         animateScale: false,
-    //         duration: 5000,
-    //     },
-    // };
-    return <Bar data={barChartData}  />;
+const BarChar = ({ ...prop }) => {
+  const infoGraf = prop.data;
+  const { darkMode } = useContext(UserContext);
+  const options = {
+    title: {
+      text: `${prop.title ?? "Grafico"}`,
+      style: { color: !darkMode ? "#fff" : "#000000", fontSize: "18px" },
+    },
+    xAxis: {
+      labels: {
+        style: {
+          color: !darkMode ? "#fff" : "#000000",
+        },
+      },
+      style: { color: !darkMode ? "#fff" : "#000000" },
+      lineColor: !darkMode ? "#fff" : "#000000",
+      categories: infoGraf.label,
+    },
+    yAxis: {
+      title:{
+        text: `Valores (${prop.nameSeria})`,
+        style:{
+          color: !darkMode ? "#fff" : "#000000",
+          fontSize: '1rem'
+        }
+      },
+      labels: {
+        style: {
+          color: !darkMode ? "#fff" : "#000000",
+        },
+      },
+    },
+    chart: {
+      backgroundColor: "transparent",
+
+    },
+    legend:{
+      itemStyle: {"color":!darkMode ? "#fff" : "#000000", "fontSize": '1rem'},
+    },
+    accessibility: {
+      enabled: false,
+    },
+
+    series: [
+      {
+        name: `${prop.nameSeria}`,
+        type: "column",
+        data: infoGraf.data,
+      },
+    ],
+  };
+  return <HighchartsReact highcharts={Highcharts} options={options} />;
 };
-
-export default index
+export default BarChar;

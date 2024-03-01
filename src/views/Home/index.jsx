@@ -319,6 +319,7 @@ const Home = () => {
                 <p className="p-0 m-0">$ {amountpay}</p>
               </ButtonFloating>
             ) : null}
+
           </div>
         </>
       )}
