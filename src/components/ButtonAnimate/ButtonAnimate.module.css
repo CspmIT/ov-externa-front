@@ -26,11 +26,11 @@
 }
 
 .text {
-  position: absolute;
-  right: 0%;
+  position: relative;
+  right: 0;
   width: 0%;
   opacity: 0;
-  font-size: 0.7em;
+  font-size: 1em;
   font-weight: 600;
   transition-duration: .3s;
   font-family: "Roboto-Condensed";
@@ -51,6 +51,7 @@
 .HoverAnimate:hover .text {
   opacity: 1;
   width: 70%;
+  padding-left: 0.8rem;
   transition-duration: .3s;
   padding-right: 10px;
 }

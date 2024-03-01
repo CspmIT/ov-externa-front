@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import request from "../../routes/request";
 /* ----------------- ICONOS ----------------- */
 
 import { LuDollarSign } from "react-icons/lu";
@@ -18,11 +17,12 @@ import ButtonAnimate from "../../components/ButtonAnimate";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
-import TableInvoice from "../../components/TableNew";
+import TableNew from "../../components/TableNew";
 import ButtonFloating from "../../components/ButtonFloating";
 import { Skeleton } from "@mui/material";
-
+import { columns, InvoiceDeus } from '../../utils/invoice';
 const Home = () => {
+  
   var level = JSON.parse(localStorage.getItem("usuario")).level;
   const swalHelp = () => {
     const modal = document.getElementById("alertHelp");
@@ -30,6 +30,7 @@ const Home = () => {
   };
   const [invoices, setInvoices] = useState([]);
   const [amountpay, setAmountpay] = useState(0);
+  const [amountTotalpay, setAmountTotalpay] = useState(0);
   const [statusModeA, setstatusModeA] = useState("");
   const [statusModeI, setstatusModeI] = useState("hidden");
   const [statusColorA, setstatusColorA] = useState(`dark:bg-zinc-800 bg-gray-200 `);
@@ -42,27 +43,22 @@ const Home = () => {
   };
   const navigate = useNavigate();
   useEffect(() => {
-    searchData();
-  }, []);
-  const searchData = async () => {
-    const socio = "58500";
-    const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
-    try {
-      const responseData = await request(url, "GET");
-      const rows = [];
-      for (const i in responseData) {
-        responseData[i].list.forEach((item) => {
-          rows.push({ ...item, account: responseData[i].data.account });
-        });
+    const invoiceList = async () => {
+      try {
+        const data = await InvoiceDeus();
+        setInvoices(data);
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
       }
-      setInvoices(rows);
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
+    };
+
+    invoiceList(); // Llama a la función asíncrona inmediatamente
+  }, []);
   const handleAmountPay = (amount) => {
-    setAmountpay(amount);
+    setAmountpay(amount[0]);
+    setAmountTotalpay(amount[1]);
   };
+  
   return (
     <div className="flex flex-wrap w-full">
       {level == 1 ? (
@@ -227,7 +223,7 @@ const Home = () => {
               props={{
                 phone: "",
                 title: "SALDO",
-                subtitle: "$35.000",
+                subtitle: `$${amountTotalpay}`,
                 icon: <LuDollarSign className="w-full" />,
                 color: "text-red-500",
                 bgIcon: "bg-red-400",
@@ -314,15 +310,16 @@ const Home = () => {
               </>
             ) : (
               <div className={`relative overflow-x-auto w-full rounded-xl`}>
-                <TableInvoice data={invoices} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />
+                <TableNew data={invoices} columns={columns} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />
               </div>
-            )}
+            )} 
             {amountpay > 0 ? (
               <ButtonFloating>
                 <p className="p-0 m-0">Pagar</p>
                 <p className="p-0 m-0">$ {amountpay}</p>
               </ButtonFloating>
             ) : null}
+
           </div>
         </>
       )}
