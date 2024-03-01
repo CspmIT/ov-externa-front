@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import request from "../routes/request";
-import { Circle, Print } from "@mui/icons-material";
+import { Circle, FindInPage, Print } from "@mui/icons-material";
 import Button from "..//components/Button";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -81,12 +81,12 @@ export const columns = [
       if (row.original.url) {
         return (
           <Button
-            props={{ class: "bg-blue-500 rounded text-center   text-white " }}
+            props={{ class: "bg-blue-500 rounded text-center py-0.7 px-1.5 text-white " }}
             onclick={() => {
               controlUrl(`${row.original?.url ? row.original?.url : undefined}`);
             }}
           >
-            <Print />
+            <FindInPage />
           </Button>
         );
       }

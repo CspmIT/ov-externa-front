@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 const ButtonAnimate = ({...props}) => {
     return (
-        <NavLink to={props.to ?? ""} className={`${styles.BtnAnimate} ${props.bgIcon ?? ''} ${props.animation ? '' : styles.HoverAnimate}`}>
+        <NavLink onClick={props.onClick} to={props.to ?? ""} className={`${styles.BtnAnimate} ${props.bgIcon ?? ''} ${props.animation ? '' : styles.HoverAnimate}`}>
             <span className={`${styles.sign}`}>
                 {props.icon ?? ''}
             </span>
