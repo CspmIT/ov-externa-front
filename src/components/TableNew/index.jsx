@@ -114,7 +114,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     muiTablePaperProps: {
       sx: {
         margin: "10px",
-        boxShadow: `2px 3px 5px 0px #0000007f`,
+        boxShadow: `2px 3px 5px 0px #00000046`,
         borderRadius: "0.75rem",
       },
     },

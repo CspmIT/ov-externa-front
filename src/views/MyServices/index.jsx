@@ -97,7 +97,7 @@ const MyServices = () => {
   };
 
   return (
-    <div className="">
+    <div >
       <h2 className="text-center m-5">Mis Servicios</h2>
       <hr />
       <div className={`flex mt-2 mb-5 rounded-xl p-5 bg-gray-200 dark:bg-zinc-800`}>
