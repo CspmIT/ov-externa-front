@@ -8,11 +8,11 @@ import { FaFileInvoiceDollar, FaReceipt, FaChartBar, FaQuestion, FaExchangeAlt, 
 
 /* ----------------- ESTILOS ----------------- */
 
-import styles from "../../components/Card/Card.module.css";
+import styles from "../../components/CardBasic/Card.module.css";
 
 /* ----------------- COMPONENTES ----------------- */
 
-import Card from "../../components/Card";
+import CardBasic from "../../components/CardBasic";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
@@ -70,7 +70,7 @@ const Home = () => {
                     <div className="flex w-full flex-wrap">
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/LevelUp2"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "",
                                         title: "Subir al",
@@ -88,7 +88,7 @@ const Home = () => {
                         </div>
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/Information"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "hidden",
                                         title: "Información",
@@ -106,7 +106,7 @@ const Home = () => {
                         </div>
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/LevelUp2"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "hidden",
                                         title: "Mi",
@@ -124,7 +124,7 @@ const Home = () => {
                         </div>
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/LevelUp2"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "hidden",
                                         title: "Turnos",
@@ -217,7 +217,7 @@ const Home = () => {
                                 </div>
                             </div>
                         </div>
-                        <Card
+                        <CardBasic
                             props={{
                                 phone: "",
                                 title: "SALDO",
@@ -230,7 +230,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/Invoice");
@@ -246,7 +246,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/Payments");
@@ -262,7 +262,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/MyServices");
@@ -278,7 +278,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/MyServices");

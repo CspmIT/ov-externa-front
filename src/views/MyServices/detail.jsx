@@ -29,6 +29,9 @@ const Detail = () => {
         };
         DetailService();
     }, [consuption]);
+
+    console.log(datos.graficData);
+
     return (
         <CardCustom>
             {datos.length == 0 ? (
