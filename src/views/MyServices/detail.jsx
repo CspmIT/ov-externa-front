@@ -7,11 +7,13 @@ import BarChar from "../../components/BarChart";
 import { searchDetailService } from "../../utils/services";
 import CardCustom from "../../components/CardCustom";
 import { Bolt } from "@mui/icons-material";
+import { obtenerNombreDelMes } from "../../utils/dateFunction";
 const Detail = () => {
     const location = useLocation();
     const service = location.state?.parametro;
     const cod_sum = location.state?.codSum;
     const NameService = location.state?.NameService;
+    const [mesInvoice, setMesInvoice] = useState([]);
     const [datosGral, setDatosGral] = useState([]);
     const [datosGraf, setDatosGraf] = useState([]);
     const [difConsumo, setDifConsumo] = useState(null);
@@ -23,25 +25,28 @@ const Detail = () => {
                 const body = { cod_sum, service };
                 const data = await searchDetailService(body);
                 const color = data.difCosumo < 0 ? "red" : "green";
-                console.log(data)
                 setConsuption(color);
                 setDatosGral(data.generalData ? data.generalData : data);
-                setDatosGraf(data.graficData ? data.graficData : []);
-                setDifConsumo(datos.difCosumo ? datos.difCosumo : null)
+                if(data.graficData){
+                    setDatosGraf(data.graficData ? data.graficData : []);
+                    const nameMonth =obtenerNombreDelMes(data.graficData.label.slice(-1)[0].split('/')[0]);
+                    setMesInvoice(nameMonth);
+                }
+                setDifConsumo(data.difCosumo ? data.difCosumo : null)
+
             } catch (error) {
                 console.error("Error al obtener datos:", error);
             }
         };
         DetailService();
     }, [consuption]);
-    console.log(datosGraf.length)
     return (
         <CardCustom>
             {datosGral.length == 0 ? (
                 <LoaderComponent />
             ) : (
                 <>
-                    <div className="flex flex-wrap p-6 w-full justify-center items-center">
+                    <div className="flex relative flex-wrap p-6 w-full justify-center items-center">
                         <h2 className="text-center m-0">Servicio: {NameService}</h2>
                         <div className="absolute right-8">
                             <ButtonAnimate to="/MyServices" icon={<FaArrowLeft className="text-white text-xl" />} text={"volver"} bgIcon={"bg-blue-400 mr-5"} color={"text-white"} />
@@ -70,9 +75,9 @@ const Detail = () => {
                         <div className="w-1/4 px-6">
                             {difConsumo ? (
                             <CardCustom className={`relative p-5 me-4 mb-5 rounded-xl flex flex-col items-center bg-${consuption}-200 border-${consuption}-400 border-solid border-2 `}>
-                                <label className={`text-xl text-${consuption}-500`}>{datos.difCosumo < 0 ? "ATENCIÓN!" : "FELICIDADES!"}</label>
+                                <label className={`text-xl text-${consuption}-500`}>{difConsumo < 0 ? "ATENCIÓN!" : "FELICIDADES!"}</label>
                                 <p className={`text-${consuption}-400`}>
-                                    En Febrero de 2024 consumiste 192kW <b className={`text-${consuption}-500`}>{datos.difCosumo < 0 ? "mas" : "menos"}</b> que en Febrero de 2023.
+                                    En {mesInvoice} de 2024 consumiste {parseFloat((difConsumo < 0 ? (difConsumo *-1): difConsumo)).toFixed(2)}kW <b className={`text-${consuption}-500`}>{difConsumo < 0 ? "mas" : "menos"}</b> que en Febrero de 2023.
                                 </p>
                             </CardCustom>
                             ): null}

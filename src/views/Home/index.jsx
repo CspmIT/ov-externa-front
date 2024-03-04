@@ -19,7 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TableNew from "../../components/TableNew";
 import ButtonFloating from "../../components/ButtonFloating";
 import ModalHelpHome from "../../components/ModalHelpHome";
-import { Modal, Skeleton } from "@mui/material";
+import { Modal } from "@mui/material";
 import { columns, InvoiceDeus } from "../../utils/invoice";
 import LoaderComponent from "../../components/Loader";
 const Home = () => {
