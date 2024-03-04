@@ -2,8 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
-import Cardstyles from '../../components/Card/Card.module.css'
-import Card from '../../components/Card';
+import Cardstyles from '../../components/CardBasic/Card.module.css'
+import CardBasic from '../../components/CardBasic';
 import {useNavigate } from 'react-router-dom';
 
 const DropdownServices = ({ props }) => {
@@ -51,7 +51,7 @@ const DropdownServices = ({ props }) => {
                     {Active.length > 0 ? (
                         Active.map(([item, index], rowIndex) => (
                             <div key={index.account} className='w-full md:w-1/4 py-5'>
-                                <a onClick={() => handleDetalleClick(index.numService, index.account, props.title)}><Card props={{ phone: '', title: <p className='text-center'> {index.address} <br /> {index.detail ? index.detail : ''}  </p>, subtitle: ` Cuenta N°: ${index.account}`, icon: props.icon, color: props.color, bgIcon: props.bgIcon, colorIcon: props.colorIcon, widht: 'w-auto', bg: 'bg-white', shadow: 'false', statusService: index.status }} /></a>
+                                <a onClick={() => handleDetalleClick(index.numService, index.account, props.title)}><CardBasic props={{ phone: '', title: <p className='text-center'> {index.address} <br /> {index.detail ? index.detail : ''}  </p>, subtitle: ` Cuenta N°: ${index.account}`, icon: props.icon, color: props.color, bgIcon: props.bgIcon, colorIcon: props.colorIcon, widht: 'w-auto', bg: 'bg-white', shadow: 'false', statusService: index.status }} /></a>
                             </div>
                         ))
                     ) : (
@@ -62,7 +62,7 @@ const DropdownServices = ({ props }) => {
                     {Inactive.length > 0 ? (
                         Inactive.map(([item, index], rowIndex) => (
                             <div key={index.account} className='w-full md:w-1/4 py-5'>
-                                <a onClick={() => handleDetalleClick(index.numService, index.account, props.title)}><Card props={{ phone: '', title: <p className='text-center'> {index.address} <br /> {index.detail ? index.detail : ''}  </p>, subtitle: ` Cuenta N°: ${index.account}`, icon: props.icon, color: props.color, bgIcon: props.bgIcon, colorIcon: props.colorIcon, widht: 'w-auto', bg: 'bg-white', shadow: 'false', statusService: index.status }} /></a>
+                                <a onClick={() => handleDetalleClick(index.numService, index.account, props.title)}><CardBasic props={{ phone: '', title: <p className='text-center'> {index.address} <br /> {index.detail ? index.detail : ''}  </p>, subtitle: ` Cuenta N°: ${index.account}`, icon: props.icon, color: props.color, bgIcon: props.bgIcon, colorIcon: props.colorIcon, widht: 'w-auto', bg: 'bg-white', shadow: 'false', statusService: index.status }} /></a>
                             </div>
                         ))
                     ) : (

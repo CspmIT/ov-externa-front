@@ -11,11 +11,11 @@ import { IoMdArrowDropup } from "react-icons/io";
 {
   /* ----------------- ESTILOS ----------------- */
 }
-import Cardstyles from "../../components/Card/Card.module.css";
+import Cardstyles from "../../components/CardBasic/Card.module.css";
 {
   /* ----------------- COMPONENTES ----------------- */
 }
-import Card from "../../components/Card";
+import CardBasic from "../../components/CardBasic";
 
 const Information = () => {
 
@@ -34,7 +34,7 @@ const Information = () => {
         <div className={`w-full flex flex-wrap justify-center ${dropMode}`}>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/SubirNivel3.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo subo a ",
@@ -52,7 +52,7 @@ const Information = () => {
           </div>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/CambiarPlanInternet.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo cambio mi ",
@@ -70,7 +70,7 @@ const Information = () => {
           </div>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/CambiarCredencialesWiFi.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo cambio mis ",
@@ -88,7 +88,7 @@ const Information = () => {
           </div>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/ActivarPackTV.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo activo un ",
@@ -140,13 +140,13 @@ const Information = () => {
           </div>
         </div>
         <div className="w-full md:w-1/2">
-          <Card props={{ phone: "", title: <span>Adhesión Débito / Automático / Tarjeta de Crédito</span>, widht: "w-auto", bg: "bg-white", positionBtn: "absolute" }} />
+          <CardBasic props={{ phone: "", title: <span>Adhesión Débito / Automático / Tarjeta de Crédito</span>, widht: "w-auto", bg: "bg-white", positionBtn: "absolute" }} />
         </div>
         <div className="w-full md:w-1/2">
-          <Card props={{ phone: "", title: <span>Adhesión Débito / Automático / Caja de Ahorro - CC</span>, widht: "w-auto", bg: "bg-white", positionBtn: "absolute" }} />
+          <CardBasic props={{ phone: "", title: <span>Adhesión Débito / Automático / Caja de Ahorro - CC</span>, widht: "w-auto", bg: "bg-white", positionBtn: "absolute" }} />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -179,7 +179,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -214,7 +214,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -249,7 +249,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -270,7 +270,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -290,7 +290,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -311,7 +311,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -331,7 +331,7 @@ const Information = () => {
           />
         </div>
         <div className="w-full md:w-1/3">
-          <Card
+          <CardBasic
             props={{
               phone: "",
               subtitle: (
@@ -360,7 +360,7 @@ const Information = () => {
         <div className={`w-full flex flex-wrap justify-center`}>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/RegistroV2.0.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo me ",
@@ -378,7 +378,7 @@ const Information = () => {
           </div>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/SubirDeNivelV1.0.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo subo de ",
@@ -396,7 +396,7 @@ const Information = () => {
           </div>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/EfectuarPagosV3.0.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo realizo un ",
@@ -414,7 +414,7 @@ const Information = () => {
           </div>
           <div className="w-full md:w-1/2 xl:w-1/4">
             <a href="https://app.coopmorteros.coop/public/documentos/TurnosOnlineV2.0.pdf" target="_bank">
-              <Card
+              <CardBasic
                 props={{
                   phone: "",
                   title: "¿Cómo reservo un ",

@@ -56,7 +56,7 @@ const Navbar = () => {
         { name: "Mis Facturas", link: "/Invoice" },
         { name: "Mis Pagos", link: "/Payments" },
         { name: "Mis Servicios", link: "/MyServices" },
-        { name: "Mis Consumos", link: "/MyServices" },
+        { name: "Mis Consumos", link: "/MyConsumption" },
       ],
     },
     { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
