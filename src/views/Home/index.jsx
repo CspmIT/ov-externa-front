@@ -21,6 +21,7 @@ import ButtonFloating from "../../components/ButtonFloating";
 import ModalHelpHome from "../../components/ModalHelpHome";
 import { Modal, Skeleton } from "@mui/material";
 import { columns, InvoiceDeus } from "../../utils/invoice";
+import LoaderComponent from "../../components/Loader";
 const Home = () => {
     var level = JSON.parse(localStorage.getItem("usuario")).level;
     const [invoices, setInvoices] = useState([]);
@@ -305,10 +306,9 @@ const Home = () => {
                             </div>
                         </div>
                         {invoices.length < 1 ? (
-                            <>
-                                <Skeleton variant="rectangular" width={"100%"} height={50} className="mb-1" />
-                                <Skeleton variant="rectangular" width={"100%"} height={200} />
-                            </>
+                          <div className="flex w-full justify-center items-center">
+                            <LoaderComponent/>
+                          </div>
                         ) : (
                             <div className={`relative overflow-x-auto w-full rounded-xl`}>
                                 <TableNew data={invoices} columns={columns} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />

@@ -1,6 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { FaCircle, FaBolt, FaArrowLeft } from "react-icons/fa";
+import { FaCircle, FaArrowLeft } from "react-icons/fa";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import LoaderComponent from "../../components/Loader";
 import BarChar from "../../components/BarChart";
