@@ -12,7 +12,9 @@ const Detail = () => {
     const service = location.state?.parametro;
     const cod_sum = location.state?.codSum;
     const NameService = location.state?.NameService;
-    const [datos, setDatos] = useState([]);
+    const [datosGral, setDatosGral] = useState([]);
+    const [datosGraf, setDatosGraf] = useState([]);
+    const [difConsumo, setDifConsumo] = useState(null);
     const unusedVariable = `border-red-400 border-green-400 bg-red-200 bg-green-200`;
     const [consuption, setConsuption] = useState("");
     useEffect(() => {
@@ -20,18 +22,22 @@ const Detail = () => {
             try {
                 const body = { cod_sum, service };
                 const data = await searchDetailService(body);
-                const color = datos.difCosumo < 0 ? "red" : "green";
+                const color = data.difCosumo < 0 ? "red" : "green";
+                console.log(data)
                 setConsuption(color);
-                setDatos(data);
+                setDatosGral(data.generalData ? data.generalData : data);
+                setDatosGraf(data.graficData ? data.graficData : []);
+                setDifConsumo(datos.difCosumo ? datos.difCosumo : null)
             } catch (error) {
                 console.error("Error al obtener datos:", error);
             }
         };
         DetailService();
     }, [consuption]);
+    console.log(datosGraf.length)
     return (
         <CardCustom>
-            {datos.length == 0 ? (
+            {datosGral.length == 0 ? (
                 <LoaderComponent />
             ) : (
                 <>
@@ -45,7 +51,7 @@ const Detail = () => {
                     <div className={`flex mt-2 mb-3 rounded-xl p-5 bg-gray-200 dark:bg-zinc-800`}>
                         <p className="m-0 text-lg space-x-6">
                             <b>Cuenta Nº:</b>
-                            {datos.generalData[0].account} <b>Domicilio:</b> {datos.generalData[0].address} <b>Titular:</b> {datos.generalData[0].nameCustomer}
+                            {datosGral[0].account} <b>Domicilio:</b> {datosGral[0].address} <b>Titular:</b> {datosGral[0].nameCustomer}
                         </p>
                     </div>
 
@@ -62,25 +68,27 @@ const Detail = () => {
                     </div>
                     <div className="w-full flex mt-5 flex-wrap">
                         <div className="w-1/4 px-6">
+                            {difConsumo ? (
                             <CardCustom className={`relative p-5 me-4 mb-5 rounded-xl flex flex-col items-center bg-${consuption}-200 border-${consuption}-400 border-solid border-2 `}>
                                 <label className={`text-xl text-${consuption}-500`}>{datos.difCosumo < 0 ? "ATENCIÓN!" : "FELICIDADES!"}</label>
                                 <p className={`text-${consuption}-400`}>
                                     En Febrero de 2024 consumiste 192kW <b className={`text-${consuption}-500`}>{datos.difCosumo < 0 ? "mas" : "menos"}</b> que en Febrero de 2023.
                                 </p>
                             </CardCustom>
+                            ): null}
                             <CardCustom className={"relative p-3 me-4 rounded-xl flex flex-col items-center bg-zinc-500  "}>
-                                <FaCircle className={`absolute right-7 ${datos.generalData[0].status > 0 ? (datos.generalData[0].status > 1 ? "text-yellow-500" : "text-green-500") : "text-red-500"} mr-2`} />
+                                <FaCircle className={`absolute right-7 ${datosGral[0].status > 0 ? (datosGral[0].status > 1 ? "text-yellow-500" : "text-green-500") : "text-red-500"} mr-2`} />
                                 <Bolt className="!text-7xl text-zinc-400 font-bold" />
-                                <p className="mt-3 text-2xl font-semibold text-white text-center">{datos.generalData[0].titleService}</p>
-                                <p className="mt-3 mb-0 text-lg  text-zinc-200 text-center">{datos.generalData[0].category}</p>
-                                <p className=" text-lg text-zinc-200 text-center">{datos.generalData[0].detail}</p>
+                                <p className="mt-3 text-2xl font-semibold text-white text-center">{datosGral[0].titleService}</p>
+                                <p className="mt-3 mb-0 text-lg  text-zinc-200 text-center">{datosGral[0].category}</p>
+                                <p className=" text-lg text-zinc-200 text-center">{datosGral[0].detail}</p>
                             </CardCustom>
                         </div>
-                        {datos.graficData ? (
+                        {datosGraf.length != 0 ? (
                             <div className=" w-3/4 px-8  rounded-xl">
-                                <BarChar title={"Consumo de Energía Eléctrica por mes"} nameSeria={"kW/h"} data={datos.graficData} />
+                                <BarChar title={"Consumo de Energía Eléctrica por mes"} nameSeria={"kW/h"} data={datosGraf} />
                             </div>
-                        ) : undefined}
+                        ) : null}
                     </div>
                 </>
             )}
