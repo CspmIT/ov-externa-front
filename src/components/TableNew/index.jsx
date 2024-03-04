@@ -1,8 +1,9 @@
-import {  MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import {  MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import NoRegisterTable from "../NoRegisterTable";
 import { calcValues } from "../../utils/invoice";
+import { Box, Stack } from "@mui/material";
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
   
@@ -13,14 +14,15 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     expanded: true,
     sorting: [],
     grouping: [],
-    columnPinning: {
-      right: ["mrt-row-select"],
-    },
+    // columnPinning: {
+    //   right: ["mrt-row-select"],
+    // },
+    // columnOrder:[...columns.map(e=> e.accessorKey), "mrt-row-select"] ,//ordena
   };
   if(prop.pagination){
     tableInitialState.pagination =({ pageIndex: 0, pageSize: 100 });
   }
-  //constrolo si llega un agrupacion por columna
+  // //constrolo si llega un agrupacion por columna
   if (prop.groupBy) {
     tableInitialState.grouping.push(prop.groupBy);
   }
@@ -41,6 +43,13 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     enableStickyFooter: false,
     enableStickyHeader: true,
     enablePagination: prop.pagination ?? false,
+    displayColumnDefOptions: {
+      'mrt-row-expand': {
+        size: 30,
+        minSize: 10,
+        maxSize: 30,
+      },
+    },
     muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
     //HABILITACION DE ROWS
     enableBatchRowSelection: prop.checkbox ?? false,
@@ -48,12 +57,11 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     enableRowSelection: prop.checkbox ?? false,
     enableSelectAll: prop.checkbox ?? false,
     enableSubRowSelection: prop.checkbox ?? false,
-
     //HABILITACION DE COLUMNA
     //si esta true te deja copiar el campo de la tabla
     enableClickToCopy: false,
     //habilita los 3 puntos para acciones por columna
-    enableColumnActions: false,
+    enableColumnActions: true,
     //habilita hacer drag and drop aunque faltan otras opciones para que funcione al 100%
     enableColumnDragging: false,
     //habilita el poder filtrar por todas las columnas
@@ -116,7 +124,9 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
       if (data) amountPay(data);
     }
   }, [table.getState().rowSelection]);
-
+  useEffect(() => {  
+    table.setColumnOrder(['mrt-row-expand', ...columns.map(e=> e.accessorKey), "mrt-row-select"]);
+  }, [table]);
   return <MaterialReactTable table={table} />;
 };
 

@@ -11,10 +11,14 @@ export const columns = [
   {
     header: "Cuenta",
     accessorKey: "account",
+    size: 20,
+    maxSize: 20,
+    minSize: 10,
   },
   {
     header: "Tipo",
     accessorKey: "type",
+    size: 30,
   },
   {
     header: "Factura",
@@ -23,10 +27,12 @@ export const columns = [
   {
     header: "Periodo",
     accessorKey: "period",
+    size: 30,
   },
   {
     header: "Vencimiento",
     accessorKey: "vto",
+    size: 30,
   },
   {
     header: "Importe",
