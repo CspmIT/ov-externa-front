@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { IoMdArrowDropdown } from "react-icons/io";
-import { IoMdArrowDropup } from "react-icons/io";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import Cardstyles from '../../components/CardBasic/Card.module.css'
 import CardBasic from '../../components/CardBasic';
 import {useNavigate } from 'react-router-dom';

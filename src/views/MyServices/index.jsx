@@ -22,13 +22,14 @@ const MyServices = () => {
   const [services, setRowsServices] = useState("");
   useEffect(() => {
     const searchData = async () => {
-      const socio = "73070";
+      const socio = "51010";
       const url = `http://cooptech.com.ar:30888/api/getService?id_procoop=${socio}`;
       try {
         const response = await axios({
           method: "GET",
           url: url,
         });
+        console.log(response.data);
         setRowsServices(response.data);
       } catch (error) {
         Swal.fire({
