@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 import Dashboard_lvl2 from "../../components/DashBoardCustomer/Dashboard_lvl2";
-import { useNavigate } from "react-router-dom";
 import Dashboard_lvl1 from "../../components/DashBoardCustomer/Dashboard_lvl1";
 const Dashboard = () => {
     var level = JSON.parse(localStorage.getItem("usuario")).level;
