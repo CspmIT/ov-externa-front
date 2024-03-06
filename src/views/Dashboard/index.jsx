@@ -1,12 +1,15 @@
-import React from 'react'
-import Navbar from '../../components/Navbar'
-
-
+import React, { useEffect, useState } from "react";
+import Navbar from "../../components/Navbar";
+import Dashboard_lvl2 from "../../components/DashBoardCustomer/Dashboard_lvl2";
+import { useNavigate } from "react-router-dom";
+import Dashboard_lvl1 from "../../components/DashBoardCustomer/Dashboard_lvl1";
 const Dashboard = () => {
- <Navbar />
-  return (
-    <div>Dashboard</div>
-  )
-}
+    var level = JSON.parse(localStorage.getItem("usuario")).level;
+    return (
+        <>
+            {level == 1 ? <Dashboard_lvl1 /> : <Dashboard_lvl2 />}
+        </>
+    );
+};
 
-export default Dashboard
+export default Dashboard;
