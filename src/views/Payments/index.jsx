@@ -5,7 +5,7 @@ import { FaCircle } from "react-icons/fa";
 import { FaFileAlt } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa";
 {/* ----------------- ESTILOS ----------------- */ }
-import styles from '../../components/Card/Card.module.css'
+import styles from '../../components/CardBasic/Card.module.css'
 {/* ----------------- COMPONENTES ----------------- */ }
 import ButtonAnimate from '../../components/ButtonAnimate'
 

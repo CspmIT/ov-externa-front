@@ -1,6 +1,6 @@
 // import React from 'react'
 import React, { useRef } from 'react';
-import Card from '../../components/Card'
+import CardBasic from '../../components/CardBasic'
 import InputGroup from '../../components/InputGroup'
 import Button from '../../components/Button'
 import { Link } from 'react-router-dom'
@@ -77,7 +77,7 @@ const leveltres = () => {
                         <p>Revises cada dato con atención y nos confirmes con el botón <b className='text-orange-500'>Naranja</b>  si corresponde correctamente a los datos del socio o si por el contrario existen errores, con el botón <b className='text-indigo-600'>Violeta</b> . El éxito del proceso de validación dependerá de la exactitud de dicha información. </p>
                     </div>
                     <div className='w-full lg:w-2/6 p-2'>
-                        <Card
+                        <CardBasic
                             props={{
                                 phone: "",
                                 subtitle: (
@@ -174,7 +174,7 @@ const leveltres = () => {
                         <p>Para seguir con el proceso de Subir a Nivel 3, vamos a requerir que completes tus Datos Personales: nombre completo, número de documento y sexo. </p>
                     </div>
                     <div className='w-full md:px-5 mb-3'>
-                        <Card
+                        <CardBasic
                             props={{
                                 phone: "",
                                 subtitle: (

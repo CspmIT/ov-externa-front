@@ -1,154 +1,28 @@
-import { Box } from "@mui/material";
-import { MRT_ToggleDensePaddingButton, MRT_ToggleFiltersButton, MRT_ToggleGlobalFilterButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import { useContext, useEffect, useState } from "react";
+import {  MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { Circle, Print } from "@mui/icons-material";
-import Button from "../Button";
-import Swal from "sweetalert2";
-import axios from "axios";
-const TableInvoice = ({ data, amountPay, ...prop }) => {
-  const { darkMode } = useContext(UserContext);
-  const columns = [
-    {
-      header: "Cuenta",
-      accessorKey: "account",
-    },
-    {
-      header: "Tipo",
-      accessorKey: "type",
-    },
-    {
-      header: "Factura",
-      accessorKey: "nrovoucher",
-    },
-    {
-      header: "Periodo",
-      accessorKey: "period",
-    },
-    {
-      header: "Vencimiento",
-      accessorKey: "vto",
-    },
-    {
-      header: "Importe",
-      accessorKey: "amount",
-      size: 45,
-      Cell: ({ row, cell }) => {
-        if (!row.original.subRows) {
-          return (
-            <Box
-              component="span"
-              sx={() => ({
-                color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-                fontWeight: "bold",
-                fontSize: "15px",
-              })}
-            >
-              {cell.getValue()?.toLocaleString?.("es-AR", {
-                style: "currency",
-                currency: "ARS",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </Box>
-          );
-        }
-      },
-      // Footer: ({ table }) => {
-      //   const total = table
-      //     .getSelectedRowModel()
-      //     .rows.map((item) => {
-      //       return item.original.amount;
-      //     })
-      //     .reduce((a, b) => {
-      //       return a + b;
-      //     }, 0);
-      //   return (
-      //     <Box   sx={() => ({
-      //       color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-      //       fontWeight: 'bold',
-      //     })} className={"text-xl"}>
-      //       Total:
-      //       <Box color="warning.main">
-      //         {total.toLocaleString?.("es-AR", {
-      //           style: "currency",
-      //           currency: "ARS",
-      //           minimumFractionDigits: 2,
-      //           maximumFractionDigits: 2,
-      //         })}
-      //       </Box>
-      //     </Box>
-      //   );
-      // },
-    },
-    {
-      header: "",
-      accessorKey: "status",
-      disableFilters: true,
-      size: 15,
-      enableGlobalFilter: false,
-      Cell: ({ row }) => {
-        if (!row.original.subRows) {
-          return (
-            <div>
-              <Circle className={`${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />
-            </div>
-          );
-        }
-      },
-    },
-    {
-      header: "",
-      accessorKey: "url",
-      disableFilters: true,
-      enableGlobalFilter: false,
-      size: 15,
-      Cell: ({ row }) => {
-        if (row.original.url) {
-          return (
-            <Button
-              props={{ class: "bg-blue-500 rounded text-center   text-white " }}
-              onclick={() => {
-                controlUrl(`${row.original?.url ? row.original?.url : undefined}`);
-              }}
-            >
-              <Print />
-            </Button>
-          );
-        }
-      },
-    },
-  ];
+import NoRegisterTable from "../NoRegisterTable";
+import { calcValues } from "../../utils/invoice";
+import { Box, Stack } from "@mui/material";
 
-  const controlUrl = async (url) => {
-    const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
-    try {
-      const response = await axios({
-        method: "GET",
-        url: urlConsulta,
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-      });
-      window.open(url, "_blank");
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "La factura aun no se encuentra disponible",
-        showConfirmButton: true,
-      });
-    }
-  };
+const TableNew = ({ data, columns, amountPay, ...prop }) => {
+  
+  const { darkMode } = useContext(UserContext);
   //creo una constante con las configuracion inicial para poder modificar con props
   const tableInitialState = {
     density: "comfortable",
     expanded: true,
-    pagination: { pageIndex: 0, pageSize: 100 },
     sorting: [],
     grouping: [],
-    columnPinning: {
-      right: ["mrt-row-select"],
-    },
+    // columnPinning: {
+    //   right: ["mrt-row-select"],
+    // },
+    // columnOrder:[...columns.map(e=> e.accessorKey), "mrt-row-select"] ,//ordena
   };
-  //constrolo si llega un agrupacion por columna
+  if(prop.pagination){
+    tableInitialState.pagination =({ pageIndex: 0, pageSize: 100 });
+  }
+  // //constrolo si llega un agrupacion por columna
   if (prop.groupBy) {
     tableInitialState.grouping.push(prop.groupBy);
   }
@@ -168,16 +42,23 @@ const TableInvoice = ({ data, amountPay, ...prop }) => {
     enableTopToolbar: false,
     enableStickyFooter: false,
     enableStickyHeader: true,
-    enablePagination: false,
-
-    // muiTableContainerProps: { sx: { maxHeight: 50000 } },
+    //si se activa la paginacion se debe agregar
+    // enableBottomToolbar: prop.pagination ?? false,
+    enablePagination: prop.pagination ?? false,
+    displayColumnDefOptions: {
+      'mrt-row-expand': {
+        size: 30,
+        minSize: 10,
+        maxSize: 30,
+      },
+    },
+    muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
     //HABILITACION DE ROWS
     enableBatchRowSelection: prop.checkbox ?? false,
     enableMultiRowSelection: prop.checkbox ?? false,
     enableRowSelection: prop.checkbox ?? false,
     enableSelectAll: prop.checkbox ?? false,
     enableSubRowSelection: prop.checkbox ?? false,
-
     //HABILITACION DE COLUMNA
     //si esta true te deja copiar el campo de la tabla
     enableClickToCopy: false,
@@ -195,13 +76,16 @@ const TableInvoice = ({ data, amountPay, ...prop }) => {
     enableHiding: false,
     //habilita el ordenamiento de columnas osea ordenar los datos por alguna columna en especifico
     enableSorting: false,
+    //svg para cuando la tabla esta vacia
+    renderEmptyRowsFallback: () =>{
+      return <NoRegisterTable />
+    },
     muiTableBodyCellProps: () => ({
       sx: () => ({
         color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
         fontSize: "15px",
       }),
     }),
-
     muiTableBodyRowProps: ({ row }) => {
       return {
         sx: {
@@ -222,11 +106,15 @@ const TableInvoice = ({ data, amountPay, ...prop }) => {
         color: "black",
       },
     },
-
+    muiBottomToolbarProps:{
+      sx: {
+        minHeight: prop.pagination ? "3.5rem" :"2rem",
+      },
+    },
     muiTablePaperProps: {
       sx: {
         margin: "10px",
-        boxShadow: `2px 3px 5px 0px #0000007f`,
+        boxShadow: `2px 3px 5px 0px #00000046`,
         borderRadius: "0.75rem",
       },
     },
@@ -234,25 +122,18 @@ const TableInvoice = ({ data, amountPay, ...prop }) => {
       baseBackgroundColor: darkMode ? "rgba(238, 238, 238, 0.39)" : "rgba(238, 238, 238, 0.11)",
     }),
 
-    renderToolbarInternalActions: ({ table }) => (
-      <Box>
-        <MRT_ToggleGlobalFilterButton table={table} />
-        <MRT_ToggleDensePaddingButton table={table} />
-        <MRT_ToggleFiltersButton table={table} />
-      </Box>
-    ),
   });
 
   useEffect(() => {
-    let values = 0;
-    table.getSelectedRowModel().rows.forEach((element) => {
-      values += element.original.amount;
-    });
-    values = values.toFixed(2);
-    if (amountPay) amountPay(values);
+    const data = calcValues(table);
+    if(amountPay){
+      if (data) amountPay(data);
+    }
   }, [table.getState().rowSelection]);
-
+  useEffect(() => {  
+    table.setColumnOrder(['mrt-row-expand', ...columns.map(e=> e.accessorKey), "mrt-row-select"]);
+  }, [table]);
   return <MaterialReactTable table={table} />;
 };
 
-export default TableInvoice;
+export default TableNew;

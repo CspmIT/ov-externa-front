@@ -1,14 +1,15 @@
 import React from 'react'
 import styles from './ButtonAnimate.module.css'
+import { NavLink } from 'react-router-dom'
 
-const ButtonAnimate = ({props}) => {
+const ButtonAnimate = ({...props}) => {
     return (
-        <button className={`${styles.BtnAnimate} ${props.bgIcon} ${props.animation ? '' : styles.HoverAnimate}`}>
-            <div className={`${styles.sign}`}>
-                {props.icon}
-            </div>
-            <div className={`${styles.text} ${props.color}`}>{props.text}</div>
-        </button>
+        <NavLink onClick={props.onClick} to={props.to ?? ""} className={`${styles.BtnAnimate} ${props.bgIcon ?? ''} ${props.animation ? '' : styles.HoverAnimate}`}>
+            <span className={`${styles.sign}`}>
+                {props.icon ?? ''}
+            </span>
+            <span className={`${styles.text} ${props.color ?? ''}`}>{props.text ?? ''}</span>
+        </NavLink>
     )
 }
 
