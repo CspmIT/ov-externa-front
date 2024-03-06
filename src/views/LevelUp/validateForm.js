@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 //Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
     const { number_customer } = data;
-    const url = "http://localhost:8000/api/getCustomer";
+    const url = "http://cooptech.com.ar:30888/api/getCustomer";
     const res = await Axios.post(url, { customer: number_customer });
     return res.data;
 };
@@ -16,7 +16,7 @@ const updateLevel = async (data) => {
     const { id } = JSON.parse(user);
     Object.assign(data, { user: id });
     Object.assign(data, { level: 2 });
-    const url = "http://localhost:8000/api/upgradeLevelUser";
+    const url = "http://cooptech.com.ar:30888/api/upgradeLevelUser";
     const res = await Axios.patch(url, data);
     return res.data;
 };
