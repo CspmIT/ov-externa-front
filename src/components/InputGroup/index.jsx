@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styles from "./InpuGroup.module.css";
 
-const InputGroup = ({ value, onChange, showPass, props }) => {
+const InputGroup = ({ value, onChange, showPass, props, register}) => {
   return (
     <div className="mt-5">
       {props.label && <label className="block font-semibold ml-1 mb-2 dark:text-white">{props.label}</label>}
       <input
+        {...register}
         disabled={props.disabled == 'disabled' ? props.disabled : ''}
         value={value}
         onChange={onChange}
