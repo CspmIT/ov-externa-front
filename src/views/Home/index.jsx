@@ -1,21 +1,8 @@
-import { useState } from "react";
-import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar";
-import Dashboard from "../Dashboard";
+import Dashboard_lvl2 from "../../components/DashBoardCustomer/Dashboard_lvl2";
+import Dashboard_lvl1 from "../../components/DashBoardCustomer/Dashboard_lvl1";
 const Home = () => {
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("usuario");
-        return storedUser ? JSON.parse(storedUser) : null;
-      });
-    return (
-        <>
-            <Navbar />
-            <div className={`flex-grow p-2 ${user ? "sm:pl-64 pt-20" : ""} `}>
-                <Dashboard />
-            </div>
-            <Footer />
-        </>
-    );
+    var level = JSON.parse(localStorage.getItem("usuario")).level;
+    return <div className="flex flex-wrap w-full">{level == 1 ? <Dashboard_lvl1 /> : <Dashboard_lvl2 />}</div>;
 };
 
 export default Home;
