@@ -42,6 +42,8 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     enableTopToolbar: false,
     enableStickyFooter: false,
     enableStickyHeader: true,
+    //si se activa la paginacion se debe agregar
+    // enableBottomToolbar: prop.pagination ?? false,
     enablePagination: prop.pagination ?? false,
     displayColumnDefOptions: {
       'mrt-row-expand': {
@@ -61,7 +63,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     //si esta true te deja copiar el campo de la tabla
     enableClickToCopy: false,
     //habilita los 3 puntos para acciones por columna
-    enableColumnActions: true,
+    enableColumnActions: false,
     //habilita hacer drag and drop aunque faltan otras opciones para que funcione al 100%
     enableColumnDragging: false,
     //habilita el poder filtrar por todas las columnas
@@ -104,11 +106,15 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
         color: "black",
       },
     },
-
+    muiBottomToolbarProps:{
+      sx: {
+        minHeight: prop.pagination ? "3.5rem" :"2rem",
+      },
+    },
     muiTablePaperProps: {
       sx: {
         margin: "10px",
-        boxShadow: `2px 3px 5px 0px #0000007f`,
+        boxShadow: `2px 3px 5px 0px #00000046`,
         borderRadius: "0.75rem",
       },
     },

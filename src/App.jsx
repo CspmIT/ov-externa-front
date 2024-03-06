@@ -17,6 +17,7 @@ import MyServicesD from "./views/MyServices/detail";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import stylesNab from "./components/Navbar/Navbar.module.css";
+import MyConsumption from "./views/MyConsumption";
 function App() {
   
   const [user, setUser] = useState(() => {
@@ -36,7 +37,7 @@ function App() {
     if (user["level"] == 1) {
       menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
     } else {
-      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> });
+      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> }, {name: "/MyConsumption", element: <MyConsumption />});
     }
     rutes.push(...menus);
   }

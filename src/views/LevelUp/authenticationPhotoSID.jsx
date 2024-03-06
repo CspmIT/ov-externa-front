@@ -3,7 +3,7 @@ import { RiNumber1 } from "react-icons/ri";
 import { RiNumber2 } from "react-icons/ri";
 import { RiNumber3 } from "react-icons/ri";
 import { RiNumber4 } from "react-icons/ri";
-import Card from '../../components/Card';
+import CardBasic from '../../components/CardBasic';
 import swals from '../../routes/swals';
 import Swal from 'sweetalert2';
 import ButtonAnimate from '../../components/ButtonAnimate';
@@ -239,7 +239,7 @@ const authenticationPhotoSID = () => {
             </div>
             <div className={`w-full  flex-wrap justify-center hidden sm:flex`}>
                 <div onClick={() => abrirModal(1)} className="w-full md:w-1/2 xl:w-1/4">
-                    <Card
+                    <CardBasic
                         props={{
                             phone: "",
                             title: <p className='w-1/2 md:w-3/4'>Buscá un lugar iluminado con fondo claro liso.</p>,
@@ -254,7 +254,7 @@ const authenticationPhotoSID = () => {
                     />
                 </div>
                 <div onClick={() => abrirModal(2)} className="w-full md:w-1/2 xl:w-1/4">
-                    <Card
+                    <CardBasic
                         props={{
                             phone: "",
                             title: <p className='w-1/2 md:w-3/4'>Evitá anteojos o algo que dificulte el proceso.</p>,
@@ -269,7 +269,7 @@ const authenticationPhotoSID = () => {
                     />
                 </div>
                 <div onClick={() => abrirModal(3)} className="w-full md:w-1/2 xl:w-1/4">
-                    <Card
+                    <CardBasic
                         props={{
                             phone: "",
                             title: <p className='w-1/2 md:w-3/4'>Posá con una expresión neutral.</p>,
@@ -284,7 +284,7 @@ const authenticationPhotoSID = () => {
                     />
                 </div>
                 <div onClick={() => abrirModal(4)} className="w-full md:w-1/2 xl:w-1/4">
-                    <Card
+                    <CardBasic
                         props={{
                             phone: "",
                             title: <p className='w-1/2 md:w-3/4'>Esperá hasta que validemos tu identidad.</p>,

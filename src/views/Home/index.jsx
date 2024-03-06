@@ -8,20 +8,21 @@ import { FaFileInvoiceDollar, FaReceipt, FaChartBar, FaQuestion, FaExchangeAlt, 
 
 /* ----------------- ESTILOS ----------------- */
 
-import styles from "../../components/Card/Card.module.css";
+import styles from "../../components/CardBasic/Card.module.css";
 
 /* ----------------- COMPONENTES ----------------- */
 
-import Card from "../../components/Card";
+import CardBasic from "../../components/CardBasic";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import TableNew from "../../components/TableNew";
 import ButtonFloating from "../../components/ButtonFloating";
 import ModalHelpHome from "../../components/ModalHelpHome";
-import { Modal, Skeleton } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import { columns, InvoiceDeus } from "../../utils/invoice";
 import LoaderComponent from "../../components/Loader";
+import CardCustom from "../../components/CardCustom";
 const Home = () => {
     var level = JSON.parse(localStorage.getItem("usuario")).level;
     const [invoices, setInvoices] = useState([]);
@@ -71,7 +72,7 @@ const Home = () => {
                     <div className="flex w-full flex-wrap">
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/LevelUp2"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "",
                                         title: "Subir al",
@@ -89,7 +90,7 @@ const Home = () => {
                         </div>
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/Information"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "hidden",
                                         title: "Información",
@@ -107,7 +108,7 @@ const Home = () => {
                         </div>
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/LevelUp2"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "hidden",
                                         title: "Mi",
@@ -125,7 +126,7 @@ const Home = () => {
                         </div>
                         <div className="w-full md:w-1/2 lg:w-1/4">
                             <Link to={"/LevelUp2"}>
-                                <Card
+                                <CardBasic
                                     props={{
                                         phone: "hidden",
                                         title: "Turnos",
@@ -218,7 +219,7 @@ const Home = () => {
                                 </div>
                             </div>
                         </div>
-                        <Card
+                        <CardBasic
                             props={{
                                 phone: "",
                                 title: "SALDO",
@@ -231,7 +232,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/Invoice");
@@ -247,7 +248,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/Payments");
@@ -263,7 +264,7 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
                                     navigate("/MyServices");
@@ -279,10 +280,10 @@ const Home = () => {
                                 positionBtn: "absolute",
                             }}
                         />
-                        <Card
+                        <CardBasic
                             props={{
                                 onclick: () => {
-                                    navigate("/MyServices");
+                                    navigate("/MyConsumption");
                                 },
                                 phone: "hidden",
                                 title: "Mis",
@@ -297,7 +298,7 @@ const Home = () => {
                         />
                     </div>
 
-                    <div className="flex w-full justify-between md:1/2 flex-wrap mt-10  rounded-xl p-10 bg-white dark:bg-zinc-700">
+                    <CardCustom className={"md:1/2 p-5 mt-10"}>
                         <div className="flex relative w-full">
                             <h3 className=" text-left mb-5">Facturas Impagas</h3>
                             <div className="absolute right-2 top-0">
@@ -306,9 +307,9 @@ const Home = () => {
                             </div>
                         </div>
                         {invoices.length < 1 ? (
-                          <div className="flex w-full justify-center items-center">
-                            <LoaderComponent/>
-                          </div>
+                            <div className="flex w-full justify-center items-center">
+                                <LoaderComponent />
+                            </div>
                         ) : (
                             <div className={`relative overflow-x-auto w-full rounded-xl`}>
                                 <TableNew data={invoices} columns={columns} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />
@@ -320,11 +321,13 @@ const Home = () => {
                                 <p className="p-0 m-0">$ {amountpay}</p>
                             </ButtonFloating>
                         ) : null}
-                    </div>
+                    </CardCustom>
                 </div>
             )}
-            <Modal className="flex justify-center items-center" open={openModalHelp} onClose={handleCloseModalHelp} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                <ModalHelpHome handleCloseModal={handleCloseModalHelp} />
+            <Modal className="flex justify-center items-center" open={openModalHelp} onClose={handleCloseModalHelp} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
+                <Box className={"w-full flex justify-center items-center"}>
+                    <ModalHelpHome handleCloseModal={handleCloseModalHelp} />
+                </Box>
             </Modal>
         </div>
     );

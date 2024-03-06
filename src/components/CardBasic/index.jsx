@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Card.module.css";
 import { FaCircle } from "react-icons/fa";
 
-const Card = ({ props }) => {
+const CardBasic = ({ props }) => {
   return (
     <div onClick={props.onclick} className={`${styles.card} ${props.hover == "false" ? "" : styles.cardHover} ${props.shadow == "false" ? "" : "shadowCards"} ${props.bg} dark:bg-zinc-700 dark:text-gray-300 ${props.phone != "" ? "hidden sm:block" : ""} ${props.widht != "" ? props.widht : ""}`}>
       {props.statusService !== undefined && (
@@ -24,4 +24,4 @@ const Card = ({ props }) => {
   );
 };
 
-export default Card;
+export default CardBasic;

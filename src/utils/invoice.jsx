@@ -100,25 +100,11 @@ export const columns = [
   },
 ];
 
-export const InvoiceDeus = async () => {
-  const socio = "58500";
-  const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
-  try {
-    const responseData = await request(url, "GET");
-    const rows = [];
-    for (const i in responseData) {
-      responseData[i].list.forEach((item) => {
-        rows.push({ ...item, account: responseData[i].data.account });
-      });
-    }
-    return rows;
-  } catch (error) {
-    console.error("Error en la solicitud:", error);
-  }
-};
+
 
 export const controlUrl = async (url) => {
-  const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+  // const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+  const urlConsulta = "http://cooptech.com.ar:30888/api/existinvoice?url=" + url;
   try {
     const response = await axios({
       method: "GET",
@@ -152,6 +138,22 @@ export const searchAllInvoice = async () => {
   }
 };
 
+export const InvoiceDeus = async () => {
+  const socio = "58500";
+  const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
+  try {
+    const responseData = await request(url, "GET");
+    const rows = [];
+    for (const i in responseData) {
+      responseData[i].list.forEach((item) => {
+        rows.push({ ...item, account: responseData[i].data.account });
+      });
+    }
+    return rows;
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+  }
+};
 export const calcValues = (table) => {
   let values = 0;
   let value2 = 0;

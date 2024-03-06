@@ -2,6 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export const searchDetailService = async (info) => {
+  // const urlConsulta = "http://localhost:8000/api/getDetailService";
   const urlConsulta = "http://cooptech.com.ar:30888/api/getDetailService";
   try {
     const responseData = await axios({

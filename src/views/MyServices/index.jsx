@@ -22,13 +22,14 @@ const MyServices = () => {
   const [services, setRowsServices] = useState("");
   useEffect(() => {
     const searchData = async () => {
-      const socio = "73070";
+      const socio = "51010";
       const url = `http://cooptech.com.ar:30888/api/getService?id_procoop=${socio}`;
       try {
         const response = await axios({
           method: "GET",
           url: url,
         });
+        console.log(response.data);
         setRowsServices(response.data);
       } catch (error) {
         Swal.fire({
@@ -97,7 +98,7 @@ const MyServices = () => {
   };
 
   return (
-    <div className="">
+    <div >
       <h2 className="text-center m-5">Mis Servicios</h2>
       <hr />
       <div className={`flex mt-2 mb-5 rounded-xl p-5 bg-gray-200 dark:bg-zinc-800`}>
