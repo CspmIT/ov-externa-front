@@ -45,8 +45,8 @@ const Detail = () => {
                         setColorsConsuption({
                             bgColorClass: difConsumo < 0 ? "!bg-red-200" : "!bg-green-100",
                             borderColorClass: difConsumo < 0 ? "border-red-400" : "border-green-400",
-                            textTitleColor: difConsumo < 0 ? "text-red-500" : "text-green-500",
-                            textClass: difConsumo < 0 ? "text-red-400" : "text-green-400",
+                            textTitleColor: difConsumo < 0 ? "text-red-500" : "text-green-600",
+                            textClass: difConsumo < 0 ? "text-red-400" : "text-green-500",
                             attentionText: difConsumo < 0 ? "ATENCIÓN!" : "FELICIDADES!",
                             comparacionText: difConsumo < 0 ? "mas" : difConsumo === 0 ? "igual " : "menos",
                         });
@@ -108,7 +108,7 @@ const Detail = () => {
                         <div className="w-full flex mt-5 flex-wrap">
                             <div className="w-1/3 px-6">
                                 {difConsumo || difConsumo === 0 ? (
-                                    <CardCustom className={`relative p-5 me-4 mb-5 rounded-xl flex flex-col items-center ${colorsConsuption.bgColorClass} ${colorsConsuption.borderColorClass} border-solid border-2 `}>
+                                    <CardCustom className={`relative p-5 mb-5 rounded-xl flex flex-col items-center ${colorsConsuption.bgColorClass} ${colorsConsuption.borderColorClass} border-solid border-2 `}>
                                         <label className={`text-xl font-bold ${colorsConsuption.textTitleColor}`}>{colorsConsuption.attentionText}</label>
                                         <p className={`${colorsConsuption.textClass}`}>
                                             En {mesInvoice} de 2024 consumiste {difConsumo === 0 ? "" : `${parseFloat(difConsumo < 0 ? difConsumo * -1 : difConsumo).toFixed(2)} ${unidad}`} <b className={`${colorsConsuption.textTitleColor}`}>{colorsConsuption.comparacionText}</b> que en {mesInvoice} de 2023.
@@ -116,9 +116,7 @@ const Detail = () => {
                                     </CardCustom>
                                 ) : null}
                                 {!serviceTv ? (
-                               
                                     <CardServiceDetail serviceItem={datosGral[0]} />
-                          
                                 ) : 
                                 null}
                             </div>
