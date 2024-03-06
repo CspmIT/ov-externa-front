@@ -1,8 +1,9 @@
-import {  MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import {  MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import NoRegisterTable from "../NoRegisterTable";
 import { calcValues } from "../../utils/invoice";
+import { Box, Stack } from "@mui/material";
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
   
@@ -13,14 +14,15 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     expanded: true,
     sorting: [],
     grouping: [],
-    columnPinning: {
-      right: ["mrt-row-select"],
-    },
+    // columnPinning: {
+    //   right: ["mrt-row-select"],
+    // },
+    // columnOrder:[...columns.map(e=> e.accessorKey), "mrt-row-select"] ,//ordena
   };
   if(prop.pagination){
     tableInitialState.pagination =({ pageIndex: 0, pageSize: 100 });
   }
-  //constrolo si llega un agrupacion por columna
+  // //constrolo si llega un agrupacion por columna
   if (prop.groupBy) {
     tableInitialState.grouping.push(prop.groupBy);
   }
@@ -40,7 +42,16 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     enableTopToolbar: false,
     enableStickyFooter: false,
     enableStickyHeader: true,
+    //si se activa la paginacion se debe agregar
+    // enableBottomToolbar: prop.pagination ?? false,
     enablePagination: prop.pagination ?? false,
+    displayColumnDefOptions: {
+      'mrt-row-expand': {
+        size: 30,
+        minSize: 10,
+        maxSize: 30,
+      },
+    },
     muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
     //HABILITACION DE ROWS
     enableBatchRowSelection: prop.checkbox ?? false,
@@ -48,7 +59,6 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     enableRowSelection: prop.checkbox ?? false,
     enableSelectAll: prop.checkbox ?? false,
     enableSubRowSelection: prop.checkbox ?? false,
-
     //HABILITACION DE COLUMNA
     //si esta true te deja copiar el campo de la tabla
     enableClickToCopy: false,
@@ -96,11 +106,15 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
         color: "black",
       },
     },
-
+    muiBottomToolbarProps:{
+      sx: {
+        minHeight: prop.pagination ? "3.5rem" :"2rem",
+      },
+    },
     muiTablePaperProps: {
       sx: {
         margin: "10px",
-        boxShadow: `2px 3px 5px 0px #0000007f`,
+        boxShadow: `2px 3px 5px 0px #00000046`,
         borderRadius: "0.75rem",
       },
     },
@@ -116,7 +130,9 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
       if (data) amountPay(data);
     }
   }, [table.getState().rowSelection]);
-
+  useEffect(() => {  
+    table.setColumnOrder(['mrt-row-expand', ...columns.map(e=> e.accessorKey), "mrt-row-select"]);
+  }, [table]);
   return <MaterialReactTable table={table} />;
 };
 

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import request from "../routes/request";
-import { Circle, Print } from "@mui/icons-material";
+import { Circle, FindInPage, Print } from "@mui/icons-material";
 import Button from "..//components/Button";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -11,10 +11,14 @@ export const columns = [
   {
     header: "Cuenta",
     accessorKey: "account",
+    size: 20,
+    maxSize: 20,
+    minSize: 10,
   },
   {
     header: "Tipo",
     accessorKey: "type",
+    size: 30,
   },
   {
     header: "Factura",
@@ -23,10 +27,12 @@ export const columns = [
   {
     header: "Periodo",
     accessorKey: "period",
+    size: 30,
   },
   {
     header: "Vencimiento",
     accessorKey: "vto",
+    size: 30,
   },
   {
     header: "Importe",
@@ -81,12 +87,12 @@ export const columns = [
       if (row.original.url) {
         return (
           <Button
-            props={{ class: "bg-blue-500 rounded text-center   text-white " }}
+            props={{ class: "bg-blue-500 rounded text-center py-0.7 px-1.5 text-white " }}
             onclick={() => {
               controlUrl(`${row.original?.url ? row.original?.url : undefined}`);
             }}
           >
-            <Print />
+            <FindInPage />
           </Button>
         );
       }
@@ -94,25 +100,11 @@ export const columns = [
   },
 ];
 
-export const InvoiceDeus = async () => {
-  const socio = "58500";
-  const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
-  try {
-    const responseData = await request(url, "GET");
-    const rows = [];
-    for (const i in responseData) {
-      responseData[i].list.forEach((item) => {
-        rows.push({ ...item, account: responseData[i].data.account });
-      });
-    }
-    return rows;
-  } catch (error) {
-    console.error("Error en la solicitud:", error);
-  }
-};
+
 
 export const controlUrl = async (url) => {
-  const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+  // const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+  const urlConsulta = "http://cooptech.com.ar:30888/api/existinvoice?url=" + url;
   try {
     const response = await axios({
       method: "GET",
@@ -146,6 +138,22 @@ export const searchAllInvoice = async () => {
   }
 };
 
+export const InvoiceDeus = async () => {
+  const socio = "58500";
+  const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
+  try {
+    const responseData = await request(url, "GET");
+    const rows = [];
+    for (const i in responseData) {
+      responseData[i].list.forEach((item) => {
+        rows.push({ ...item, account: responseData[i].data.account });
+      });
+    }
+    return rows;
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+  }
+};
 export const calcValues = (table) => {
   let values = 0;
   let value2 = 0;

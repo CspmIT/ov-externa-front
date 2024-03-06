@@ -1,10 +1,6 @@
+import { Box } from "@mui/material";
 
-function CardCustom({children, ...prop}) {
-  return (
-    <div className={prop.className ?? "pb-5 mr-3 mb-3 rounded-xl px-5 bg-white dark:bg-zinc-700 "}>
-        {children}
-    </div>
-  )
+function CardCustom({ children, ...prop }) {
+    return <Box className={`p-0 rounded-xl bg-white dark:bg-zinc-700 shadow-[2px_3px_5px_0px_#0000001f] ${prop.className}`}>{children}</Box>;
 }
-
-export default CardCustom
+export default CardCustom;
