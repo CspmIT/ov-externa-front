@@ -8,7 +8,6 @@ import TableNew from "../TableNew";
 import ButtonFloating from "../ButtonFloating";
 import { Box, Modal } from "@mui/material";
 import ModalHelpHome from "../ModalHelpHome";
-import styles from "../../components/CardBasic/Card.module.css";
 import { Link } from "react-router-dom";
 import { InvoiceDeus, columns } from "../../utils/invoice";
 import { FaExchangeAlt } from "react-icons/fa";
@@ -38,7 +37,6 @@ function Dashboard_lvl2() {
     return (
         <>
             <div className="w-full px-2">
-                {/* ${styles.card} */}
                 <div className={`relative rounded-[2.5em] p-8 shadowCards bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
                     <img src="https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png" className="w-full" />
                     <div className="pt-4 w-3/4 mt-2">
@@ -59,7 +57,7 @@ function Dashboard_lvl2() {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-row flex-wrap ">
+                <div className="flex  flex-wrap ">
                     <Link className="w-1/5 min-w-44 max-sm:w-full">
                         <CardCustom className={`relative rounded-[2.5em] m-2 max-sm:m-0 p-8 max-sm:mt-5 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300 max-sm:w-full`}>
                             <div className={`bg-red-400 text-red-900 text-xl absolute right-5 max-xl:right-2 max-sm:right-7 p-2 rounded-full`}>
