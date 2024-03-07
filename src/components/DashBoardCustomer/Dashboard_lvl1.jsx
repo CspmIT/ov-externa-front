@@ -1,14 +1,18 @@
-
 /* ----------------- ICONOS ----------------- */
 
-import { FaAddressCard, FaCalendarCheck, FaInfoCircle, FaArrowAltCircleUp } from "react-icons/fa";
+import {
+    FaAddressCard,
+    FaCalendarCheck,
+    FaInfoCircle,
+    FaArrowAltCircleUp,
+} from "react-icons/fa";
 
 /* ----------------- ESTILOS ----------------- */
 
 import styles from "../../components/CardBasic/Card.module.css";
 
 /* ----------------- COMPONENTES ----------------- */
-
+import CardCustom from "../CardCustom";
 import CardBasic from "../CardBasic";
 import Button from "../Button";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,15 +26,27 @@ function Dashboard_lvl1() {
     const [amountTotalpay, setAmountTotalpay] = useState(0);
     const [statusModeA, setstatusModeA] = useState("");
     const [statusModeI, setstatusModeI] = useState("hidden");
-    const [statusColorA, setstatusColorA] = useState(`dark:bg-zinc-800 bg-gray-200 `);
-    const [statusColorI, setstatusColorI] = useState(`bg-white dark:bg-zinc-900`);
+    const [statusColorA, setstatusColorA] = useState(
+        `dark:bg-zinc-800 bg-gray-200 `
+    );
+    const [statusColorI, setstatusColorI] = useState(
+        `bg-white dark:bg-zinc-900`
+    );
     const handleOpenModalHelp = () => setOpenModalHelp(true);
     const handleCloseModalHelp = () => setOpenModalHelp(false);
     const dropModestatus = (status) => {
         setstatusModeA(status == "active" ? "" : "hidden");
         setstatusModeI(status == "active" ? "hidden" : "");
-        setstatusColorA(status == "active" ? `dark:bg-zinc-800 bg-gray-200` : `bg-white dark:bg-zinc-900`);
-        setstatusColorI(status == "active" ? `bg-white dark:bg-zinc-900` : `dark:bg-zinc-800 bg-gray-200 `);
+        setstatusColorA(
+            status == "active"
+                ? `dark:bg-zinc-800 bg-gray-200`
+                : `bg-white dark:bg-zinc-900`
+        );
+        setstatusColorI(
+            status == "active"
+                ? `bg-white dark:bg-zinc-900`
+                : `dark:bg-zinc-800 bg-gray-200 `
+        );
     };
     const navigate = useNavigate();
     useEffect(() => {
@@ -52,32 +68,41 @@ function Dashboard_lvl1() {
 
     return (
         <>
-            <div className={`${styles.card} ${styles.shadowCards} bg-white dark:bg-zinc-700 w-full text-center`}>
+            <div
+                className={`${styles.card} ${styles.shadowCards} bg-white dark:bg-zinc-700 w-full text-center`}
+            >
                 <p>
                     Hola <b>Julieta Soledad</b>, te damos la bienvenida a tu
                 </p>
                 <h2>Oficina Virtual</h2>
             </div>
             <div className="flex w-full flex-wrap">
-                <div className="w-full md:w-1/2 lg:w-1/4">
+                <div className="w-full md:w-1/2 lg:w-1/2">
                     <Link to={"/LevelUp2"}>
-                        <CardBasic
-                            props={{
-                                phone: "",
-                                title: "Subir al",
-                                subtitle: "Nivel 2",
-                                icon: <FaArrowAltCircleUp className="w-full" />,
-                                color: "text-green-500",
-                                bgIcon: "bg-green-400",
-                                colorIcon: "text-green-900",
-                                bg: "bg-white",
-                                positionBtn: "absolute",
-                                widht: "w-auto",
-                            }}
-                        />
-                    </Link>{" "}
+                        <CardCustom
+                            className={`${styles.card} ${styles.cardHover} shadowCards dark:bg-zinc-700 dark:text-gray-300 w-auto`}
+                        >
+                            <div className={`${styles.cardImage} absolute`}>
+                                <div
+                                    className={`${styles.icon} bg-green-400 text-green-900`}
+                                >
+                                    <FaArrowAltCircleUp className="w-full" />
+                                </div>
+                            </div>
+                            <div className={styles.cardContent}>
+                                <div className={styles.cardTop}>
+                                    <div className="w-full">
+                                        Subir al <br />
+                                        <span className={`text-green-500`}>
+                                            Nivel 2
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardCustom>
+                    </Link>
                 </div>
-                <div className="w-full md:w-1/2 lg:w-1/4">
+                <div className="w-full md:w-1/2 lg:w-1/2">
                     <Link to={"/Information"}>
                         <CardBasic
                             props={{
@@ -95,54 +120,32 @@ function Dashboard_lvl1() {
                         />
                     </Link>
                 </div>
-                <div className="w-full md:w-1/2 lg:w-1/4">
-                    <Link to={"/LevelUp2"}>
-                        <CardBasic
-                            props={{
-                                phone: "hidden",
-                                title: "Mi",
-                                subtitle: "Curriculum",
-                                icon: <FaAddressCard className="w-full" />,
-                                color: "text-red-500",
-                                bgIcon: "bg-red-300",
-                                colorIcon: "text-res-900",
-                                bg: "bg-white",
-                                positionBtn: "absolute",
-                                widht: "w-auto",
-                            }}
-                        />
-                    </Link>
-                </div>
-                <div className="w-full md:w-1/2 lg:w-1/4">
-                    <Link to={"/LevelUp2"}>
-                        <CardBasic
-                            props={{
-                                phone: "hidden",
-                                title: "Turnos",
-                                subtitle: "Online",
-                                icon: <FaCalendarCheck className="w-full" />,
-                                color: "text-blue-500",
-                                bgIcon: "bg-blue-300",
-                                colorIcon: "text-blue-900",
-                                bg: "bg-white",
-                                positionBtn: "absolute",
-                                widht: "w-auto",
-                            }}
-                        />
-                    </Link>
-                </div>
             </div>
             <div className={`w-full rounded-xl px-7 mt-10`}>
                 <div className="flex w-full">
-                    <div onClick={() => dropModestatus("active")} className={`w-1/2 p-3 rounded-t-xl cursor-pointer text-center ${statusColorA}`}>
+                    <div
+                        onClick={() => dropModestatus("active")}
+                        className={`w-1/2 p-3 rounded-t-xl cursor-pointer text-center ${statusColorA}`}
+                    >
                         Nivel 1
                     </div>
-                    <div onClick={() => dropModestatus("inactive")} className={`w-1/2 rounded-t-xl p-3 cursor-pointer text-center ${statusColorI}`}>
+                    <div
+                        onClick={() => dropModestatus("inactive")}
+                        className={`w-1/2 rounded-t-xl p-3 cursor-pointer text-center ${statusColorI}`}
+                    >
                         Nivel 2
                     </div>
                 </div>
-                <div className={`w-full bg-gray-200 text-xl leading-6 p-5 dark:bg-zinc-800 mb-5 justify-center ${statusModeA}`} style={{ boxShadow: `0px 0px 15px rgba(138, 138, 138, 0.43)` }}>
-                    <p>Este Nivel es el punto de partida para comenzar a Interactuar con tu Oficina Virtual.</p>
+                <div
+                    className={`w-full bg-gray-200 text-xl leading-6 p-5 dark:bg-zinc-800 mb-5 justify-center ${statusModeA}`}
+                    style={{
+                        boxShadow: `0px 0px 15px rgba(138, 138, 138, 0.43)`,
+                    }}
+                >
+                    <p>
+                        Este Nivel es el punto de partida para comenzar a
+                        Interactuar con tu Oficina Virtual.
+                    </p>
                     <b>
                         <u>Beneficios: </u>
                     </b>
@@ -150,9 +153,17 @@ function Dashboard_lvl1() {
                         <li> - Información Útil.</li>
                         <li> - Cargar o editar tu Currículum.</li>
                     </ul>
-                    <p className="text-center mt-3">Para poder tener más Beneficios te invitamos a Subir al Nivel 2.</p>
+                    <p className="text-center mt-3">
+                        Para poder tener más Beneficios te invitamos a Subir al
+                        Nivel 2.
+                    </p>
                 </div>
-                <div className={`w-full bg-gray-200 text-xl leading-6 p-5 dark:bg-zinc-800 mb-5 justify-center ${statusModeI}`} style={{ boxShadow: `0px 0px 15px rgba(138, 138, 138, 0.43)` }}>
+                <div
+                    className={`w-full bg-gray-200 text-xl leading-6 p-5 dark:bg-zinc-800 mb-5 justify-center ${statusModeI}`}
+                    style={{
+                        boxShadow: `0px 0px 15px rgba(138, 138, 138, 0.43)`,
+                    }}
+                >
                     <b>
                         <u>Beneficios: </u>
                     </b>
@@ -176,10 +187,18 @@ function Dashboard_lvl1() {
                             <b> - Saldo General.</b>
                         </li>
                     </ul>
-                    <p className="text-center mt-3">Para aprovechar todos estos Beneficios, Subí de Nivel completando con tus Datos Personales.</p>
+                    <p className="text-center mt-3">
+                        Para aprovechar todos estos Beneficios, Subí de Nivel
+                        completando con tus Datos Personales.
+                    </p>
                     <div className="w-full flex justify-center">
                         <Link to={"/LevelUp2"}>
-                            <Button props={{ class: "text-black bg-yellow-400 hover:bg-white focus:bg-yellow-400 m-2", text: `Subir a Nivel 2` }} />
+                            <Button
+                                props={{
+                                    class: "text-black bg-yellow-400 hover:bg-white focus:bg-yellow-400 m-2",
+                                    text: `Subir a Nivel 2`,
+                                }}
+                            />
                         </Link>
                     </div>
                 </div>
