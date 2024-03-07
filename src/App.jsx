@@ -45,7 +45,7 @@ function App() {
   return (
       <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
         {user && <Navbar />}
-        <div className={`flex-grow p-2 ${user ? 'sm:pl-64 pt-20' : ''} `}>
+        <div className={`flex-grow p-2 ${user ? 'sm:pl-60 pt-20' : ''} `}>
           <Routes>
             {user ? (
               <>
