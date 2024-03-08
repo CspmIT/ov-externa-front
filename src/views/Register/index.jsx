@@ -56,7 +56,7 @@ const Register = () => {
             <div className="w-full flex flex-row">
               {/* Creo estos dos inputs ocultos por el tema del autocompletar, no esta funcionando bien con React */}
               <div className="w-full md:w-1/2 m-2">
-                <InputGroup onChange={handleChangeUserData} props={{ name: "name", label: "Nombre", ph: "Nombre", type: "text", req: true, value: userData.name }} />
+                <InputGroup onChange={handleChangeUserData} props={{ name: "first_name", label: "Nombre", ph: "Nombre", type: "text", req: true, value: userData.name }} />
                 <InputGroup onChange={handleChangeUserData} props={{ id: "mail", name: "email", label: "Email", ph: "Ingrese un Email", type: "email", req: true, value: userData.email }} />
                 <InputGroup
                   onChange={handleChangeUserData}

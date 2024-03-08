@@ -1,5 +1,6 @@
 import React from "react";
 import CardCustom from "../../components/CardCustom/index";
+
 function profile() {
     return (
         <div>
