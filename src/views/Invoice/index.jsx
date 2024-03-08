@@ -10,13 +10,14 @@ import { FaQuestion } from "react-icons/fa";
 import ButtonAnimate from "../../components/ButtonAnimate";
 import TableNew from "../../components/TableNew";
 import LoaderComponent from "../../components/Loader";
-import { columns, searchAllInvoice } from "../../utils/invoice";
+import { columns, columnsCel, searchAllInvoice } from "../../utils/invoice";
 import { Box, Modal } from "@mui/material";
 import ModalHelpHome from "../../components/ModalHelpHome";
 import CardCustom from "../../components/CardCustom";
 
 const Invoice = () => {
     const [invoice, setInvoices] = useState([]);
+    const [columnsTable, setColumnsTable] = useState([]);
     const [openModalHelp, setOpenModalHelp] = useState(false);
     const handleOpenModalHelp = () => setOpenModalHelp(true);
     const handleCloseModalHelp = () => setOpenModalHelp(false);
@@ -24,9 +25,20 @@ const Invoice = () => {
         const allInvoice = async () => {
             try {
                 const data = await searchAllInvoice();
-                setInvoices(data);
+                let dataTable = [];
+                if (window.innerWidth < 768) {
+                    dataTable = data.map((item) => ({
+                        account: item.account,
+                        info: { ...item },
+                    }));
+                    setColumnsTable(columnsCel)
+                } else {
+                    dataTable = data;
+                    setColumnsTable(columns)
+                }
+                setInvoices(dataTable);
             } catch (error) {
-                console.error("Error al obtener datos:", error);
+                console.log("Error al obtener datos:", error);
             }
         };
         allInvoice();
@@ -40,10 +52,10 @@ const Invoice = () => {
                     <ButtonAnimate onClick={handleOpenModalHelp} icon={<FaQuestion className="text-white" />} text={"Ayuda"} bgIcon={"bg-gray-400"} color={"text-white"} />
                 </div>
             </div>
-            <CardCustom className={"md:1/2 p-5 mt-5 mr-5"}>
+            <CardCustom className={"md:1/2 max-sm:p-0 max-sm:py-3 max-sm:m-0 p-5 mt-5 mr-5"}>
                 {invoice.length > 0 ? (
                     <div className={`relative overflow-x-auto w-full round  rounded-xl`}>
-                        <TableNew data={invoice} columns={columns} groupBy={"account"} />
+                        <TableNew data={invoice} columns={columnsTable} groupBy={"account"} />
                     </div>
                 ) : (
                     <LoaderComponent />

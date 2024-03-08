@@ -15,16 +15,15 @@ import MyServices from "./views/MyServices";
 import MyServicesD from "./views/MyServices/detail";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
-import stylesNab from "./components/Navbar/Navbar.module.css";
 import MyConsumption from "./views/MyConsumption";
 import Footer from "./components/Footer";
 import Profile from "./views/Profile/profile";
 function App() {
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("usuario");
-        return storedUser ? JSON.parse(storedUser) : null;
-    });
-    const currentYear = new Date().getFullYear();
+  
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("usuario");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
     let rutes = [
         { name: "/", element: <Home /> },
@@ -52,7 +51,7 @@ function App() {
     return (
         <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
             {user && <Navbar />}
-            <div className={`flex-grow p-2 ${user ? "sm:pl-64 pt-20" : ""} `}>
+            <div className={`flex-grow p-2 ${user ? "sm:pl-60 pt-20" : ""} `}>
                 <Routes>
                     {user ? (
                         <>
