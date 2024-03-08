@@ -16,7 +16,6 @@ import MyServices from "./views/MyServices";
 import MyServicesD from "./views/MyServices/detail";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
-import stylesNab from "./components/Navbar/Navbar.module.css";
 import MyConsumption from "./views/MyConsumption";
 import Footer from "./components/Footer";
 function App() {
@@ -25,7 +24,6 @@ function App() {
     const storedUser = localStorage.getItem("usuario");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const currentYear = new Date().getFullYear();
 
   let rutes = [
     { name: "/", element: <Home /> },

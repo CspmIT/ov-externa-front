@@ -1,15 +1,14 @@
-import { MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MRT_ExpandButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import NoRegisterTable from "../NoRegisterTable";
 import { calcValues } from "../../utils/invoice";
-import { Box, Stack } from "@mui/material";
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
     const { darkMode } = useContext(UserContext);
     //creo una constante con las configuracion inicial para poder modificar con props
     const tableInitialState = {
-        density: "comfortable",
+        density: window.innerWidth < 750 ? 'compact' : 'comfortable',
         expanded: true,
         sorting: [],
         grouping: [],
@@ -38,11 +37,17 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
         enableStickyFooter: false,
         enableStickyHeader: true,
         enablePagination: prop.pagination ?? false,
+
         displayColumnDefOptions: {
             "mrt-row-expand": {
-                size: 30,
-                minSize: 10,
-                maxSize: 30,
+                size: 5,
+                minSize: 1,
+                maxSize: 10,
+                Cell: ({ row, table }) => {
+                    if (!row.depth) {
+                        return <MRT_ExpandButton row={row} table={table} />;
+                    }
+                },
             },
         },
         muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
@@ -69,16 +74,19 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
         enableHiding: false,
         //habilita el ordenamiento de columnas osea ordenar los datos por alguna columna en especifico
         enableSorting: false,
+
         //svg para cuando la tabla esta vacia
         renderEmptyRowsFallback: () => {
             return <NoRegisterTable />;
         },
-        muiTableBodyCellProps: () => ({
-            sx: () => ({
-                color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-                fontSize: "15px",
-            }),
-        }),
+        muiTableBodyCellProps: ({ row }) => {
+            return {
+                sx: () => ({
+                    color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+                    fontSize: "15px",
+                }),
+            };
+        },
         muiTableBodyRowProps: ({ row }) => {
             return {
                 sx: {
@@ -122,6 +130,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
             if (data) amountPay(data);
         }
     }, [table.getState().rowSelection]);
+
     useEffect(() => {
         table.setColumnOrder(["mrt-row-expand", ...columns.map((e) => e.accessorKey), "mrt-row-select"]);
     }, [table]);

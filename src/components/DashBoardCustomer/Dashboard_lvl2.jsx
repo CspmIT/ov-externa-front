@@ -9,10 +9,11 @@ import ButtonFloating from "../ButtonFloating";
 import { Box, Modal } from "@mui/material";
 import ModalHelpHome from "../ModalHelpHome";
 import { Link } from "react-router-dom";
-import { InvoiceDeus, columns } from "../../utils/invoice";
+import { InvoiceDeus, columns, columnsCel } from "../../utils/invoice";
 import { FaExchangeAlt } from "react-icons/fa";
 function Dashboard_lvl2() {
     const [invoices, setInvoices] = useState([]);
+    const [columnsTable, setColumnsTable] = useState([]);
     const [openModalHelp, setOpenModalHelp] = useState(false);
     const [amountpay, setAmountpay] = useState(0);
     const [amountTotalpay, setAmountTotalpay] = useState(0);
@@ -23,20 +24,31 @@ function Dashboard_lvl2() {
         const invoiceList = async () => {
             try {
                 const data = await InvoiceDeus();
+                let dataTable = [];
+                if (window.innerWidth < 768) {
+                    dataTable = data.map((item) => ({
+                        account: item.account,
+                        info: { ...item },
+                    }));
+                    setColumnsTable(columnsCel)
+                } else {
+                    dataTable = data;
+                    setColumnsTable(columns)
+                }
                 setInvoices(data);
             } catch (error) {
-                console.error("Error al obtener datos:", error);
+                console.log("Error al obtener datos:", error);
             }
         };
         invoiceList();
-    }, []);
+    }, [screen.width]);
     const handleAmountPay = (amount) => {
         setAmountpay(amount[0]);
         setAmountTotalpay(amount[1]);
     };
     return (
         <>
-            <div className="w-full px-2">
+            <div className="w-full px-2 max-sm:px-0">
                 <div className={`relative rounded-[2.5em] p-8 shadowCards bg-white dark:bg-zinc-700 w-full flex flex-wrap sm:hidden`}>
                     <img src="https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png" className="w-full" />
                     <div className="pt-4 w-3/4 mt-2">
@@ -115,7 +127,7 @@ function Dashboard_lvl2() {
                     </Link>
                 </div>
 
-                <CardCustom className={"md:1/2 p-5 mt-10"}>
+                <CardCustom className={"md:1/2 p-5 max-sm:p-2 max-sm:py-5 mt-10"}>
                     <div className="flex relative w-full">
                         <h3 className=" text-left mb-5">Facturas Impagas</h3>
                         <div className="absolute right-2 top-0">
@@ -128,7 +140,7 @@ function Dashboard_lvl2() {
                         </div>
                     ) : (
                         <div className={`relative overflow-x-auto w-full rounded-xl`}>
-                            <TableNew data={invoices} columns={columns} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />
+                            <TableNew data={invoices} columns={columnsTable} groupBy={"account"} checkbox={true} amountPay={handleAmountPay} />
                         </div>
                     )}
                     {amountpay > 0 ? (
