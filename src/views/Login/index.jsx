@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 {
   /* ----------------- ICONOS ----------------- */
 }
@@ -12,6 +12,7 @@ import Button from "../../components/Button";
 import request from "../../routes/request";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pass, setPass] = useState("password");
@@ -57,12 +58,15 @@ const Login = () => {
               showPass={showPassword}
               props={{ label: "Contraseña", ph: "Ingrese una Contraseña", type: pass, req: true, btnIcon: iconEye }}
             />
-            <div className="w-full flex justify-center">
-              <Button props={{ class: "text-black botonPrincipal m-2", text: "Ingresar", type: "submit" }} />
-
+            <div className="w-full flex flex-col text-center items-center justify-center">
+              <Button props={{ class: "text-black bg-green-400", text: "Ingresar", type: "submit" }} />
+{/* 
               <Link to={"/Register"}>
                 <Button props={{ class: "text-black botonesAceptar m-2", text: "Registrarme", type: "button" }} />
-              </Link>
+              </Link> */}
+            </div>
+            <div className="mt-4 w-full flex-col flex text-center">
+              <label className="mt-2" >¿Olvidaste tu contraseña? <span className="font-bold text-teal-700" onClick={()=>{navigate('/Register')}}>Recuperala</span> </label>
             </div>
           </form>
         </div>

@@ -42,7 +42,6 @@ const Detail = () => {
                     setDatosGral(data?.generalData ? data.generalData : data);
                     setUnidad(service == 6 ? "m³" : "kW/h");
                     const serviceInfo = setServiceInfo(data[0]?.service ?? data.generalData[0].service);
-                    console.log(serviceInfo)
                     setNameService(serviceInfo.title);
                     if (data.difCosumo || data.difCosumo === 0) {
                         setColorsConsuption(statusDifService(difConsumo));
