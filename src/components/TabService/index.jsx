@@ -25,7 +25,7 @@ function TabService({ ...props }) {
                 <Tab className={`${classTabStatus[value === 0 ? 1 : 0]} ${classTabs}`} label="INACTIVOS" {...a11yProps(1)} />
             </Tabs>
             <div className={`bg-white border-2 border-t-0 rounded-b-2xl border-zinc-200 dark:!border-gray-700 dark:!bg-zinc-800`}>
-                <CustomTabPanel className={"w-full flex p-2 flex-wrap justify-evenly"} value={value} index={0}>
+                <CustomTabPanel className={"w-full flex max-sm:flex-col p-2 flex-wrap justify-evenly"} value={value} index={0}>
                     {serviceActive.length ? (
                         serviceActive.map((item, index) => (
                             <div
@@ -33,7 +33,7 @@ function TabService({ ...props }) {
                                 onClick={() => {
                                     if (props.action) props.action(item.numService, item.account, item.service);
                                 }}
-                                className={`${props.action ? "cursor-pointer" : ""} mb-4 p-2 w-1/4`}
+                                className={`${props.action ? "cursor-pointer" : ""} mb-4 p-2 w-1/4 max-sm:w-full`}
                             >
                                 <CardServiceDetail detailService={props.detailService} className={props.action ? "transition ease-in hover:scale-105 duration-400 " : null} key={index} serviceItem={item} />
                             </div>

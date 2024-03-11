@@ -15,7 +15,7 @@ const MyServices = () => {
     const [services, setRowsServices] = useState("");
     useEffect(() => {
         const searchData = async () => {
-            const socio = "51010";
+            const socio = "58500";
             const url = `http://cooptech.com.ar:30888/api/getService?id_procoop=${socio}`;
             try {
                 const response = await axios({

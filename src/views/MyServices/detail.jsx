@@ -4,7 +4,7 @@ import ButtonAnimate from "../../components/ButtonAnimate";
 import { FaCircle, FaArrowLeft } from "react-icons/fa";
 import LoaderComponent from "../../components/Loader";
 import BarChar from "../../components/BarChart";
-import { searchDetailService } from "../../utils/services";
+import { searchDetailService, setServiceInfo, statusDifService } from "../../utils/services";
 import CardCustom from "../../components/CardCustom";
 import { obtenerNombreDelMes } from "../../utils/dateFunction";
 import SocialServiceDetail from "../../components/SocialServiceDetail";
@@ -22,7 +22,7 @@ const Detail = () => {
     const location = useLocation();
     const service = location.state?.parametro;
     const cod_sum = location.state?.codSum;
-    const NameService = location.state?.NameService;
+    const [nameService, setNameService] = useState("");
     const navigate = useNavigate();
     const [mesInvoice, setMesInvoice] = useState([]);
     const [datosGral, setDatosGral] = useState(null);
@@ -41,15 +41,11 @@ const Detail = () => {
                 if (data) {
                     setDatosGral(data?.generalData ? data.generalData : data);
                     setUnidad(service == 6 ? "m³" : "kW/h");
+                    const serviceInfo = setServiceInfo(data[0]?.service ?? data.generalData[0].service);
+                    console.log(serviceInfo)
+                    setNameService(serviceInfo.title);
                     if (data.difCosumo || data.difCosumo === 0) {
-                        setColorsConsuption({
-                            bgColorClass: difConsumo < 0 ? "!bg-red-200" : "!bg-green-100",
-                            borderColorClass: difConsumo < 0 ? "border-red-400" : "border-green-400",
-                            textTitleColor: difConsumo < 0 ? "text-red-500" : "text-green-600",
-                            textClass: difConsumo < 0 ? "text-red-400" : "text-green-500",
-                            attentionText: difConsumo < 0 ? "ATENCIÓN!" : "FELICIDADES!",
-                            comparacionText: difConsumo < 0 ? "mas" : difConsumo === 0 ? "igual " : "menos",
-                        });
+                        setColorsConsuption(statusDifService(difConsumo));
                     }
                     if (data.graficData) {
                         setDatosGraf(data.graficData ? data.graficData : []);
@@ -80,7 +76,7 @@ const Detail = () => {
             ) : (
                 <>
                     <div className="flex relative flex-wrap max-sm:p-0 p-6 w-full justify-center items-center">
-                        <h2 className="text-center max-sm:text-start max-sm:w-3/4 max-sm:text-3xl mb-5 m-0">Servicio: {NameService}</h2>
+                        <h2 className="text-center max-sm:text-start max-sm:w-3/4 max-sm:text-3xl mb-5 m-0">{nameService}</h2>
                         <div className="absolute max-sm:right-0 max-sm:top-0 right-8">
                             <ButtonAnimate to="/MyServices" icon={<FaArrowLeft className="text-white text-xl" />} text={"volver"} bgIcon={"bg-blue-400 mr-5"} color={"text-white"} />
                         </div>
