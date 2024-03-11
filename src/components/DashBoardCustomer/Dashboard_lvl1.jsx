@@ -80,23 +80,23 @@ function Dashboard_lvl1() {
                 <div className="w-full md:w-1/2 lg:w-1/2">
                     <Link to={"/LevelUp2"}>
                         <CardCustom
-                            className={`${styles.card} ${styles.cardHover} shadowCards dark:bg-zinc-700 dark:text-gray-300 w-auto`}
+                            className={`p-8 rounded-[2.5em] m-3 flex align-middle justify-center ${styles.cardHover} shadowCards dark:bg-zinc-700 dark:text-gray-300 w-auto`}
                         >
-                            <div className={`${styles.cardImage} absolute`}>
-                                <div
-                                    className={`${styles.icon} bg-green-400 text-green-900`}
-                                >
-                                    <FaArrowAltCircleUp className="w-full" />
-                                </div>
-                            </div>
                             <div className={styles.cardContent}>
-                                <div className={styles.cardTop}>
+                                <div className={`${styles.cardTop } me-4`}>
                                     <div className="w-full">
-                                        Subir al <br />
+                                        Subir al<br />
                                         <span className={`text-green-500`}>
                                             Nivel 2
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div className={`h-full`}>
+                                <div
+                                    className={`${styles.icon} bg-green-400 text-green-900`}
+                                >
+                                    <FaArrowAltCircleUp className="w-full" />
                                 </div>
                             </div>
                         </CardCustom>
@@ -104,20 +104,27 @@ function Dashboard_lvl1() {
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/2">
                     <Link to={"/Information"}>
-                        <CardBasic
-                            props={{
-                                phone: "hidden",
-                                title: "Información",
-                                subtitle: "Útil",
-                                icon: <FaInfoCircle className="w-full" />,
-                                color: "text-sky-500",
-                                bgIcon: "bg-sky-300",
-                                colorIcon: "text-sky-900",
-                                bg: "bg-white",
-                                positionBtn: "absolute",
-                                widht: "w-auto",
-                            }}
-                        />
+                        <CardCustom
+                            className={`p-8 rounded-[2.5em] m-3 flex align-middle justify-center ${styles.cardHover} shadowCards dark:bg-zinc-700 dark:text-gray-300 w-auto`}
+                        >
+                            <div className={styles.cardContent}>
+                                <div className={`${styles.cardTop } me-4`}>
+                                    <div className="w-full">
+                                        Informacion <br />
+                                        <span className={`text-sky-500`}>
+                                            Util
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={`h-full`}>
+                                <div
+                                    className={`${styles.icon} bg-sky-400 text-sky-900`}
+                                >
+                                    <FaInfoCircle className="w-full" />
+                                </div>
+                            </div>
+                        </CardCustom>
                     </Link>
                 </div>
             </div>

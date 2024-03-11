@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-
 import Login from "./views/Login";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
@@ -18,6 +17,7 @@ import LevelUp2 from "./views/LevelUp/leveldos";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import MyConsumption from "./views/MyConsumption";
 import Footer from "./components/Footer";
+import Profile from "./views/Profile/profile";
 function App() {
   
   const [user, setUser] = useState(() => {
@@ -25,46 +25,74 @@ function App() {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  let rutes = [
-    { name: "/", element: <Home /> },
-    { name: "/*", element: <NotFound /> },
-    { name: "/Information", element: <Information /> },
-  ];
+    let rutes = [
+        { name: "/", element: <Home /> },
+        { name: "/*", element: <NotFound /> },
+        { name: "/Information", element: <Information /> },
+    ];
 
-  if (user) {
-    let menus = [];
-    if (user["level"] == 1) {
-      menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
-    } else {
-      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> }, {name: "/MyConsumption", element: <MyConsumption />});
+    if (user) {
+        let menus = [];
+        if (user["level"] == 1) {
+            menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
+        } else {
+            menus.push(
+                { name: "/authentication", element: <Authentication /> },
+                { name: "/Invoice", element: <Invoice /> },
+                { name: "/MyServices", element: <MyServices /> },
+                { name: "/Payments", element: <Payments /> },
+                { name: "/Handle", element: <Handle /> },
+                { name: "/detail", element: <MyServicesD /> },
+                { name: "/MyConsumption", element: <MyConsumption /> }
+            );
+        }
+        rutes.push(...menus);
     }
-    rutes.push(...menus);
-  }
-  return (
-      <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
-        {user && <Navbar />}
-        <div className={`flex-grow p-2 ${user ? 'sm:pl-60 pt-20' : ''} `}>
-          <Routes>
-            {user ? (
-              <>
-                <Route key="login" path="/Login" element={<Navigate to="/" />} />
-                <Route key="register" path="/Register" element={<Navigate to="/" />} />
-                {rutes.map((rute) => (
-                  <Route key={rute.name} path={rute.name} element={rute.element} />
-                ))}
-              </>
-            ) : (
-              <>
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/" element={<Navigate to="/Login" />} />
-              </>
-            )}
-          </Routes>
+    return (
+        <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
+            {user && <Navbar />}
+            <div className={`flex-grow p-2 ${user ? "sm:pl-60 pt-20" : ""} `}>
+                <Routes>
+                    {user ? (
+                        <>
+                            <Route
+                                key="login"
+                                path="/Login"
+                                element={<Navigate to="/" />}
+                            />
+                            <Route
+                                key="register"
+                                path="/Register"
+                                element={<Navigate to="/" />}
+                            />
+                            <Route
+                                key="profile"
+                                path="/Profile"
+                                element={<Profile />}
+                            />
+                            {rutes.map((rute) => (
+                                <Route
+                                    key={rute.name}
+                                    path={rute.name}
+                                    element={rute.element}
+                                />
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            <Route path="/Login" element={<Login />} />
+                            <Route path="/Register" element={<Register />} />
+                            <Route
+                                path="/"
+                                element={<Navigate to="/Login" />}
+                            />
+                        </>
+                    )}
+                </Routes>
+            </div>
+            <Footer />
         </div>
-        <Footer />
-      </div>
-  );
+    );
 }
 
 export default App;

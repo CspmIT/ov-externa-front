@@ -12,7 +12,6 @@ const getCustomer = async (data) => {
 //Funcion para actualizar los datos del usuario en la db y subir de nivel
 const updateLevel = async (data) => {
     const user = localStorage.getItem("usuario");
-    console.log(data);
     const { id } = JSON.parse(user);
     Object.assign(data, { user: id });
     Object.assign(data, { level: 2 });
@@ -39,7 +38,6 @@ const validateForm = async (data, navigate) => {
 
         if (swal.isConfirmed) {
             const result = await updateLevel(data);
-            console.log(result);
             //Muestro una alerta si se subio de nivel
             if (result.message) {
                 Swal.fire({

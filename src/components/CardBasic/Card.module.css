@@ -34,7 +34,7 @@
 .cardContent {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: center !important;
     gap: 5em !important;
     height: 100% !important;
     transition: transform 0.4s ease !important;
@@ -77,7 +77,7 @@
     margin-bottom: 1.5rem !important;
 }
 
-.cardImage .icon  {
+.icon  {
     width: 2.3em !important;
     height: 2.3em !important;
     transition: transform 0.4s ease !important;

@@ -4,29 +4,42 @@ import React from "react";
 }
 import Button from "../../components/Button";
 import CardCustom from "../../components/CardCustom";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import formulario from "./validateForm";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const leveldos = () => {
     var usuario = "Julieta";
-    var provincias = [
-        { id: 1, name: "Buenos Aires" },
-        { id: 2, name: "Buenos Aires-GBA" },
-        { id: 3, name: "Capital Federal" },
-        { id: 4, name: "Catamarca" },
-        { id: 5, name: "Chaco" },
-        { id: 6, name: "Chubut" },
-        { id: 7, name: "Córdoba" },
-        { id: 8, name: "Corrientes" },
-        { id: 9, name: "Entre Ríos" },
-        { id: 10, name: "Formosa" },
-    ];
 
     const {
         register,
         formState: { errors },
         handleSubmit,
     } = useForm();
+
+    const [provinces, setProvinces] = useState([]);
+    const [localidades, setLocalidades] = useState([]);
+
+    useEffect(() => {
+        const getProvinces = async () => {
+            const url =
+                "https://apis.datos.gob.ar/georef/api/provincias?orden=nombre";
+            const res = await axios.get(url);
+            const { provincias } = res.data;
+            // Una vez que obtengo las provincias, las guardo en el estado
+            setProvinces(provincias);
+        };
+        getProvinces();
+    }, []);
+
+    const handleProvinceChange = async (event) => {
+        const provinceId = event.target.value;
+        const url = `https://apis.datos.gob.ar/georef/api/localidades?provincia=${provinceId}&campos=id,nombre&orden=nombre&max=5000`;
+        const res = await axios.get(url);
+        const { localidades } = res.data;
+        setLocalidades(localidades);
+    };
 
     const navigate = useNavigate();
 
@@ -54,7 +67,19 @@ const leveldos = () => {
                 </div>
                 <form
                     id="formRegister"
-                    onSubmit={handleSubmit((data) => formulario(data, navigate))}
+                    onSubmit={handleSubmit((data) => {
+                        //Agrego al objeto el nombre de la localidad
+                        data = {
+                            ...data,
+                            name_city: localidades.find(
+                                (item) => item.id === data.id_cities
+                            ).nombre,
+                            name_state: provinces.find(
+                                (item) => item.id === data.id_state
+                            ).nombre,
+                        };
+                        formulario(data, navigate);
+                    })}
                     className="w-full flex flex-wrap p-7"
                 >
                     <div className="w-full md:w-1/2 lg:w-1/4 p-2">
@@ -191,17 +216,18 @@ const leveldos = () => {
                                 id="id_state"
                                 {...register("id_state", { required: true })}
                                 className="block bg-white dark:bg-zinc-800 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
+                                onChange={handleProvinceChange}
                             >
                                 <option className="robotoCondensed" value="">
                                     Seleccionar...
                                 </option>
-                                {provincias.map((item, index) => (
+                                {provinces.map((item, index) => (
                                     <option
                                         key={index}
                                         className="robotoCondensed"
                                         value={item.id}
                                     >
-                                        {item.name}
+                                        {item.nombre}
                                     </option>
                                 ))}
                             </select>
@@ -228,13 +254,13 @@ const leveldos = () => {
                                 <option className="robotoCondensed" value="">
                                     Seleccionar...
                                 </option>
-                                {provincias.map((item, index) => (
+                                {localidades.map((item, index) => (
                                     <option
                                         key={index}
                                         className="robotoCondensed"
                                         value={item.id}
                                     >
-                                        {item.name}
+                                        {item.nombre}
                                     </option>
                                 ))}
                             </select>
