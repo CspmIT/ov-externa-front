@@ -40,7 +40,7 @@ const Detail = () => {
                 const data = await searchDetailService(body);
                 if (data) {
                     setDatosGral(data?.generalData ? data.generalData : data);
-                    setUnidad(service == 6 ? "L." : "kW/h");
+                    setUnidad(service == 6 ? "m³" : "kW/h");
                     if (data.difCosumo || data.difCosumo === 0) {
                         setColorsConsuption({
                             bgColorClass: difConsumo < 0 ? "!bg-red-200" : "!bg-green-100",
@@ -73,28 +73,32 @@ const Detail = () => {
         };
         DetailService();
     }, [difConsumo]);
-
     return (
-        <div className={"pt-1 p-7 mr-5"}>
+        <div className={"max-sm:p-2 max-sm:mr-0 pt-1 p-7 mr-5"}>
             {!datosGral ? (
                 <LoaderComponent />
             ) : (
                 <>
-                    <div className="flex relative flex-wrap p-6 w-full justify-center items-center">
-                        <h2 className="text-center m-0">Servicio: {NameService}</h2>
-                        <div className="absolute right-8">
+                    <div className="flex relative flex-wrap max-sm:p-0 p-6 w-full justify-center items-center">
+                        <h2 className="text-center max-sm:text-start max-sm:w-3/4 max-sm:text-3xl mb-5 m-0">Servicio: {NameService}</h2>
+                        <div className="absolute max-sm:right-0 max-sm:top-0 right-8">
                             <ButtonAnimate to="/MyServices" icon={<FaArrowLeft className="text-white text-xl" />} text={"volver"} bgIcon={"bg-blue-400 mr-5"} color={"text-white"} />
                         </div>
                     </div>
-                    <CardCustom className={"p-7"}>
-                        <div className={`flex mt-2 mb-3 rounded-xl p-5 bg-zinc-200 dark:bg-zinc-800`}>
-                            <p className="m-0 text-lg space-x-6">
-                                <b>Cuenta Nº:</b>
-                                {datosGral[0].account} <b>Domicilio:</b> {datosGral[0].address} <b>Titular:</b> {datosGral[0].nameCustomer}
+                    <CardCustom className={"p-7 max-sm:p-2 dark:!bg-zinc-800"}>
+                        <div className={`flex max-sm:flex-col mt-2 mb-3 rounded-xl p-5 bg-zinc-200 dark:bg-zinc-700`}>
+                            <p className="m-0 sm:ml-3 text-lg space-x-6">
+                                <b>Cuenta Nº:</b> {datosGral[0].account}
+                            </p>
+                            <p className="m-0 sm:ml-3 text-lg space-x-6">
+                                <b>Domicilio:</b> {datosGral[0].address}
+                            </p>
+                            <p className="m-0 sm:ml-3 text-lg space-x-6">
+                                <b>Titular:</b> {datosGral[0].nameCustomer}
                             </p>
                         </div>
 
-                        <div className={`flex mt-2 mb-3 rounded-xl p-5 bg-zinc-200 dark:bg-zinc-800`}>
+                        <div className={`flex max-sm:flex-col mt-2 mb-3 rounded-xl p-5 bg-zinc-200 dark:bg-zinc-700`}>
                             <span className="flex mr-3">
                                 <FaCircle className="text-green-500 mr-2" /> Servicio Activo
                             </span>
@@ -106,7 +110,7 @@ const Detail = () => {
                             </span>
                         </div>
                         <div className="w-full flex mt-5 flex-wrap">
-                            <div className="w-1/3 px-6">
+                            <div className="w-1/3 max-sm:w-full px-6">
                                 {difConsumo || difConsumo === 0 ? (
                                     <CardCustom className={`relative p-5 mb-5 rounded-xl flex flex-col items-center ${colorsConsuption.bgColorClass} ${colorsConsuption.borderColorClass} border-solid border-2 `}>
                                         <label className={`text-xl font-bold ${colorsConsuption.textTitleColor}`}>{colorsConsuption.attentionText}</label>
@@ -115,10 +119,7 @@ const Detail = () => {
                                         </p>
                                     </CardCustom>
                                 ) : null}
-                                {!serviceTv ? (
-                                    <CardServiceDetail serviceItem={datosGral[0]} />
-                                ) : 
-                                null}
+                                {!serviceTv ? <CardServiceDetail serviceItem={datosGral[0]} /> : null}
                             </div>
                             {serviceTv ? (
                                 <div className="w-full">
@@ -126,7 +127,7 @@ const Detail = () => {
                                 </div>
                             ) : null}
                             {datosGraf ? (
-                                <div className=" w-2/3 px-8  rounded-xl">
+                                <div className=" w-2/3 max-sm:w-full max-sm:px-0 px-8 rounded-xl">
                                     <BarChar title={"Consumo de Energía Eléctrica por mes"} nameSeria={unidad} data={datosGraf} />
                                 </div>
                             ) : null}
