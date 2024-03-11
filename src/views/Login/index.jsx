@@ -13,14 +13,19 @@ import Axios from "axios";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
 const Login = () => {
+    const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pass, setPass] = useState("password");
+  const [remember, setRemember] = useState(false);
   const [iconEye, setIconEye] = useState(<TbEye />);
   const showPassword = () => {
     setPass(pass == "password" ? "text" : "password");
     setIconEye(pass == "password" ? <TbEyeClosed /> : <TbEye />);
   };
+  const handleChangeCheckBoxRemember = (e) => {
+    setRemember(!remember);
+};
   const handleChangeMail = (e) => {
     setEmail(e.target.value);
   };
