@@ -30,7 +30,7 @@ function CardServiceDetail({ ...props }) {
         <CardCustom className={`relative mb-4 h-64 p-2 rounded-[2em] flex flex-col justify-center items-center !bg-zinc-200 dark:!bg-zinc-700 dark:!text-gray-300 ${props.className}`}>
             <FaCircle className={`${item.status != 0 ? "animate-ping" : ""} absolute right-5 top-5 ${item.status > 0 ? (item.status > 1 ? "text-yellow-500" : "text-green-500") : "text-red-500"} mr-2`} />
             <FaCircle className={`absolute right-5 top-5 ${item.status > 0 ? (item.status > 1 ? "text-yellow-500" : "text-green-500") : "text-red-500"} mr-2`} />
-            <div className="text-white !text-6xl  rounded-full overflow-hidden flex items-center justify-center">{icono[item.service]}</div>
+            <div className="text-white !text-5xl  rounded-full overflow-hidden flex items-center justify-center">{icono[item.service]}</div>
             {item.titleService ? <p className="mt-6 text-2xl font-semibold text-center">{item.titleService}</p> : null}
             {item.category ? <p className="mt-3 mb-0 text-lg   text-center">{item.category}</p> : null}
             {props.detailService && item.address ? <p className="mt-3 mb-0 text-lg   text-center">{item.address}</p> : null}

@@ -132,7 +132,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     }, [table.getState().rowSelection]);
 
     useEffect(() => {
-        table.setColumnOrder(["mrt-row-expand", ...columns.map((e) => e.accessorKey), "mrt-row-select"]);
+        table.setColumnOrder([`${window.innerWidth > 420 ? "mrt-row-expand" : ""}`, ...columns.map((e) => e.accessorKey), "mrt-row-select"]);
     }, [table]);
     return <MaterialReactTable table={table} />;
 };
