@@ -16,10 +16,10 @@ const Navbar = () => {
   const { darkMode, setDarkMode } = useContext(UserContext);
   const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
   const [activeItem, setActiveItem] = useState(null);
+  const [dark, setDark] = useState(darkMode);
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
   };
-  const [dark, setDark] = useState(darkMode);
   const [iconMode, setIconMode] = useState(<FaMoon className="change" />);
   const [shadowMode, setShadowMode] = useState(dark ? "styles.shadowDark" : "styles.shadowLight");
   const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -75,7 +75,7 @@ const Navbar = () => {
           <ul className="space-y-2 font-medium">
             {itemsData.map((item, index) => {
               if (item.level.find((level) => level == JSON.parse(localStorage.getItem("usuario")).level)) {
-                return <ItemNav key={index} props={item} isActive={item.name === activeItem} onButtonClick={() => handleItemClick(item.name)} />;
+                return <ItemNav key={index} props={item} isActive={item.name === activeItem} actionMobile={()=>toggleMobileMenu()} onButtonClick={() => handleItemClick(item.name)} />;
               }
               return null;
             })}

@@ -116,14 +116,11 @@ export const columnsCel = [
         minSize: 10,
         maxSize: 30,
         AggregatedCell: ({ row }) => {
-            return (
-                <p className="m-0 text-sm font-bold">
-                    Cuenta Nº: {row.original.account} 
-                </p>
-            );
+            return <p className="m-0 text-sm font-bold">Cuenta Nº: {row.original.account}</p>;
         },
         Cell: ({ cell }) => {
             const { darkMode } = useContext(UserContext);
+            const amount = cell.row.original.info?.amount ?? cell.row.original.amount;
             return (
                 <Box
                     component="span"
@@ -134,17 +131,17 @@ export const columnsCel = [
                     })}
                 >
                     <p className="m-0">
-                        <b>Tipo:</b> {cell.row.original.info.type}
+                        <b>Tipo:</b> {cell.row.original.info?.type ?? cell.row.original.type}
                     </p>
                     <p className="m-0">
-                        <b>Periodo:</b> {cell.row.original.info.period}
+                        <b>Periodo:</b> {cell.row.original.info?.period ?? cell.row.original.period}
                     </p>
                     <p className="m-0">
-                        <b>Vencimiento:</b> {cell.row.original.info.vto}
+                        <b>Vencimiento:</b> {cell.row.original.info?.vto ?? cell.row.original.vto}
                     </p>
                     <p className="m-0 text-red-500">
                         <b>Importe:</b>{" "}
-                        {cell.row.original.info.amount.toLocaleString?.("es-AR", {
+                        {amount.toLocaleString?.("es-AR", {
                             style: "currency",
                             currency: "ARS",
                             minimumFractionDigits: 2,
@@ -162,7 +159,7 @@ export const columnsCel = [
         enableGlobalFilter: false,
         Cell: ({ row }) => {
             if (!row.original.subRows) {
-                return <Circle className={`max-sm:m-0 ${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />;
+                return <Circle className={`max-sm:m-0 max-sm:text-sm ${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />;
             }
         },
     },
@@ -172,12 +169,13 @@ export const columnsCel = [
         enableGlobalFilter: false,
         size: 10,
         Cell: ({ row }) => {
-            if (row.original.info.url) {
+            const url = row.original.info?.url ?? row.original.url;
+            if (url) {
                 return (
                     <Button
-                        props={{ class: "bg-blue-500 m-0 rounded max-sm:rounded-full max-sm:p-2 text-center py-0.7 px-1.5 text-white " }}
+                        props={{ class: "bg-blue-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white " }}
                         onclick={() => {
-                            controlUrl(`${row.original?.info.url ? row.original?.info.url : undefined}`);
+                            controlUrl(`${url ? url : undefined}`);
                         }}
                     >
                         <FindInPage />
@@ -189,7 +187,6 @@ export const columnsCel = [
 ];
 
 export const controlUrl = async (url) => {
-    // const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
     const urlConsulta = "http://cooptech.com.ar:30888/api/existinvoice?url=" + url;
     try {
         const response = await axios({
