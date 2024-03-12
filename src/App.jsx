@@ -18,6 +18,9 @@ import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import MyConsumption from "./views/MyConsumption";
 import Footer from "./components/Footer";
 import Profile from "./views/Profile/profile";
+import BaseInitial from "./views/BaseInitial";
+import RestorePassword from "./views/RestorePassword";
+import ChangePassword from "./views/ChangePassword";
 function App() {
   
   const [user, setUser] = useState(() => {
@@ -51,7 +54,7 @@ function App() {
     return (
         <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
             {user && <Navbar />}
-            <div className={`flex-grow p-2 ${user ? "sm:pl-60 pt-20" : ""} `}>
+            <div className={`flex-grow  ${user ? "sm:pl-60 pt-20" : ""} `}>
                 <Routes>
                     {user ? (
                         <>
@@ -80,8 +83,10 @@ function App() {
                         </>
                     ) : (
                         <>
-                            <Route path="/Login" element={<Login />} />
-                            <Route path="/Register" element={<Register />} />
+                            <Route path="/Login" element={<BaseInitial><Login /></BaseInitial> } />
+                            <Route path="/Register" element={<BaseInitial><Register /></BaseInitial>} />
+                            <Route path="/RestorePassword" element={<BaseInitial><RestorePassword /></BaseInitial>} />
+                            <Route path="/ChangePassword/:token" element={<BaseInitial><ChangePassword /></BaseInitial>} />
                             <Route
                                 path="/"
                                 element={<Navigate to="/Login" />}
