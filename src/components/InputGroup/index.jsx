@@ -60,6 +60,7 @@ const InputGroup = ({ validation, ...props }) => {
         "min",
         "pattern",
         "validate",
+        "matchesPreviousPassword",
     ];
     return (
         <div className={props.className}>

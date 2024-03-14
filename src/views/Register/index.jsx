@@ -40,7 +40,8 @@ const Register = () => {
         setUserData({ ...userData, [e.target.name]: e.target.value });
     };
     const formulario = async () => {
-        const url = `http://cooptech.com.ar:30888/api/register`;
+        const url = `http://localhost:8000/api/register`;
+        // const url = `http://cooptech.com.ar:30888/api/register`;
         try {
             const responseData = await request(url, "POST", userData);
             Swal.fire({

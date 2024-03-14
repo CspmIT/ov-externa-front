@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 {
     /* ----------------- ICONOS ----------------- */
 }
@@ -12,8 +12,12 @@ import Button from "../../components/Button";
 import Axios from "axios";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { UserContext } from "../../contexts/UserContext";
 
 const Login = () => {
+    const { token, id_user } = useParams(["token", "id_user"]);
+    const { setUsuario } = useContext(UserContext);
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -33,22 +37,85 @@ const Login = () => {
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
     };
-    const formulario = async () => {
-        const url = "http://cooptech.com.ar:30888/api/login";
-        const info = { email, password };
+    const RenviarToken = async () => {
+        const url = "http://localhost:8000/api/reSendEmailToken";
+        const info = { token, id_user };
+        console.log(info);
         try {
             const responseData = await Axios.post(url, info);
             if (responseData === "Error") {
                 alert("No existe el usuario");
                 return;
             }
-            localStorage.setItem("usuario", JSON.stringify(responseData.data));
-            window.location.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Perfecto!",
+                text: `Se ha reenviado un email a ${info.mail} para activar la cuenta`,
+            }).then(() => {
+                navigate("/Login");
+            });
         } catch (error) {
-            console.error("Error en la solicitud:", error);
+            console.log(error);
             return;
         }
     };
+    const formulario = async () => {
+        // const url = "http://cooptech.com.ar:30888/api/login";
+        const url = "http://localhost:8000/api/login";
+        const info = { email, password };
+        try {
+            const responseData = await Axios.post(url, info);
+            if (responseData.status === 200) {
+                localStorage.setItem("usuario", JSON.stringify(responseData.data));
+                setUsuario(responseData.data);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atención!",
+                text: error.response.data.message,
+                allowOutsideClick: false,
+            });
+            return;
+        }
+    };
+
+    const validacionToken = async (token, id) => {
+        const url = "http://localhost:8000/api/validationUser";
+        const info = { token };
+        try {
+            const responseData = await Axios.post(url, info);
+            Swal.fire({
+                icon: "success",
+                title: "Perfecto!",
+                text: "Se habilito correctamente tu cuenta.",
+                allowOutsideClick: false,
+            }).then(() => {
+                navigate("/Login");
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atención!",
+                text: error.response.data.message,
+                confirmButtonText: "Reenviar Token",
+                allowOutsideClick: false,
+                showCancelButton: true,
+            }).then((result) => {
+                if (!result.isConfirmed) {
+                    navigate("/Login");
+                } else {
+                    RenviarToken();
+                }
+            });
+        }
+    };
+    useEffect(() => {
+        if (token && id_user) {
+            validacionToken(token, id_user);
+        }
+    }, [id_user, token]);
+
     const {
         register,
         formState: { errors },

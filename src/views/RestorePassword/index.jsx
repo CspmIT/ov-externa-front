@@ -15,9 +15,10 @@ function RestorePassword() {
         setEmail(e.target.value);
     };
 
-    const formulario = async () => {
+    const password_recover = async () => {
         setSpinner(true);
-        const url = "http://cooptech.com.ar:30888/api/password_recover";
+        // const url = "http://cooptech.com.ar:30888/api/password_recover";
+        const url = "http://localhost:8000/api/password_recover";
         const info = { email };
         try {
             const responseData = await Axios.post(url, info);
@@ -53,9 +54,10 @@ function RestorePassword() {
     return (
         <>
             <h2 className="mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">Recuperar contraseña </h2>
-            <form onSubmit={handleSubmit((data) => formulario(data))}>
+            <form onSubmit={handleSubmit((data) => password_recover(data))}>
                 <InputGroup onChange={handleChangeMail} required errors={errors} validation={register} id={"email"} name={"email"} title={"Email"} ph={"Ingrese un Email"} type={"email"} value={email} />
-                <div className="w-full mt-3 flex flex-col text-center items-center justify-center">
+                <div className="w-full mt-3 flex text-center items-center justify-center">
+                    <Button onClick={()=>{navigate('/Login')}} variant='contained' sx={{marginRight: 3}} color='warning'><b>Cancelar</b></Button>
                     <Button variant="contained" color="primary" disabled={spinner} type="submit">
                         {spinner ? <CircularProgress size={20} disableShrink={true} color="warning" /> : <b>Recuperar</b>}
                     </Button>
