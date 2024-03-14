@@ -13,15 +13,13 @@ import DropdownImage from "../DropdownImage";
 import { UserContext } from "../../contexts/UserContext";
 
 const Navbar = () => {
-  const { darkMode, setDarkMode } = useContext(UserContext);
-  const userDark = JSON.parse(localStorage.getItem("usuario")).dark == 1 ? "dark" : "";
+  const { darkMode, setDarkMode, usuario } = useContext(UserContext);
   const [activeItem, setActiveItem] = useState(null);
-  const [dark, setDark] = useState(darkMode);
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
   };
   const [iconMode, setIconMode] = useState(<FaMoon className="change" />);
-  const [shadowMode, setShadowMode] = useState(dark ? "styles.shadowDark" : "styles.shadowLight");
+  const [shadowMode, setShadowMode] = useState(darkMode ? "styles.shadowDark" : "styles.shadowLight");
   const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -29,18 +27,22 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    setDarkMode(!darkMode);
-    if (dark) {
-      document.body.classList.add("dark");
-    } else {
+    console.log(darkMode)
+    if (darkMode) {
       document.body.classList.remove("dark");
+      setIconMode(<FaMoon className="change" />);
+      setShadowMode("styles.shadowLight");
+    } else {
+      document.body.classList.add("dark");
+      setIconMode(<IoIosSunny className="change text-2xl" />);
+      setShadowMode("styles.shadowDark");
     }
-  }, [dark]);
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
-    setDark((prevDark) => !prevDark);
-    setIconMode((prevIconMode) => (prevIconMode.type === FaMoon ? <IoIosSunny className="change text-2xl" /> : <FaMoon className="change" />));
-    setShadowMode((prevShadowMode) => (prevShadowMode === "styles.shadowLight" ? "styles.shadowDark" : "styles.shadowLight"));
+    setDarkMode(!darkMode);
+    setIconMode(!darkMode ? <FaMoon className="change" /> : <IoIosSunny className="change text-2xl" />);
+    setShadowMode(!darkMode ? "styles.shadowDark" : "styles.shadowLight");
   };
 
   const itemsData = [
@@ -60,7 +62,7 @@ const Navbar = () => {
       ],
     },
     { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
-    { name: "Subir de nivel", icon: <FaArrowAltCircleUp />, link: "/LevelUp2", level: [1, 2, 3] },
+    { name: "Subir de nivel", icon: <FaArrowAltCircleUp />, link: "/LevelUp2", level: [1] },
     { name: "Dejanos tu Opinión", icon: <FaComments />, link: "/Information", level: [1,2, 3] },
   ];
 
@@ -74,7 +76,7 @@ const Navbar = () => {
           <hr className="m-2" />
           <ul className="space-y-2 font-medium">
             {itemsData.map((item, index) => {
-              if (item.level.find((level) => level == JSON.parse(localStorage.getItem("usuario")).level)) {
+              if (item.level.find((level) => level == usuario?.level)) {
                 return <ItemNav key={index} props={item} isActive={item.name === activeItem} actionMobile={()=>toggleMobileMenu()} onButtonClick={() => handleItemClick(item.name)} />;
               }
               return null;
@@ -99,11 +101,11 @@ const Navbar = () => {
                     </div>
                     <Dropdown props={{ titleColor: "bg-amber-300 text-gray-900 hover:bg-amber-400", childrenColor: "text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800" }} />
                     <span href="#" className="text-gray-900 font-medium px-2 dark:text-white hidden md:flex items-center justify-between w-full md:w-auto">
-                      <FaFileAlt className="mr-2" /> {JSON.parse(localStorage.getItem("usuario")).customer}
+                      <FaFileAlt className="mr-2" /> {usuario?.number_customer}
                     </span>
                     <span href="#" className="text-gray-900 font-medium px-2 dark:text-white hidden md:flex items-center justify-between w-full md:w-auto">
                       <FaLayerGroup className="mr-2" />
-                      Nivel: <b className="ml-2">{JSON.parse(localStorage.getItem("usuario")).level}</b>
+                      Nivel: <b className="ml-2">{usuario?.level}</b>
                     </span>
                     <button className="text-white bg-emerald-500 font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto">
                       <FaPlus />
