@@ -91,7 +91,8 @@ function App() {
             { name: '/register', element: <Navigate to='/' /> },
             { name: '/Login', element: <Navigate to='/Home' /> },
         ]
-        if (usuario) {
+
+        if (usuario && usuario?.id > 0) {
             let routerUser = []
             if (user?.level == 1) {
                 routerUser = [...routesBaseUser, { name: '/LevelUp2', element: <LevelUp2 /> }]
