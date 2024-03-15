@@ -40,7 +40,6 @@ const ChangePassword = () => {
     const change_password = async (data) => {
         const url = "http://localhost:8000/api/change_password";
         const info = { password: data.password, token };
-        console.log(info);
         try {
             const responseData = await Axios.post(url, info);
             if (responseData.status == 200) {
@@ -86,7 +85,6 @@ const ChangePassword = () => {
         }
     };
     useEffect(() => {
-      console.log(token)
         if (token) {
             validationToken(token);
         }

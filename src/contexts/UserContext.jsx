@@ -5,12 +5,13 @@ const UserContext = createContext()
 function UserProvider({ children }) {
     const [darkMode, setDarkMode] = useState(0)
     const [usuario, setUsuario] = useState([])
+    const [account, setAccount] = useState([])
     useEffect(() => {
         const storedUser = localStorage.getItem('usuario')
         setUsuario(JSON.parse(storedUser))
         setDarkMode(JSON.parse(storedUser)?.dark)
     }, [children])
 
-    return <UserContext.Provider value={{ darkMode, setDarkMode, usuario, setUsuario }}>{children}</UserContext.Provider>
+    return <UserContext.Provider value={{ darkMode, setDarkMode, usuario, setUsuario, account, setAccount }}>{children}</UserContext.Provider>
 }
 export { UserContext, UserProvider }

@@ -22,11 +22,13 @@ import BaseInitial from './views/BaseInitial'
 import RestorePassword from './views/RestorePassword'
 import ChangePassword from './views/ChangePassword'
 import { UserContext } from './contexts/UserContext'
+import LoaderComponent from './components/Loader'
 function App() {
     const [user, setUser] = useState(null)
     const [routes, setRoutes] = useState([])
     const [navBar, setNavBar] = useState(null)
-    const { usuario } = useContext(UserContext)
+    const [isLoading, setIsLoading] = useState(true)
+    const { usuario, darkMode } = useContext(UserContext)
     useEffect(() => {
         const storedUser = localStorage.getItem('usuario')
         const usuario2 = JSON.parse(storedUser)
@@ -117,17 +119,41 @@ function App() {
         }
     }, [usuario])
 
+    useEffect(() => {
+        if (darkMode) {
+            document.body.classList.remove('dark')
+        } else {
+            document.body.classList.add('dark')
+        }
+    }, [darkMode, usuario])
+
+    useEffect(() => {
+        if (routes.length > 0) {
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 1500)
+        }
+    }, [navBar, usuario])
+
     return (
         <div className='flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700'>
-            {navBar}
-            <div className={`flex-grow  ${usuario ? 'sm:pl-60 pt-20 pb-8' : ''} `}>
-                <Routes>
-                    {routes.map((route) => (
-                        <Route key={route.name} path={route.path ?? route.name} element={route.element} />
-                    ))}
-                </Routes>
-            </div>
-            <Footer />
+            {isLoading ? (
+                <div className='h-full w-full flex justify-center items-center'>
+                    <LoaderComponent />
+                </div>
+            ) : (
+                <>
+                    {navBar}
+                    <div className={`flex-grow  ${usuario ? 'sm:pl-60 pt-20 pb-8' : ''} `}>
+                        <Routes>
+                            {routes.map((route) => (
+                                <Route key={route.name} path={route.path ?? route.name} element={route.element} />
+                            ))}
+                        </Routes>
+                    </div>
+                    <Footer />
+                </>
+            )}
         </div>
     )
 }

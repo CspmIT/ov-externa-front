@@ -13,7 +13,7 @@ import DropdownImage from "../DropdownImage";
 import { UserContext } from "../../contexts/UserContext";
 
 const Navbar = () => {
-  const { darkMode, setDarkMode, usuario } = useContext(UserContext);
+  const { darkMode, setDarkMode, usuario, account } = useContext(UserContext);
   const [activeItem, setActiveItem] = useState(null);
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
@@ -27,7 +27,6 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    console.log(darkMode)
     if (darkMode) {
       document.body.classList.remove("dark");
       setIconMode(<FaMoon className="change" />);
@@ -99,7 +98,7 @@ const Navbar = () => {
                     <div className="pl-3 pr-4 py-2 md:p-0 font-medium flex dark:text-white items-center justify-between w-full md:w-auto text-gray-900">
                       <FaUser />
                     </div>
-                    <Dropdown props={{ titleColor: "bg-amber-300 text-gray-900 hover:bg-amber-400", childrenColor: "text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800" }} />
+                    <Dropdown data={account} titleColor={"bg-amber-300 text-gray-900 hover:bg-amber-400"} childrenColor={"text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800"} />
                     <span href="#" className="text-gray-900 font-medium px-2 dark:text-white hidden md:flex items-center justify-between w-full md:w-auto">
                       <FaFileAlt className="mr-2" /> {usuario?.number_customer}
                     </span>

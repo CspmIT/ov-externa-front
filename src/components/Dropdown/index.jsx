@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-const Dropdown = ({ props }) => {
+const Dropdown = ({ ...props }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
