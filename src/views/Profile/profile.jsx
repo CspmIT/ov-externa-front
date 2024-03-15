@@ -17,9 +17,10 @@ function profile() {
   const getUserData = async () => {
     // Obtengo los datos del usuario
     const { id } = JSON.parse(localStorage.getItem('usuario'))
-    // const url = 'http://cooptech.com.ar:30888/api/getLevel'
-    const urlLocal = 'http://localhost:8000/api/getLevel'
-    const response = await Axios.post(urlLocal, { user: id })
+    const url = 'http://cooptech.com.ar:30888/api/getLevel'
+    // const url = 'http://localhost:8000/api/getLevel'
+
+    const response = await Axios.post(url, { user: id })
     return response.data
   }
 
@@ -44,11 +45,11 @@ function profile() {
 
   const updateUserData = async (data) => {
     const { id } = JSON.parse(localStorage.getItem('usuario'))
-    // const url = 'http://cooptech.com.ar:30888/api/updateUser'
-    const urlLocal = 'http://localhost:8000/api/updateUser'
+    const url = 'http://cooptech.com.ar:30888/api/updateUser'
+    // const url = 'http://localhost:8000/api/updateUser'
     // Agrego el id al objeto data
     data.id = id
-    const response = await Axios.patch(urlLocal, data)
+    const response = await Axios.patch(url, data)
     if (response.data) {
       // Muestro un sweet alert con el mensaje de éxito
       Swal.fire({
@@ -84,11 +85,7 @@ function profile() {
       <h2 className='text-center m-5'>Mi perfil</h2>
       <hr className='mb-5' />
 
-      <Tabs
-        aria-label='Opciones del Perfil'
-        defaultValue={0}
-        className='rounded-3xl mb-5'
-      >
+      <Tabs aria-label='Opciones del Perfil' defaultValue={0} className='rounded-3xl mb-5'>
         <TabList
           disableUnderline
           tabFlex={1}
@@ -120,11 +117,7 @@ function profile() {
         <TabPanel value={0}>
           <CardCustom>
             <div className='flex flex-col items-center'>
-              <img
-                className='h-32 w-32 rounded-full mt-4'
-                src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                alt='imagen de perfil'
-              />
+              <img className='h-32 w-32 rounded-full mt-4' src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' alt='imagen de perfil' />
               <h1 className='text-2xl font-bold mt-4'>
                 {userData.first_name} {userData.last_name}
               </h1>
@@ -134,10 +127,7 @@ function profile() {
               </p>
               <p className='text-gray-500'>
                 Teléfono:
-                <span className='text-black'>
-                  {' '}
-                  {userData.phone ?? 'Pendiente'}
-                </span>
+                <span className='text-black'> {userData.phone ?? 'Pendiente'}</span>
               </p>
               <p className='text-gray-500'>
                 Dirección:
@@ -158,11 +148,7 @@ function profile() {
             </div>
 
             {/* FORMULARIO PARA MODIFICAR LOS DATOS DE LA CUENTA (NOMBRE, APELLIDO, TELEFONO Y DIRECCION) */}
-            <form
-              className='flex flex-col items-center mt-4'
-              onSubmit={handleSubmit(onSubmit)}
-              id='formEditUser'
-            >
+            <form className='flex flex-col items-center mt-4' onSubmit={handleSubmit(onSubmit)} id='formEditUser'>
               <h1 className='text-2xl font-bold'>Modificar datos</h1>
               <FormControl error={errors.first_name ?? false}>
                 <Input
@@ -176,10 +162,8 @@ function profile() {
                 />
                 <FormHelperText>
                   {errors.first_name && <InfoOutlined />}
-                  {errors.first_name?.type === 'required' &&
-                    'El nombre es requerido'}
-                  {errors.first_name?.type === 'minLength' &&
-                    'El nombre debe tener al menos 2 caracteres'}
+                  {errors.first_name?.type === 'required' && 'El nombre es requerido'}
+                  {errors.first_name?.type === 'minLength' && 'El nombre debe tener al menos 2 caracteres'}
                 </FormHelperText>
               </FormControl>
 
@@ -195,10 +179,8 @@ function profile() {
                 />
                 <FormHelperText>
                   {errors.last_name && <InfoOutlined />}
-                  {errors.last_name?.type === 'required' &&
-                    'El apellido es requerido'}
-                  {errors.last_name?.type === 'minLength' &&
-                    'El apellido debe tener al menos 2 caracteres'}
+                  {errors.last_name?.type === 'required' && 'El apellido es requerido'}
+                  {errors.last_name?.type === 'minLength' && 'El apellido debe tener al menos 2 caracteres'}
                 </FormHelperText>
               </FormControl>
 
@@ -215,12 +197,9 @@ function profile() {
                 />
                 <FormHelperText>
                   {errors.phone && <InfoOutlined />}
-                  {errors.phone?.type === 'required' &&
-                    'El teléfono es requerido'}
-                  {errors.phone?.type === 'minLength' &&
-                    'El teléfono debe tener al menos 11 caracteres'}
-                  {errors.phone?.type === 'pattern' &&
-                    'El teléfono debe contener solo números'}
+                  {errors.phone?.type === 'required' && 'El teléfono es requerido'}
+                  {errors.phone?.type === 'minLength' && 'El teléfono debe tener al menos 11 caracteres'}
+                  {errors.phone?.type === 'pattern' && 'El teléfono debe contener solo números'}
                 </FormHelperText>
               </FormControl>
 
@@ -236,16 +215,11 @@ function profile() {
                 />
                 <FormHelperText>
                   {errors.address && <InfoOutlined />}
-                  {errors.address?.type === 'required' &&
-                    'La dirección es requerida'}
-                  {errors.address?.type === 'minLength' &&
-                    'La dirección debe tener al menos 5 caracteres'}
+                  {errors.address?.type === 'required' && 'La dirección es requerida'}
+                  {errors.address?.type === 'minLength' && 'La dirección debe tener al menos 5 caracteres'}
                 </FormHelperText>
               </FormControl>
-              <button
-                className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2'
-                type='submit'
-              >
+              <button className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2' type='submit'>
                 Guardar cambios
               </button>
             </form>
