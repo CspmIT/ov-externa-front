@@ -81,12 +81,12 @@ function App() {
       { name: '/', element: <Navigate to='/Login' /> },
       { name: '/*', element: <Navigate to='/Login' /> },
       { name: '/Home', element: <Navigate to='/Login' /> },
-      { name: '/register', element: <Navigate to='/' /> },
-      { name: '/profile', element: <Profile /> }
+      { name: '/register', element: <Navigate to='/' /> }
     ]
     const routesBaseUser = [
       { name: '/', element: <Home /> },
       { name: '/*', element: <Navigate to='/Home' /> },
+      { name: '/Profile', element: <Profile /> },
       { name: '/Home', element: <Home /> },
       { name: '/Information', element: <Information /> },
       { name: '/register', element: <Navigate to='/' /> },
