@@ -99,7 +99,7 @@ const MyConsumption = () => {
                                 <CardCustom className={`relative p-5 mb-5 rounded-xl flex flex-col items-center ${statusElectric.bgColorClass} ${statusElectric.borderColorClass} border-solid border-2 `}>
                                     <label className={`text-xl font-bold ${statusElectric.textTitleColor}`}>{statusElectric.attentionText}</label>
                                     <p className={`${statusElectric.textClass}`}>
-                                        En {mesInvoice} de 2024 consumiste {difConsumoElectric === 0 ? "" : `${parseFloat(difConsumoElectric < 0 ? difConsumoElectric * -1 : difConsumoWater).toFixed(2)} m3`} <b className={`${statusElectric.textTitleColor}`}>{statusElectric.comparacionText}</b> que en {mesInvoice} de 2023.
+                                        En {mesInvoice} de 2024 consumiste {difConsumoElectric === 0 ? "" : `${parseFloat(difConsumoElectric < 0 ? difConsumoElectric * -1 : difConsumoElectric).toFixed(2)} kW/h`} <b className={`${statusElectric.textTitleColor}`}>{statusElectric.comparacionText}</b> que en {mesInvoice} de 2023.
                                     </p>
                                 </CardCustom>
                                 <div className="w-full h-full">
