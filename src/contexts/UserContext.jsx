@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 const UserContext = createContext()
 
 function UserProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(0)
+  const [darkMode, setDarkMode] = useState(1)
   const [usuario, setUsuario] = useState([])
   const [account, setAccount] = useState([])
   useEffect(() => {
