@@ -1,8 +1,8 @@
-import Dashboard_lvl2 from "../../components/DashBoardCustomer/Dashboard_lvl2";
-import Dashboard_lvl1 from "../../components/DashBoardCustomer/Dashboard_lvl1";
+import DashboardLvl2 from '../../components/DashBoardCustomer/Dashboard_lvl2'
+import DashboardLvl1 from '../../components/DashBoardCustomer/Dashboard_lvl1'
 const Home = () => {
-    var level = JSON.parse(localStorage.getItem("usuario"))?.level;
-    return <div className="flex flex-wrap w-full">{level == 1 ? <Dashboard_lvl1 /> : <Dashboard_lvl2 />}</div>;
-};
+  const level = JSON.parse(localStorage.getItem('usuario'))?.level
+  return <div className='flex flex-wrap w-full'>{level === 1 ? <DashboardLvl1 /> : <DashboardLvl2 />}</div>
+}
 
-export default Home;
+export default Home

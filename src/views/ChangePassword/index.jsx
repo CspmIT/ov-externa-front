@@ -12,8 +12,7 @@ import Axios from 'axios'
 const ChangePassword = () => {
   // Recupera el token de la URL
   const { token } = useParams(['token'])
-  const [savedToken, setSavedToken] = useState(null)
-  const [spinner, setSpinner] = useState(false)
+  const [spinner] = useState(false)
   const navigate = useNavigate()
 
   const initialData = {
@@ -26,12 +25,12 @@ const ChangePassword = () => {
   const [passRepeat, setPassRepeat] = useState('password')
   const [iconEyeRepeat, setIconEyeRepeat] = useState(<TbEye />)
   const showPasswordRepeat = () => {
-    setPassRepeat(passRepeat == 'password' ? 'text' : 'password')
-    setIconEyeRepeat(passRepeat == 'password' ? <TbEyeClosed /> : <TbEye />)
+    setPassRepeat(passRepeat === 'password' ? 'text' : 'password')
+    setIconEyeRepeat(passRepeat === 'password' ? <TbEyeClosed /> : <TbEye />)
   }
   const showPassword = () => {
-    setPass(pass == 'password' ? 'text' : 'password')
-    setIconEye(pass == 'password' ? <TbEyeClosed /> : <TbEye />)
+    setPass(pass === 'password' ? 'text' : 'password')
+    setIconEye(pass === 'password' ? <TbEyeClosed /> : <TbEye />)
   }
   const handleChangeUserData = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value })
@@ -43,7 +42,7 @@ const ChangePassword = () => {
     const info = { password: data.password, token }
     try {
       const responseData = await Axios.post(url, info)
-      if (responseData.status == 200) {
+      if (responseData.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Perfecto!',
@@ -71,7 +70,7 @@ const ChangePassword = () => {
     const info = { token }
     try {
       const responseData = await Axios.post(url, info)
-      if (responseData.status == 200) {
+      if (responseData.status === 200) {
         return true
       }
     } catch (error) {

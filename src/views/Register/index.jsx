@@ -25,12 +25,12 @@ const Register = () => {
   const [passRepeat, setPassRepeat] = useState('password')
   const [iconEyeRepeat, setIconEyeRepeat] = useState(<TbEye />)
   const showPasswordRepeat = () => {
-    setPassRepeat(passRepeat == 'password' ? 'text' : 'password')
-    setIconEyeRepeat(passRepeat == 'password' ? <TbEyeClosed /> : <TbEye />)
+    setPassRepeat(passRepeat === 'password' ? 'text' : 'password')
+    setIconEyeRepeat(passRepeat === 'password' ? <TbEyeClosed /> : <TbEye />)
   }
   const showPassword = () => {
-    setPass(pass == 'password' ? 'text' : 'password')
-    setIconEye(pass == 'password' ? <TbEyeClosed /> : <TbEye />)
+    setPass(pass === 'password' ? 'text' : 'password')
+    setIconEye(pass === 'password' ? <TbEyeClosed /> : <TbEye />)
   }
   const handleChangeUserData = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value })

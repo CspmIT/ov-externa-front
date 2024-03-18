@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-/* ----------------- ICONOS ----------------- */
 import { FaHouse, FaComments, FaPlus } from 'react-icons/fa6'
 import { FaArchive, FaInfoCircle, FaMoon, FaUser, FaLayerGroup, FaFileAlt, FaArrowAltCircleUp } from 'react-icons/fa'
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2'
 import { IoIosSunny, IoMdArrowDropdown } from 'react-icons/io'
-/* ----------------- ESTILOS ----------------- */
 import styles from './Navbar.module.css'
-/* ----------------- COMPONENTES ----------------- */
 import ItemNav from '../../components/ItemNav'
 import Dropdown from '../Dropdown'
 import DropdownImage from '../DropdownImage'
