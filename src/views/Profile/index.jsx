@@ -13,7 +13,7 @@ import FormControl from '@mui/joy/FormControl'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import Swal from 'sweetalert2'
 
-function profile() {
+function Profile() {
   const getUserData = async () => {
     // Obtengo los datos del usuario
     const { id } = JSON.parse(localStorage.getItem('usuario'))
@@ -230,4 +230,4 @@ function profile() {
   )
 }
 
-export default profile
+export default Profile
