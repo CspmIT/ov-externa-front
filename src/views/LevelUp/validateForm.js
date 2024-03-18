@@ -3,9 +3,9 @@ import Swal from 'sweetalert2'
 
 // Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
-  const { number_customer } = data
+  const { numberCustomer } = data
   const url = 'http://cooptech.com.ar:30888/api/getCustomer'
-  const res = await Axios.post(url, { customer: number_customer })
+  const res = await Axios.post(url, { customer: numberCustomer })
   return res.data
 }
 
@@ -23,7 +23,7 @@ const updateLevel = async (data) => {
 const validateForm = async (data, navigate) => {
   try {
     const nombreSocio = await getCustomer(data)
-    if (nombreSocio.status == 500) {
+    if (nombreSocio.status === 500) {
       throw new Error(nombreSocio.error)
     }
     // Muestro una alerta con el nombre del socio
@@ -61,7 +61,7 @@ const validateForm = async (data, navigate) => {
     const { message } = error.response.data
     const errorMessages = []
 
-    if (message == 'El socio no existe') {
+    if (message === 'El socio no existe') {
       Swal.fire({
         title: 'Error',
         text: message,
@@ -71,10 +71,8 @@ const validateForm = async (data, navigate) => {
     }
 
     for (const i in message) {
-      if (i == 'user' || i == 'level') {
-        errorMessages.push(
-          'Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.'
-        )
+      if (i === 'user' || i === 'level') {
+        errorMessages.push('Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.')
         break
       }
       errorMessages.push(...message[i])

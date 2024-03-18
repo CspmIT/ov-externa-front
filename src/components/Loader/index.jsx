@@ -1,4 +1,4 @@
-import styles from "./Loader.module.css";
+import styles from './Loader.module.css'
 const LoaderComponent = () => (
   <div className={styles.container}>
     <div className={styles.boxLoader}>
@@ -13,5 +13,5 @@ const LoaderComponent = () => (
     </div>
     <p className={styles.textLoader}>Cargando</p>
   </div>
-);
-export default LoaderComponent;
+)
+export default LoaderComponent

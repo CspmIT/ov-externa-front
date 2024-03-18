@@ -25,19 +25,19 @@ const Register = () => {
   const [passRepeat, setPassRepeat] = useState('password')
   const [iconEyeRepeat, setIconEyeRepeat] = useState(<TbEye />)
   const showPasswordRepeat = () => {
-    setPassRepeat(passRepeat == 'password' ? 'text' : 'password')
-    setIconEyeRepeat(passRepeat == 'password' ? <TbEyeClosed /> : <TbEye />)
+    setPassRepeat(passRepeat === 'password' ? 'text' : 'password')
+    setIconEyeRepeat(passRepeat === 'password' ? <TbEyeClosed /> : <TbEye />)
   }
   const showPassword = () => {
-    setPass(pass == 'password' ? 'text' : 'password')
-    setIconEye(pass == 'password' ? <TbEyeClosed /> : <TbEye />)
+    setPass(pass === 'password' ? 'text' : 'password')
+    setIconEye(pass === 'password' ? <TbEyeClosed /> : <TbEye />)
   }
   const handleChangeUserData = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value })
   }
   const formulario = async () => {
-    const url = 'http://localhost:8000/api/register'
-    // const url = `http://cooptech.com.ar:30888/api/register`;
+    // const url = 'http://localhost:8000/api/register'
+    const url = `http://cooptech.com.ar:30888/api/register`
     try {
       await request(url, 'POST', userData)
       Swal.fire({

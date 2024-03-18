@@ -1,52 +1,52 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 const ItemNav = ({ props, isActive, onButtonClick, actionMobile }) => {
-    return (
-        <li>
-            {props.link ? (
-                <Link to={props.link}>
-                    <button
-                        className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900  transition duration-75 rounded-lg group ${isActive ? "fondoPrincipal text-slate-950" : "hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200"}`}
-                        aria-controls={props.dropdown && props.idDrop}
-                        data-collapse-toggle={props.dropdown && props.idDrop}
-                        onClick={() => {
-                            if (window.innerWidth <= 640) actionMobile();
-                        }}
-                    >
-                        {props.icon}
-                        <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{props.name}</span>
-                        {props.dropdown && <>{props.iconDropdown}</>}
-                    </button>
+  return (
+    <li>
+      {props.link ? (
+        <Link to={props.link}>
+          <button
+            className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900  transition duration-75 rounded-lg group ${isActive ? 'fondoPrincipal text-slate-950' : 'hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200'}`}
+            aria-controls={props.dropdown && props.idDrop}
+            data-collapse-toggle={props.dropdown && props.idDrop}
+            onClick={() => {
+              if (window.innerWidth <= 640) actionMobile()
+            }}
+          >
+            {props.icon}
+            <span className='flex-1 ms-3 text-left rtl:text-right whitespace-nowrap'>{props.name}</span>
+            {props.dropdown && <>{props.iconDropdown}</>}
+          </button>
+        </Link>
+      ) : (
+        <div className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group ${isActive ? 'fondoPrincipal text-slate-950' : 'hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200'}`} onClick={onButtonClick}>
+          {props.icon}
+          <span className='flex-1 ms-3 text-left rtl:text-right whitespace-nowrap'>{props.name}</span>
+          {props.dropdown && <>{props.iconDropdown}</>}
+        </div>
+      )}
+      {props.dropdown && (
+        <>
+          <ul id={props.idDrop} className={`p-2 bg-white rounded dark:bg-zinc-950 m-2 relative ${isActive ? 'block' : 'hidden'}`}>
+            {props.list.map((item, index) => (
+              <li key={index}>
+                <Link to={item.link}>
+                  <button
+                    className='w-full p-2 pl-3 text-left text-gray-900 transition duration-75 rounded-lg group hover:bg-zinc-200 dark:text-white dark:hover:bg-gray-700'
+                    onClick={() => {
+                      if (window.innerWidth <= 640) actionMobile()
+                    }}
+                  >
+                    {item.name}
+                  </button>
                 </Link>
-            ) : (
-                <div className={`cursor-pointer flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group ${isActive ? "fondoPrincipal text-slate-950" : "hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-200"}`} onClick={onButtonClick}>
-                    {props.icon}
-                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{props.name}</span>
-                    {props.dropdown && <>{props.iconDropdown}</>}
-                </div>
-            )}
-            {props.dropdown && (
-                <>
-                    <ul id={props.idDrop} className={`p-2 bg-white rounded dark:bg-zinc-950 m-2 relative ${isActive ? "block" : "hidden"}`}>
-                        {props.list.map((item, index) => (
-                            <li key={index}>
-                                <Link to={item.link}>
-                                    <button
-                                        className="w-full p-2 pl-3 text-left text-gray-900 transition duration-75 rounded-lg group hover:bg-zinc-200 dark:text-white dark:hover:bg-gray-700"
-                                        onClick={() => {
-                                            if (window.innerWidth <= 640) actionMobile();
-                                        }}
-                                    >
-                                        {item.name}
-                                    </button>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
-        </li>
-    );
-};
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </li>
+  )
+}
 
-export default ItemNav;
+export default ItemNav

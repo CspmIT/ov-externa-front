@@ -34,7 +34,8 @@ const Login = () => {
     setPassword(e.target.value)
   }
   const RenviarToken = async () => {
-    const url = 'http://localhost:8000/api/reSendEmailToken'
+    // const url = 'http://localhost:8000/api/reSendEmailToken'
+    const url = 'http://cooptech.com.ar:30888/api/reSendEmailToken'
     const info = { token, idUser }
     try {
       const responseData = await Axios.post(url, info)
@@ -54,8 +55,8 @@ const Login = () => {
     }
   }
   const formulario = async () => {
-    // const url = "http://cooptech.com.ar:30888/api/login";
-    const url = 'http://localhost:8000/api/login'
+    const url = 'http://cooptech.com.ar:30888/api/login'
+    // const url = 'http://localhost:8000/api/login'
     const info = { email, password }
     try {
       const responseData = await Axios.post(url, info)
@@ -74,7 +75,8 @@ const Login = () => {
   }
 
   const validacionToken = async (token, id) => {
-    const url = 'http://localhost:8000/api/validationUser'
+    // const url = 'http://localhost:8000/api/validationUser'
+    const url = 'http://cooptech.com.ar:30888/api/validationUser'
     const info = { token }
     try {
       await Axios.post(url, info)
