@@ -56,7 +56,7 @@ const Login = () => {
       if (responseData.status === 200) {
         localStorage.setItem('usuario', JSON.stringify(responseData.data))
         const bodyOtherCustomer = { id_user: responseData.data.id }
-        const otherCustomer = await Axios.post('http://localhost:8000/api/allOther', bodyOtherCustomer)
+        const otherCustomer = await Axios.post('http://cooptech.com.ar:30888/api/allOther', bodyOtherCustomer)
         const user = { ...responseData.data, other: [...otherCustomer.data.data] }
         setUsuario(user)
       }
