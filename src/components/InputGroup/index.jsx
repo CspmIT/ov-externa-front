@@ -19,6 +19,10 @@ const InputGroup = ({ validation, ...props }) => {
       required: {
         value: props.required ?? false,
         message: 'Este campo es obligatorio'
+      },
+      pattern: {
+        value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+        message: 'Debe escribir un email correctamente'
       }
     },
     date: {
@@ -56,7 +60,7 @@ const InputGroup = ({ validation, ...props }) => {
     <div className={props.className}>
       {props.title && <label className='block font-semibold ml-1 mb-2 dark:text-white'>{props.title}</label>}
       <div className='relative flex flex-col items-center justify-center'>
-        <input disabled={props.disabled === 'disabled' ? props.disabled : ''} {...register} value={props.value} onChange={props.onChange} name={props.name ? props.name : props.id} type={props.type} placeholder={props.ph} id={props.id || ''} className='block w-full h-12 rounded-md border-0 p-1.5 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-1 ring-inset placeholder:text-gray-400 sm:text-sm sm:leading-6' />
+        <input disabled={props.disabled === 'disabled' ? props.disabled : ''} {...register} name={props.name ? props.name : props.id} type={props.type} placeholder={props.ph} id={props.id || ''} className='block w-full h-12 rounded-md border-0 p-1.5 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-1 ring-inset placeholder:text-gray-400 sm:text-sm sm:leading-6' />
         {props.showPass && (
           <button type='button' key={props.id ?? props.name} className={'absolute right-3 '} onClick={props.showPass}>
             {props.btnIcon}

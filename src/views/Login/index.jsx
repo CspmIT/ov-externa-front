@@ -15,8 +15,6 @@ const Login = () => {
   const { token, idUser } = useParams(['token', 'idUser'])
   const { usuario, setUsuario } = useContext(UserContext)
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [pass, setPass] = useState('password')
   const [remember, setRemember] = useState(false)
   const [iconEye, setIconEye] = useState(<TbEye />)
@@ -27,12 +25,7 @@ const Login = () => {
   const handleChangeCheckBoxRemember = (e) => {
     setRemember(!remember)
   }
-  const handleChangeMail = (e) => {
-    setEmail(e.target.value)
-  }
-  const handleChangePassword = (e) => {
-    setPassword(e.target.value)
-  }
+
   const RenviarToken = async () => {
     // const url = 'http://localhost:8000/api/reSendEmailToken'
     const url = 'http://cooptech.com.ar:30888/api/reSendEmailToken'
@@ -54,17 +47,21 @@ const Login = () => {
       console.log(error)
     }
   }
-  const formulario = async () => {
+  const formulario = async (data) => {
     const url = 'http://cooptech.com.ar:30888/api/login'
     // const url = 'http://localhost:8000/api/login'
-    const info = { email, password }
+    // const info = { email, password }
     try {
-      const responseData = await Axios.post(url, info)
+      const responseData = await Axios.post(url, data)
       if (responseData.status === 200) {
         localStorage.setItem('usuario', JSON.stringify(responseData.data))
-        setUsuario(responseData.data)
+        const bodyOtherCustomer = { id_user: responseData.data.id }
+        const otherCustomer = await Axios.post('http://localhost:8000/api/allOther', bodyOtherCustomer)
+        const user = { ...responseData.data, other: [...otherCustomer.data.data] }
+        setUsuario(user)
       }
     } catch (error) {
+      console.log(error)
       Swal.fire({
         icon: 'warning',
         title: 'Atención!',
@@ -111,6 +108,10 @@ const Login = () => {
     }
   }, [idUser, token])
 
+  useEffect(() => {
+    document.body.classList.remove('dark')
+  }, [])
+
   const {
     register,
     formState: { errors },
@@ -120,8 +121,8 @@ const Login = () => {
     <>
       <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Iniciar Sesión </h2>
       <form onSubmit={handleSubmit((data) => formulario(data))}>
-        <InputGroup onChange={handleChangeMail} required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} value={email} />
-        <InputGroup className={'mt-5'} onChange={handleChangePassword} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} value={password} />
+        <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
+        <InputGroup required errors={errors} validation={register} className={'mt-5'} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} />
         <div className='w-full mt-3 flex flex-col text-center items-center justify-center'>
           <FormControlLabel onChange={handleChangeCheckBoxRemember} control={<Checkbox id='CheckBoxRemember' />} label='Recuerdame' />
           <Button props={{ class: 'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400', text: 'Ingresar', type: 'submit' }} />

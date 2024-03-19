@@ -8,6 +8,7 @@ import ItemNav from '../../components/ItemNav'
 import Dropdown from '../Dropdown'
 import DropdownImage from '../DropdownImage'
 import { UserContext } from '../../contexts/UserContext'
+import Axios from 'axios'
 
 const Navbar = () => {
   const { darkMode, setDarkMode, usuario, account } = useContext(UserContext)
@@ -34,11 +35,24 @@ const Navbar = () => {
       setShadowMode('styles.shadowDark')
     }
   }, [darkMode])
-
+  const saveChangeModeDark = async (status) => {
+    // const url = 'http://localhost:8000/api/changeDarkMode'
+    const url = 'http://cooptech.com.ar:30888/api/changeDarkMode'
+    const info = { id: usuario.id, dark: status ? 1 : 0 }
+    try {
+      const responseData = await Axios.patch(url, info)
+      if (responseData.status === 200) {
+        console.log('correcto guardado')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const toggleDarkMode = () => {
     setDarkMode(!darkMode)
     setIconMode(!darkMode ? <FaMoon className='change' /> : <IoIosSunny className='change text-2xl' />)
     setShadowMode(!darkMode ? 'styles.shadowDark' : 'styles.shadowLight')
+    saveChangeModeDark(!darkMode)
   }
 
   const itemsData = [

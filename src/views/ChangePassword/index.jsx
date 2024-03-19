@@ -15,11 +15,6 @@ const ChangePassword = () => {
   const [spinner] = useState(false)
   const navigate = useNavigate()
 
-  const initialData = {
-    password: '',
-    password_confirmation: ''
-  }
-  const [userData, setUserData] = useState(initialData)
   const [pass, setPass] = useState('password')
   const [iconEye, setIconEye] = useState(<TbEye />)
   const [passRepeat, setPassRepeat] = useState('password')
@@ -31,9 +26,6 @@ const ChangePassword = () => {
   const showPassword = () => {
     setPass(pass === 'password' ? 'text' : 'password')
     setIconEye(pass === 'password' ? <TbEyeClosed /> : <TbEye />)
-  }
-  const handleChangeUserData = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value })
   }
 
   const changePassword = async (data) => {
@@ -65,7 +57,7 @@ const ChangePassword = () => {
     }
   }
   const validationToken = async (token) => {
-    // const url = "http://localhost:8000/api/validationToken";
+    // const url = 'http://localhost:8000/api/validationToken'
     const url = 'http://cooptech.com.ar:30888/api/validationToken'
     const info = { token }
     try {
@@ -91,6 +83,10 @@ const ChangePassword = () => {
     }
   }, [token])
 
+  useEffect(() => {
+    document.body.classList.remove('dark')
+  }, [])
+
   const {
     register,
     formState: { errors },
@@ -100,7 +96,7 @@ const ChangePassword = () => {
     <>
       <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Cambio de contraseña </h2>
       <form onSubmit={handleSubmit((data) => changePassword(data))}>
-        <InputGroup onChange={handleChangeUserData} required errors={errors} validation={register} id={'password'} name={'password'} title={'Contraseña Nueva'} showPass={showPassword} ph={'Ingrese una Contraseña nueva'} type={pass} btnIcon={iconEye} value={userData.password} />
+        <InputGroup required errors={errors} validation={register} id={'password'} name={'password'} title={'Contraseña Nueva'} showPass={showPassword} ph={'Ingrese una Contraseña nueva'} type={pass} btnIcon={iconEye} />
         <InputGroup
           className={'mt-5'}
           validate={{
@@ -108,7 +104,6 @@ const ChangePassword = () => {
               return values.password === values.password_confirmation || 'Las contraseñas deben coincidir.'
             }
           }}
-          onChange={handleChangeUserData}
           required
           errors={errors}
           validation={register}
@@ -117,7 +112,6 @@ const ChangePassword = () => {
           title={'Repetir Contraseña Nueva'}
           ph={'Ingrese Nuevamente la Contraseña nueva'}
           type={passRepeat}
-          value={userData.password_confirmation}
           showPass={showPasswordRepeat}
           btnIcon={iconEyeRepeat}
         />
