@@ -1,18 +1,20 @@
-// import React from 'react';
 import CardCustom from '../../components/CardCustom/index'
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
-import Tabs from '@mui/joy/Tabs'
-import TabList from '@mui/joy/TabList'
+import {
+  Tabs,
+  TabList,
+  TabPanel,
+  Input,
+  FormHelperText,
+  FormControl
+} from '@mui/joy'
 import Tab, { tabClasses } from '@mui/joy/Tab'
-import TabPanel from '@mui/joy/TabPanel'
 import { useForm } from 'react-hook-form'
-import Input from '@mui/joy/Input'
-import FormHelperText from '@mui/joy/FormHelperText'
-import FormControl from '@mui/joy/FormControl'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import Swal from 'sweetalert2'
 
+// TODO: FALTA MODULARIZAR EL COMPONENTE
 function Profile() {
   const getUserData = async () => {
     // Obtengo los datos del usuario
@@ -26,12 +28,19 @@ function Profile() {
 
   const [userData, setUserData] = useState({})
 
-  // Validaciones del formulario
+  // Validaciones del formulario editar
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
+    register: editRegister,
+    handleSubmit: editHandleSubmit,
+    formState: { errors: editErrors },
+    reset: editReset
+  } = useForm()
+
+  // Validaciones del formulario cambiar contraseña
+  const {
+    register: passwordRegister,
+    handleSubmit: passwordHandleSubmit,
+    formState: { errors: passwordErrors }
   } = useForm()
 
   // Función para enviar los datos del formulario a la api
@@ -65,12 +74,43 @@ function Profile() {
     }
   }
 
+  // TODO: Falta construir el endpoint en la api para cambiar la contraseña
+  // todo: Falta validar que la contraseña nueva y la confirmación sean iguales
+  // todo: Falta agregar los ojitos para mostrar la contraseña en los inputs
+  const updatePassword = async (data) => {
+    const token = localStorage.getItem('token')
+    // const url = 'http://cooptech.com.ar:30888/api/change_password'
+    console.log(data)
+    console.log(token)
+    const url = 'http://localhost:8000/api/change_password'
+    const info = { password: data.password, token }
+    try {
+      const responseData = await Axios.post(url, info)
+      if (responseData.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Perfecto!',
+          text: 'Tu contraseña fue modificada con exito',
+          allowOutsideClick: false
+        }).then(() => {})
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Atención!',
+        text: 'Tu token expiro o no existe, debe volver a intentar recuperar la contraseña',
+        allowOutsideClick: false
+      }).then(() => {})
+      console.log(error)
+    }
+  }
+
   // Función obtener los datos del usuario y cargarlos en el formulario.
   useEffect(() => {
     const fetchData = async () => {
       const data = await getUserData()
       setUserData(data)
-      reset({
+      editReset({
         first_name: data.first_name,
         last_name: data.last_name,
         phone: data.phone,
@@ -78,14 +118,18 @@ function Profile() {
       })
     }
     fetchData()
-  }, [reset])
+  }, [editReset])
 
   return (
     <div>
       <h2 className='text-center m-5'>Mi perfil</h2>
       <hr className='mb-5' />
 
-      <Tabs aria-label='Opciones del Perfil' defaultValue={0} className='rounded-3xl mb-5'>
+      <Tabs
+        aria-label='Opciones del Perfil'
+        defaultValue={0}
+        className='rounded-3xl mb-5'
+      >
         <TabList
           disableUnderline
           tabFlex={1}
@@ -117,7 +161,11 @@ function Profile() {
         <TabPanel value={0}>
           <CardCustom>
             <div className='flex flex-col items-center'>
-              <img className='h-32 w-32 rounded-full mt-4' src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' alt='imagen de perfil' />
+              <img
+                className='h-32 w-32 rounded-full mt-4'
+                src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                alt='imagen de perfil'
+              />
               <h1 className='text-2xl font-bold mt-4'>
                 {userData.first_name} {userData.last_name}
               </h1>
@@ -127,7 +175,10 @@ function Profile() {
               </p>
               <p className='text-gray-500'>
                 Teléfono:
-                <span className='text-black'> {userData.phone ?? 'Pendiente'}</span>
+                <span className='text-black'>
+                  {' '}
+                  {userData.phone ?? 'Pendiente'}
+                </span>
               </p>
               <p className='text-gray-500'>
                 Dirección:
@@ -148,79 +199,151 @@ function Profile() {
             </div>
 
             {/* FORMULARIO PARA MODIFICAR LOS DATOS DE LA CUENTA (NOMBRE, APELLIDO, TELEFONO Y DIRECCION) */}
-            <form className='flex flex-col items-center mt-4' onSubmit={handleSubmit(onSubmit)} id='formEditUser'>
+            <form
+              className='flex flex-col items-center mt-4'
+              onSubmit={editHandleSubmit(onSubmit)}
+              id='formEditUser'
+            >
               <h1 className='text-2xl font-bold'>Modificar datos</h1>
-              <FormControl error={errors.first_name ?? false}>
+              <FormControl error={editErrors.first_name ?? false}>
                 <Input
                   placeholder='Nombre'
                   variant='outlined'
                   className='w-64 mt-2'
-                  {...register('first_name', {
+                  {...editRegister('first_name', {
                     required: true,
                     minLength: 2
                   })}
                 />
                 <FormHelperText>
-                  {errors.first_name && <InfoOutlined />}
-                  {errors.first_name?.type === 'required' && 'El nombre es requerido'}
-                  {errors.first_name?.type === 'minLength' && 'El nombre debe tener al menos 2 caracteres'}
+                  {editErrors.first_name && <InfoOutlined />}
+                  {editErrors.first_name?.type === 'required' &&
+                    'El nombre es requerido'}
+                  {editErrors.first_name?.type === 'minLength' &&
+                    'El nombre debe tener al menos 2 caracteres'}
                 </FormHelperText>
               </FormControl>
 
-              <FormControl error={errors.last_name ?? false}>
+              <FormControl error={editErrors.last_name ?? false}>
                 <Input
                   variant='outlined'
                   className='w-64 mt-2'
                   placeholder='Apellido'
-                  {...register('last_name', {
+                  {...editRegister('last_name', {
                     required: true,
                     minLength: 2
                   })}
                 />
                 <FormHelperText>
-                  {errors.last_name && <InfoOutlined />}
-                  {errors.last_name?.type === 'required' && 'El apellido es requerido'}
-                  {errors.last_name?.type === 'minLength' && 'El apellido debe tener al menos 2 caracteres'}
+                  {editErrors.last_name && <InfoOutlined />}
+                  {editErrors.last_name?.type === 'required' &&
+                    'El apellido es requerido'}
+                  {editErrors.last_name?.type === 'minLength' &&
+                    'El apellido debe tener al menos 2 caracteres'}
                 </FormHelperText>
               </FormControl>
 
-              <FormControl error={errors.phone ?? false}>
+              <FormControl error={editErrors.phone ?? false}>
                 <Input
                   className='w-64 mt-2'
                   variant='outlined'
                   placeholder='Teléfono'
-                  {...register('phone', {
+                  {...editRegister('phone', {
                     required: true,
                     minLength: 11,
                     pattern: /^[0-9]+$/
                   })}
                 />
                 <FormHelperText>
-                  {errors.phone && <InfoOutlined />}
-                  {errors.phone?.type === 'required' && 'El teléfono es requerido'}
-                  {errors.phone?.type === 'minLength' && 'El teléfono debe tener al menos 11 caracteres'}
-                  {errors.phone?.type === 'pattern' && 'El teléfono debe contener solo números'}
+                  {editErrors.phone && <InfoOutlined />}
+                  {editErrors.phone?.type === 'required' &&
+                    'El teléfono es requerido'}
+                  {editErrors.phone?.type === 'minLength' &&
+                    'El teléfono debe tener al menos 11 caracteres'}
+                  {editErrors.phone?.type === 'pattern' &&
+                    'El teléfono debe contener solo números'}
                 </FormHelperText>
               </FormControl>
 
-              <FormControl error={errors.address ?? false}>
+              <FormControl error={editErrors.address ?? false}>
                 <Input
                   variant='outlined'
                   className='w-64 mt-2'
                   placeholder='Dirección'
-                  {...register('address', {
+                  {...editRegister('address', {
                     required: true,
                     minLength: 5
                   })}
                 />
                 <FormHelperText>
-                  {errors.address && <InfoOutlined />}
-                  {errors.address?.type === 'required' && 'La dirección es requerida'}
-                  {errors.address?.type === 'minLength' && 'La dirección debe tener al menos 5 caracteres'}
+                  {editErrors.address && <InfoOutlined />}
+                  {editErrors.address?.type === 'required' &&
+                    'La dirección es requerida'}
+                  {editErrors.address?.type === 'minLength' &&
+                    'La dirección debe tener al menos 5 caracteres'}
                 </FormHelperText>
               </FormControl>
-              <button className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2' type='submit'>
+              <button
+                className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2'
+                type='submit'
+              >
                 Guardar cambios
+              </button>
+            </form>
+          </CardCustom>
+        </TabPanel>
+
+        <TabPanel value={2}>
+          <CardCustom className='p-8'>
+            <div className='flex flex-col items-center mt-4'>
+              <h1 className='text-2xl font-bold'>Modificar Contraseña</h1>
+            </div>
+            <form
+              className='flex flex-col items-center mt-4'
+              onSubmit={passwordHandleSubmit(updatePassword)}
+            >
+              <FormControl error={passwordErrors.password ?? false}>
+                <Input
+                  type='password'
+                  {...passwordRegister('password', {
+                    required: { value: true, message: 'El campo es requerido' },
+                    pattern: /^(?=.*[A-Z]).{6,}$/,
+                    minLength: 6
+                  })}
+                  variant='outlined'
+                  className='w-64 mt-2'
+                  placeholder='Contraseña actual'
+                />
+                <FormHelperText>
+                  {passwordErrors.password && <InfoOutlined />}
+                  {passwordErrors.password?.type === 'required' &&
+                    'La contraseña es requerida'}
+                  {passwordErrors.password?.type === 'pattern' &&
+                    'La contraseña debe contener al menos una mayúscula'}
+                  {passwordErrors.password?.type === 'minLength' &&
+                    'La contraseña debe tener al menos 6 caracteres'}
+                </FormHelperText>
+              </FormControl>
+              <FormControl error={passwordErrors.newPassword ?? false}>
+                <Input
+                  type='password'
+                  {...passwordRegister('newPassword', { required: true })}
+                  variant='outlined'
+                  className='w-64 mt-2'
+                  placeholder='Nueva contraseña'
+                />
+              </FormControl>
+              <FormControl error={passwordErrors.confirmPassword}>
+                <Input
+                  type='password'
+                  {...passwordRegister('confirmPassword', { required: true })}
+                  variant='outlined'
+                  className='w-64 mt-2'
+                  placeholder='Confirmar contraseña'
+                />
+              </FormControl>
+              <button className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2'>
+                Actualizar constraseña
               </button>
             </form>
           </CardCustom>
