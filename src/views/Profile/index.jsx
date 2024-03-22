@@ -40,9 +40,10 @@ function Profile() {
   const {
     register: passwordRegister,
     handleSubmit: passwordHandleSubmit,
-    formState: { errors: passwordErrors }
+    formState: { errors: passwordErrors },
+    watch
   } = useForm()
-
+  const password = watch('newPassword', '')
   // Función para enviar los datos del formulario a la api
   const onSubmit = async (data) => {
     try {
@@ -74,31 +75,35 @@ function Profile() {
     }
   }
 
-  // TODO: Falta construir el endpoint en la api para cambiar la contraseña
-  // todo: Falta validar que la contraseña nueva y la confirmación sean iguales
-  // todo: Falta agregar los ojitos para mostrar la contraseña en los inputs
+  // TODO: Falta agregar los ojitos para mostrar la contraseña en los inputs.
+  // TODO: Falta ver que accion al finalizar la actualizacion de la contraseña.
   const updatePassword = async (data) => {
-    const token = localStorage.getItem('token')
+    const { id, token } = JSON.parse(localStorage.getItem('usuario'))
+    const { password, newPassword, confirmPassword } = data
     // const url = 'http://cooptech.com.ar:30888/api/change_password'
-    console.log(data)
-    console.log(token)
-    const url = 'http://localhost:8000/api/change_password'
-    const info = { password: data.password, token }
+    const url = 'http://localhost:8000/api/updatePassword'
+    const info = { id, password, newPassword, confirmPassword }
     try {
-      const responseData = await Axios.post(url, info)
-      if (responseData.status === 200) {
+      // Envio los datos a la api, paso el token en el header
+      const response = await Axios.post(url, info, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (response.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Perfecto!',
-          text: 'Tu contraseña fue modificada con exito',
+          text: response.data.message,
           allowOutsideClick: false
-        }).then(() => {})
+        })
       }
     } catch (error) {
+      console.log(error)
       Swal.fire({
         icon: 'warning',
         title: 'Atención!',
-        text: 'Tu token expiro o no existe, debe volver a intentar recuperar la contraseña',
+        text: error.response.data.message,
         allowOutsideClick: false
       }).then(() => {})
       console.log(error)
@@ -306,9 +311,7 @@ function Profile() {
                 <Input
                   type='password'
                   {...passwordRegister('password', {
-                    required: { value: true, message: 'El campo es requerido' },
-                    pattern: /^(?=.*[A-Z]).{6,}$/,
-                    minLength: 6
+                    required: { value: true, message: 'El campo es requerido' }
                   })}
                   variant='outlined'
                   className='w-64 mt-2'
@@ -318,29 +321,49 @@ function Profile() {
                   {passwordErrors.password && <InfoOutlined />}
                   {passwordErrors.password?.type === 'required' &&
                     'La contraseña es requerida'}
-                  {passwordErrors.password?.type === 'pattern' &&
-                    'La contraseña debe contener al menos una mayúscula'}
-                  {passwordErrors.password?.type === 'minLength' &&
-                    'La contraseña debe tener al menos 6 caracteres'}
                 </FormHelperText>
               </FormControl>
               <FormControl error={passwordErrors.newPassword ?? false}>
                 <Input
                   type='password'
-                  {...passwordRegister('newPassword', { required: true })}
+                  {...passwordRegister('newPassword', {
+                    required: true,
+                    pattern: /^(?=.*[A-Z]).{6,}$/,
+                    minLength: 6
+                  })}
                   variant='outlined'
                   className='w-64 mt-2'
                   placeholder='Nueva contraseña'
                 />
+                <FormHelperText>
+                  {passwordErrors.newPassword && <InfoOutlined />}
+                  {passwordErrors.newPassword?.type === 'required' &&
+                    'La nueva contraseña es requerida'}
+                  {passwordErrors.newPassword?.type === 'pattern' &&
+                    'La contraseña debe contener al menos una mayúscula'}
+                  {passwordErrors.newPassword?.type === 'minLength' &&
+                    'La contraseña debe tener al menos 6 caracteres'}
+                </FormHelperText>
               </FormControl>
               <FormControl error={passwordErrors.confirmPassword}>
                 <Input
                   type='password'
-                  {...passwordRegister('confirmPassword', { required: true })}
+                  // Valido que coincidan las contraseñas
+                  {...passwordRegister('confirmPassword', {
+                    required: true,
+                    validate: (value) => value === password
+                  })}
                   variant='outlined'
                   className='w-64 mt-2'
                   placeholder='Confirmar contraseña'
                 />
+                <FormHelperText>
+                  {passwordErrors.confirmPassword && <InfoOutlined />}
+                  {passwordErrors.confirmPassword?.type === 'required' &&
+                    'Debe confirmar la contraseña'}
+                  {passwordErrors.confirmPassword?.type === 'validate' &&
+                    'Las contraseñas no coinciden'}
+                </FormHelperText>
               </FormControl>
               <button className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2'>
                 Actualizar constraseña
