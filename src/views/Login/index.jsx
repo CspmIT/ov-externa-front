@@ -54,6 +54,7 @@ const Login = () => {
       console.log(error)
     }
   }
+
   const formulario = async () => {
     const url = 'http://cooptech.com.ar:30888/api/login'
     // const url = 'http://localhost:8000/api/login'
@@ -63,6 +64,14 @@ const Login = () => {
       if (responseData.status === 200) {
         localStorage.setItem('usuario', JSON.stringify(responseData.data))
         setUsuario(responseData.data)
+        Swal.fire({
+          icon: 'success',
+          title: 'Perfecto!',
+          text: 'Ingresaste correctamente',
+          allowOutsideClick: false
+        }).then(() => {
+          navigate('/')
+        })
       }
     } catch (error) {
       Swal.fire({
@@ -118,13 +127,48 @@ const Login = () => {
   } = useForm()
   return (
     <>
-      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Iniciar Sesión </h2>
+      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
+        Iniciar Sesión{' '}
+      </h2>
       <form onSubmit={handleSubmit((data) => formulario(data))}>
-        <InputGroup onChange={handleChangeMail} required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} value={email} />
-        <InputGroup className={'mt-5'} onChange={handleChangePassword} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} value={password} />
+        <InputGroup
+          onChange={handleChangeMail}
+          required
+          errors={errors}
+          validation={register}
+          id={'email'}
+          name={'email'}
+          title={'Email'}
+          ph={'Ingrese un Email'}
+          type={'email'}
+          value={email}
+        />
+        <InputGroup
+          className={'mt-5'}
+          onChange={handleChangePassword}
+          id={'password'}
+          name={'password'}
+          title={'Contraseña'}
+          showPass={showPassword}
+          ph={'Ingrese una Contraseña'}
+          type={pass}
+          btnIcon={iconEye}
+          value={password}
+        />
         <div className='w-full mt-3 flex flex-col text-center items-center justify-center'>
-          <FormControlLabel onChange={handleChangeCheckBoxRemember} control={<Checkbox id='CheckBoxRemember' />} label='Recuerdame' />
-          <Button props={{ class: 'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400', text: 'Ingresar', type: 'submit' }} />
+          <FormControlLabel
+            onChange={handleChangeCheckBoxRemember}
+            control={<Checkbox id='CheckBoxRemember' />}
+            label='Recuerdame'
+          />
+          <Button
+            props={{
+              class:
+                'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400',
+              text: 'Ingresar',
+              type: 'submit'
+            }}
+          />
         </div>
         <div className='mt-4 w-full flex-col flex text-center'>
           <label className='mt-2'>
