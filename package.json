@@ -18,7 +18,7 @@
     "@mui/x-data-grid": "^6.19.3",
     "@mui/x-date-pickers": "^6.19.4",
     "axios": "^1.6.2",
-    "face-api.js": "^0.22.2",
+    "face-api.js": "^0.20.0",
     "highcharts-react-official": "^3.2.1",
     "material-react-table": "^2.11.3",
     "qr-code-styling": "^1.6.0-rc.1",
@@ -30,7 +30,7 @@
     "react-icons": "^4.12.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.21.1",
-    "sweetalert2": "^11.10.4",
+    "sweetalert2": "^11.6.13",
     "vite-plugin-style-import": "^2.0.0"
   },
   "devDependencies": {

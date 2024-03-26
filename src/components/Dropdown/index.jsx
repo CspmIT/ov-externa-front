@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { UserContext } from "../../contexts/UserContext";
 
 const Dropdown = ({ ...props }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const { usuario, setUsuario } = useContext(UserContext);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
+
+  const handleChangeAccount = (item) => {
+    console.log("entro aca");
+    if (item.num == usuario.number_customer) {
+      return;
+    }
+    setUsuario({ ...usuario, name_customer: item.name_customer, number_customer: item.num });
+  };
+
+  console.log(usuario);
 
   return (
     <div className="relative inline-block text-left">
@@ -19,7 +31,7 @@ const Dropdown = ({ ...props }) => {
           aria-haspopup="true"
           onClick={toggleDropdown}
         >
-           COSTAMAGNA JULIETA
+          {usuario.name_customer}
           <IoMdArrowDropdown className="-mr-1 h-5 w-5" />
         </button>
       </div>
@@ -32,18 +44,11 @@ const Dropdown = ({ ...props }) => {
           tabIndex="-1"
         >
           <div className="py-1" role="none">
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
+            {usuario.accounts.map((item) => (
+              <a key={item.num} href="#" onClick={() => handleChangeAccount(item)} className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
+                {item.name}
+              </a>
+            ))}
           </div>
         </div>
       )}
