@@ -10,8 +10,11 @@ import DropdownImage from "../DropdownImage";
 import { UserContext } from "../../contexts/UserContext";
 import { requestAuth } from "../../utils/request";
 import { storage } from "../../storage/storage";
+import { Box, Modal } from "@mui/material";
+import ModalSocio from "../ModalSocio";
 
 const Navbar = () => {
+  const [OpenModal, setOpenModal] = useState(false);
   const { darkMode, setDarkMode, usuario, account } = useContext(UserContext);
   const [activeItem, setActiveItem] = useState(null);
   const handleItemClick = (itemName) => {
@@ -20,6 +23,8 @@ const Navbar = () => {
   const [iconMode, setIconMode] = useState(<FaMoon className="change" />);
   const [shadowMode, setShadowMode] = useState(darkMode ? "styles.shadowDark" : "styles.shadowLight");
   const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const toggleMobileMenu = () => {
     setMobileMenuVisible((prevVisibility) => !prevVisibility);
@@ -128,7 +133,7 @@ const Navbar = () => {
                         <FaLayerGroup className="mr-2" />
                         Nivel: <b className="ml-2">{usuario?.level}</b>
                       </span>
-                      <button className="text-white bg-emerald-500 font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto">
+                      <button onClick={handleOpenModal} className="text-white bg-emerald-500 font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto">
                         <FaPlus />
                         <span className="ml-2">SOCIO</span>
                       </button>
@@ -151,6 +156,11 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
+      <Modal className="flex justify-center items-center" open={OpenModal} onClose={handleCloseModal} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
+        <Box className={"w-full flex justify-center items-center"}>
+          <ModalSocio handleCloseModal={handleCloseModal} />
+        </Box>
+      </Modal>
     </div>
   );
 };

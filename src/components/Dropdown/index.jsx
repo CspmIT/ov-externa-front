@@ -1,24 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { UserContext } from "../../contexts/UserContext";
+import styles from "./dropdown.module.css";
+import { storage } from "../../storage/storage";
 
 const Dropdown = ({ ...props }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { usuario, setUsuario } = useContext(UserContext);
-
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
   const handleChangeAccount = (item) => {
-    console.log("entro aca");
     if (item.num == usuario.number_customer) {
       return;
     }
-    setUsuario({ ...usuario, name_customer: item.name_customer, number_customer: item.num });
+    setUsuario({ ...usuario, name_customer: item.name, number_customer: item.num });
+    let user = storage.get("usuario");
+    user.name_customer = item.name;
+    user.number_customer = item.num;
+    storage.set("usuario", user);
   };
-
-  console.log(usuario);
 
   return (
     <div className="relative inline-block text-left">
@@ -45,7 +47,7 @@ const Dropdown = ({ ...props }) => {
         >
           <div className="py-1" role="none">
             {usuario.accounts.map((item) => (
-              <a key={item.num} href="#" onClick={() => handleChangeAccount(item)} className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
+              <a key={item.num} href="#" onClick={() => handleChangeAccount(item)} className={`${props.childrenColor} ${styles.textDropdown} px-4 py-1 `} role="menuitem" tabIndex="-1">
                 {item.name}
               </a>
             ))}
