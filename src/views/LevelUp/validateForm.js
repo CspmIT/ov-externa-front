@@ -28,7 +28,7 @@ const validateForm = async (data, navigate) => {
     }
     // Muestro una alerta con el nombre del socio
     const swal = await Swal.fire({
-      title: "¿Este es el socio que desaeas agregar?",
+      title: "¿Este es el socio que deseas agregar?",
       text: nombreSocio,
       icon: "question",
       showCancelButton: true,

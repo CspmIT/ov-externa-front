@@ -82,7 +82,6 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     muiTableBodyCellProps: ({ row }) => {
       return {
         sx: () => ({
-          color: !darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
           fontSize: "15px",
         }),
       };
@@ -100,6 +99,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
         background: "#fef08a !important",
         fontSize: "18px",
         fontWeight: "bold",
+        color: "rgb(0, 0, 0)",
       },
     },
     muiTopToolbarProps: {

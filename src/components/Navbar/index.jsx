@@ -9,7 +9,6 @@ import Dropdown from "../Dropdown";
 import DropdownImage from "../DropdownImage";
 import { UserContext } from "../../contexts/UserContext";
 import { requestAuth } from "../../utils/request";
-import { storage } from "../../storage/storage";
 import { Box, Modal } from "@mui/material";
 import ModalSocio from "../ModalSocio";
 
@@ -47,7 +46,6 @@ const Navbar = () => {
       dark = dark ? 1 : 0;
       const array = { dark };
       const data = await requestAuth("http://127.0.0.1:8000/api/updateCustomer", "patch", array);
-      console.log(data);
     } catch (error) {
       console.log("Error al obtener datos:", error);
     }
@@ -156,7 +154,7 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
-      <Modal className="flex justify-center items-center" open={OpenModal} onClose={handleCloseModal} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
+      <Modal className="flex justify-center items-center !z-50" open={OpenModal} onClose={handleCloseModal} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
         <Box className={"w-full flex justify-center items-center"}>
           <ModalSocio handleCloseModal={handleCloseModal} />
         </Box>

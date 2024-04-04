@@ -1,19 +1,68 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import CardCustom from "../CardCustom";
 import { Close } from "@mui/icons-material";
-import { Box, Input, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, TextField } from "@mui/material";
 import { CustomTabPanel, a11yProps } from "../PanelTab";
 import Button from "../Button";
 import { storage } from "../../storage/storage";
 import TableCustomer from "../TableCustomer";
+import { requestAuth } from "../../utils/request";
+import Swal from "sweetalert2";
+import { UserContext } from "../../contexts/UserContext";
 
 const ModalSocio = ({ handleCloseModal }) => {
-  const accounts = storage.get("usuario").accounts;
+  const { usuario, setUsuario } = useContext(UserContext);
   const [value, setValue] = useState(0);
+  const [number, setNumber] = useState("");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(accounts);
+  const handleChangeCustomer = (e) => {
+    setNumber(e.target.value);
+  };
+  const handleAddCustomer = async () => {
+    try {
+      const array = { nro_customer: number };
+      const user = await requestAuth("http://127.0.0.1:8000/api/searchOther", "post", array);
+      const swal = await Swal.fire({
+        title: "¿Deseas agregar a este socio?",
+        text: user.data,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Agregar",
+        cancelButtonText: "Cancelar",
+      });
+
+      if (swal.isConfirmed) {
+        const operation = await requestAuth("http://127.0.0.1:8000/api/createOther", "post", array);
+        if (operation.message) {
+          Swal.fire({
+            title: "¡Perfecto!",
+            text: "El socio ha sido agregado con éxito",
+            icon: "success",
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const updatedUsuario = { ...usuario };
+              updatedUsuario.accounts = [...updatedUsuario.accounts, operation.data];
+              setUsuario(updatedUsuario);
+              const updatedStorage = storage.get("usuario");
+              updatedStorage.accounts = [updatedUsuario.accounts];
+              storage.set("usuario", updatedStorage);
+            }
+          });
+        } else {
+          throw new Error(result.error);
+        }
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "El número ingresado es inválido",
+        icon: "error",
+      });
+    }
+  };
   return (
     <CardCustom className={" w-1/3 rounded-xl bg-white shadow-lg"}>
       <div className="rounded-xl ">
@@ -36,12 +85,14 @@ const ModalSocio = ({ handleCloseModal }) => {
             </Box>
             <Box sx={{ padding: 2, border: 2, borderTop: 0, borderRadius: "0px 0px 10px 10px", borderColor: "divider" }}>
               <CustomTabPanel className={"flex flex-col"} value={value} index={0}>
-                  <TableCustomer data={accounts} />
+                <TableCustomer />
               </CustomTabPanel>
               <CustomTabPanel className={"flex flex-col"} value={value} index={1}>
-                <div className="w-full">
-                  <Input className="w-3/4 dark:text-white" placeholder="Ingrese un número de socio"></Input>
-                  <Button onclick={() => handleAddCustomer()} props={{ class: "bg-green-500" }}>Agregar</Button>
+                <div className="w-full flex flex-row justify-evenly items-center">
+                  <TextField type="tel" value={number} onChange={handleChangeCustomer} className="w-3/4" label="Ingrese un número de socio" variant="outlined" />
+                  <Button onclick={() => handleAddCustomer()} props={{ class: "bg-green-500" }}>
+                    Agregar
+                  </Button>
                 </div>
               </CustomTabPanel>
             </Box>

@@ -139,7 +139,7 @@ function DashboardLvl2() {
               <ButtonAnimate onClick={handleOpenModalHelp} icon={<FaQuestion className="text-white" />} text={"Ayuda"} bgIcon={"bg-gray-400"} color={"text-white"} />
             </div>
           </div>
-          {invoices.length < 1 ? (
+          {!invoices || invoices.length < 1 ? (
             <div className="flex w-full justify-center items-center">
               <LoaderComponent />
             </div>
