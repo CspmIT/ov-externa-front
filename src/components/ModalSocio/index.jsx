@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import CardCustom from "../CardCustom";
 import { Close } from "@mui/icons-material";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Input, Tab, Tabs } from "@mui/material";
 import { CustomTabPanel, a11yProps } from "../PanelTab";
+import Button from "../Button";
+import { storage } from "../../storage/storage";
+import TableCustomer from "../TableCustomer";
 
 const ModalSocio = ({ handleCloseModal }) => {
+  const accounts = storage.get("usuario").accounts;
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log(accounts);
   return (
     <CardCustom className={" w-1/3 rounded-xl bg-white shadow-lg"}>
       <div className="rounded-xl ">
@@ -22,8 +26,7 @@ const ModalSocio = ({ handleCloseModal }) => {
           </div>
         </div>
         <div className="p-5 ">
-          <h5 className="font-sans font-semibold">Datos de la Tabla</h5>
-          <p>A continuación verás algunas referencias con respecto a los datos que se muestran en la tabla de Facturas Impagas.</p>
+          <p className="dark:text-white">En esta tabla podrás ver todos los Socios que agregaste para administrar la Oficina Virtual.</p>
           <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -33,35 +36,13 @@ const ModalSocio = ({ handleCloseModal }) => {
             </Box>
             <Box sx={{ padding: 2, border: 2, borderTop: 0, borderRadius: "0px 0px 10px 10px", borderColor: "divider" }}>
               <CustomTabPanel className={"flex flex-col"} value={value} index={0}>
-                <p className="pr-3 mb-1">
-                  <b>AG</b> - Agua Potable
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>EN / EG</b> - Energía Eléctrica
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>GC</b> - Grandes Consumos
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>SS</b> - Servicios Sociales
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>TE</b> - Telefonía
-                </p>
+                  <TableCustomer data={accounts} />
               </CustomTabPanel>
               <CustomTabPanel className={"flex flex-col"} value={value} index={1}>
-                <p className="pr-3 mb-1">
-                  <b>FA</b> - Factura &quot;A&quot;
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>FB</b> - Factura &quot;B&quot;
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>SPA</b> - Liquidación de Servicio &quot;A&quot;
-                </p>
-                <p className="pr-3 mb-1">
-                  <b>SPB</b> - Liquidación de Servicio &quot;B&quot;
-                </p>
+                <div className="w-full">
+                  <Input className="w-3/4 dark:text-white" placeholder="Ingrese un número de socio"></Input>
+                  <Button onclick={() => handleAddCustomer()} props={{ class: "bg-green-500" }}>Agregar</Button>
+                </div>
               </CustomTabPanel>
             </Box>
           </Box>
