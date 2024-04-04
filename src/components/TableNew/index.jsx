@@ -1,54 +1,54 @@
-import { MRT_ExpandButton, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../../contexts/UserContext'
-import NoRegisterTable from '../NoRegisterTable'
-import { calcValues } from '../../utils/invoice'
+import { MRT_ExpandButton, MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import NoRegisterTable from "../NoRegisterTable";
+import { calcValues } from "../../utils/invoice";
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
-  const { darkMode } = useContext(UserContext)
+  const { darkMode } = useContext(UserContext);
   // creo una constante con las configuracion inicial para poder modificar con props
   const tableInitialState = {
-    density: window.innerWidth < 750 ? 'compact' : 'comfortable',
+    density: window.innerWidth < 750 ? "compact" : "comfortable",
     expanded: true,
     sorting: [],
-    grouping: []
-  }
+    grouping: [],
+  };
   // activacion de paginacion
   if (prop.pagination) {
-    tableInitialState.pagination = { pageIndex: 0, pageSize: 100 }
+    tableInitialState.pagination = { pageIndex: 0, pageSize: 100 };
   }
   // controlo si llega un agrupacion por columna
   if (prop.groupBy) {
-    tableInitialState.grouping.push(prop.groupBy)
+    tableInitialState.grouping.push(prop.groupBy);
   }
   // controlo si llega un orden por columna
   if (prop.orderBy) {
-    tableInitialState.sorting.push({ id: prop.orderBy, desc: false })
+    tableInitialState.sorting.push({ id: prop.orderBy, desc: false });
   }
 
   const table = useMaterialReactTable({
     columns,
     data,
     initialState: tableInitialState,
-    groupedColumnMode: 'remove',
-    positionToolbarAlertBanner: 'none',
-    positionToolbarDropZone: 'none',
+    groupedColumnMode: "remove",
+    positionToolbarAlertBanner: "none",
+    positionToolbarDropZone: "none",
     enableTopToolbar: false,
     enableStickyFooter: false,
     enableStickyHeader: true,
     enablePagination: prop.pagination ?? false,
 
     displayColumnDefOptions: {
-      'mrt-row-expand': {
+      "mrt-row-expand": {
         size: 5,
         minSize: 1,
         maxSize: 10,
         Cell: ({ row, table }) => {
           if (!row.depth) {
-            return <MRT_ExpandButton row={row} table={table} />
+            return <MRT_ExpandButton row={row} table={table} />;
           }
-        }
-      }
+        },
+      },
     },
     muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
     // HABILITACION DE ROWS
@@ -77,64 +77,64 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 
     // svg para cuando la tabla esta vacia
     renderEmptyRowsFallback: () => {
-      return <NoRegisterTable />
+      return <NoRegisterTable />;
     },
     muiTableBodyCellProps: ({ row }) => {
       return {
         sx: () => ({
-          color: darkMode ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)',
-          fontSize: '15px'
-        })
-      }
+          fontSize: "15px",
+        }),
+      };
     },
     muiTableBodyRowProps: ({ row }) => {
       return {
         sx: {
-          backgroundColor: row.depth === 0 ? (darkMode ? 'rgba(209, 213, 219, 0.482)' : '#0000004e') : 'transparent',
-          fontWeight: row.getIsExpanded() ? 'bold' : 'normal'
-        }
-      }
+          backgroundColor: row.depth === 0 ? (!darkMode ? "rgba(209, 213, 219, 0.482)" : "#0000004e") : "transparent",
+          fontWeight: row.getIsExpanded() ? "bold" : "normal",
+        },
+      };
     },
     muiTableHeadCellProps: {
       sx: {
-        background: '#fef08a !important',
-        fontSize: '18px',
-        fontWeight: 'bold'
-      }
+        background: "#fef08a !important",
+        fontSize: "18px",
+        fontWeight: "bold",
+        color: "rgb(0, 0, 0)",
+      },
     },
     muiTopToolbarProps: {
       sx: {
-        color: 'black'
-      }
+        color: "black",
+      },
     },
     muiBottomToolbarProps: {
       sx: {
-        minHeight: prop.pagination ? '3.5rem' : '2rem'
-      }
+        minHeight: prop.pagination ? "3.5rem" : "2rem",
+      },
     },
     muiTablePaperProps: {
       sx: {
-        margin: '10px',
+        margin: "10px",
         boxShadow: `2px 3px 5px 0px #00000046`,
-        borderRadius: '0.75rem'
-      }
+        borderRadius: "0.75rem",
+      },
     },
     mrtTheme: () => ({
-      baseBackgroundColor: darkMode ? 'rgba(238, 238, 238, 0.39)' : 'rgba(238, 238, 238, 0.11)'
-    })
-  })
+      baseBackgroundColor: !darkMode ? "rgba(238, 238, 238, 0.39)" : "rgba(238, 238, 238, 0.11)",
+    }),
+  });
 
   useEffect(() => {
-    const data = calcValues(table)
+    const data = calcValues(table);
     if (amountPay) {
-      if (data) amountPay(data)
+      if (data) amountPay(data);
     }
-  }, [table.getState().rowSelection])
+  }, [table.getState().rowSelection]);
 
   useEffect(() => {
-    table.setColumnOrder([`${window.innerWidth > 420 ? 'mrt-row-expand' : ''}`, ...columns.map((e) => e.accessorKey), 'mrt-row-select'])
-  }, [table])
-  return <MaterialReactTable table={table} />
-}
+    table.setColumnOrder([`${window.innerWidth > 420 ? "mrt-row-expand" : ""}`, ...columns.map((e) => e.accessorKey), "mrt-row-select"]);
+  }, [table]);
+  return <MaterialReactTable table={table} />;
+};
 
-export default TableNew
+export default TableNew;

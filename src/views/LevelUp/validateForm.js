@@ -1,91 +1,91 @@
-import Axios from 'axios'
-import Swal from 'sweetalert2'
+import Axios from "axios";
+import Swal from "sweetalert2";
 
 // Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
-  const { numberCustomer } = data
-  const url = 'http://cooptech.com.ar:30888/api/getCustomer'
-  const res = await Axios.post(url, { customer: numberCustomer })
-  return res.data
-}
+  const numberCustomer = data.number_customer;
+  const url = "http://127.0.0.1:8000/api/getCustomer";
+  const res = await Axios.post(url, { customer: numberCustomer });
+  return res.data;
+};
 
 // Funcion para actualizar los datos del usuario en la db y subir de nivel
 const updateLevel = async (data) => {
-  const user = localStorage.getItem('usuario')
-  const { id } = JSON.parse(user)
-  Object.assign(data, { user: id })
-  Object.assign(data, { level: 2 })
-  const url = 'http://cooptech.com.ar:30888/api/upgradeLevelUser'
-  const res = await Axios.patch(url, data)
-  return res.data
-}
+  const user = localStorage.getItem("usuario");
+  const { id } = JSON.parse(user);
+  Object.assign(data, { user: id });
+  Object.assign(data, { level: 2 });
+  const url = "http://cooptech.com.ar:30888/api/upgradeLevelUser";
+  const res = await Axios.patch(url, data);
+  return res.data;
+};
 
 const validateForm = async (data, navigate) => {
   try {
-    const nombreSocio = await getCustomer(data)
+    const nombreSocio = await getCustomer(data);
     if (nombreSocio.status === 500) {
-      throw new Error(nombreSocio.error)
+      throw new Error(nombreSocio.error);
     }
     // Muestro una alerta con el nombre del socio
     const swal = await Swal.fire({
-      title: '¿Este es el socio que desaeas agregar?',
+      title: "¿Este es el socio que deseas agregar?",
       text: nombreSocio,
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'Si, agregar',
-      cancelButtonText: 'Cancelar'
-    })
+      confirmButtonText: "Si, agregar",
+      cancelButtonText: "Cancelar",
+    });
 
     if (swal.isConfirmed) {
-      const result = await updateLevel(data)
+      const result = await updateLevel(data);
       // Muestro una alerta si se subio de nivel
       if (result.message) {
         Swal.fire({
-          title: '¡Felicidades!',
-          text: 'Has subido al nivel 2',
-          icon: 'success',
-          allowOutsideClick: false
+          title: "¡Has subido al nivel 2!",
+          text: "Te pediremos que vuelvas a iniciar sesión",
+          icon: "success",
+          allowOutsideClick: false,
         }).then((result) => {
           if (result.isConfirmed) {
-            localStorage.removeItem('usuario')
+            localStorage.removeItem("usuario");
             // Cierro la sesion del usuario
-            navigate('/Login')
-            window.location.reload()
+            navigate("/Login");
+            window.location.reload();
           }
-        })
+        });
       } else {
-        throw new Error(result.error)
+        throw new Error(result.error);
       }
     }
   } catch (error) {
-    const { message } = error.response.data
-    const errorMessages = []
+    const { message } = error.response.data;
+    const errorMessages = [];
 
-    if (message === 'El socio no existe') {
+    if (message === "El socio no existe") {
       Swal.fire({
-        title: 'Error',
+        title: "Error",
         text: message,
-        icon: 'error'
-      })
-      return
+        icon: "error",
+      });
+      return;
     }
 
     for (const i in message) {
-      if (i === 'user' || i === 'level') {
-        errorMessages.push('Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.')
-        break
+      if (i === "user" || i === "level") {
+        errorMessages.push("Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.");
+        break;
       }
-      errorMessages.push(...message[i])
+      errorMessages.push(...message[i]);
     }
 
-    const alertMessage = errorMessages.join('\n')
+    const alertMessage = errorMessages.join("\n");
 
     Swal.fire({
-      title: 'Error',
+      title: "Error",
       text: alertMessage,
-      icon: 'error'
-    })
+      icon: "error",
+    });
   }
-}
+};
 
-export default validateForm
+export default validateForm;
