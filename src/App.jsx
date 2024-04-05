@@ -81,6 +81,14 @@ function App() {
           <ChangePassword />
         </BaseInitial>
       )
+    },
+    {
+      name: '/*',
+      element: (
+        <BaseInitial>
+          <Login />
+        </BaseInitial>
+      )
     }
   ]
 
