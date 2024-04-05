@@ -2,17 +2,17 @@ import CardCustom from '../../components/CardCustom/index'
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
 import {
-  Tabs,
-  TabList,
-  TabPanel,
   Input,
+  Tab,
+  Tabs,
   FormHelperText,
-  FormControl
-} from '@mui/joy'
-import Tab, { tabClasses } from '@mui/joy/Tab'
+  FormControl,
+  Box
+} from '@mui/material'
 import { useForm } from 'react-hook-form'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import Swal from 'sweetalert2'
+import { CustomTabPanel, a11yProps } from '../../components/PanelTab'
 
 // TODO: FALTA MODULARIZAR EL COMPONENTE
 function Profile() {
@@ -82,7 +82,12 @@ function Profile() {
     const { password, newPassword, confirmPassword } = data
     // const url = 'http://cooptech.com.ar:30888/api/change_password'
     const url = 'http://localhost:8000/api/updatePassword'
-    const info = { id, password, newPassword, confirmPassword }
+    const info = {
+      id,
+      password,
+      newPassword,
+      newPassword_confirmation: confirmPassword
+    }
     try {
       // Envio los datos a la api, paso el token en el header
       const response = await Axios.post(url, info, {
@@ -99,11 +104,15 @@ function Profile() {
         })
       }
     } catch (error) {
-      console.log(error)
+      const errorObj = error.response.data.message
+      const messages = []
+      for (const key in errorObj) {
+        messages.push(errorObj[key])
+      }
       Swal.fire({
         icon: 'warning',
         title: 'Atención!',
-        text: error.response.data.message,
+        text: messages.join('\n'),
         allowOutsideClick: false
       }).then(() => {})
       console.log(error)
@@ -125,45 +134,29 @@ function Profile() {
     fetchData()
   }, [editReset])
 
+  const [value, setValue] = useState(0)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
   return (
     <div>
       <h2 className='text-center m-5'>Mi perfil</h2>
       <hr className='mb-5' />
 
-      <Tabs
-        aria-label='Opciones del Perfil'
-        defaultValue={0}
-        className='rounded-3xl mb-5'
-      >
-        <TabList
-          disableUnderline
-          tabFlex={1}
-          sx={{
-            [`& .${tabClasses.root}`]: {
-              fontSize: 'sm',
-              fontWeight: 'lg',
-              '&[aria-selected="true"]': {
-                color: 'primary.500',
-                bgcolor: 'background.surface'
-              },
-              [`&.${tabClasses.focusVisible}`]: {
-                outlineOffset: '-4px'
-              }
-            }
-          }}
+      <Box sx={{ width: '100%' }}>
+        <Tabs
+          aria-label='Opciones del Perfil'
+          className=''
+          value={value}
+          onChange={handleChange}
         >
-          <Tab disableIndicator variant='soft' sx={{ flexGrow: 1 }}>
-            Datos Personales
-          </Tab>
-          <Tab disableIndicator variant='soft' sx={{ flexGrow: 1 }}>
-            Editar Datos
-          </Tab>
-          <Tab disableIndicator variant='soft' sx={{ flexGrow: 1 }}>
-            Modificar Contraseña
-          </Tab>
-        </TabList>
-
-        <TabPanel value={0}>
+          <Tab {...a11yProps(0)} label='Ver perfil' />
+          <Tab label='Modificar Datos' {...a11yProps(1)} />
+          <Tab {...a11yProps(2)} label='Modificar Contraseña' />
+        </Tabs>
+        <CustomTabPanel value={value} index={0}>
           <CardCustom>
             <div className='flex flex-col items-center'>
               <img
@@ -191,9 +184,9 @@ function Profile() {
               </p>
             </div>
           </CardCustom>
-        </TabPanel>
+        </CustomTabPanel>
 
-        <TabPanel value={1}>
+        <CustomTabPanel value={value} index={1}>
           <CardCustom className='p-8'>
             <div className='flex flex-col items-center mt-4'>
               <h1 className='text-2xl font-bold'>Nivel de usuario</h1>
@@ -269,7 +262,6 @@ function Profile() {
                     'El teléfono debe contener solo números'}
                 </FormHelperText>
               </FormControl>
-
               <FormControl error={editErrors.address ?? false}>
                 <Input
                   variant='outlined'
@@ -296,9 +288,9 @@ function Profile() {
               </button>
             </form>
           </CardCustom>
-        </TabPanel>
+        </CustomTabPanel>
 
-        <TabPanel value={2}>
+        <CustomTabPanel value={value} index={2}>
           <CardCustom className='p-8'>
             <div className='flex flex-col items-center mt-4'>
               <h1 className='text-2xl font-bold'>Modificar Contraseña</h1>
@@ -370,8 +362,8 @@ function Profile() {
               </button>
             </form>
           </CardCustom>
-        </TabPanel>
-      </Tabs>
+        </CustomTabPanel>
+      </Box>
     </div>
   )
 }
