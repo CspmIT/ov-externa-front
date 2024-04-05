@@ -14,6 +14,7 @@ import Payments from "./views/Payments";
 import Handle from "./views/Handle";
 import MyServices from "./views/MyServices";
 import MyServicesD from "./views/MyServices/detail";
+import Opinion from "./views/Opinion";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
 import stylesNab from "./components/Navbar/Navbar.module.css";
@@ -37,7 +38,7 @@ function App() {
     if (user["level"] == 1) {
       menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
     } else {
-      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> }, {name: "/MyConsumption", element: <MyConsumption />});
+      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> }, {name: "/MyConsumption", element: <MyConsumption />}, {name: "/Opinion", element: <Opinion />});
     }
     rutes.push(...menus);
   }

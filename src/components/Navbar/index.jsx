@@ -60,7 +60,7 @@ const Navbar = () => {
       ],
     },
     { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
-    { name: "Dejanos tu Opinión", icon: <FaComments />, link: "/Information", level: [2, 3] },
+    { name: "Dejanos tu Opinión", icon: <FaComments />, link: "/Opinion", level: [2, 3] },
   ];
 
   return (
