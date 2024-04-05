@@ -5,7 +5,7 @@ import NoRegisterTable from "../NoRegisterTable";
 import { calcValues } from "../../utils/invoice";
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
-  const { darkMode } = useContext(UserContext);
+  const { darkMode, usuario } = useContext(UserContext);
   // creo una constante con las configuracion inicial para poder modificar con props
   const tableInitialState = {
     density: window.innerWidth < 750 ? "compact" : "comfortable",
@@ -129,7 +129,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
     if (amountPay) {
       if (data) amountPay(data);
     }
-  }, [table.getState().rowSelection]);
+  }, [table.getState().rowSelection, table.getCoreRowModel()]);
 
   useEffect(() => {
     table.setColumnOrder([`${window.innerWidth > 420 ? "mrt-row-expand" : ""}`, ...columns.map((e) => e.accessorKey), "mrt-row-select"]);

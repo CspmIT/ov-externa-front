@@ -19,6 +19,7 @@ const Navbar = () => {
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
   };
+  const [img, setImg] = useState("Negro.png");
   const [iconMode, setIconMode] = useState(<FaMoon className="change" />);
   const [shadowMode, setShadowMode] = useState(darkMode ? "styles.shadowDark" : "styles.shadowLight");
   const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -30,14 +31,17 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    console.log(usuario);
     if (!darkMode) {
       document.body.classList.remove("dark");
       setIconMode(<FaMoon className="change" />);
       setShadowMode("styles.shadowLight");
+      setImg("Negro.png");
     } else {
       document.body.classList.add("dark");
       setIconMode(<IoIosSunny className="change text-2xl" />);
       setShadowMode("styles.shadowDark");
+      setImg("Blanco.png");
     }
   }, [darkMode]);
 
@@ -84,7 +88,7 @@ const Navbar = () => {
       <aside id="mobileMenu" className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}>
         <div className="h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar">
           <div className="m-2">
-            <img src="https://app.coopmorteros.coop/public/images/logos/Ofi_Virtual_Negro.png" />
+            <img src={`https://app.coopmorteros.coop/public/images/logos/Ofi_Virtual_${img}`} />
           </div>
           <hr className="m-2" />
           <ul className="space-y-2 font-medium">

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { storage } from "../storage/storage";
 
-export const request = async (url, method, data) => {
+export const request = async (url, method, data = false) => {
   try {
     const response = await axios({
       method,

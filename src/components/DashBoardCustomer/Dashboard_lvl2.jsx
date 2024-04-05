@@ -49,6 +49,7 @@ function DashboardLvl2() {
     setAmountpay(amount[0]);
     setAmountTotalpay(amount[1]);
   };
+
   return (
     <>
       <div className="w-full px-2 max-sm:px-0">
@@ -139,7 +140,7 @@ function DashboardLvl2() {
               <ButtonAnimate onClick={handleOpenModalHelp} icon={<FaQuestion className="text-white" />} text={"Ayuda"} bgIcon={"bg-gray-400"} color={"text-white"} />
             </div>
           </div>
-          {!invoices || invoices.length < 1 ? (
+          {invoices.length < 1 ? (
             <div className="flex w-full justify-center items-center">
               <LoaderComponent />
             </div>

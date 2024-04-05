@@ -13,7 +13,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 const Login = () => {
   const { token, idUser } = useParams(["token", "idUser"]);
-  const { usuario, setUsuario } = useContext(UserContext);
+  const { usuario, setUsuario, setDarkMode } = useContext(UserContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -64,6 +64,7 @@ const Login = () => {
       if (responseData.status === 200) {
         localStorage.setItem("usuario", JSON.stringify(responseData.data));
         setUsuario(responseData.data);
+        setDarkMode(responseData.data.dark);
         navigate("/");
       }
     } catch (error) {
