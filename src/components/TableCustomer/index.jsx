@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { requestAuth } from "../../utils/request";
 import Swal from "sweetalert2";
 import { storage } from "../../storage/storage";
-import { Hidden, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { MdCancel } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { useState } from "react";
@@ -22,7 +22,6 @@ export default function TableCustomer() {
   const { usuario, setUsuario } = useContext(UserContext);
   const [openEdit, setOpenEdit] = useState("none");
   const [value, setValue] = useState();
-
   const handleCustomer = (item) => {
     if (item.name === usuario.name_customer) {
       Swal.fire({
@@ -66,7 +65,19 @@ export default function TableCustomer() {
             allowOutsideClick: false,
           }).then((result) => {
             if (result.isConfirmed) {
-              //Actualizar contexto y localstorage
+              const updatedUsuario = { ...usuario };
+              for (let i = 0; i < usuario.accounts.length; i++) {
+                if (usuario.accounts[i].main) {
+                  updatedUsuario.accounts[i].name = user.data;
+                  updatedUsuario.accounts[i].num = value;
+                  break;
+                }
+              }
+              setUsuario(updatedUsuario);
+              const updatedStorage = storage.get("usuario");
+              updatedStorage.accounts = [updatedUsuario.accounts];
+              storage.set("usuario", updatedStorage);
+              handleCancelEdit();
             }
           });
         } else {
@@ -133,7 +144,7 @@ export default function TableCustomer() {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow sx={{ display: openEdit }}>
+          <TableRow key="edit-row" sx={{ display: openEdit }}>
             <TableCell colSpan={2}>
               <div className="flex flex-row justify-center">
                 <TextField onChange={handleChangeValue} value={value} placeholder="Ingrese un número de socio" variant="outlined" />
@@ -141,7 +152,7 @@ export default function TableCustomer() {
             </TableCell>
             <TableCell align="right">
               <div className="flex flex-row justify-evenly">
-                <Button onclick={() => handleCancelEdit()} props={{ class: `bg-amber-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white` }}>
+                <Button onclick={handleCancelEdit} props={{ class: `bg-amber-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white` }}>
                   <MdCancel />
                 </Button>
                 <Button onclick={() => handleEditCustomer()} props={{ class: `bg-green-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white` }}>
@@ -150,7 +161,7 @@ export default function TableCustomer() {
               </div>
             </TableCell>
           </TableRow>
-          {usuario.accounts.map((row) => (
+          {usuario.accounts.flat().map((row) => (
             <TableRow key={row.num} sx={{ "&:last-child td, &:last-child th": { border: 0 } }} className="dark:border-gray-700">
               <TableCell component="th" scope="row" align="left">
                 <span className="dark:text-white">{row.num}</span>
