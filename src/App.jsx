@@ -20,6 +20,7 @@ import Profile from './views/Profile'
 import BaseInitial from './views/BaseInitial'
 import RestorePassword from './views/RestorePassword'
 import ChangePassword from './views/ChangePassword'
+import Comments from './views/Comments'
 import { UserContext } from './contexts/UserContext'
 import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
@@ -103,7 +104,8 @@ function App() {
     { path: '/myservices/detail', element: <MyServicesD /> },
     { path: '/levelup2', element: <LevelUp2 /> },
     { path: '/authentication', element: <Authentication /> },
-    { path: '/myconsumption', element: <MyConsumption /> }
+    { path: '/myconsumption', element: <MyConsumption /> },
+    { path: '/comments', element: <Comments /> }
   ]
   return (
     <div className='flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700'>
