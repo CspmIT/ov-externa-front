@@ -49,7 +49,7 @@ const Navbar = () => {
     try {
       dark = dark ? 1 : 0;
       const array = { dark };
-      const data = await requestAuth("http://127.0.0.1:8000/api/updateCustomer", "patch", array);
+      await requestAuth("http://127.0.0.1:8000/api/updateCustomer", "patch", array);
     } catch (error) {
       console.log("Error al obtener datos:", error);
     }
@@ -78,9 +78,24 @@ const Navbar = () => {
         { name: "Mis Consumos", link: "/MyConsumption" },
       ],
     },
-    { name: "Información Últil", icon: <FaInfoCircle />, link: "/Information", level: [1, 2, 3] },
-    { name: "Subir de nivel", icon: <FaArrowAltCircleUp />, link: "/LevelUp2", level: [1] },
-    { name: "Dejanos tu Opinión", icon: <FaComments />, link: "/Information", level: [1, 2, 3] },
+    {
+      name: "Información Últil",
+      icon: <FaInfoCircle />,
+      link: "/Information",
+      level: [1, 2, 3],
+    },
+    {
+      name: "Subir de nivel",
+      icon: <FaArrowAltCircleUp />,
+      link: "/LevelUp2",
+      level: [1],
+    },
+    {
+      name: "Dejanos tu Opinión",
+      icon: <FaComments />,
+      link: "/Comments",
+      level: [1, 2, 3],
+    },
   ];
 
   return (

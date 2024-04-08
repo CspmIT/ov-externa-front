@@ -56,7 +56,7 @@ const Login = () => {
   };
 
   const formulario = async () => {
-    //const url = "http://cooptech.com.ar:30888/api/login";
+    // const url = "http://cooptech.com.ar:30888/api/login";
     const url = "http://localhost:8000/api/login";
     const info = { email, password };
     try {
