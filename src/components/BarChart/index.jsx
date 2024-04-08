@@ -23,7 +23,7 @@ const BarChar = ({ ...prop }) => {
         },
         yAxis: {
             title: {
-                text: `Valores (${prop.nameSeria})`,
+                text: `${window.innerWidth < 760 ? "" : "Valores (" + prop.nameSeria + ")"}`,
                 style: {
                     color: !darkMode ? "#fff" : "#000000",
                     fontSize: "1rem",
@@ -53,6 +53,9 @@ const BarChar = ({ ...prop }) => {
             },
         ],
     };
-    return <HighchartsReact highcharts={Highcharts} options={options} />;
+    return (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+
+    );
 };
 export default BarChar;

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import request from "../routes/request";
+import { request } from "./request";
 import { Circle, FindInPage, Print } from "@mui/icons-material";
 import Button from "..//components/Button";
 import Swal from "sweetalert2";
@@ -9,24 +9,34 @@ import { UserContext } from "../contexts/UserContext";
 
 export const columns = [
   {
-    header: "Cuenta",
+    header: "",
     accessorKey: "account",
   },
   {
     header: "Tipo",
     accessorKey: "type",
+    size: 30,
   },
   {
     header: "Factura",
     accessorKey: "nrovoucher",
+    AggregatedCell: ({ row }) => {
+      return (
+        <p className="m-0 font-bold">
+          Cuenta Nº: {row.original.account} (Tel: {row.original.phone})
+        </p>
+      );
+    },
   },
   {
     header: "Periodo",
     accessorKey: "period",
+    size: 30,
   },
   {
     header: "Vencimiento",
     accessorKey: "vto",
+    size: 30,
   },
   {
     header: "Importe",
@@ -39,7 +49,7 @@ export const columns = [
           <Box
             component="span"
             sx={() => ({
-              color: darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+              color: !darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
               fontWeight: "bold",
               fontSize: "15px",
             })}
@@ -93,26 +103,91 @@ export const columns = [
     },
   },
 ];
-
-export const InvoiceDeus = async () => {
-  const socio = "58500";
-  const url = `http://cooptech.com.ar:30888/api/facturas?id_procoop=${socio}`;
-  try {
-    const responseData = await request(url, "GET");
-    const rows = [];
-    for (const i in responseData) {
-      responseData[i].list.forEach((item) => {
-        rows.push({ ...item, account: responseData[i].data.account });
-      });
-    }
-    return rows;
-  } catch (error) {
-    console.error("Error en la solicitud:", error);
-  }
-};
+export const columnsCel = [
+  {
+    header: "",
+    accessorKey: "account",
+    size: 5,
+  },
+  {
+    header: "Info Factura",
+    accessorKey: "info",
+    size: 30,
+    minSize: 10,
+    maxSize: 30,
+    AggregatedCell: ({ row }) => {
+      return <p className="m-0 text-sm font-bold">Cuenta Nº: {row.original.account}</p>;
+    },
+    Cell: ({ cell }) => {
+      const { darkMode } = useContext(UserContext);
+      const amount = cell.row.original.info?.amount ?? cell.row.original.amount;
+      return (
+        <Box
+          component="span"
+          sx={() => ({
+            color: !darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+            fontWeight: "bold",
+            fontSize: "12px",
+          })}
+        >
+          <p className="m-0">
+            <b>Tipo:</b> {cell.row.original.info?.type ?? cell.row.original.type}
+          </p>
+          <p className="m-0">
+            <b>Periodo:</b> {cell.row.original.info?.period ?? cell.row.original.period}
+          </p>
+          <p className="m-0">
+            <b>Vencimiento:</b> {cell.row.original.info?.vto ?? cell.row.original.vto}
+          </p>
+          <p className="m-0 text-red-500">
+            <b>Importe:</b>{" "}
+            {amount.toLocaleString?.("es-AR", {
+              style: "currency",
+              currency: "ARS",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </p>
+        </Box>
+      );
+    },
+  },
+  {
+    header: "",
+    accessorKey: "status",
+    size: 10,
+    enableGlobalFilter: false,
+    Cell: ({ row }) => {
+      if (!row.original.subRows) {
+        return <Circle className={`max-sm:m-0 max-sm:text-sm ${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />;
+      }
+    },
+  },
+  {
+    header: "",
+    accessorKey: "url",
+    enableGlobalFilter: false,
+    size: 10,
+    Cell: ({ row }) => {
+      const url = row.original.info?.url ?? row.original.url;
+      if (url) {
+        return (
+          <Button
+            props={{ class: "bg-blue-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white " }}
+            onclick={() => {
+              controlUrl(`${url ? url : undefined}`);
+            }}
+          >
+            <FindInPage />
+          </Button>
+        );
+      }
+    },
+  },
+];
 
 export const controlUrl = async (url) => {
-  const urlConsulta = "http://localhost:8000/api/existinvoice?url=" + url;
+  const urlConsulta = "http://cooptech.com.ar:30888/api/existinvoice?url=" + url;
   try {
     const response = await axios({
       method: "GET",
@@ -129,15 +204,15 @@ export const controlUrl = async (url) => {
   }
 };
 
-export const searchAllInvoice = async () => {
-  const socio = "903534";
+export const searchAllInvoice = async (user) => {
+  const socio = user.number_customer;
   const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
   try {
     const responseData = await request(url, "get");
     const rows = [];
     for (const i in responseData) {
       responseData[i].list.forEach((item) => {
-        rows.push({ ...item, account: responseData[i].data.account });
+        rows.push({ ...item, account: responseData[i].data.account, phone: responseData[i].data.phoneNumber });
       });
     }
     return rows;
@@ -146,6 +221,25 @@ export const searchAllInvoice = async () => {
   }
 };
 
+export const InvoiceDeus = async (user) => {
+  const socio = user.number_customer;
+  const url = `http://127.0.0.1:8000/api/facturas?id_procoop=${socio}`;
+  try {
+    const responseData = await request(url, "GET");
+    if (responseData.length === 0) {
+      return false;
+    }
+    const rows = [];
+    for (const i in responseData) {
+      responseData[i].list.forEach((item) => {
+        rows.push({ ...item, account: responseData[i].data.account, phone: responseData[i].data.phoneNumber });
+      });
+    }
+    return rows;
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+  }
+};
 export const calcValues = (table) => {
   let values = 0;
   let value2 = 0;

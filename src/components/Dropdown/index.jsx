@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { UserContext } from "../../contexts/UserContext";
+import styles from "./dropdown.module.css";
+import { storage } from "../../storage/storage";
 
-const Dropdown = ({ props }) => {
+const Dropdown = ({ ...props }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-
+  const { usuario, setUsuario } = useContext(UserContext);
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleChangeAccount = (item) => {
+    if (item.num == usuario.number_customer) {
+      return;
+    }
+    setUsuario({ ...usuario, name_customer: item.name, number_customer: item.num });
+    let user = storage.get("usuario");
+    user.name_customer = item.name;
+    user.number_customer = item.num;
+    storage.set("usuario", user);
   };
 
   return (
@@ -19,7 +33,7 @@ const Dropdown = ({ props }) => {
           aria-haspopup="true"
           onClick={toggleDropdown}
         >
-           COSTAMAGNA JULIETA
+          {usuario.name_customer}
           <IoMdArrowDropdown className="-mr-1 h-5 w-5" />
         </button>
       </div>
@@ -32,18 +46,11 @@ const Dropdown = ({ props }) => {
           tabIndex="-1"
         >
           <div className="py-1" role="none">
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
-            <a href="#" className={`${props.childrenColor} px-4 py-1 `} role="menuitem" tabIndex="-1" id="menu-item-0">
-              COSTAMAGNA JULIETA
-            </a>
+            {usuario.accounts.map((item) => (
+              <a key={item.num} href="#" onClick={() => handleChangeAccount(item)} className={`${props.childrenColor} ${styles.textDropdown} px-4 py-1 `} role="menuitem" tabIndex="-1">
+                {item.name}
+              </a>
+            ))}
           </div>
         </div>
       )}

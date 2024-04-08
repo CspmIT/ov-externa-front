@@ -1,20 +1,23 @@
-import React, { useState } from "react";
-import { FaUser } from "react-icons/fa";
-import { FaSignOutAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { FaUser, FaSignOutAlt } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 
 const DropdownImage = ({ props }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const navigator = useNavigate();'/login'
-
+  const navigator = useNavigate();
+  const { setUsuario } = useContext(UserContext);
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("usuario");
-    navigator('/login')
-    window.location.reload();
+    setUsuario("");
+    document.body.classList.remove("dark");
+    setTimeout(() => {
+      navigator("/login");
+    }, 750);
   };
 
   return (
@@ -44,9 +47,15 @@ const DropdownImage = ({ props }) => {
           tabIndex="-1"
         >
           <div className="py-1" role="none">
-            <a href="#" className="px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-0">
+            <Link
+              to="/Profile"
+              className="px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700"
+              role="menuitem"
+              tabIndex="-1"
+              id="user-menu-item-0"
+            >
               <FaUser className="mr-2" /> Perfil
-            </a>
+            </Link>
             <a
               href="#"
               onClick={() => handleLogout()}
