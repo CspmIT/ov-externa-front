@@ -14,8 +14,8 @@ const DropdownImage = ({ props }) => {
   const handleLogout = () => {
     localStorage.removeItem("usuario");
     setUsuario("");
+    document.body.classList.remove("dark");
     setTimeout(() => {
-      document.body.classList.remove("dark");
       navigator("/login");
     }, 750);
   };

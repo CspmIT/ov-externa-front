@@ -16,7 +16,7 @@ function ModalHelpHome({ handleCloseModal }) {
     setValue(newValue);
   };
   return (
-    <CardCustom className={" w-1/3 rounded-xl bg-white shadow-lg"}>
+    <CardCustom className={" w-1/3 max-sm:w-full rounded-xl bg-white shadow-lg"}>
       <div className="rounded-xl ">
         <div className="relative rounded-t-xl bg-slate-200 p-5 ">
           <h3 className="text-gray-900 m-0 font-bold text-center font-sans" id="exampleModalLabel">

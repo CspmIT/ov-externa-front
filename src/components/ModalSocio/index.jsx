@@ -16,6 +16,7 @@ const ModalSocio = ({ handleCloseModal }) => {
   const [number, setNumber] = useState("");
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setNumber("");
   };
   const handleChangeCustomer = (e) => {
     setNumber(e.target.value);
@@ -49,6 +50,7 @@ const ModalSocio = ({ handleCloseModal }) => {
               const updatedStorage = storage.get("usuario");
               updatedStorage.accounts = [updatedUsuario.accounts];
               storage.set("usuario", updatedStorage);
+              handleChange(false, 0);
             }
           });
         } else {
@@ -64,7 +66,7 @@ const ModalSocio = ({ handleCloseModal }) => {
     }
   };
   return (
-    <CardCustom className={" w-1/3 rounded-xl bg-white shadow-lg"}>
+    <CardCustom className={" w-1/3 max-sm:w-full rounded-xl bg-white shadow-lg"}>
       <div className="rounded-xl ">
         <div className="relative rounded-t-xl bg-slate-200 p-5 ">
           <h3 className="text-gray-900 m-0 font-bold text-center font-sans" id="exampleModalLabel">
