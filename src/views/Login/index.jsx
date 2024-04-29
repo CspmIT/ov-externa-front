@@ -13,7 +13,7 @@ import { UserContext } from '../../contexts/UserContext'
 
 const Login = () => {
   const { token, idUser } = useParams(['token', 'idUser'])
-  const { usuario, setUsuario } = useContext(UserContext)
+  const { usuario, setUsuario, setDarkMode } = useContext(UserContext)
   const navigate = useNavigate()
   const [pass, setPass] = useState('password')
   const [remember, setRemember] = useState(false)
@@ -58,14 +58,15 @@ const Login = () => {
         const bodyOtherCustomer = { id_user: responseData.data.id }
         const otherCustomer = await Axios.post('http://cooptech.com.ar:30888/api/allOther', bodyOtherCustomer)
         const user = { ...responseData.data, other: [...otherCustomer.data.data] }
+        setDarkMode(responseData.data.dark)
         setUsuario(user)
       }
     } catch (error) {
       console.log(error)
       Swal.fire({
         icon: 'warning',
-        title: 'Atención!',
-        text: error.response.data.message,
+        title: error.response ? 'Atención!' : 'Sitio en mantenimiento',
+        text: error.response ? error.response.data.message : 'Intente ingresar nuevamente mas tarde',
         allowOutsideClick: false
       })
     }
@@ -107,10 +108,6 @@ const Login = () => {
       validacionToken(token, idUser)
     }
   }, [idUser, token])
-
-  useEffect(() => {
-    document.body.classList.remove('dark')
-  }, [])
 
   const {
     register,

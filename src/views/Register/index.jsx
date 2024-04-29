@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 
 import InputGroup from '../../components/InputGroup'
 import Button from '../../components/Button'
-import request from '../../routes/request'
+import { request } from '../../utils/request'
 import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
 
@@ -37,11 +37,6 @@ const Register = () => {
       console.error('Error en la solicitud:', error)
     }
   }
-
-  useEffect(() => {
-    document.body.classList.remove('dark')
-  }, [])
-
   const {
     register,
     formState: { errors },
