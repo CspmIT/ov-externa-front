@@ -27,8 +27,7 @@ const Login = () => {
   }
 
   const RenviarToken = async () => {
-    // const url = 'http://localhost:8000/api/reSendEmailToken'
-    const url = 'http://cooptech.com.ar:30888/api/reSendEmailToken'
+    const url = import.meta.env.VITE_APP_API_URL + '/api/reSendEmailToken'
     const info = { token, idUser }
     try {
       const responseData = await Axios.post(url, info)
@@ -48,15 +47,17 @@ const Login = () => {
     }
   }
   const formulario = async (data) => {
-    const url = 'http://cooptech.com.ar:30888/api/login'
-    // const url = 'http://localhost:8000/api/login'
+    const url = import.meta.env.VITE_APP_API_URL + '/api/login'
     // const info = { email, password }
     try {
+      console.log(data)
       const responseData = await Axios.post(url, data)
+      console.log(responseData)
       if (responseData.status === 200) {
         localStorage.setItem('usuario', JSON.stringify(responseData.data))
         const bodyOtherCustomer = { id_user: responseData.data.id }
-        const otherCustomer = await Axios.post('http://cooptech.com.ar:30888/api/allOther', bodyOtherCustomer)
+        const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/api/allOther', bodyOtherCustomer)
+        console.log(otherCustomer)
         const user = { ...responseData.data, other: [...otherCustomer.data.data] }
         setDarkMode(responseData.data.dark)
         setUsuario(user)
@@ -73,8 +74,7 @@ const Login = () => {
   }
 
   const validacionToken = async (token, id) => {
-    // const url = 'http://localhost:8000/api/validationUser'
-    const url = 'http://cooptech.com.ar:30888/api/validationUser'
+    const url = import.meta.env.VITE_APP_API_URL + '/api/validationUser'
     const info = { token }
     try {
       await Axios.post(url, info)

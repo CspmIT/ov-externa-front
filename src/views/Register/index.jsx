@@ -24,8 +24,7 @@ const Register = () => {
   }
 
   const formulario = async (data) => {
-    // const url = 'http://localhost:8000/api/register'
-    const url = `http://cooptech.com.ar:30888/api/register`
+    const url = import.meta.env.VITE_APP_API_URL + '/api/register'
     try {
       await request(url, 'POST', data)
       Swal.fire({

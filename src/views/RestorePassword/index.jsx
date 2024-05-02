@@ -13,9 +13,7 @@ function RestorePassword() {
 
   const passwordRecover = async (data) => {
     setSpinner(true)
-    const url = 'http://cooptech.com.ar:30888/api/password_recover'
-    // const url = "http://localhost:8000/api/password_recover";
-    // const info = { email }
+    const url = import.meta.env.VITE_APP_API_URL + '/api/password_recover'
     try {
       const responseData = await Axios.post(url, data)
       if (responseData === 'Error') {

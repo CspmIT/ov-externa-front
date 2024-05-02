@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
   const changePassword = async (data) => {
     // const url = "http://localhost:8000/api/change_password";
-    const url = 'http://cooptech.com.ar:30888/api/change_password'
+    const url = import.meta.env.VITE_APP_API_URL + '/api/change_password'
     const info = { password: data.password, token }
     try {
       const responseData = await Axios.post(url, info)
@@ -58,7 +58,7 @@ const ChangePassword = () => {
   }
   const validationToken = async (token) => {
     // const url = 'http://localhost:8000/api/validationToken'
-    const url = 'http://cooptech.com.ar:30888/api/validationToken'
+    const url = import.meta.env.VITE_APP_API_URL + '/api/validationToken'
     const info = { token }
     try {
       const responseData = await Axios.post(url, info)

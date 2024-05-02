@@ -1,73 +1,73 @@
-import { Box } from "@mui/material";
-import { request } from "./request";
-import { Circle, FindInPage, Print } from "@mui/icons-material";
-import Button from "..//components/Button";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { Box } from '@mui/material'
+import { request } from './request'
+import { Circle, FindInPage } from '@mui/icons-material'
+import Button from '..//components/Button'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import { useContext } from 'react'
+import { UserContext } from '../contexts/UserContext'
 
 export const columns = [
   {
-    header: "",
-    accessorKey: "account",
+    header: '',
+    accessorKey: 'account'
   },
   {
-    header: "Tipo",
-    accessorKey: "type",
-    size: 30,
+    header: 'Tipo',
+    accessorKey: 'type',
+    size: 30
   },
   {
-    header: "Factura",
-    accessorKey: "nrovoucher",
+    header: 'Factura',
+    accessorKey: 'nrovoucher',
     AggregatedCell: ({ row }) => {
       return (
-        <p className="m-0 font-bold">
+        <p className='m-0 font-bold'>
           Cuenta Nº: {row.original.account} (Tel: {row.original.phone})
         </p>
-      );
-    },
+      )
+    }
   },
   {
-    header: "Periodo",
-    accessorKey: "period",
-    size: 30,
+    header: 'Periodo',
+    accessorKey: 'period',
+    size: 30
   },
   {
-    header: "Vencimiento",
-    accessorKey: "vto",
-    size: 30,
+    header: 'Vencimiento',
+    accessorKey: 'vto',
+    size: 30
   },
   {
-    header: "Importe",
-    accessorKey: "amount",
+    header: 'Importe',
+    accessorKey: 'amount',
     size: 45,
     Cell: ({ row, cell }) => {
-      const { darkMode } = useContext(UserContext);
+      const { darkMode } = useContext(UserContext)
       if (!row.original.subRows) {
         return (
           <Box
-            component="span"
+            component='span'
             sx={() => ({
-              color: !darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-              fontWeight: "bold",
-              fontSize: "15px",
+              color: !darkMode ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)',
+              fontWeight: 'bold',
+              fontSize: '15px'
             })}
           >
-            {cell.getValue()?.toLocaleString?.("es-AR", {
-              style: "currency",
-              currency: "ARS",
+            {cell.getValue()?.toLocaleString?.('es-AR', {
+              style: 'currency',
+              currency: 'ARS',
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              maximumFractionDigits: 2
             })}
           </Box>
-        );
+        )
       }
-    },
+    }
   },
   {
-    header: "",
-    accessorKey: "status",
+    header: '',
+    accessorKey: 'status',
     disableFilters: true,
     size: 15,
     enableGlobalFilter: false,
@@ -75,15 +75,15 @@ export const columns = [
       if (!row.original.subRows) {
         return (
           <div>
-            <Circle className={`${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />
+            <Circle className={`${row.original?.status > 0 ? (row.original?.status === 2 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`} />
           </div>
-        );
+        )
       }
-    },
+    }
   },
   {
-    header: "",
-    accessorKey: "url",
+    header: '',
+    accessorKey: 'url',
     disableFilters: true,
     enableGlobalFilter: false,
     size: 15,
@@ -91,165 +91,165 @@ export const columns = [
       if (row.original.url) {
         return (
           <Button
-            props={{ class: "bg-blue-500 rounded text-center py-0.7 px-1.5 text-white " }}
+            props={{ class: 'bg-blue-500 rounded text-center py-0.7 px-1.5 text-white ' }}
             onclick={() => {
-              controlUrl(`${row.original?.url ? row.original?.url : undefined}`);
+              controlUrl(`${row.original?.url ? row.original?.url : undefined}`)
             }}
           >
             <FindInPage />
           </Button>
-        );
+        )
       }
-    },
-  },
-];
+    }
+  }
+]
 export const columnsCel = [
   {
-    header: "",
-    accessorKey: "account",
-    size: 5,
+    header: '',
+    accessorKey: 'account',
+    size: 5
   },
   {
-    header: "Info Factura",
-    accessorKey: "info",
+    header: 'Info Factura',
+    accessorKey: 'info',
     size: 30,
     minSize: 10,
     maxSize: 30,
     AggregatedCell: ({ row }) => {
-      return <p className="m-0 text-sm font-bold">Cuenta Nº: {row.original.account}</p>;
+      return <p className='m-0 text-sm font-bold'>Cuenta Nº: {row.original.account}</p>
     },
     Cell: ({ cell }) => {
-      const { darkMode } = useContext(UserContext);
-      const amount = cell.row.original.info?.amount ?? cell.row.original.amount;
+      const { darkMode } = useContext(UserContext)
+      const amount = cell.row.original.info?.amount ?? cell.row.original.amount
       return (
         <Box
-          component="span"
+          component='span'
           sx={() => ({
-            color: !darkMode ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
-            fontWeight: "bold",
-            fontSize: "12px",
+            color: !darkMode ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)',
+            fontWeight: 'bold',
+            fontSize: '12px'
           })}
         >
-          <p className="m-0">
+          <p className='m-0'>
             <b>Tipo:</b> {cell.row.original.info?.type ?? cell.row.original.type}
           </p>
-          <p className="m-0">
+          <p className='m-0'>
             <b>Periodo:</b> {cell.row.original.info?.period ?? cell.row.original.period}
           </p>
-          <p className="m-0">
+          <p className='m-0'>
             <b>Vencimiento:</b> {cell.row.original.info?.vto ?? cell.row.original.vto}
           </p>
-          <p className="m-0 text-red-500">
-            <b>Importe:</b>{" "}
-            {amount.toLocaleString?.("es-AR", {
-              style: "currency",
-              currency: "ARS",
+          <p className='m-0 text-red-500'>
+            <b>Importe:</b>{' '}
+            {amount.toLocaleString?.('es-AR', {
+              style: 'currency',
+              currency: 'ARS',
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              maximumFractionDigits: 2
             })}
           </p>
         </Box>
-      );
-    },
+      )
+    }
   },
   {
-    header: "",
-    accessorKey: "status",
+    header: '',
+    accessorKey: 'status',
     size: 10,
     enableGlobalFilter: false,
     Cell: ({ row }) => {
       if (!row.original.subRows) {
-        return <Circle className={`max-sm:m-0 max-sm:text-sm ${row.original?.status > 0 ? (row.original?.status == 2 ? "text-yellow-500" : "text-green-500") : "text-red-500"}`} />;
+        return <Circle className={`max-sm:m-0 max-sm:text-sm ${row.original?.status > 0 ? (row.original?.status === 2 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`} />
       }
-    },
+    }
   },
   {
-    header: "",
-    accessorKey: "url",
+    header: '',
+    accessorKey: 'url',
     enableGlobalFilter: false,
     size: 10,
     Cell: ({ row }) => {
-      const url = row.original.info?.url ?? row.original.url;
+      const url = row.original.info?.url ?? row.original.url
       if (url) {
         return (
           <Button
-            props={{ class: "bg-blue-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white " }}
+            props={{ class: 'bg-blue-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white ' }}
             onclick={() => {
-              controlUrl(`${url ? url : undefined}`);
+              controlUrl(`${url || undefined}`)
             }}
           >
             <FindInPage />
           </Button>
-        );
+        )
       }
-    },
-  },
-];
+    }
+  }
+]
 
 export const controlUrl = async (url) => {
-  const urlConsulta = "http://cooptech.com.ar:30888/api/existinvoice?url=" + url;
+  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/api/existinvoice?url=' + url
   try {
-    const response = await axios({
-      method: "GET",
+    await axios({
+      method: 'GET',
       url: urlConsulta,
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-    });
-    window.open(url, "_blank");
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
+    })
+    window.open(url, '_blank')
   } catch (error) {
     Swal.fire({
-      icon: "error",
-      title: "La factura aun no se encuentra disponible",
-      showConfirmButton: true,
-    });
+      icon: 'error',
+      title: 'La factura aun no se encuentra disponible',
+      showConfirmButton: true
+    })
   }
-};
+}
 
 export const searchAllInvoice = async (user) => {
-  const socio = user.number_customer;
-  const url = `http://cooptech.com.ar:30888/api/allfacturas?id_procoop=${socio}`;
+  const socio = user.number_customer
+  const url = `${import.meta.env.VITE_APP_API_URL}/api/allfacturas?id_procoop=${socio}`
   try {
-    const responseData = await request(url, "get");
-    const rows = [];
+    const responseData = await request(url, 'get')
+    const rows = []
     for (const i in responseData) {
       responseData[i].list.forEach((item) => {
-        rows.push({ ...item, account: responseData[i].data.account, phone: responseData[i].data.phoneNumber });
-      });
+        rows.push({ ...item, account: responseData[i].data.account, phone: responseData[i].data.phoneNumber })
+      })
     }
-    return rows;
+    return rows
   } catch (error) {
-    console.error("Error en la solicitud:", error);
+    console.error('Error en la solicitud:', error)
   }
-};
+}
 
 export const InvoiceDeus = async (user) => {
-  const socio = user.number_customer;
-  const url = `http://127.0.0.1:8000/api/facturas?id_procoop=${socio}`;
+  const socio = user.number_customer
+  const url = `http://127.0.0.1:8000/api/facturas?id_procoop=${socio}`
   try {
-    const responseData = await request(url, "GET");
+    const responseData = await request(url, 'GET')
     if (responseData.length === 0) {
-      return false;
+      return false
     }
-    const rows = [];
+    const rows = []
     for (const i in responseData) {
       responseData[i].list.forEach((item) => {
-        rows.push({ ...item, account: responseData[i].data.account, phone: responseData[i].data.phoneNumber });
-      });
+        rows.push({ ...item, account: responseData[i].data.account, phone: responseData[i].data.phoneNumber })
+      })
     }
-    return rows;
+    return rows
   } catch (error) {
-    console.error("Error en la solicitud:", error);
+    console.error('Error en la solicitud:', error)
   }
-};
+}
 export const calcValues = (table) => {
-  let values = 0;
-  let value2 = 0;
+  let values = 0
+  let value2 = 0
   table.getCoreRowModel().rows.forEach((element) => {
-    value2 += element.original.amount;
-  });
+    value2 += element.original.amount
+  })
   table.getSelectedRowModel().rows.forEach((element) => {
-    values += element.original.amount;
-  });
-  values = values.toFixed(2);
-  value2 = value2.toFixed(2);
-  return [values, value2];
-};
+    values += element.original.amount
+  })
+  values = values.toFixed(2)
+  value2 = value2.toFixed(2)
+  return [values, value2]
+}
