@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 // Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
   const numberCustomer = data.number_customer
-  const url = 'http://127.0.0.1:8000/api/getCustomer'
+  const url = import.meta.env.VITE_APP_API_URL + '/api/getCustomer'
   const res = await Axios.post(url, { customer: numberCustomer })
   return res.data
 }

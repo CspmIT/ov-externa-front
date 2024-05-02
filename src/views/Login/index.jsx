@@ -46,21 +46,22 @@ const Login = () => {
       console.log(error)
     }
   }
+
   const formulario = async (data) => {
     const url = import.meta.env.VITE_APP_API_URL + '/api/login'
     // const info = { email, password }
     try {
-      console.log(data)
       const responseData = await Axios.post(url, data)
-      console.log(responseData)
       if (responseData.status === 200) {
         localStorage.setItem('usuario', JSON.stringify(responseData.data))
-        const bodyOtherCustomer = { id_user: responseData.data.id }
-        const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/api/allOther', bodyOtherCustomer)
-        console.log(otherCustomer)
-        const user = { ...responseData.data, other: [...otherCustomer.data.data] }
+        // const bodyOtherCustomer = { id_user: responseData.data.id }
+        // const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/api/allOther', bodyOtherCustomer)
+        // console.log(otherCustomer)
+        // const user = { ...responseData.data, other: [...otherCustomer.data.data] }
+        const user = { ...responseData.data }
         setDarkMode(responseData.data.dark)
         setUsuario(user)
+        navigate('/')
       }
     } catch (error) {
       console.log(error)

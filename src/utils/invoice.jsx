@@ -223,7 +223,7 @@ export const searchAllInvoice = async (user) => {
 
 export const InvoiceDeus = async (user) => {
   const socio = user.number_customer
-  const url = `http://127.0.0.1:8000/api/facturas?id_procoop=${socio}`
+  const url = `${import.meta.env.VITE_APP_API_URL}/api/facturas?id_procoop=${socio}`
   try {
     const responseData = await request(url, 'GET')
     if (responseData.length === 0) {
