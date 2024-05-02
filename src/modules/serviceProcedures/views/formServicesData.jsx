@@ -1,5 +1,6 @@
 import { FormValidProvider } from '../../../contexts/FormsContext'
 import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import StepperMui from '../components/StepperMui'
 import FormPersonalData from '../components/FormPersonalData'
 
@@ -11,12 +12,16 @@ const FormServicesData = () => {
     steps.unshift('Datos Personales')
   }
 
+  const [formData, setFormData] = useState({})
+  const handleFormChange = (newData) => {
+    setFormData(newData)
+  }
   return (
     <FormValidProvider>
       <div className='w-full p-8'>
-        <StepperMui steps={steps}>
+        <StepperMui steps={steps} formData={formData}>
           <div>
-            <FormPersonalData />
+            <FormPersonalData onFormChange={handleFormChange} />
           </div>
         </StepperMui>
       </div>

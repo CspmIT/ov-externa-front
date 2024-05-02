@@ -6,8 +6,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField
+  TextField,
+  InputAdornment
 } from '@mui/material'
+import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone'
@@ -18,8 +20,10 @@ import {
   inputsPersonalData,
   typePersonArray
 } from '../utils/data'
+import Swal from 'sweetalert2'
 
-const FormPersonalData = () => {
+const FormPersonalData = ({ onFormChange }) => {
+  // Valido si hay datos en el localStorage
   const {
     register,
     handleSubmit,
@@ -30,25 +34,37 @@ const FormPersonalData = () => {
     mode: 'onChange' // Esto hará que isValid se actualice en cada cambio de los campos
   })
 
+  // const [formData, setFormData] = useState({})
+
   const typePerson = watch('typePerson')
+  // const formValues = watch()
 
   const searchInProcop = async (searchTerm) => {
-    // Aquí deberías hacer la búsqueda en procop
-    // espero que termine la busqueda en procop
-    console.log(searchTerm)
+    // Hago una busqueda en procop
+    // Si encuentro algo, retorno los datos
+    // Si no encuentro nada, retorno false
+    let object = {
+      params: {
+        dni: searchTerm
+      }
+    }
 
-    const procopData = [
-      { id: '1', num_dni: '12345678', name: 'Juan', lastName: 'Perez' },
-      { id: '2', num_dni: '87654321', name: 'Maria', lastName: 'Gomez' }
-    ]
-    const data = await new Promise((resolve) =>
-      setTimeout(() => {
-        procopData.filter((item) => item.num_dni === searchTerm)
-        resolve()
-      }, 3000)
+    if (typePerson === 2) {
+      object = {
+        params: {
+          cuit: searchTerm
+        }
+      }
+    }
+
+    const response = await Axios.get(
+      'http://localhost:8000/api/searchDni',
+      object
     )
-
-    return data
+    if (response) {
+      return response.data
+    }
+    return false
   }
 
   // Funciones para buscar en procop
@@ -56,11 +72,66 @@ const FormPersonalData = () => {
   const [searchResults, setSearchResults] = useState(false)
   const handleSearch = async (event) => {
     event.preventDefault()
+    // JOSE: 38112034
     // espero que termine la busqueda en procop
-
+    // Cambio el boton de confirmar por un spinner
     const result = await searchInProcop(searchTerm)
-    console.log(result)
-    setSearchResults(result)
+    if (result.length > 0) {
+      Swal.fire({
+        title: 'Persona encontrada',
+        html: `Con el ${
+          typePerson === 1 ? 'DNI' : 'CUIT'
+        } ingresado encontramos esta persona: <br><b>${
+          result[0].APELLIDOS
+        }<b> <br> ¿Estos son tus datos?`,
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        showCancelButton: true
+      }).then((response) => {
+        if (response.isConfirmed) {
+          // Separo los datos para poder pintarlos en el input
+          const data = result[0]
+          const fecha = data.FEC_NAC.split('-')
+          data.day = fecha[2].split(' ')[0]
+          data.month = fecha[1]
+          data.year = fecha[0]
+          setSearchResults(data)
+        } else {
+          setSearchResults(false)
+          inputsBusinessData.forEach((input) => {
+            setValue(input.name, '')
+          })
+          // Limpio todos los campos del formulario
+          inputsPersonalData.forEach((input) => {
+            setValue(input.name, '')
+          })
+          setValue('day', '')
+          setValue('month', '')
+          setValue('year', '')
+        }
+      })
+    } else {
+      Swal.fire({
+        title: 'Persona no encontrada',
+        text: `No se encontraron datos con el ${
+          typePerson === 1 ? 'DNI' : 'CUIT'
+        } ingresado`,
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      })
+      inputsBusinessData.forEach((input) => {
+        setValue(input.name, '')
+      })
+      // Limpio todos los campos del formulario
+      inputsPersonalData.forEach((input) => {
+        setValue(input.name, '')
+      })
+      setValue('day', '')
+      setValue('month', '')
+      setValue('year', '')
+      setSearchResults(true)
+    }
   }
 
   // Funciones para la camara
@@ -81,6 +152,16 @@ const FormPersonalData = () => {
   }
   const { setIsValid } = useContext(FormValidContext) // Obtén la función setIsValid del contexto
 
+  // Actualiza el estado local cuando los valores del formulario cambian
+  // useEffect(() => {
+  //   setFormData(formValues)
+  // }, [formValues])
+
+  // Llama a onFormChange cuando formData cambia
+  // useEffect(() => {
+  //   onFormChange(formData)
+  // }, [formData, onFormChange])
+
   // Actualiza el estado del formulario cuando los campos cambien
   useEffect(() => {
     setIsValid(isValid)
@@ -88,6 +169,7 @@ const FormPersonalData = () => {
 
   return (
     <form className='w-full p-5' onSubmit={handleSubmit}>
+      <TextField {...register('idProcop')} type='hidden' />
       <Grid container spacing={3} justifyContent='center'>
         <Grid item md={8}>
           <FormControl className='w-full mb-3'>
@@ -97,7 +179,10 @@ const FormPersonalData = () => {
               id='type-person'
               label='Tipo de persona'
               {...register('typePerson', { required: true })}
-              onChange={(e) => setValue('typePerson', e.target.value)}
+              onChange={(e) => {
+                setValue('typePerson', e.target.value)
+                setSearchResults(false)
+              }}
             >
               {typePersonArray.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
@@ -110,10 +195,11 @@ const FormPersonalData = () => {
             )}
           </FormControl>
         </Grid>
-        {typePerson && (
-          <Grid>
+        {typePerson && !searchResults && (
+          <Grid item md={5} className='!flex !flex-col'>
             <TextField
-              label='Buscar'
+              id='searchTerm'
+              label={typePerson === 1 ? 'DNI' : 'CUIT/CUIL'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -129,6 +215,7 @@ const FormPersonalData = () => {
                   <FormControl className='w-full'>
                     <InputLabel id={input.name}>{input.label}</InputLabel>
                     <Select
+                      defaultValue={searchResults[input.name]}
                       labelId={input.name}
                       id={input.name}
                       label={input.label}
@@ -136,7 +223,7 @@ const FormPersonalData = () => {
                       onChange={(e) => setValue(input.name, e.target.value)}
                     >
                       {input.options.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
+                        <MenuItem key={item.id} selected value={item.id}>
                           {item.name}
                         </MenuItem>
                       ))}
@@ -148,7 +235,21 @@ const FormPersonalData = () => {
                       label={input.label}
                       type={input.type}
                       id={input.name}
-                      {...register(input.name, { required: true })}
+                      {...register(input.name, {
+                        required: input?.groupLabel !== 'Telefono fijo'
+                      })}
+                      defaultValue={searchResults[input.name]?.trim()}
+                      InputProps={
+                        input.start
+                          ? {
+                              startAdornment: (
+                                <InputAdornment position='start'>
+                                  {input.start}
+                                </InputAdornment>
+                              )
+                            }
+                          : {}
+                      }
                     />
                   </FormControl>
                 )}
@@ -187,6 +288,17 @@ const FormPersonalData = () => {
                       type={input.type}
                       id={input.name}
                       {...register(input.name, { required: true })}
+                      InputProps={
+                        input.start
+                          ? {
+                              startAdornment: (
+                                <InputAdornment position='start'>
+                                  {input.start}
+                                </InputAdornment>
+                              )
+                            }
+                          : {}
+                      }
                     />
                   </FormControl>
                 )}

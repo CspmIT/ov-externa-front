@@ -2,8 +2,9 @@ import Stepper from '@mui/material/Stepper'
 import { Step, StepLabel, Button } from '@mui/material'
 import { useState, useContext } from 'react'
 import { FormValidContext } from '../../../contexts/FormsContext'
+import Swal from 'sweetalert2'
 
-const StepperMui = ({ steps, children }) => {
+const StepperMui = ({ steps, children, formData }) => {
   const [activeStep, setActiveStep] = useState(0)
   const [skipped, setSkipped] = useState(new Set())
 
@@ -61,9 +62,31 @@ const StepperMui = ({ steps, children }) => {
           <h1 className='text-center'>{steps[activeStep]}</h1>
           <p className='text-center mt-5'>Formulario de {steps[activeStep]}</p>
           {children}
-          <div className='flex justify-center mt-5'>
+          <div className='flex justify-center mt-5 gap-3'>
             <Button disabled={activeStep === 0} onClick={handleBack}>
               Atrás
+            </Button>
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={() => {
+                // Guardo el formulario en el localStorage
+                localStorage.setItem(
+                  steps[activeStep],
+                  JSON.stringify(formData)
+                )
+                // Valido que se haya guardado y muestro el mensaje de confirmacion
+                if (localStorage.getItem(steps[activeStep])) {
+                  Swal.fire({
+                    title: 'Datos guardados',
+                    text: 'Los datos se han guardado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                  })
+                }
+              }}
+            >
+              Guardar y continuar despues
             </Button>
             {activeStep === steps.length - 1 ? (
               <Button

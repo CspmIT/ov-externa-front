@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState, createContext } from 'react'
 
-export const FormValidContext = React.createContext()
+export const FormValidContext = createContext()
 
 export const FormValidProvider = ({ children }) => {
   const [isValid, setIsValid] = useState(false)

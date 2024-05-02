@@ -4,10 +4,8 @@ const typePersonArray = [
 ]
 
 const sexArray = [
-    { id: 1, name: 'Femenino' },
-    { id: 2, name: 'Masculino' },
-    { id: 3, name: 'No Binario' },
-    { id: 4, name: 'Otro' }
+    { id: 'F', name: 'Femenino' },
+    { id: 'M', name: 'Masculino' },
 ]
 
 const dniArray = [
@@ -17,18 +15,18 @@ const dniArray = [
 ]
 
 const monthArray = [
-    { id: 1, name: 'Enero' },
-    { id: 2, name: 'Febrero' },
-    { id: 3, name: 'Marzo' },
-    { id: 4, name: 'Abril' },
-    { id: 5, name: 'Mayo' },
-    { id: 6, name: 'Junio' },
-    { id: 7, name: 'Julio' },
-    { id: 8, name: 'Agosto' },
-    { id: 9, name: 'Septiembre' },
-    { id: 10, name: 'Octubre' },
-    { id: 11, name: 'Noviembre' },
-    { id: 12, name: 'Diciembre' }
+    { id: '01', name: 'Enero' },
+    { id: '02', name: 'Febrero' },
+    { id: '03', name: 'Marzo' },
+    { id: '04', name: 'Abril' },
+    { id: '05', name: 'Mayo' },
+    { id: '06', name: 'Junio' },
+    { id: '07', name: 'Julio' },
+    { id: '08', name: 'Agosto' },
+    { id: '09', name: 'Septiembre' },
+    { id: '10', name: 'Octubre' },
+    { id: '11', name: 'Noviembre' },
+    { id: '12', name: 'Diciembre' }
 ]
 
 const impositiveSituationArray = [
@@ -59,31 +57,24 @@ const grossIncomeArray = [
 const inputsPersonalData = [
     {
         component: 'TextField',
-        grid: 6,
+        grid: 8,
         type: 'text',
-        label: 'Nombre',
-        name: 'name'
-    },
-    {
-        component: 'TextField',
-        grid: 6,
-        type: 'text',
-        label: 'Apellido',
-        name: 'lastName'
+        label: 'Nombres y Apellidos',
+        name: 'APELLIDOS'
     },
     {
         component: 'TextField',
         grid: 6,
         type: 'email',
         label: 'Correo Electronico',
-        name: 'email'
+        name: 'EMAIL'
     },
     {
         component: 'Select',
         grid: 6,
         type: 'select',
         label: 'Genero',
-        name: 'gender',
+        name: 'SEXO',
         options: sexArray
     },
     {
@@ -91,7 +82,7 @@ const inputsPersonalData = [
         grid: 2,
         type: 'select',
         label: 'Tipo de documento',
-        name: 'typeDocument',
+        name: 'TIP_DNI',
         options: dniArray
     },
     {
@@ -99,7 +90,7 @@ const inputsPersonalData = [
         grid: 4,
         type: 'text',
         label: 'N° de documento',
-        name: 'document'
+        name: 'NUM_DNI'
     },
     {
         component: 'TextField',
@@ -128,28 +119,34 @@ const inputsPersonalData = [
         grid: 2,
         type: 'text',
         label: 'Caracteristica',
-        name: 'characteristicCellPhone'
+        name: 'characteristicCellPhone',
+        start: '0'
     },
     {
         component: 'TextField',
         grid: 4,
         type: 'text',
         label: 'Numero',
-        name: 'numberCellPhone'
+        name: 'TELEFONO',
+        start: '15'
     },
     {
+        groupLabel: 'Telefono fijo',
         component: 'TextField',
         grid: 2,
         type: 'text',
         label: 'Caracteristica',
-        name: 'characteristicPhone'
+        name: 'characteristicPhone',
+        start: '0'
     },
     {
+        groupLabel: 'Telefono fijo',
         component: 'TextField',
         grid: 4,
         type: 'text',
         label: 'Numero',
-        name: 'numberPhone'
+        name: 'numberPhone',
+        start: '15'
     }
 ]
 
@@ -253,7 +250,8 @@ const inputsBusinessData = [
         grid: 2,
         type: 'text',
         label: 'Caracteristica',
-        name: 'characteristicCellPhone'
+        name: 'characteristicCellPhone',
+        start: '0'
     },
     {
         groupLabel: 'Telefono celular',
@@ -261,7 +259,8 @@ const inputsBusinessData = [
         grid: 4,
         type: 'text',
         label: 'Numero',
-        name: 'numberCellPhone'
+        name: 'numberCellPhone',
+        start: '15'
     },
     {
         groupLabel: 'Telefono fijo',
@@ -269,7 +268,8 @@ const inputsBusinessData = [
         grid: 2,
         type: 'text',
         label: 'Caracteristica',
-        name: 'characteristicPhone'
+        name: 'characteristicPhone',
+        start: '0'
     },
     {
         groupLabel: 'Telefono fijo',
