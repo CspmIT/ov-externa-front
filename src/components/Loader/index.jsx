@@ -11,7 +11,7 @@ const LoaderComponent = () => (
         <div className={styles.shadow}></div>
       </div>
     </div>
-    <p className={styles.textLoader}>Cargando</p>
+    <p className={'text-2xl font-bold text-black dark:text-white'}>Cargando</p>
   </div>
 )
 export default LoaderComponent

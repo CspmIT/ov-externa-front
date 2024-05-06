@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { FaCircle } from 'react-icons/fa'
 import DropdownServices from '../../components/DropdownServices'
-import axios from 'axios'
 import Swal from 'sweetalert2'
 import { setServiceInfo } from '../../utils/services'
 import LoaderComponent from '../../components/Loader'
+import { request } from '../../utils/request'
 
 const MyServices = () => {
   const [services, setRowsServices] = useState('')
@@ -12,16 +12,13 @@ const MyServices = () => {
   useEffect(() => {
     const searchData = async () => {
       const socio = '51010'
-      const url = `http://cooptech.com.ar:30888/api/getService?id_procoop=${socio}`
+      const url = `${import.meta.env.VITE_APP_API_URL}/api/getService?id_procoop=${socio}`
       try {
-        const response = await axios({
-          method: 'GET',
-          url
-        })
+        const response = await request(url, 'get')
         const newData = []
-        for (const service in response.data) {
-          for (const key in response.data[service]) {
-            const obj = response.data[service][key]
+        for (const service in response) {
+          for (const key in response[service]) {
+            const obj = response[service][key]
             obj.service = service
             if (!newData[service]) {
               newData[service] = []
