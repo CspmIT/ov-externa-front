@@ -26,6 +26,10 @@ import FormServicesData from './modules/serviceProcedures/views/formServicesData
 import { UserContext } from './contexts/UserContext'
 import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
+import MultiStepForm from './modules/serviceProcedures2/MultiStepForm'
+import Step1 from './modules/serviceProcedures2/Step1'
+import Step2 from './modules/serviceProcedures2/Step2'
+import Step3 from './modules/serviceProcedures2/Step3'
 function App() {
   const { darkMode } = useContext(UserContext)
   const lightTheme = createTheme({
@@ -109,7 +113,16 @@ function App() {
     { path: '/myconsumption', element: <MyConsumption /> },
     { path: '/comments', element: <Comments /> },
     { path: '/selectServices', element: <SelectServices /> },
-    { path: '/formServicesData', element: <FormServicesData /> }
+    { path: '/formServicesData', element: <FormServicesData /> },
+    {
+      path: '/multiStepForm',
+      element: <MultiStepForm />,
+      children: [
+        { path: 'step1', element: <Step1 /> },
+        { path: 'step2', element: <Step2 /> },
+        { path: 'step3', element: <Step3 /> }
+      ]
+    }
   ]
   return (
     <div className='flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700'>

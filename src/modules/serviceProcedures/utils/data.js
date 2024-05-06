@@ -156,28 +156,28 @@ const inputsBusinessData = [
         grid: 6,
         type: 'text',
         label: 'Razon Social',
-        name: 'businessName'
+        name: 'APELLIDOS'
     },
     {
         component: 'TextField',
         grid: 6,
         type: 'text',
         label: 'Nombre de Fantasia',
-        name: 'fantasyName'
+        name: 'NOMBRES'
     },
     {
         component: 'TextField',
         grid: 6,
         type: 'email',
         label: 'Correo Electronico',
-        name: 'email'
+        name: 'EMAIL'
     },
     {
         component: 'TextField',
         grid: 6,
         type: 'text',
-        label: 'CUIT',
-        name: 'cuit'
+        label: 'cuit',
+        name: 'NUM_DNI'
     },
     {
         component: 'Select',
@@ -242,7 +242,7 @@ const inputsBusinessData = [
         grid: 1,
         type: 'text',
         label: 'Nº',
-        name: 'number'
+        name: 'NUMERO'
     },
     {
         groupLabel: 'Telefono celular',

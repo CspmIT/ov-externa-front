@@ -178,6 +178,7 @@ const FormPersonalData = ({ onFormChange }) => {
               labelId='type-person'
               id='type-person'
               label='Tipo de persona'
+              defaultValue=''
               {...register('typePerson', { required: true })}
               onChange={(e) => {
                 setValue('typePerson', e.target.value)
@@ -271,6 +272,7 @@ const FormPersonalData = ({ onFormChange }) => {
                       labelId={input.name}
                       id={input.name}
                       label={input.label}
+                      defaultValue={searchResults[input.name]}
                       {...register(input.name, { required: true })}
                       onChange={(e) => setValue(input.name, e.target.value)}
                     >
@@ -287,6 +289,7 @@ const FormPersonalData = ({ onFormChange }) => {
                       label={input.label}
                       type={input.type}
                       id={input.name}
+                      defaultValue={searchResults[input.name]?.trim()}
                       {...register(input.name, { required: true })}
                       InputProps={
                         input.start
