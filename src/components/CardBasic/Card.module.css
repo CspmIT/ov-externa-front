@@ -1,0 +1,134 @@
+.card {
+  position: relative !important;
+  border-radius: 2.5em !important;
+  padding: 2em !important;
+  transition: transform 0.4s ease !important;
+  margin: 0.5rem !important;
+}
+
+.cardsCoop {
+  background-size: cover;
+  width: 450px;
+  position: relative;
+  display: inline-block;
+  border-radius: 25px;
+  background-position-x: 50%;
+}
+
+.cardpacksI {
+  background-image: url('https://app.coopmorteros.coop/public/images/coopate/boton_INTERNET.png');
+}
+
+.cardpacksF {
+  background-image: url('https://app.coopmorteros.coop/public/images/coopate/boton_FUTBOL.png');
+}
+
+.cardpacksF input,
+.cardpacksI input {
+  position: relative;
+  left: 11rem;
+  top: 4rem;
+  width: 30px;
+  height: 30px;
+}
+
+.cardContent {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 5em !important;
+  height: 100% !important;
+  transition: transform 0.4s ease !important;
+}
+
+.cardTop,
+.cardBottom {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.cardTop p,
+.cardTop .cardTitle,
+.cardBottom p,
+.cardBottom .cardTitle {
+  margin: 0;
+}
+
+/* .cardTitle {
+    font-weight: bold;
+} */
+
+.cardTop p,
+.cardBottom p {
+  font-weight: 300;
+}
+
+.cardBottom {
+  align-items: flex-end;
+}
+
+.cardImage {
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 80px !important;
+  display: grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.icon {
+  width: 2.3em !important;
+  height: 2.3em !important;
+  transition: transform 0.4s ease !important;
+  padding: 0.5rem !important;
+  border-radius: 100% !important;
+}
+
+.cardImage svg {
+  width: 1.3em !important;
+  height: 1.3em !important;
+}
+
+.cardHover:hover {
+  cursor: pointer !important;
+  transform: scale(0.97) !important;
+}
+
+.cardHover:hover .cardContent {
+  transform: scale(0.96) !important;
+}
+
+.cardHover:hover .cardImage .icon,
+.cardHover:hover .cardImage .icon svg {
+  transform: scale(1.05) !important;
+}
+
+.cardHover:active {
+  transform: scale(0.9) !important;
+}
+
+.hoverCardFijas:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 1206px) {
+  .card {
+    width: 47%;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 460px) {
+  .cardpacksI input,
+  .cardpacksF input {
+    left: 8rem;
+    top: 1rem;
+  }
+}

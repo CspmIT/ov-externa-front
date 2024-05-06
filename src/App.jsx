@@ -1,13 +1,11 @@
-import { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
-import { Navigate, Route, Routes } from "react-router-dom";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 
 import Login from "./views/Login";
 import Home from "./views/Home";
-import NotFound from "./views/NotFound";
 import Register from "./views/Register";
-import Navbar from "./components/Navbar";
 import Information from "./views/Information";
 import Invoice from "./views/Invoice";
 import Payments from "./views/Payments";
@@ -16,66 +14,119 @@ import MyServices from "./views/MyServices";
 import MyServicesD from "./views/MyServices/detail";
 import LevelUp2 from "./views/LevelUp/leveldos";
 import Authentication from "./views/LevelUp/authenticationPhotoSID";
-import stylesNab from "./components/Navbar/Navbar.module.css";
+import MyConsumption from "./views/MyConsumption";
+import Footer from "./components/Footer";
+import Profile from "./views/Profile";
+import BaseInitial from "./views/BaseInitial";
+import RestorePassword from "./views/RestorePassword";
+import ChangePassword from "./views/ChangePassword";
+import Comments from "./views/Comments";
+import { UserContext } from "./contexts/UserContext";
+import LoaderComponent from "./components/Loader";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
 function App() {
-  
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("usuario");
-    return storedUser ? JSON.parse(storedUser) : null;
+  const { darkMode } = useContext(UserContext);
+  const lightTheme = createTheme({
+    palette: {
+      mode: "light",
+    },
   });
-  const currentYear = new Date().getFullYear();
 
-  let rutes = [
-    { name: "/", element: <Home /> },
-    { name: "/*", element: <NotFound /> },
-    { name: "/Information", element: <Information /> },
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+  const [theme, setTheme] = useState(darkMode ? darkTheme : lightTheme);
+  useEffect(() => {
+    setTheme(darkMode ? darkTheme : lightTheme);
+  }, [darkMode]);
+
+  const loginRoutes = [
+    {
+      name: "/Login",
+      element: (
+        <BaseInitial>
+          <Login />
+        </BaseInitial>
+      ),
+    },
+    {
+      name: "/Login/:token/:idUser",
+      element: (
+        <BaseInitial>
+          <Login />
+        </BaseInitial>
+      ),
+    },
+    {
+      name: "/Register",
+      element: (
+        <BaseInitial>
+          <Register />
+        </BaseInitial>
+      ),
+    },
+    {
+      name: "/RestorePassword",
+      element: (
+        <BaseInitial>
+          <RestorePassword />
+        </BaseInitial>
+      ),
+    },
+    {
+      name: "/ChangePassword/:token",
+      element: (
+        <BaseInitial>
+          <ChangePassword />
+        </BaseInitial>
+      ),
+    },
+    {
+      name: "/*",
+      element: (
+        <BaseInitial>
+          <Login />
+        </BaseInitial>
+      ),
+    },
   ];
 
-  if (user) {
-    let menus = [];
-    if (user["level"] == 1) {
-      menus.push({ name: "/LevelUp2", element: <LevelUp2 /> });
-    } else {
-      menus.push({ name: "/authentication", element: <Authentication /> }, { name: "/Invoice", element: <Invoice /> }, { name: "/MyServices", element: <MyServices /> }, { name: "/Payments", element: <Payments /> }, { name: "/Handle", element: <Handle /> }, { name: "/detail", element: <MyServicesD /> });
-    }
-    rutes.push(...menus);
-  }
+  const userRoutes = [
+    { path: "/", element: <Home /> },
+    { path: "/profile", element: <Profile /> },
+    { path: "/information", element: <Information /> },
+    { path: "/invoice", element: <Invoice /> },
+    { path: "/payments", element: <Payments /> },
+    { path: "/handle", element: <Handle /> },
+    { path: "/myservices", element: <MyServices /> },
+    { path: "/myservices/detail", element: <MyServicesD /> },
+    { path: "/levelup2", element: <LevelUp2 /> },
+    { path: "/authentication", element: <Authentication /> },
+    { path: "/myconsumption", element: <MyConsumption /> },
+    { path: "/comments", element: <Comments /> },
+  ];
   return (
-      <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
-        {user && <Navbar />}
-        <div className={`flex-grow p-2 ${user ? 'sm:pl-64 pt-20' : ''} `}>
+    <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
           <Routes>
-            {user ? (
-              <>
-                <Route key="login" path="/Login" element={<Navigate to="/" />} />
-                <Route key="register" path="/Register" element={<Navigate to="/" />} />
-                {rutes.map((rute) => (
-                  <Route key={rute.name} path={rute.name} element={rute.element} />
-                ))}
-              </>
-            ) : (
-              <>
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/" element={<Navigate to="/Login" />} />
-              </>
-            )}
+            {loginRoutes.map((route) => (
+              <Route key={route.name} path={route.name} element={route.element} />
+            ))}
+            <Route element={<ProtectedRoutes />}>
+              {userRoutes.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
+            </Route>
           </Routes>
-        </div>
-        <footer className={`p-2 ${user ? 'sm:ml-56' : ''} bg-white dark:bg-zinc-950 dark:text-gray-300 ${stylesNab.widthNab} mt-auto`}>
-          <div className="w-full mx-auto max-w-screen-xl p-10 md:flex md:items-center md:justify-center">
-            <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-              Versión 5.0 <br />
-              Copyright © IT & Development -
-              <a href="https://coopmorteros.com/" target="_bank" className="hover:underline text-yellow-400">
-                {" "}
-                COOPMORTEROS
-              </a>{" "}
-              {currentYear}
-            </span>
-          </div>
-        </footer>
-      </div>
+
+          <Footer />
+        </BrowserRouter>
+      </ThemeProvider>
+    </div>
   );
 }
 
