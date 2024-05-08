@@ -71,6 +71,7 @@ const StepperMui = ({ steps, children, formData }) => {
               color='secondary'
               onClick={() => {
                 // Guardo el formulario en el localStorage
+                console.log(formData)
                 localStorage.setItem(
                   steps[activeStep],
                   JSON.stringify(formData)

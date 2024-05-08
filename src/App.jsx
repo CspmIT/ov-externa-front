@@ -3,9 +3,9 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 
-import Login from './views/Login'
+import Login from './modules/auth/views/Login'
 import Home from './views/Home'
-import Register from './views/Register'
+import Register from './modules/auth/views/Register'
 import Information from './views/Information'
 import Invoice from './views/Invoice'
 import Payments from './views/Payments'
@@ -18,8 +18,8 @@ import MyConsumption from './views/MyConsumption'
 import Footer from './components/Footer'
 import Profile from './views/Profile'
 import BaseInitial from './views/BaseInitial'
-import RestorePassword from './views/RestorePassword'
-import ChangePassword from './views/ChangePassword'
+import RestorePassword from './modules/auth/views/RestorePassword'
+import ChangePassword from './modules/auth/views/ChangePassword'
 import Comments from './views/Comments'
 import SelectServices from './modules/serviceProcedures/views/selectServices'
 import FormServicesData from './modules/serviceProcedures/views/formServicesData'
@@ -27,9 +27,6 @@ import { UserContext } from './contexts/UserContext'
 import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
 import MultiStepForm from './modules/serviceProcedures2/MultiStepForm'
-import Step1 from './modules/serviceProcedures2/Step1'
-import Step2 from './modules/serviceProcedures2/Step2'
-import Step3 from './modules/serviceProcedures2/Step3'
 function App() {
   const { darkMode } = useContext(UserContext)
   const lightTheme = createTheme({
@@ -116,12 +113,11 @@ function App() {
     { path: '/formServicesData', element: <FormServicesData /> },
     {
       path: '/multiStepForm',
-      element: <MultiStepForm />,
-      children: [
-        { path: 'step1', element: <Step1 /> },
-        { path: 'step2', element: <Step2 /> },
-        { path: 'step3', element: <Step3 /> }
-      ]
+      element: <MultiStepForm />
+    },
+    {
+      path: '/multiStepForm/:step',
+      element: <MultiStepForm />
     }
   ]
   return (

@@ -41,8 +41,6 @@ const Navbar = () => {
   const toggleMobileMenu = () => {
     setMobileMenuVisible((prevVisibility) => !prevVisibility)
   }
-    setMobileMenuVisible((prevVisibility) => !prevVisibility)
-  }
 
   useEffect(() => {
     if (!darkMode) {
@@ -65,13 +63,16 @@ const Navbar = () => {
       setImg('Blanco.png')
     }
   }, [darkMode])
-  }, [darkMode])
 
   const updateDarkMode = async (dark) => {
     try {
       dark = dark ? 1 : 0
       const array = { dark }
-      await requestAuth(import.meta.env.VITE_APP_API_URL + '/api/updateCustomer', 'patch', array)
+      await requestAuth(
+        import.meta.env.VITE_APP_API_URL + '/api/updateCustomer',
+        'patch',
+        array
+      )
     } catch (error) {
       console.log('Error al obtener datos:', error)
     }
@@ -92,14 +93,11 @@ const Navbar = () => {
 
   const itemsData = [
     { name: 'Inicio', icon: <FaHouse />, link: '/', level: [1, 2, 3] },
-    { name: 'Inicio', icon: <FaHouse />, link: '/', level: [1, 2, 3] },
     {
-      name: 'Archivo',
       name: 'Archivo',
       icon: <FaArchive />,
       dropdown: true,
       iconDropdown: <IoMdArrowDropdown />,
-      idDrop: 'acueduct',
       idDrop: 'acueduct',
       level: [2, 3],
       list: [
@@ -123,15 +121,11 @@ const Navbar = () => {
     },
     {
       name: 'Información Últil',
-      name: 'Información Últil',
       icon: <FaInfoCircle />,
-      link: '/Information',
-      level: [1, 2, 3]
       link: '/Information',
       level: [1, 2, 3]
     },
     {
-      name: 'Subir de nivel',
       name: 'Subir de nivel',
       icon: <FaArrowAltCircleUp />,
       link: '/LevelUp2',
@@ -161,8 +155,6 @@ const Navbar = () => {
           </div>
           <hr className='m-2' />
           <ul className='space-y-2 font-medium'>
-          <hr className='m-2' />
-          <ul className='space-y-2 font-medium'>
             {itemsData.map((item, index) => {
               if (item.level.find((level) => level === usuario?.level)) {
                 return (
@@ -175,7 +167,6 @@ const Navbar = () => {
                   />
                 )
               }
-              return null
               return null
             })}
           </ul>
@@ -200,11 +191,7 @@ const Navbar = () => {
               </div>
               <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
                 <div className='hidden sm:ml-3 sm:block'>
-              <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
-                <div className='hidden sm:ml-3 sm:block'>
                   {usuario.level >= 2 ? (
-                    <div className='flex space-x-4'>
-                      <div className='pl-3 pr-4 py-2 md:p-0 font-medium flex dark:text-white items-center justify-between w-full md:w-auto text-gray-900'>
                     <div className='flex space-x-4'>
                       <div className='pl-3 pr-4 py-2 md:p-0 font-medium flex dark:text-white items-center justify-between w-full md:w-auto text-gray-900'>
                         <FaUser />
@@ -273,8 +260,6 @@ const Navbar = () => {
         </Box>
       </Modal>
     </div>
-  )
-}
   )
 }
 

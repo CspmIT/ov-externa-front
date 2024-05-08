@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { styled } from '@mui/material/styles'
 import {
   Button,
   FormControl,
@@ -22,6 +23,16 @@ import {
 } from '../utils/data'
 import Swal from 'sweetalert2'
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0
+})
+
 const FormPersonalData = ({ onFormChange }) => {
   // Valido si hay datos en el localStorage
   const {
@@ -44,21 +55,17 @@ const FormPersonalData = ({ onFormChange }) => {
     // Si encuentro algo, retorno los datos
     // Si no encuentro nada, retorno false
     let object = {
-      params: {
-        dni: searchTerm
-      }
+      dni: searchTerm
     }
 
     if (typePerson === 2) {
       object = {
-        params: {
-          cuit: searchTerm
-        }
+        cuit: searchTerm
       }
     }
 
-    const response = await Axios.get(
-      'http://localhost:8000/api/searchDni',
+    const response = await Axios.post(
+      'http://localhost:4000/api/procoop/personaPorDni',
       object
     )
     if (response) {
@@ -72,11 +79,12 @@ const FormPersonalData = ({ onFormChange }) => {
   const [searchResults, setSearchResults] = useState(false)
   const handleSearch = async (event) => {
     event.preventDefault()
+    setSearchResults(false)
     // JOSE: 38112034
     // espero que termine la busqueda en procop
     // Cambio el boton de confirmar por un spinner
     const result = await searchInProcop(searchTerm)
-    if (result.length > 0) {
+    if (!result?.error) {
       Swal.fire({
         title: 'Persona encontrada',
         html: `Con el ${
@@ -93,10 +101,14 @@ const FormPersonalData = ({ onFormChange }) => {
           // Separo los datos para poder pintarlos en el input
           const data = result[0]
           const fecha = data.FEC_NAC.split('-')
-          data.day = fecha[2].split(' ')[0]
+          data.day = fecha[2].split('T')[0]
           data.month = fecha[1]
           data.year = fecha[0]
           setSearchResults(data)
+          // Pinto los datos en los inputs
+          inputsPersonalData.forEach((input) => {
+            setValue(input.name, data[input.name])
+          })
         } else {
           setSearchResults(false)
           inputsBusinessData.forEach((input) => {
@@ -151,16 +163,6 @@ const FormPersonalData = ({ onFormChange }) => {
     setShowCamera(false)
   }
   const { setIsValid } = useContext(FormValidContext) // Obtén la función setIsValid del contexto
-
-  // Actualiza el estado local cuando los valores del formulario cambian
-  // useEffect(() => {
-  //   setFormData(formValues)
-  // }, [formValues])
-
-  // Llama a onFormChange cuando formData cambia
-  // useEffect(() => {
-  //   onFormChange(formData)
-  // }, [formData, onFormChange])
 
   // Actualiza el estado del formulario cuando los campos cambien
   useEffect(() => {
@@ -322,6 +324,7 @@ const FormPersonalData = ({ onFormChange }) => {
                       startIcon={<CloudUploadIcon />}
                     >
                       Subir archivo
+                      <VisuallyHiddenInput type='file' />
                     </Button>
                   </FormControl>
                 </Grid>

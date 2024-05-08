@@ -176,7 +176,7 @@ const inputsBusinessData = [
         component: 'TextField',
         grid: 6,
         type: 'text',
-        label: 'cuit',
+        label: 'CUIT',
         name: 'NUM_DNI'
     },
     {

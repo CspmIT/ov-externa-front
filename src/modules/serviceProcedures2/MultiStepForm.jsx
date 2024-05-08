@@ -1,30 +1,36 @@
 import React from 'react'
-import { Route, Routes, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import Step3 from './Step3'
+import RegFormProvider from './providers/RegFormProvider'
 
-const MultiStepForm = () => (
-  <>
-    <nav>
-      <ul>
-        <li>
-          <Link to='/multiStepForm/step1'>Paso 1</Link>
-        </li>
-        <li>
-          <Link to='/multiStepForm/step2'>Paso 2</Link>
-        </li>
-        <li>
-          <Link to='/multiStepForm/step3'>Paso 3</Link>
-        </li>
-      </ul>
-    </nav>
-    <Routes>
-      <Route path='/step1' element={<Step1 />} />
-      <Route path='/step2' element={<Step2 />} />
-      <Route path='/step3' element={<Step3 />} />
-    </Routes>
-  </>
-)
+const MultiStepForm = () => {
+  const { step } = useParams(['step'])
+
+  function renderStep(step) {
+    switch (step) {
+      case 'select-service':
+        return
+      case 'step2':
+        return <Step2 />
+      case 'step3':
+        return <Step3 />
+      default:
+        return <Step1 />
+    }
+  }
+
+  return (
+    <RegFormProvider>
+      <h2 className='text-center m-5'>Selecciona tus Servicios</h2>
+      <hr />
+      <h5 className='text-center mt-5'>
+        Marcá todos los servicios a solicitar
+      </h5>
+      <div>{renderStep(step)}</div>
+    </RegFormProvider>
+  )
+}
 
 export default MultiStepForm

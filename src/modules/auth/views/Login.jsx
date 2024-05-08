@@ -3,13 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 
-import InputGroup from '../../components/InputGroup'
-import Button from '../../components/Button'
+import InputGroup from '../../../components/InputGroup'
+import Button from '../../../components/Button'
 import Axios from 'axios'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
-import { UserContext } from '../../contexts/UserContext'
+import { UserContext } from '../../../contexts/UserContext'
 
 const Login = () => {
   const { token, idUser } = useParams(['token', 'idUser'])
@@ -68,7 +68,9 @@ const Login = () => {
       Swal.fire({
         icon: 'warning',
         title: error.response ? 'Atención!' : 'Sitio en mantenimiento',
-        text: error.response ? error.response.data.message : 'Intente ingresar nuevamente mas tarde',
+        text: error.response
+          ? error.response.data.message
+          : 'Intente ingresar nuevamente mas tarde',
         allowOutsideClick: false
       })
     }
@@ -117,13 +119,47 @@ const Login = () => {
   } = useForm()
   return (
     <>
-      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Iniciar Sesión </h2>
+      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
+        Iniciar Sesión{' '}
+      </h2>
       <form onSubmit={handleSubmit((data) => formulario(data))}>
-        <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
-        <InputGroup required errors={errors} validation={register} className={'mt-5'} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} />
+        <InputGroup
+          required
+          errors={errors}
+          validation={register}
+          id={'email'}
+          name={'email'}
+          title={'Email'}
+          ph={'Ingrese un Email'}
+          type={'email'}
+        />
+        <InputGroup
+          required
+          errors={errors}
+          validation={register}
+          className={'mt-5'}
+          id={'password'}
+          name={'password'}
+          title={'Contraseña'}
+          showPass={showPassword}
+          ph={'Ingrese una Contraseña'}
+          type={pass}
+          btnIcon={iconEye}
+        />
         <div className='w-full mt-3 flex flex-col text-center items-center justify-center'>
-          <FormControlLabel onChange={handleChangeCheckBoxRemember} control={<Checkbox id='CheckBoxRemember' />} label='Recuerdame' />
-          <Button props={{ class: 'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400', text: 'Ingresar', type: 'submit' }} />
+          <FormControlLabel
+            onChange={handleChangeCheckBoxRemember}
+            control={<Checkbox id='CheckBoxRemember' />}
+            label='Recuerdame'
+          />
+          <Button
+            props={{
+              class:
+                'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400',
+              text: 'Ingresar',
+              type: 'submit'
+            }}
+          />
         </div>
         <div className='mt-4 w-full flex-col flex text-center'>
           <label className='mt-2'>
