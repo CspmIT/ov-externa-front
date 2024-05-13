@@ -1,10 +1,11 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { storage } from '../../storage/storage'
 import Navbar from '../Navbar'
+import Cookies from 'js-cookie'
 
 const ProtectedRoutes = ({ children }) => {
-  const authUser = storage.get('usuario')
+  // Obtengo la informacion que se encuentra en la cookie
+  const authUser = Cookies.get('token')
   if (!authUser) {
     return <Navigate to='/login' />
   }

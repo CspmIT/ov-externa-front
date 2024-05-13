@@ -8,7 +8,6 @@ const Step2 = () => {
   const navigate = useNavigate()
   const [state, dispatch] = useRegForm()
   const onSubmit = (values) => {
-    console.log('values', values)
     dispatch({ type: 'set_step_2', data: values })
     navigate('/multiStepForm/step3')
   }

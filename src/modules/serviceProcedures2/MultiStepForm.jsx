@@ -4,30 +4,34 @@ import Step1 from './Step1'
 import Step2 from './Step2'
 import Step3 from './Step3'
 import RegFormProvider from './providers/RegFormProvider'
+import SelectServices from './components/SelectServices'
+
+const services = [
+  'Energia Electrica',
+  'Agua Potable',
+  'Telecomunicaciones',
+  'Servicios Sociales'
+]
 
 const MultiStepForm = () => {
   const { step } = useParams(['step'])
-
   function renderStep(step) {
     switch (step) {
       case 'select-service':
-        return
+        return <SelectServices services={services} />
+      case 'step1':
+        return <Step1 />
       case 'step2':
         return <Step2 />
       case 'step3':
         return <Step3 />
       default:
-        return <Step1 />
+        return <SelectServices services={services} />
     }
   }
 
   return (
     <RegFormProvider>
-      <h2 className='text-center m-5'>Selecciona tus Servicios</h2>
-      <hr />
-      <h5 className='text-center mt-5'>
-        Marcá todos los servicios a solicitar
-      </h5>
       <div>{renderStep(step)}</div>
     </RegFormProvider>
   )

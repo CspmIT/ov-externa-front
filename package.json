@@ -19,6 +19,8 @@
     "axios": "^1.6.2",
     "face-api.js": "^0.20.0",
     "highcharts-react-official": "^3.2.1",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "material-react-table": "^2.11.3",
     "qr-code-styling": "^1.6.0-rc.1",
     "qrcode.react": "^3.1.0",

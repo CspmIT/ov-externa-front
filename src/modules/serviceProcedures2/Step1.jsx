@@ -3,7 +3,7 @@ import { useRegForm } from './providers/RegFormProvider'
 import { useNavigate } from 'react-router-dom'
 
 const Step1 = () => {
-  const [, dispatch] = useRegForm()
+  const [state, dispatch] = useRegForm()
   const {
     register,
     handleSubmit,
@@ -11,6 +11,7 @@ const Step1 = () => {
   } = useForm()
   const navigate = useNavigate()
 
+  console.log(state)
   const onSubmit = (values) => {
     if (isValid) {
       dispatch({ type: 'set_step_1', data: values })
