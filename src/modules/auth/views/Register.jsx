@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 
-import InputGroup from '../../components/InputGroup'
-import Button from '../../components/Button'
-import { request } from '../../utils/request'
+import InputGroup from '../../../components/InputGroup'
+import Button from '../../../components/Button'
+import { request } from '../../../utils/request'
 import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
 
@@ -44,17 +44,53 @@ const Register = () => {
 
   return (
     <>
-      <h2 className='max-sm:mt-5 mb-8 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Registrarme</h2>
-      <form id='formRegister' onSubmit={handleSubmit((data) => formulario(data))} autoComplete={'new-password'}>
+      <h2 className='max-sm:mt-5 mb-8 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
+        Registrarme
+      </h2>
+      <form
+        id='formRegister'
+        onSubmit={handleSubmit((data) => formulario(data))}
+        autoComplete={'new-password'}
+      >
         <div className='w-full grid sm:grid-cols-2 gap-3 mt-2 mb-3'>
-          <InputGroup required errors={errors} validation={register} id={'first_name'} name={'first_name'} title={'Nombre'} ph={'Nombre'} type={'text'} />
-          <InputGroup required errors={errors} validation={register} id={'last_name'} name={'last_name'} title={'Apellido'} ph={'Apellido'} type={'text'} />
-          <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
+          <InputGroup
+            required
+            errors={errors}
+            validation={register}
+            id={'first_name'}
+            name={'first_name'}
+            title={'Nombre'}
+            ph={'Nombre'}
+            type={'text'}
+          />
+          <InputGroup
+            required
+            errors={errors}
+            validation={register}
+            id={'last_name'}
+            name={'last_name'}
+            title={'Apellido'}
+            ph={'Apellido'}
+            type={'text'}
+          />
+          <InputGroup
+            required
+            errors={errors}
+            validation={register}
+            id={'email'}
+            name={'email'}
+            title={'Email'}
+            ph={'Ingrese un Email'}
+            type={'email'}
+          />
           <InputGroup
             required
             validate={{
               matchesPreviousPassword: (val, values) => {
-                return values.email === values.email_confirmation || 'Los emails deben coincidir.'
+                return (
+                  values.email === values.email_confirmation ||
+                  'Los emails deben coincidir.'
+                )
               }
             }}
             errors={errors}
@@ -65,12 +101,26 @@ const Register = () => {
             ph={'Ingrese nuevamente tu Email'}
             type={'email'}
           />
-          <InputGroup required errors={errors} validation={register} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} />
+          <InputGroup
+            required
+            errors={errors}
+            validation={register}
+            id={'password'}
+            name={'password'}
+            title={'Contraseña'}
+            showPass={showPassword}
+            ph={'Ingrese una Contraseña'}
+            type={pass}
+            btnIcon={iconEye}
+          />
           <InputGroup
             required
             validate={{
               matchesPreviousPassword: (val, values) => {
-                return values.password === values.password_confirmation || 'Las contraseñas deben coincidir.'
+                return (
+                  values.password === values.password_confirmation ||
+                  'Las contraseñas deben coincidir.'
+                )
               }
             }}
             errors={errors}
@@ -85,9 +135,22 @@ const Register = () => {
           />
         </div>
         <div className='w-full flex justify-center'>
-          <Button props={{ class: 'text-black bg-yellow-300 hover:bg-yellow-400 focus:bg-yellow-400 m-2', text: 'Registrarme', type: 'submit' }} />
+          <Button
+            props={{
+              class:
+                'text-black bg-yellow-300 hover:bg-yellow-400 focus:bg-yellow-400 m-2',
+              text: 'Registrarme',
+              type: 'submit'
+            }}
+          />
           <Link to={'/Login'}>
-            <Button props={{ class: 'text-black bg-white hover:bg-yellow-400 focus:bg-yellow-400 m-2', text: 'Cancelar' }} />
+            <Button
+              props={{
+                class:
+                  'text-black bg-white hover:bg-yellow-400 focus:bg-yellow-400 m-2',
+                text: 'Cancelar'
+              }}
+            />
           </Link>
         </div>
       </form>

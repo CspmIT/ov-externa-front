@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
-
-import InputGroup from '../../components/InputGroup'
-import Button from '../../components/Button'
+import InputGroup from '../../../components/InputGroup'
+import Button from '../../../components/Button'
 import Axios from 'axios'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
-import { UserContext } from '../../contexts/UserContext'
+import { UserContext } from '../../../contexts/UserContext'
 
 const Login = () => {
   const { token, idUser } = useParams(['token', 'idUser'])
@@ -47,28 +47,79 @@ const Login = () => {
     }
   }
 
+  const rememberLogin = () => {
+    // Obtener la cookie
+    const cookie = document.cookie
+
+    // Dividir la cookie en un array de strings
+    const cookieArray = cookie.split(';')
+
+    // Buscar la cookie que quieres
+    let jwtCookie
+    for (let i = 0; i < cookieArray.length; i++) {
+      let c = cookieArray[i]
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1)
+      }
+      if (c.indexOf('token') === 0) {
+        jwtCookie = c.substring(4, c.length)
+      }
+    }
+
+    // Si la cookie existe, establecer la fecha de expiración a un tiempo muy lejano
+    if (jwtCookie) {
+      const expiryDate = new Date()
+      expiryDate.setFullYear(expiryDate.getFullYear() + 10)
+      document.cookie =
+        'token=' +
+        jwtCookie +
+        ';expires=' +
+        expiryDate.toUTCString() +
+        ';path=/'
+    }
+  }
+
   const formulario = async (data) => {
-    const url = import.meta.env.VITE_APP_API_URL + '/api/login'
-    // const info = { email, password }
+    // const url = import.meta.env.VITE_APP_API_URL + '/api/login'
+
+    const urlNode = 'http://localhost:4000/login'
+
+    console.log(data)
     try {
-      const responseData = await Axios.post(url, data)
+      const responseData = await Axios.post(urlNode, data)
+
       if (responseData.status === 200) {
-        localStorage.setItem('usuario', JSON.stringify(responseData.data))
+        // Obtengo la informacion que llega en el payload del token
+        const decoded = jwtDecode(responseData.data.token)
+
+        // Obtengo la fecha de expiracion del token y la guardo en una cookie
+        const expirationDate = new Date(decoded.exp * 1000)
+        Cookies.set('token', responseData.data.token, {
+          expires: expirationDate
+        })
+        localStorage.setItem('usuario', JSON.stringify(decoded))
         // const bodyOtherCustomer = { id_user: responseData.data.id }
         // const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/api/allOther', bodyOtherCustomer)
         // console.log(otherCustomer)
         // const user = { ...responseData.data, other: [...otherCustomer.data.data] }
-        const user = { ...responseData.data }
-        setDarkMode(responseData.data.dark)
+        const user = { ...decoded }
+        setDarkMode(decoded.dark)
         setUsuario(user)
         navigate('/')
+        rememberLogin()
       }
     } catch (error) {
-      console.log(error)
+      console.log(error.response.data.error)
       Swal.fire({
         icon: 'warning',
-        title: error.response ? 'Atención!' : 'Sitio en mantenimiento',
-        text: error.response ? error.response.data.message : 'Intente ingresar nuevamente mas tarde',
+        title:
+          error?.response?.data?.error !== ''
+            ? 'Atención!'
+            : 'Sitio en mantenimiento',
+        text:
+          error?.response?.data?.error !== ''
+            ? error.response.data.error
+            : 'Intente ingresar nuevamente mas tarde',
         allowOutsideClick: false
       })
     }
@@ -117,13 +168,47 @@ const Login = () => {
   } = useForm()
   return (
     <>
-      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Iniciar Sesión </h2>
-      <form onSubmit={handleSubmit((data) => formulario(data))}>
-        <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
-        <InputGroup required errors={errors} validation={register} className={'mt-5'} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} />
+      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
+        Iniciar Sesión{' '}
+      </h2>
+      <form onSubmit={handleSubmit(formulario)}>
+        <InputGroup
+          required
+          errors={errors}
+          validation={register}
+          id={'email'}
+          name={'email'}
+          title={'Email'}
+          ph={'Ingrese un Email'}
+          type={'email'}
+        />
+        <InputGroup
+          required
+          errors={errors}
+          validation={register}
+          className={'mt-5'}
+          id={'password'}
+          name={'password'}
+          title={'Contraseña'}
+          showPass={showPassword}
+          ph={'Ingrese una Contraseña'}
+          type={pass}
+          btnIcon={iconEye}
+        />
         <div className='w-full mt-3 flex flex-col text-center items-center justify-center'>
-          <FormControlLabel onChange={handleChangeCheckBoxRemember} control={<Checkbox id='CheckBoxRemember' />} label='Recuerdame' />
-          <Button props={{ class: 'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400', text: 'Ingresar', type: 'submit' }} />
+          <FormControlLabel
+            onChange={handleChangeCheckBoxRemember}
+            control={<Checkbox id='CheckBoxRemember' />}
+            label='Recuerdame'
+          />
+          <Button
+            props={{
+              class:
+                'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400',
+              text: 'Ingresar',
+              type: 'submit'
+            }}
+          />
         </div>
         <div className='mt-4 w-full flex-col flex text-center'>
           <label className='mt-2'>

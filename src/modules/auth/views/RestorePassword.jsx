@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '../../../components/InputGroup'
 import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
@@ -51,9 +51,20 @@ function RestorePassword() {
   } = useForm()
   return (
     <>
-      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Recuperar contraseña </h2>
+      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
+        Recuperar contraseña{' '}
+      </h2>
       <form onSubmit={handleSubmit((data) => passwordRecover(data))}>
-        <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
+        <InputGroup
+          required
+          errors={errors}
+          validation={register}
+          id={'email'}
+          name={'email'}
+          title={'Email'}
+          ph={'Ingrese un Email'}
+          type={'email'}
+        />
         <div className='w-full mt-3 flex text-center items-center justify-center'>
           <Button
             onClick={() => {
@@ -65,8 +76,21 @@ function RestorePassword() {
           >
             <b>Cancelar</b>
           </Button>
-          <Button variant='contained' color='primary' disabled={spinner} type='submit'>
-            {spinner ? <CircularProgress size={20} disableShrink={true} color='warning' /> : <b>Recuperar</b>}
+          <Button
+            variant='contained'
+            color='primary'
+            disabled={spinner}
+            type='submit'
+          >
+            {spinner ? (
+              <CircularProgress
+                size={20}
+                disableShrink={true}
+                color='warning'
+              />
+            ) : (
+              <b>Recuperar</b>
+            )}
           </Button>
         </div>
       </form>
