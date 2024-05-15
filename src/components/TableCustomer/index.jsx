@@ -43,7 +43,7 @@ export default function TableCustomer() {
   const handleEditCustomer = async () => {
     try {
       const array = { nro_customer: value }
-      const user = await requestAuth(import.meta.env.VITE_APP_API_URL + '/api/searchOther', 'post', array)
+      const user = await requestAuth(import.meta.env.VITE_APP_API_URL + '/searchOther', 'post', array)
       const swal = await Swal.fire({
         title: '¿Deseas agregar a este socio como principal?',
         text: user.data,
@@ -55,7 +55,7 @@ export default function TableCustomer() {
 
       if (swal.isConfirmed) {
         const data = { name_customer: user.data, number_customer: value }
-        const operation = await requestAuth(import.meta.env.VITE_APP_API_URL + '/api/updateCustomer', 'patch', data)
+        const operation = await requestAuth(import.meta.env.VITE_APP_API_URL + '/updateCustomer', 'patch', data)
         if (operation.message) {
           Swal.fire({
             title: '¡Perfecto!',
@@ -103,7 +103,7 @@ export default function TableCustomer() {
       })
 
       if (swal.isConfirmed) {
-        const operation = await requestAuth(`${import.meta.env.VITE_APP_API_URL}/api/deleteOther/${id}`, 'delete')
+        const operation = await requestAuth(`${import.meta.env.VITE_APP_API_URL}/deleteOther/${id}`, 'delete')
         if (operation.message) {
           Swal.fire({
             title: '¡Perfecto!',

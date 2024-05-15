@@ -24,7 +24,7 @@ const ModalSocio = ({ handleCloseModal }) => {
   const handleAddCustomer = async () => {
     try {
       const array = { nro_customer: number }
-      const user = await requestAuth(import.meta.env.VITE_APP_API_URL + '/api/searchOther', 'post', array)
+      const user = await requestAuth(import.meta.env.VITE_APP_API_URL + '/searchOther', 'post', array)
       const swal = await Swal.fire({
         title: '¿Deseas agregar a este socio?',
         text: user.data,
@@ -35,7 +35,7 @@ const ModalSocio = ({ handleCloseModal }) => {
       })
 
       if (swal.isConfirmed) {
-        const operation = await requestAuth(import.meta.env.VITE_APP_API_URL + '/api/createOther', 'post', array)
+        const operation = await requestAuth(import.meta.env.VITE_APP_API_URL + '/createOther', 'post', array)
         if (operation.message) {
           Swal.fire({
             title: '¡Perfecto!',

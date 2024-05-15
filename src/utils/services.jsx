@@ -3,8 +3,8 @@ import Swal from 'sweetalert2'
 import { FaBolt, FaPhone, FaTint, FaTv, FaUsers, FaWifi } from 'react-icons/fa'
 
 export const searchDetailService = async (info) => {
-  // const urlConsulta = "http://localhost:8000/api/getDetailService";
-  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/api/getDetailService'
+  // const urlConsulta = "http://localhost:8000/getDetailService";
+  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/getDetailService'
   try {
     const responseData = await axios({
       method: 'POST',

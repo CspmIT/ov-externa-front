@@ -1,26 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
 import { styled } from '@mui/material/styles'
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  InputAdornment
-} from '@mui/material'
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, InputAdornment } from '@mui/material'
 import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone'
 import Webcam from 'react-webcam'
 import { FormValidContext } from '../../../contexts/FormsContext'
-import {
-  inputsBusinessData,
-  inputsPersonalData,
-  typePersonArray
-} from '../utils/data'
+import { inputsBusinessData, inputsPersonalData, typePersonArray } from '../utils/data'
 import Swal from 'sweetalert2'
 
 const VisuallyHiddenInput = styled('input')({
@@ -64,10 +51,7 @@ const FormPersonalData = ({ onFormChange }) => {
       }
     }
 
-    const response = await Axios.post(
-      'http://localhost:4000/api/procoop/personaPorDni',
-      object
-    )
+    const response = await Axios.post(import.meta.env.VITE_APP_API_URL + '/procoop/personaPorDni', object)
     if (response) {
       return response.data
     }
@@ -87,11 +71,7 @@ const FormPersonalData = ({ onFormChange }) => {
     if (!result?.error) {
       Swal.fire({
         title: 'Persona encontrada',
-        html: `Con el ${
-          typePerson === 1 ? 'DNI' : 'CUIT'
-        } ingresado encontramos esta persona: <br><b>${
-          result[0].APELLIDOS
-        }<b> <br> ¿Estos son tus datos?`,
+        html: `Con el ${typePerson === 1 ? 'DNI' : 'CUIT'} ingresado encontramos esta persona: <br><b>${result[0].APELLIDOS}<b> <br> ¿Estos son tus datos?`,
         icon: 'success',
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
@@ -126,9 +106,7 @@ const FormPersonalData = ({ onFormChange }) => {
     } else {
       Swal.fire({
         title: 'Persona no encontrada',
-        text: `No se encontraron datos con el ${
-          typePerson === 1 ? 'DNI' : 'CUIT'
-        } ingresado`,
+        text: `No se encontraron datos con el ${typePerson === 1 ? 'DNI' : 'CUIT'} ingresado`,
         icon: 'error',
         confirmButtonText: 'Aceptar'
       })
@@ -193,19 +171,12 @@ const FormPersonalData = ({ onFormChange }) => {
                 </MenuItem>
               ))}
             </Select>
-            {errors.typePerson && (
-              <span className='text-red-500'>Este campo es requerido</span>
-            )}
+            {errors.typePerson && <span className='text-red-500'>Este campo es requerido</span>}
           </FormControl>
         </Grid>
         {typePerson && !searchResults && (
           <Grid item md={5} className='!flex !flex-col'>
-            <TextField
-              id='searchTerm'
-              label={typePerson === 1 ? 'DNI' : 'CUIT/CUIL'}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <TextField id='searchTerm' label={typePerson === 1 ? 'DNI' : 'CUIT/CUIL'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             <Button onClick={handleSearch}>Buscar</Button>
           </Grid>
         )}
@@ -217,14 +188,7 @@ const FormPersonalData = ({ onFormChange }) => {
                 {input.component === 'Select' ? (
                   <FormControl className='w-full'>
                     <InputLabel id={input.name}>{input.label}</InputLabel>
-                    <Select
-                      defaultValue={searchResults[input.name]}
-                      labelId={input.name}
-                      id={input.name}
-                      label={input.label}
-                      {...register(input.name, { required: true })}
-                      onChange={(e) => setValue(input.name, e.target.value)}
-                    >
+                    <Select defaultValue={searchResults[input.name]} labelId={input.name} id={input.name} label={input.label} {...register(input.name, { required: true })} onChange={(e) => setValue(input.name, e.target.value)}>
                       {input.options.map((item) => (
                         <MenuItem key={item.id} selected value={item.id}>
                           {item.name}
@@ -245,20 +209,14 @@ const FormPersonalData = ({ onFormChange }) => {
                       InputProps={
                         input.start
                           ? {
-                              startAdornment: (
-                                <InputAdornment position='start'>
-                                  {input.start}
-                                </InputAdornment>
-                              )
+                              startAdornment: <InputAdornment position='start'>{input.start}</InputAdornment>
                             }
                           : {}
                       }
                     />
                   </FormControl>
                 )}
-                {errors[input.name] && (
-                  <span className='text-red-500'>Este campo es requerido</span>
-                )}
+                {errors[input.name] && <span className='text-red-500'>Este campo es requerido</span>}
               </Grid>
             ))}
           </>
@@ -270,14 +228,7 @@ const FormPersonalData = ({ onFormChange }) => {
                 {input.component === 'Select' ? (
                   <FormControl className='w-full'>
                     <InputLabel id={input.name}>{input.label}</InputLabel>
-                    <Select
-                      labelId={input.name}
-                      id={input.name}
-                      label={input.label}
-                      defaultValue={searchResults[input.name]}
-                      {...register(input.name, { required: true })}
-                      onChange={(e) => setValue(input.name, e.target.value)}
-                    >
+                    <Select labelId={input.name} id={input.name} label={input.label} defaultValue={searchResults[input.name]} {...register(input.name, { required: true })} onChange={(e) => setValue(input.name, e.target.value)}>
                       {input.options.map((item) => (
                         <MenuItem key={item.id} value={item.id}>
                           {item.name}
@@ -296,20 +247,14 @@ const FormPersonalData = ({ onFormChange }) => {
                       InputProps={
                         input.start
                           ? {
-                              startAdornment: (
-                                <InputAdornment position='start'>
-                                  {input.start}
-                                </InputAdornment>
-                              )
+                              startAdornment: <InputAdornment position='start'>{input.start}</InputAdornment>
                             }
                           : {}
                       }
                     />
                   </FormControl>
                 )}
-                {errors[input.name] && (
-                  <span className='text-red-500'>Este campo es requerido</span>
-                )}
+                {errors[input.name] && <span className='text-red-500'>Este campo es requerido</span>}
               </Grid>
             ))}
             <Grid item md={12} textAlign={'center'} alignItems={'center'}>
@@ -317,12 +262,7 @@ const FormPersonalData = ({ onFormChange }) => {
               <Grid container spacing={1}>
                 <Grid item md={6}>
                   <FormControl className='w-full'>
-                    <Button
-                      component='label'
-                      variant='contained'
-                      tabIndex={-1}
-                      startIcon={<CloudUploadIcon />}
-                    >
+                    <Button component='label' variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
                       Subir archivo
                       <VisuallyHiddenInput type='file' />
                     </Button>
@@ -335,37 +275,17 @@ const FormPersonalData = ({ onFormChange }) => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid
-              className='mt-5'
-              container
-              md={12}
-              direction={'column'}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
+            <Grid className='mt-5' container md={12} direction={'column'} justifyContent={'center'} alignItems={'center'}>
               {showCamera && (
-                <Webcam
-                  className='w-1/2 rounded-xl'
-                  audio={false}
-                  height={'auto'}
-                  screenshotFormat='image/jpeg'
-                  mirrored={true}
-                >
+                <Webcam className='w-1/2 rounded-xl' audio={false} height={'auto'} screenshotFormat='image/jpeg' mirrored={true}>
                   {({ getScreenshot }) => (
-                    <Button
-                      className='my-3'
-                      variant='contained'
-                      color='primary'
-                      onClick={(event) => handleTakePhoto(event, getScreenshot)}
-                    >
+                    <Button className='my-3' variant='contained' color='primary' onClick={(event) => handleTakePhoto(event, getScreenshot)}>
                       <CameraAltTwoToneIcon /> Capturar foto
                     </Button>
                   )}
                 </Webcam>
               )}
-              {photo && (
-                <img src={photo} alt='Foto' className='w-1/2 my-4 rounded-xl' />
-              )}
+              {photo && <img src={photo} alt='Foto' className='w-1/2 my-4 rounded-xl' />}
             </Grid>
           </>
         )}

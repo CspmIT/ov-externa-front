@@ -73,7 +73,7 @@ const Login = () => {
   // }
 
   const formulario = async (datos) => {
-    // const url = import.meta.env.VITE_APP_API_URL + '/api/login'
+    // const url = import.meta.env.VITE_APP_API_URL + '/login'
     const urlNode = import.meta.env.VITE_APP_API_URL + '/login'
     try {
       const responseData = await Axios.post(urlNode, datos)
@@ -89,7 +89,7 @@ const Login = () => {
         })
         localStorage.setItem('usuario', JSON.stringify(decoded))
         // const bodyOtherCustomer = { id_user: responseData.data.id }
-        // const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/api/allOther', bodyOtherCustomer)
+        // const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/allOther', bodyOtherCustomer)
         // console.log(otherCustomer)
         // const user = { ...responseData.data, other: [...otherCustomer.data.data] }
         const user = { ...decoded }

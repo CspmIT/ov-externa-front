@@ -29,7 +29,7 @@ const ChangePassword = () => {
   }
 
   const changePassword = async (data) => {
-    // const url = "http://localhost:8000/api/change_password";
+    // const url = "http://localhost:8000/change_password";
     const url = import.meta.env.VITE_APP_API_URL + '/change_password'
     const info = { password: data.password, token }
     try {
@@ -57,7 +57,7 @@ const ChangePassword = () => {
     }
   }
   const validationToken = async (token) => {
-    // const url = 'http://localhost:8000/api/validationToken'
+    // const url = 'http://localhost:8000/validationToken'
     const url = import.meta.env.VITE_APP_API_URL + '/validationToken'
     const info = { token }
     try {

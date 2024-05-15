@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 // Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
   const numberCustomer = data.number_customer
-  const url = import.meta.env.VITE_APP_API_URL + '/api/getCustomer'
+  const url = import.meta.env.VITE_APP_API_URL + '/getCustomer'
   const res = await Axios.post(url, { customer: numberCustomer })
   return res.data
 }
@@ -15,7 +15,7 @@ const updateLevel = async (data) => {
   const { id } = JSON.parse(user)
   Object.assign(data, { user: id })
   Object.assign(data, { level: 2 })
-  const url = import.meta.env.VITE_APP_API_URL + '/api/upgradeLevelUser'
+  const url = import.meta.env.VITE_APP_API_URL + '/upgradeLevelUser'
   const res = await Axios.patch(url, data)
   return res.data
 }

@@ -12,7 +12,7 @@ const MyServices = () => {
   useEffect(() => {
     const searchData = async () => {
       const socio = '51010'
-      const url = `${import.meta.env.VITE_APP_API_URL}/api/getService?id_procoop=${socio}`
+      const url = `${import.meta.env.VITE_APP_API_URL}/getService?id_procoop=${socio}`
       try {
         const response = await request(url, 'get')
         const newData = []

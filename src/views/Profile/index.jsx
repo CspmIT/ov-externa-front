@@ -12,7 +12,7 @@ function Profile() {
   const getUserData = async () => {
     // Obtengo los datos del usuario
     const { id } = JSON.parse(localStorage.getItem('usuario'))
-    const url = import.meta.env.VITE_APP_API_URL + '/api/getLevel'
+    const url = import.meta.env.VITE_APP_API_URL + '/getLevel'
 
     const response = await Axios.post(url, { user: id })
     return response.data
@@ -48,7 +48,7 @@ function Profile() {
 
   const updateUserData = async (data) => {
     const { id } = JSON.parse(localStorage.getItem('usuario'))
-    const url = import.meta.env.VITE_APP_API_URL + '/api/updateUser'
+    const url = import.meta.env.VITE_APP_API_URL + '/updateUser'
     // Agrego el id al objeto data
     data.id = id
     const response = await Axios.patch(url, data)
@@ -72,7 +72,7 @@ function Profile() {
   const updatePassword = async (data) => {
     const { id, token } = JSON.parse(localStorage.getItem('usuario'))
     const { password, newPassword, confirmPassword } = data
-    const url = import.meta.env.VITE_APP_API_URL + '/api/updatePassword'
+    const url = import.meta.env.VITE_APP_API_URL + '/updatePassword'
     const info = {
       id,
       password,
