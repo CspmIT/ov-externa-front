@@ -206,7 +206,7 @@ export const controlUrl = async (url) => {
 
 export const searchAllInvoice = async (user) => {
   const socio = user.number_customer
-  const url = `${import.meta.env.VITE_APP_API_URL}/api/allfacturas?id_procoop=${socio}`
+  const url = `${import.meta.env.VITE_APP_API_URL}/allfacturas?id_procoop=${socio}`
   try {
     const responseData = await request(url, 'get')
     const rows = []

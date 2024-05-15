@@ -10,6 +10,7 @@ import { Checkbox, FormControlLabel } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { UserContext } from '../../../contexts/UserContext'
+import { request } from '../../../utils/request'
 
 const Login = () => {
   const { token, idUser } = useParams(['token', 'idUser'])
@@ -27,7 +28,7 @@ const Login = () => {
   }
 
   const RenviarToken = async () => {
-    const url = import.meta.env.VITE_APP_API_URL + '/api/reSendEmailToken'
+    const url = import.meta.env.VITE_APP_API_URL + '/reSendEmailToken'
     const info = { token, idUser }
     try {
       const responseData = await Axios.post(url, info)
@@ -47,55 +48,44 @@ const Login = () => {
     }
   }
 
-  const rememberLogin = () => {
-    // Obtener la cookie
-    const cookie = document.cookie
+  // const rememberLogin = () => {
+  //   // Obtener la cookie
+  //   const cookie = document.cookie
+  //   // Dividir la cookie en un array de strings
+  //   const cookieArray = cookie.split(';')
+  //   // Buscar la cookie que quieres
+  //   let jwtCookie
+  //   for (let i = 0; i < cookieArray.length; i++) {
+  //     let c = cookieArray[i]
+  //     while (c.charAt(0) === ' ') {
+  //       c = c.substring(1)
+  //     }
+  //     if (c.indexOf('token') === 0) {
+  //       jwtCookie = c.substring(4, c.length)
+  //     }
+  //   }
+  //   // Si la cookie existe, establecer la fecha de expiración a un tiempo muy lejano
+  //   if (jwtCookie) {
+  //     const expiryDate = new Date()
+  //     expiryDate.setFullYear(expiryDate.getFullYear() + 10)
+  //     document.cookie = 'token=' + jwtCookie + ';expires=' + expiryDate.toUTCString() + ';path=/'
+  //   }
+  // }
 
-    // Dividir la cookie en un array de strings
-    const cookieArray = cookie.split(';')
-
-    // Buscar la cookie que quieres
-    let jwtCookie
-    for (let i = 0; i < cookieArray.length; i++) {
-      let c = cookieArray[i]
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1)
-      }
-      if (c.indexOf('token') === 0) {
-        jwtCookie = c.substring(4, c.length)
-      }
-    }
-
-    // Si la cookie existe, establecer la fecha de expiración a un tiempo muy lejano
-    if (jwtCookie) {
-      const expiryDate = new Date()
-      expiryDate.setFullYear(expiryDate.getFullYear() + 10)
-      document.cookie =
-        'token=' +
-        jwtCookie +
-        ';expires=' +
-        expiryDate.toUTCString() +
-        ';path=/'
-    }
-  }
-
-  const formulario = async (data) => {
+  const formulario = async (datos) => {
     // const url = import.meta.env.VITE_APP_API_URL + '/api/login'
-
-    const urlNode = 'http://localhost:4000/login'
-
-    console.log(data)
+    const urlNode = import.meta.env.VITE_APP_API_URL + '/login'
     try {
-      const responseData = await Axios.post(urlNode, data)
-
+      const responseData = await Axios.post(urlNode, datos)
       if (responseData.status === 200) {
         // Obtengo la informacion que llega en el payload del token
         const decoded = jwtDecode(responseData.data.token)
-
         // Obtengo la fecha de expiracion del token y la guardo en una cookie
-        const expirationDate = new Date(decoded.exp * 1000)
+        const expirationDate = new Date(decoded.exp)
         Cookies.set('token', responseData.data.token, {
-          expires: expirationDate
+          expires: expirationDate,
+          secure: false,
+          sameSite: 'Lax'
         })
         localStorage.setItem('usuario', JSON.stringify(decoded))
         // const bodyOtherCustomer = { id_user: responseData.data.id }
@@ -106,30 +96,24 @@ const Login = () => {
         setDarkMode(decoded.dark)
         setUsuario(user)
         navigate('/')
-        rememberLogin()
+        // rememberLogin()
       }
     } catch (error) {
-      console.log(error.response.data.error)
+      console.log(error.message)
       Swal.fire({
         icon: 'warning',
-        title:
-          error?.response?.data?.error !== ''
-            ? 'Atención!'
-            : 'Sitio en mantenimiento',
-        text:
-          error?.response?.data?.error !== ''
-            ? error.response.data.error
-            : 'Intente ingresar nuevamente mas tarde',
+        title: error?.response?.data?.error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
+        text: error?.response?.data?.error !== '' ? error.message : 'Intente ingresar nuevamente mas tarde',
         allowOutsideClick: false
       })
     }
   }
 
   const validacionToken = async (token, id) => {
-    const url = import.meta.env.VITE_APP_API_URL + '/api/validationUser'
-    const info = { token }
+    const url = import.meta.env.VITE_APP_API_URL + '/validationUser'
+    const info = { token_temp: token, id }
     try {
-      await Axios.post(url, info)
+      await request(url, 'POST', info)
       Swal.fire({
         icon: 'success',
         title: 'Perfecto!',
@@ -156,7 +140,7 @@ const Login = () => {
     }
   }
   useEffect(() => {
-    if (token && idUser && !usuario) {
+    if (token && idUser && (!usuario || !usuario.length)) {
       validacionToken(token, idUser)
     }
   }, [idUser, token])
@@ -168,43 +152,15 @@ const Login = () => {
   } = useForm()
   return (
     <>
-      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
-        Iniciar Sesión{' '}
-      </h2>
+      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Iniciar Sesión </h2>
       <form onSubmit={handleSubmit(formulario)}>
-        <InputGroup
-          required
-          errors={errors}
-          validation={register}
-          id={'email'}
-          name={'email'}
-          title={'Email'}
-          ph={'Ingrese un Email'}
-          type={'email'}
-        />
-        <InputGroup
-          required
-          errors={errors}
-          validation={register}
-          className={'mt-5'}
-          id={'password'}
-          name={'password'}
-          title={'Contraseña'}
-          showPass={showPassword}
-          ph={'Ingrese una Contraseña'}
-          type={pass}
-          btnIcon={iconEye}
-        />
+        <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
+        <InputGroup required errors={errors} validation={register} className={'mt-5'} id={'password'} name={'password'} title={'Contraseña'} showPass={showPassword} ph={'Ingrese una Contraseña'} type={pass} btnIcon={iconEye} />
         <div className='w-full mt-3 flex flex-col text-center items-center justify-center'>
-          <FormControlLabel
-            onChange={handleChangeCheckBoxRemember}
-            control={<Checkbox id='CheckBoxRemember' />}
-            label='Recuerdame'
-          />
+          <FormControlLabel onChange={handleChangeCheckBoxRemember} control={<Checkbox errors={errors} {...register('remember')} name={'remember'} id={'remember'} />} label='Recuerdame' />
           <Button
             props={{
-              class:
-                'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400',
+              class: 'text-gray-700 text-xl mt-3 bg-green-500 hover:bg-green-400',
               text: 'Ingresar',
               type: 'submit'
             }}

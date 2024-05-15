@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
   const changePassword = async (data) => {
     // const url = "http://localhost:8000/api/change_password";
-    const url = import.meta.env.VITE_APP_API_URL + '/api/change_password'
+    const url = import.meta.env.VITE_APP_API_URL + '/change_password'
     const info = { password: data.password, token }
     try {
       const responseData = await Axios.post(url, info)
@@ -58,7 +58,7 @@ const ChangePassword = () => {
   }
   const validationToken = async (token) => {
     // const url = 'http://localhost:8000/api/validationToken'
-    const url = import.meta.env.VITE_APP_API_URL + '/api/validationToken'
+    const url = import.meta.env.VITE_APP_API_URL + '/validationToken'
     const info = { token }
     try {
       const responseData = await Axios.post(url, info)
@@ -94,30 +94,14 @@ const ChangePassword = () => {
   } = useForm()
   return (
     <>
-      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>
-        Cambio de contraseña{' '}
-      </h2>
+      <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Cambio de contraseña </h2>
       <form onSubmit={handleSubmit((data) => changePassword(data))}>
-        <InputGroup
-          required
-          errors={errors}
-          validation={register}
-          id={'password'}
-          name={'password'}
-          title={'Contraseña Nueva'}
-          showPass={showPassword}
-          ph={'Ingrese una Contraseña nueva'}
-          type={pass}
-          btnIcon={iconEye}
-        />
+        <InputGroup required errors={errors} validation={register} id={'password'} name={'password'} title={'Contraseña Nueva'} showPass={showPassword} ph={'Ingrese una Contraseña nueva'} type={pass} btnIcon={iconEye} />
         <InputGroup
           className={'mt-5'}
           validate={{
             matchesPreviousPassword: (val, values) => {
-              return (
-                values.password === values.password_confirmation ||
-                'Las contraseñas deben coincidir.'
-              )
+              return values.password === values.password_confirmation || 'Las contraseñas deben coincidir.'
             }
           }}
           required
@@ -132,21 +116,8 @@ const ChangePassword = () => {
           btnIcon={iconEyeRepeat}
         />
         <div className='w-full mt-6 flex text-center items-center justify-center'>
-          <Button
-            variant='contained'
-            color='primary'
-            disabled={spinner}
-            type='submit'
-          >
-            {spinner ? (
-              <CircularProgress
-                size={20}
-                disableShrink={true}
-                color='warning'
-              />
-            ) : (
-              <b>Guardar</b>
-            )}
+          <Button variant='contained' color='primary' disabled={spinner} type='submit'>
+            {spinner ? <CircularProgress size={20} disableShrink={true} color='warning' /> : <b>Guardar</b>}
           </Button>
         </div>
       </form>
