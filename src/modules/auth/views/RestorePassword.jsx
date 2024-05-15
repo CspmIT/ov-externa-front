@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import InputGroup from '../../../components/InputGroup'
-import Axios from 'axios'
+// import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { Button, CircularProgress } from '@mui/material'
-
+import { request } from '../../../utils/request'
 function RestorePassword() {
   const navigate = useNavigate()
   const [spinner, setSpinner] = useState(false)
@@ -15,7 +15,8 @@ function RestorePassword() {
     setSpinner(true)
     const url = import.meta.env.VITE_APP_API_URL + '/password_recover'
     try {
-      const responseData = await Axios.post(url, data)
+      const responseData = await request(url, 'POST', data)
+      // const responseData = await Axios.post(url, data)
       if (responseData === 'Error') {
         alert('No existe el usuario')
         return

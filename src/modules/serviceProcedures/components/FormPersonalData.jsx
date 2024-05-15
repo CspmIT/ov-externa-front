@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { styled } from '@mui/material/styles'
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, InputAdornment } from '@mui/material'
-import Axios from 'axios'
+// import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone'
@@ -9,6 +9,7 @@ import Webcam from 'react-webcam'
 import { FormValidContext } from '../../../contexts/FormsContext'
 import { inputsBusinessData, inputsPersonalData, typePersonArray } from '../utils/data'
 import Swal from 'sweetalert2'
+import { request } from '../../../utils/request'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -50,8 +51,8 @@ const FormPersonalData = ({ onFormChange }) => {
         cuit: searchTerm
       }
     }
-
-    const response = await Axios.post(import.meta.env.VITE_APP_API_URL + '/procoop/personaPorDni', object)
+    const response = await request(import.meta.env.VITE_APP_API_URL + '/procoop/personaPorDni', 'POST', object)
+    // const response = await Axios.post(import.meta.env.VITE_APP_API_URL + '/procoop/personaPorDni', object)
     if (response) {
       return response.data
     }

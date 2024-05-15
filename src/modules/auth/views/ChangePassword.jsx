@@ -6,7 +6,8 @@ import InputGroup from '../../../components/InputGroup'
 import { Button, CircularProgress } from '@mui/material'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
-import Axios from 'axios'
+import { request } from '../../../utils/request'
+// import Axios from 'axios'
 
 // Define el componente ChangePassword
 const ChangePassword = () => {
@@ -33,7 +34,8 @@ const ChangePassword = () => {
     const url = import.meta.env.VITE_APP_API_URL + '/change_password'
     const info = { password: data.password, token }
     try {
-      const responseData = await Axios.post(url, info)
+      const responseData = await request(url, 'POST', info)
+      // const responseData = await Axios.post(url, info)
       if (responseData.status === 200) {
         Swal.fire({
           icon: 'success',
@@ -61,7 +63,8 @@ const ChangePassword = () => {
     const url = import.meta.env.VITE_APP_API_URL + '/validationToken'
     const info = { token }
     try {
-      const responseData = await Axios.post(url, info)
+      const responseData = await request(url, 'POST', info)
+      // const responseData = await Axios.post(url, info)
       if (responseData.status === 200) {
         return true
       }

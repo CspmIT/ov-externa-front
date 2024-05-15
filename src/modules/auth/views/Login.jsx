@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import InputGroup from '../../../components/InputGroup'
 import Button from '../../../components/Button'
-import Axios from 'axios'
+// import Axios from 'axios'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
@@ -31,7 +31,8 @@ const Login = () => {
     const url = import.meta.env.VITE_APP_API_URL + '/reSendEmailToken'
     const info = { token, idUser }
     try {
-      const responseData = await Axios.post(url, info)
+      const responseData = await request(url, 'POST', info)
+      // const responseData = await Axios.post(url, info)
       if (responseData === 'Error') {
         alert('No existe el usuario')
         return
@@ -76,7 +77,8 @@ const Login = () => {
     // const url = import.meta.env.VITE_APP_API_URL + '/login'
     const urlNode = import.meta.env.VITE_APP_API_URL + '/login'
     try {
-      const responseData = await Axios.post(urlNode, datos)
+      const responseData = await request(urlNode, 'POST', datos)
+      // const responseData = await Axios.post(urlNode, datos)
       if (responseData.status === 200) {
         // Obtengo la informacion que llega en el payload del token
         const decoded = jwtDecode(responseData.data.token)

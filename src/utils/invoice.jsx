@@ -3,7 +3,7 @@ import { request } from './request'
 import { Circle, FindInPage } from '@mui/icons-material'
 import Button from '..//components/Button'
 import Swal from 'sweetalert2'
-import axios from 'axios'
+// import axios from 'axios'
 import { useContext } from 'react'
 import { UserContext } from '../contexts/UserContext'
 
@@ -189,11 +189,12 @@ export const columnsCel = [
 export const controlUrl = async (url) => {
   const urlConsulta = import.meta.env.VITE_APP_API_URL + '/existinvoice?url=' + url
   try {
-    await axios({
-      method: 'GET',
-      url: urlConsulta,
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
-    })
+    await request(urlConsulta, 'GET')
+    // await axios({
+    //   method: 'GET',
+    //   url: urlConsulta,
+    //   headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
+    // })
     window.open(url, '_blank')
   } catch (error) {
     Swal.fire({

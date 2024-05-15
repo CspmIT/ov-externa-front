@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import formulario from './validateForm'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+// import axios from 'axios'
+import { request } from '../../../utils/request'
 const leveldos = () => {
   const usuario = 'Julieta'
 
@@ -20,7 +21,7 @@ const leveldos = () => {
   useEffect(() => {
     const getProvinces = async () => {
       const url = 'https://apis.datos.gob.ar/georef/api/provincias?orden=nombre'
-      const res = await axios.get(url)
+      const res = await request(url, 'GET')
       const { provincias } = res.data
       // Una vez que obtengo las provincias, las guardo en el estado
       setProvinces(provincias)
@@ -31,7 +32,8 @@ const leveldos = () => {
   const handleProvinceChange = async (event) => {
     const provinceId = event.target.value
     const url = `https://apis.datos.gob.ar/georef/api/localidades?provincia=${provinceId}&campos=id,nombre&orden=nombre&max=5000`
-    const res = await axios.get(url)
+    // const res = await axios.get(url)
+    const res = await request(url, 'GET')
     const { localidades } = res.data
     setLocalidades(localidades)
   }
