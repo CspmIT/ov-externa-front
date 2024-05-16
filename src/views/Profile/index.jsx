@@ -1,5 +1,5 @@
 import CardCustom from '../../components/CardCustom/index'
-import Axios from 'axios'
+// import Axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Input, Tab, Tabs, FormHelperText, FormControl, Box } from '@mui/material'
 import { useForm } from 'react-hook-form'
@@ -7,14 +7,14 @@ import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import { CustomTabPanel, a11yProps } from '../../components/PanelTab'
-
+import { request } from '../../utils/request'
 function Profile() {
   const getUserData = async () => {
     // Obtengo los datos del usuario
     const { id } = JSON.parse(localStorage.getItem('usuario'))
-    const url = import.meta.env.VITE_APP_API_URL + '/api/getLevel'
-
-    const response = await Axios.post(url, { user: id })
+    const url = import.meta.env.VITE_APP_API_URL + '/getLevel'
+    const response = await request(url, 'POST', { user: id })
+    // const response = await Axios.post(url, { user: id })
     return response.data
   }
 
@@ -48,11 +48,12 @@ function Profile() {
 
   const updateUserData = async (data) => {
     const { id } = JSON.parse(localStorage.getItem('usuario'))
-    const url = import.meta.env.VITE_APP_API_URL + '/api/updateUser'
+    const url = import.meta.env.VITE_APP_API_URL + '/updateUser'
     // Agrego el id al objeto data
     data.id = id
-    const response = await Axios.patch(url, data)
-    if (response.data) {
+    const response = await request(url, 'PATCH', data)
+    // const response = await Axios.patch(url, data)
+    if (response.status === 200) {
       // Muestro un sweet alert con el mensaje de éxito
       Swal.fire({
         icon: 'success',
@@ -70,9 +71,10 @@ function Profile() {
   // TODO: Falta agregar los ojitos para mostrar la contraseña en los inputs.
   // TODO: Falta ver que accion al finalizar la actualizacion de la contraseña.
   const updatePassword = async (data) => {
-    const { id, token } = JSON.parse(localStorage.getItem('usuario'))
+    const { id } = JSON.parse(localStorage.getItem('usuario'))
+    // const { id, token } = JSON.parse(localStorage.getItem('usuario'))
     const { password, newPassword, confirmPassword } = data
-    const url = import.meta.env.VITE_APP_API_URL + '/api/updatePassword'
+    const url = import.meta.env.VITE_APP_API_URL + '/updatePassword'
     const info = {
       id,
       password,
@@ -81,11 +83,12 @@ function Profile() {
     }
     try {
       // Envio los datos a la api, paso el token en el header
-      const response = await Axios.post(url, info, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      const response = await request(url, 'POST', info)
+      // const response = await Axios.post(url, info, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // })
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',

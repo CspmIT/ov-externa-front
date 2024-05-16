@@ -26,9 +26,11 @@ const MyConsumption = () => {
   useEffect(() => {
     const searchData = async () => {
       const socio = '58500'
-      const url = `${import.meta.env.VITE_APP_API_URL}/api/getConsumo?id_procoop=${socio}`
+      const url = `${import.meta.env.VITE_APP_API_URL}/getConsumo?id_procoop=${socio}`
       try {
-        const responseData = await request(url, 'get')
+        const response = await request(url, 'get')
+        if (response.status !== 200) throw new Error('Problemas con Consulta')
+        const responseData = response.data
         setDifConsumoWater(responseData.water.info.difConsumo)
         setDifConsumoElectric(responseData.electric.info.difConsumo)
         setStatusWater(statusDifService(responseData.water.info.difConsumo))

@@ -3,7 +3,7 @@ import { request } from './request'
 import { Circle, FindInPage } from '@mui/icons-material'
 import Button from '..//components/Button'
 import Swal from 'sweetalert2'
-import axios from 'axios'
+// import axios from 'axios'
 import { useContext } from 'react'
 import { UserContext } from '../contexts/UserContext'
 
@@ -187,13 +187,14 @@ export const columnsCel = [
 ]
 
 export const controlUrl = async (url) => {
-  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/api/existinvoice?url=' + url
+  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/existinvoice?url=' + url
   try {
-    await axios({
-      method: 'GET',
-      url: urlConsulta,
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
-    })
+    await request(urlConsulta, 'GET')
+    // await axios({
+    //   method: 'GET',
+    //   url: urlConsulta,
+    //   headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
+    // })
     window.open(url, '_blank')
   } catch (error) {
     Swal.fire({
@@ -206,9 +207,11 @@ export const controlUrl = async (url) => {
 
 export const searchAllInvoice = async (user) => {
   const socio = user.number_customer
-  const url = `${import.meta.env.VITE_APP_API_URL}/api/allfacturas?id_procoop=${socio}`
+  const url = `${import.meta.env.VITE_APP_API_URL}/allfacturas?id_procoop=${socio}`
   try {
-    const responseData = await request(url, 'get')
+    const response = await request(url, 'get')
+    if (response.status !== 200) throw new Error(response.message)
+    const responseData = response.data
     const rows = []
     for (const i in responseData) {
       responseData[i].list.forEach((item) => {
@@ -223,9 +226,11 @@ export const searchAllInvoice = async (user) => {
 
 export const InvoiceDeus = async (user) => {
   const socio = user.number_customer
-  const url = `${import.meta.env.VITE_APP_API_URL}/api/facturas?id_procoop=${socio}`
+  const url = `${import.meta.env.VITE_APP_API_URL}/facturas?id_procoop=${socio}`
   try {
-    const responseData = await request(url, 'GET')
+    const response = await request(url, 'GET')
+    if (response.status !== 200) throw new Error('Error en la solicitud')
+    const responseData = response.data
     if (responseData.length === 0) {
       return false
     }

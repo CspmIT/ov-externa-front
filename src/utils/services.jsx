@@ -1,19 +1,21 @@
-import axios from 'axios'
+// import axios from 'axios'
 import Swal from 'sweetalert2'
 import { FaBolt, FaPhone, FaTint, FaTv, FaUsers, FaWifi } from 'react-icons/fa'
-
+import { request } from './request'
 export const searchDetailService = async (info) => {
-  // const urlConsulta = "http://localhost:8000/api/getDetailService";
-  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/api/getDetailService'
+  // const urlConsulta = "http://localhost:8000/getDetailService";
+  const urlConsulta = import.meta.env.VITE_APP_API_URL + '/getDetailService'
   try {
-    const responseData = await axios({
-      method: 'POST',
-      url: urlConsulta,
-      data: info,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    const responseData = await request(urlConsulta, 'POST', info)
+    if (responseData.status !== 200) throw new Error(responseData.message)
+    // const responseData = await axios({
+    //   method: 'POST',
+    //   url: urlConsulta,
+    //   data: info,
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
     const result = responseData.data
 
     return result

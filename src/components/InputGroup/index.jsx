@@ -31,6 +31,11 @@ const InputGroup = ({ validation, ...props }) => {
         message: 'Este campo es obligatorio'
       }
     },
+    hidden: {
+      required: {
+        value: false
+      }
+    },
     password: {
       required: {
         value: props.required ?? false,
