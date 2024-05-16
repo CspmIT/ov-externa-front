@@ -1,14 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ServiceCard from './ServiceCard'
 import { useNavigate } from 'react-router-dom'
 import ListRequeriments from './ListRequeriments'
 import Button from '@mui/material/Button'
 import seeRqueriments from '../../serviceProcedures/utils/seeRequirements'
 import { useRegForm } from '../providers/RegFormProvider'
+import Swal from 'sweetalert2'
 
 const SelectServices = ({ services }) => {
   const [visibleService, setVisibleService] = useState(null)
   const [selectedServices, setSelectedServices] = useState([...services])
+
+  useEffect(() => {
+    dispatch({ type: 'reset' })
+  }, [])
 
   const handleSelectService = (service) => {
     if (selectedServices.includes(service)) {
@@ -21,8 +26,20 @@ const SelectServices = ({ services }) => {
 
   const [, dispatch] = useRegForm()
   const onSubmit = () => {
-    dispatch({ type: 'select_services', data: selectedServices })
-    navigate('/multiStepForm/step1')
+    if (selectedServices.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Debes seleccionar al menos un servicio para continuar.'
+      })
+      return
+    }
+    // agrego a los servicios seleccionados datos personales como primer servicio
+    selectedServices.includes('Datos Personales') ||
+      selectedServices.unshift('Datos Personales')
+    dispatch({ type: 'select_services', selectedServices })
+    dispatch({ type: 'next' })
+    navigate(`/multiStepForm/Datos Personales`)
   }
 
   return (

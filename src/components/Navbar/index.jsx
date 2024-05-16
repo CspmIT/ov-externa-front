@@ -136,6 +136,12 @@ const Navbar = () => {
       icon: <FaComments />,
       link: '/Comments',
       level: [1, 2, 3]
+    },
+    {
+      name: 'Solicitud de Servicio',
+      icon: <FaHandshake />,
+      link: 'MultiStepForm',
+      level: [1, 2, 3]
     }
   ]
 
