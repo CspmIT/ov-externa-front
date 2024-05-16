@@ -13,7 +13,7 @@ export const request = async (url, method, data = false) => {
       withCredentials: true,
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
     })
-    return response.data
+    return response
   } catch (error) {
     console.error('Error al enviar la solicitud:', error.response ? error.response.data : error.message)
     throw error

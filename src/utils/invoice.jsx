@@ -209,7 +209,9 @@ export const searchAllInvoice = async (user) => {
   const socio = user.number_customer
   const url = `${import.meta.env.VITE_APP_API_URL}/allfacturas?id_procoop=${socio}`
   try {
-    const responseData = await request(url, 'get')
+    const response = await request(url, 'get')
+    if (response.status !== 200) throw new Error(response.message)
+    const responseData = response.data
     const rows = []
     for (const i in responseData) {
       responseData[i].list.forEach((item) => {
@@ -226,7 +228,9 @@ export const InvoiceDeus = async (user) => {
   const socio = user.number_customer
   const url = `${import.meta.env.VITE_APP_API_URL}/facturas?id_procoop=${socio}`
   try {
-    const responseData = await request(url, 'GET')
+    const response = await request(url, 'GET')
+    if (response.status !== 200) throw new Error('Error en la solicitud')
+    const responseData = response.data
     if (responseData.length === 0) {
       return false
     }

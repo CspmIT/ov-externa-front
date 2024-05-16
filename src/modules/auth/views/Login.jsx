@@ -33,9 +33,8 @@ const Login = () => {
     try {
       const responseData = await request(url, 'POST', info)
       // const responseData = await Axios.post(url, info)
-      if (responseData === 'Error') {
-        alert('No existe el usuario')
-        return
+      if (responseData.status !== 200) {
+        throw new Error('No existe el usuario')
       }
       Swal.fire({
         icon: 'success',

@@ -30,7 +30,9 @@ const Home = () => {
     })
   }
   const dataUser = async (id) => {
-    const data = await request(import.meta.env.VITE_APP_API_URL + '/dataUser', 'POST', { id })
+    const dataUser = await request(import.meta.env.VITE_APP_API_URL + '/dataUser', 'POST', { id })
+    if (dataUser.status !== 200) throw new Error('Error en consulta')
+    const data = dataUser.data
     setUsuario({ ...usuario, name: data.name_register, last_name: data.lastName_register, level: data.level })
     setlevel(data.level)
   }

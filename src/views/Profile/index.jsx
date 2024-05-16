@@ -53,7 +53,7 @@ function Profile() {
     data.id = id
     const response = await request(url, 'PATCH', data)
     // const response = await Axios.patch(url, data)
-    if (response.data) {
+    if (response.status === 200) {
       // Muestro un sweet alert con el mensaje de éxito
       Swal.fire({
         icon: 'success',

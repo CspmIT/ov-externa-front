@@ -15,10 +15,12 @@ const MyServices = () => {
       const url = `${import.meta.env.VITE_APP_API_URL}/getService?id_procoop=${socio}`
       try {
         const response = await request(url, 'get')
+        if (response.status !== 200) throw new Error('Error en consulta')
         const newData = []
-        for (const service in response) {
-          for (const key in response[service]) {
-            const obj = response[service][key]
+
+        for (const service in response.data) {
+          for (const key in response.data[service]) {
+            const obj = response.data[service][key]
             obj.service = service
             if (!newData[service]) {
               newData[service] = []

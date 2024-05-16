@@ -7,6 +7,7 @@ export const searchDetailService = async (info) => {
   const urlConsulta = import.meta.env.VITE_APP_API_URL + '/getDetailService'
   try {
     const responseData = await request(urlConsulta, 'POST', info)
+    if (responseData.status !== 200) throw new Error(responseData.message)
     // const responseData = await axios({
     //   method: 'POST',
     //   url: urlConsulta,
