@@ -7,7 +7,7 @@ import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import { CustomTabPanel, a11yProps } from '../../components/PanelTab'
-import { request } from '../../../utils/request'
+import { request } from '../../utils/request'
 function Profile() {
   const getUserData = async () => {
     // Obtengo los datos del usuario

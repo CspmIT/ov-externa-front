@@ -1,6 +1,6 @@
 // import Axios from 'axios'
 import Swal from 'sweetalert2'
-import { request } from '../../../utils/request'
+import { request } from '../../utils/request'
 // Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
   const numberCustomer = data.number_customer

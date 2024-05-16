@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import formulario from './validateForm'
 import { useNavigate } from 'react-router-dom'
 // import axios from 'axios'
-import { request } from '../../../utils/request'
+import { request } from '../../utils/request'
 const leveldos = () => {
   const usuario = 'Julieta'
 
