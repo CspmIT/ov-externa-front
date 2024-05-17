@@ -7,14 +7,14 @@ const getCustomer = async (data) => {
   const url = import.meta.env.VITE_APP_API_URL + '/getCustomer'
   const res = await request(url, 'POST', { customer: numberCustomer })
   // const res = await Axios.post(url, { customer: numberCustomer })
-  return res.data
+  return res
 }
 
 // Funcion para actualizar los datos del usuario en la db y subir de nivel
 const updateLevel = async (data) => {
   const user = localStorage.getItem('usuario')
-  const { id } = JSON.parse(user)
-  Object.assign(data, { user: id })
+  const { sub } = JSON.parse(user)
+  Object.assign(data, { id: sub })
   Object.assign(data, { level: 2 })
   const url = import.meta.env.VITE_APP_API_URL + '/upgradeLevelUser'
   const res = await request(url, 'PATCH', data)
@@ -25,13 +25,13 @@ const updateLevel = async (data) => {
 const validateForm = async (data, navigate) => {
   try {
     const nombreSocio = await getCustomer(data)
-    if (nombreSocio.status === 500) {
+    if (nombreSocio.status !== 200) {
       throw new Error(nombreSocio.error)
     }
     // Muestro una alerta con el nombre del socio
     const swal = await Swal.fire({
       title: '¿Este es el socio que deseas agregar?',
-      text: nombreSocio,
+      text: nombreSocio.data,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si, agregar',
