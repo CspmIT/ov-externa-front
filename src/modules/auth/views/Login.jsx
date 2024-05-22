@@ -14,7 +14,7 @@ import { request } from '../../../utils/request'
 
 const Login = () => {
 	const { token, idUser } = useParams(['token', 'idUser'])
-	const { usuario, setUsuario, setDarkMode } = useContext(UserContext)
+	const { usuario, setUsuario, setDarkMode, setAccount } = useContext(UserContext)
 	const navigate = useNavigate()
 	const [pass, setPass] = useState('password')
 	const [remember, setRemember] = useState(false)
@@ -66,14 +66,15 @@ const Login = () => {
 				})
 				localStorage.setItem('usuario', JSON.stringify(decoded))
 				// const bodyOtherCustomer = { id_user: responseData.data.id }
-				// const otherCustomer = await Axios.post(import.meta.env.VITE_APP_API_URL + '/allOther', bodyOtherCustomer)
-				// console.log(otherCustomer)
-				// const user = { ...responseData.data, other: [...otherCustomer.data.data] }
-				const user = { ...decoded }
+				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
+				const DataOtherUser = await otherCustomer.data.map((item) => {
+					return { name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+				})
+				setAccount(DataOtherUser.filter((item) => item.select)[0])
+				const user = { ...decoded, accounts: DataOtherUser }
 				setDarkMode(decoded.dark)
 				setUsuario(user)
 				navigate('/')
-				// rememberLogin()
 			}
 		} catch (error) {
 			console.log(error.message)

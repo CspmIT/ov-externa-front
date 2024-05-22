@@ -28,126 +28,118 @@ import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
 import MultiStepForm from './modules/serviceProcedures2/MultiStepForm'
 function App() {
-  const { darkMode } = useContext(UserContext)
-  const lightTheme = createTheme({
-    palette: {
-      mode: 'light'
-    }
-  })
+	const { darkMode } = useContext(UserContext)
+	const lightTheme = createTheme({
+		palette: {
+			mode: 'light',
+		},
+	})
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark'
-    }
-  })
-  const [theme, setTheme] = useState(darkMode ? darkTheme : lightTheme)
-  useEffect(() => {
-    setTheme(darkMode ? darkTheme : lightTheme)
-  }, [darkMode])
+	const darkTheme = createTheme({
+		palette: {
+			mode: 'dark',
+		},
+	})
+	const [theme, setTheme] = useState(darkMode ? darkTheme : lightTheme)
+	useEffect(() => {
+		setTheme(darkMode ? darkTheme : lightTheme)
+	}, [darkMode])
 
-  const loginRoutes = [
-    {
-      name: '/Login',
-      element: (
-        <BaseInitial>
-          <Login />
-        </BaseInitial>
-      )
-    },
-    {
-      name: '/Login/:token/:idUser',
-      element: (
-        <BaseInitial>
-          <Login />
-        </BaseInitial>
-      )
-    },
-    {
-      name: '/Register',
-      element: (
-        <BaseInitial>
-          <Register />
-        </BaseInitial>
-      )
-    },
-    {
-      name: '/RestorePassword',
-      element: (
-        <BaseInitial>
-          <RestorePassword />
-        </BaseInitial>
-      )
-    },
-    {
-      name: '/ChangePassword/:token',
-      element: (
-        <BaseInitial>
-          <ChangePassword />
-        </BaseInitial>
-      )
-    },
-    {
-      name: '/*',
-      element: (
-        <BaseInitial>
-          <Login />
-        </BaseInitial>
-      )
-    }
-  ]
+	const loginRoutes = [
+		{
+			name: '/Login',
+			element: (
+				<BaseInitial>
+					<Login />
+				</BaseInitial>
+			),
+		},
+		{
+			name: '/Login/:token/:idUser',
+			element: (
+				<BaseInitial>
+					<Login />
+				</BaseInitial>
+			),
+		},
+		{
+			name: '/Register',
+			element: (
+				<BaseInitial>
+					<Register />
+				</BaseInitial>
+			),
+		},
+		{
+			name: '/RestorePassword',
+			element: (
+				<BaseInitial>
+					<RestorePassword />
+				</BaseInitial>
+			),
+		},
+		{
+			name: '/ChangePassword/:token',
+			element: (
+				<BaseInitial>
+					<ChangePassword />
+				</BaseInitial>
+			),
+		},
+		{
+			name: '/*',
+			element: (
+				<BaseInitial>
+					<Login />
+				</BaseInitial>
+			),
+		},
+	]
 
-  const userRoutes = [
-    { path: '/', element: <Home /> },
-    { path: '/profile', element: <Profile /> },
-    { path: '/information', element: <Information /> },
-    { path: '/invoice', element: <Invoice /> },
-    { path: '/payments', element: <Payments /> },
-    { path: '/handle', element: <Handle /> },
-    { path: '/myservices', element: <MyServices /> },
-    { path: '/myservices/detail', element: <MyServicesD /> },
-    { path: '/levelup2', element: <LevelUp2 /> },
-    { path: '/authentication', element: <Authentication /> },
-    { path: '/myconsumption', element: <MyConsumption /> },
-    { path: '/comments', element: <Comments /> },
-    { path: '/selectServices', element: <SelectServices /> },
-    { path: '/formServicesData', element: <FormServicesData /> },
-    {
-      path: '/multiStepForm',
-      element: <MultiStepForm />
-    },
-    {
-      path: '/multiStepForm/:step',
-      element: <MultiStepForm />
-    }
-  ]
-  return (
-    <div className='flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700'>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Routes>
-            {loginRoutes.map((route) => (
-              <Route
-                key={route.name}
-                path={route.name}
-                element={route.element}
-              />
-            ))}
-            <Route element={<ProtectedRoutes />}>
-              {userRoutes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={route.element}
-                />
-              ))}
-            </Route>
-          </Routes>
+	const userRoutes = [
+		{ path: '/', element: <Home /> },
+		{ path: '/profile', element: <Profile /> },
+		{ path: '/information', element: <Information /> },
+		{ path: '/invoice', element: <Invoice /> },
+		{ path: '/payments', element: <Payments /> },
+		{ path: '/handle', element: <Handle /> },
+		{ path: '/myservices', element: <MyServices /> },
+		{ path: '/myservices/detail', element: <MyServicesD /> },
+		{ path: '/levelup2', element: <LevelUp2 /> },
+		{ path: '/authentication', element: <Authentication /> },
+		{ path: '/myconsumption', element: <MyConsumption /> },
+		{ path: '/comments', element: <Comments /> },
+		{ path: '/selectServices', element: <SelectServices /> },
+		{ path: '/formServicesData', element: <FormServicesData /> },
+		{
+			path: '/multiStepForm',
+			element: <MultiStepForm />,
+		},
+		{
+			path: '/multiStepForm/:step',
+			element: <MultiStepForm />,
+		},
+	]
+	return (
+		<div className='flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700'>
+			<ThemeProvider theme={theme}>
+				<BrowserRouter>
+					<Routes>
+						{loginRoutes.map((route) => (
+							<Route key={route.name} path={route.name} element={route.element} />
+						))}
+						<Route element={<ProtectedRoutes />}>
+							{userRoutes.map((route) => (
+								<Route key={route.path} path={route.path} element={route.element} />
+							))}
+						</Route>
+					</Routes>
 
-          <Footer />
-        </BrowserRouter>
-      </ThemeProvider>
-    </div>
-  )
+					<Footer />
+				</BrowserRouter>
+			</ThemeProvider>
+		</div>
+	)
 }
 
 export default App
