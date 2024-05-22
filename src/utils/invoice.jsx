@@ -225,13 +225,14 @@ export const searchAllInvoice = async (user) => {
 }
 
 export const InvoiceDeus = async (user) => {
-	const socio = user.number_customer
+	const socio = user.num
 	const url = `${import.meta.env.VITE_APP_API_URL}/facturas?id_procoop=${socio}`
 	try {
 		const response = await request(url, 'GET')
+		console.log(response)
 		if (response.status !== 200) throw new Error('Error en la solicitud')
 		const responseData = response.data
-		if (responseData.length === 0) {
+		if (!Object.keys(responseData).length) {
 			return false
 		}
 		const rows = []
@@ -249,10 +250,10 @@ export const calcValues = (table) => {
 	let values = 0
 	let value2 = 0
 	table.getCoreRowModel().rows.forEach((element) => {
-		value2 += element.original.amount
+		value2 += parseFloat(element.original.amount)
 	})
 	table.getSelectedRowModel().rows.forEach((element) => {
-		values += element.original.amount
+		values += parseFloat(element.original.amount)
 	})
 	values = values.toFixed(2)
 	value2 = value2.toFixed(2)

@@ -23,8 +23,8 @@ const ModalSocio = ({ handleCloseModal }) => {
 	}
 	const handleAddCustomer = async () => {
 		try {
-			const array = { nro_customer: number }
-			const user = await request(import.meta.env.VITE_APP_API_URL + '/searchOther', 'post', array)
+			const array = { customer: number }
+			const user = await request(import.meta.env.VITE_APP_API_URL + '/getCustomer', 'post', array)
 			const swal = await Swal.fire({
 				title: '¿Deseas agregar a este socio?',
 				text: user.data,
@@ -36,7 +36,7 @@ const ModalSocio = ({ handleCloseModal }) => {
 
 			if (swal.isConfirmed) {
 				const operation = await request(import.meta.env.VITE_APP_API_URL + '/createOther', 'post', array)
-				if (operation.message) {
+				if (operation.status === 200) {
 					Swal.fire({
 						title: '¡Perfecto!',
 						text: 'El socio ha sido agregado con éxito',
@@ -54,13 +54,14 @@ const ModalSocio = ({ handleCloseModal }) => {
 						}
 					})
 				} else {
-					throw new Error('error')
+					throw new Error()
 				}
 			}
 		} catch (error) {
+			const errorText = JSON.parse(error.request.response).message || error
 			Swal.fire({
 				title: 'Error',
-				text: 'El número ingresado es inválido',
+				text: errorText,
 				icon: 'error',
 			})
 		}
