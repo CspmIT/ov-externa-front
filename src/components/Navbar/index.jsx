@@ -56,7 +56,7 @@ const Navbar = () => {
 		try {
 			dark = dark ? 1 : 0
 			const array = { dark }
-			await request(import.meta.env.VITE_APP_API_URL + '/updateCustomer', 'patch', array)
+			await request(import.meta.env.VITE_APP_API_URL + '/updateUser', 'patch', array)
 		} catch (error) {
 			console.log('Error al obtener datos:', error)
 		}

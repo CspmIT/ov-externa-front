@@ -1,6 +1,6 @@
 import CardCustom from '../../components/CardCustom/index'
 // import Axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Input, Tab, Tabs, FormHelperText, FormControl, Box } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
@@ -8,6 +8,7 @@ import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import { CustomTabPanel, a11yProps } from '../../components/PanelTab'
 import { request, requestFiles } from '../../utils/request'
+import { UserContext } from '../../contexts/UserContext'
 function Profile() {
 	const getUserData = async () => {
 		// Obtengo los datos del usuario
@@ -16,6 +17,7 @@ function Profile() {
 		// const response = await Axios.post(url, { user: id })
 		return response.data
 	}
+	const { usuario } = useContext(UserContext)
 
 	const [userData, setUserData] = useState({})
 
@@ -49,7 +51,7 @@ function Profile() {
 		const formData = new FormData()
 		// Agrega la imagen al objeto FormData
 		if (data.img_profile.length > 0) {
-			formData.append('img_profile', data.img_profile[0])
+			formData.append('img', data.img_profile[0])
 		}
 		let message = 'Error'
 		try {
@@ -195,6 +197,10 @@ function Profile() {
 		}
 	}
 
+	const imgProfile = usuario.img_profile
+		? `${import.meta.env.VITE_FILE_API_URL}/images/profile/${usuario.img_profile}`
+		: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+
 	return (
 		<div>
 			<h2 className='text-center m-5'>Mi perfil</h2>
@@ -210,12 +216,7 @@ function Profile() {
 					<CustomTabPanel value={value} index={0}>
 						<CardCustom className='p-8 !bg-transparent'>
 							<div className='flex flex-col items-center'>
-								<img
-									className='h-52 w-52 rounded-full mt-4'
-									src='http://localhost:5000/images/profile/ee782cbd-2282-44ed-bebe-ebadf7d355ec.png'
-									//src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-									alt='imagen de perfil'
-								/>
+								<img className='h-52 w-52 bg-orange-500 rounded-full border-white border-4 mt-4' src={imgProfile} alt='imagen de perfil' />
 								<h1 className='text-2xl font-bold mt-4'>
 									{userData.first_name} {userData.last_name}
 								</h1>
