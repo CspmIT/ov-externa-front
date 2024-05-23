@@ -67,8 +67,9 @@ const Login = () => {
 				localStorage.setItem('usuario', JSON.stringify(decoded))
 				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 				let DataOtherUser = await otherCustomer.data.map((item) => {
-					return { name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+					return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
 				})
+				console.log(decoded)
 				if (!DataOtherUser.length) {
 					DataOtherUser = [{ level: 1, primary: true }]
 				}
