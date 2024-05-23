@@ -130,7 +130,6 @@ const Navbar = () => {
 			}
 		}
 	}, [usuario])
-	console.log(usuario, account)
 	return (
 		<div>
 			<aside id='mobileMenu' className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}>
@@ -185,7 +184,6 @@ const Navbar = () => {
 											</span>
 											<button onClick={handleOpenModal} className='text-white bg-emerald-500 font-medium rounded px-2 py-1 flex items-center justify-between w-full md:w-auto'>
 												<FaPlus />
-												<span className='ml-2'>SOCIO</span>
 												<span className='ml-2'>SOCIO</span>
 											</button>
 										</div>

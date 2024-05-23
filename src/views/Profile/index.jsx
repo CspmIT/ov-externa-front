@@ -7,8 +7,10 @@ import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import { CustomTabPanel, a11yProps } from '../../components/PanelTab'
-import { request, requestFiles } from '../../utils/request'
+import { request } from '../../utils/request'
 import { UserContext } from '../../contexts/UserContext'
+import { Button } from '@mui/material'
+import { PhotoCamera } from '@mui/icons-material'
 function Profile() {
 	const getUserData = async () => {
 		// Obtengo los datos del usuario
@@ -97,19 +99,14 @@ function Profile() {
 		const { password, newPassword, confirmPassword } = data
 		const url = import.meta.env.VITE_APP_API_URL + '/updatePassword'
 		const info = {
-			id,
+			//id,
 			password,
 			newPassword,
-			newPassword_confirmation: confirmPassword,
+			//newPassword_confirmation: confirmPassword,
 		}
 		try {
 			// Envio los datos a la api, paso el token en el header
-			const response = await request(url, 'POST', info)
-			// const response = await Axios.post(url, info, {
-			//   headers: {
-			//     Authorization: `Bearer ${token}`
-			//   }
-			// })
+			const response = await request(url, 'PATCH', info)
 			if (response.status === 200) {
 				Swal.fire({
 					icon: 'success',
@@ -121,21 +118,16 @@ function Profile() {
 				})
 			}
 		} catch (error) {
-			const errorObj = error.response.data.message
-			const messages = []
-			for (const key in errorObj) {
-				messages.push(errorObj[key])
-			}
+			const errorObj = error.response.data
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atención!',
-				text: messages.join('\n'),
+				text: errorObj,
 				allowOutsideClick: false,
 			}).then(() => {})
 			console.log(error)
 		}
 	}
-
 	// Función obtener los datos del usuario y cargarlos en el formulario.
 	useEffect(() => {
 		const fetchData = async () => {
@@ -196,10 +188,26 @@ function Profile() {
 			setEyeConfirmPass(<TbEyeClosed />)
 		}
 	}
-
-	const imgProfile = usuario.img_profile
-		? `${import.meta.env.VITE_FILE_API_URL}/images/profile/${usuario.img_profile}`
-		: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+	//Chequeo si existe la imagen en el servidor y si el servidor esta activo
+	const [imgProfile, setImgProfile] = useState('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
+	useEffect(() => {
+		const checkServerStatus = async () => {
+			setImgProfile('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
+			if (!usuario.img_profile) {
+				return
+			}
+			const directory = 'images/profile/' + usuario.img_profile
+			try {
+				const response = await request(`${import.meta.env.VITE_FILE_API_URL}/existsFile`, 'POST', { directory })
+				if (response.status === 200) {
+					setImgProfile(`${import.meta.env.VITE_FILE_API_URL}/images/profile/${usuario.img_profile}`)
+				}
+			} catch (error) {
+				console.log('Error checking server status:', error)
+			}
+		}
+		checkServerStatus()
+	}, [])
 
 	return (
 		<div>
@@ -266,9 +274,6 @@ function Profile() {
 											{editErrors.first_name?.type === 'minLength' && 'El nombre debe tener al menos 2 caracteres'}
 										</FormHelperText>
 									</FormControl>
-									<FormControl>
-										<input type='file' accept='.png' {...editRegister('img_profile', { required: false })} />
-									</FormControl>
 
 									<FormControl error={editErrors.last_name ?? false}>
 										<Input
@@ -320,6 +325,13 @@ function Profile() {
 											{editErrors.address?.type === 'required' && 'La dirección es requerida'}
 											{editErrors.address?.type === 'minLength' && 'La dirección debe tener al menos 5 caracteres'}
 										</FormHelperText>
+									</FormControl>
+									<FormControl>
+										<Button component='label' htmlFor='img_profile'>
+											<PhotoCamera className='mr-2' />
+											Cambiar Foto
+										</Button>
+										<input hidden id='img_profile' type='file' accept='.png' {...editRegister('img_profile', { required: false })} />
 									</FormControl>
 								</div>
 								<button className='bg-blue-500 text-white rounded-lg p-2 w-64 mt-2' type='submit'>

@@ -1,13 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaUser, FaSignOutAlt } from 'react-icons/fa'
 import { useNavigate, Link } from 'react-router-dom'
 import { UserContext } from '../../contexts/UserContext'
 import Cookies from 'js-cookie'
+import { request } from '../../utils/request'
 
 const DropdownImage = ({ props }) => {
 	const [isDropdownOpen, setDropdownOpen] = useState(false)
 	const navigator = useNavigate()
 	const { setUsuario, usuario } = useContext(UserContext)
+	const [imgProfile, setImgProfile] = useState('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
 	const toggleDropdown = () => {
 		setDropdownOpen(!isDropdownOpen)
 	}
@@ -20,9 +22,25 @@ const DropdownImage = ({ props }) => {
 			navigator('/login')
 		}, 750)
 	}
-	const imgProfile = usuario.img_profile
-		? `${import.meta.env.VITE_FILE_API_URL}/images/profile/${usuario.img_profile}`
-		: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+	//Chequeo si existe la imagen en el servidor y si el servidor esta activo
+	useEffect(() => {
+		const checkServerStatus = async () => {
+			setImgProfile('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
+			if (!usuario.img_profile) {
+				return
+			}
+			const directory = 'images/profile/' + usuario.img_profile
+			try {
+				const response = await request(`${import.meta.env.VITE_FILE_API_URL}/existsFile`, 'POST', { directory })
+				if (response.status === 200) {
+					setImgProfile(`${import.meta.env.VITE_FILE_API_URL}/images/profile/${usuario.img_profile}`)
+				}
+			} catch (error) {
+				console.log('Error checking server status:', error)
+			}
+		}
+		checkServerStatus()
+	}, [])
 
 	return (
 		<div className='relative inline-block text-left ml-3'>
@@ -35,7 +53,7 @@ const DropdownImage = ({ props }) => {
 					aria-haspopup='true'
 					onClick={toggleDropdown}
 				>
-					<img className='h-8 w-8 rounded-full' src={imgProfile} alt='imagen de perfil' />
+					<img className='h-8 w-8 rounded-full' src={imgProfile} alt='Perfil' />
 				</button>
 			</div>
 			{isDropdownOpen && (
