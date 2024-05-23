@@ -14,7 +14,7 @@ import ModalSocio from '../ModalSocio'
 
 const Navbar = () => {
 	const [OpenModal, setOpenModal] = useState(false)
-	const { darkMode, setDarkMode, usuario, account, setUsuario } = useContext(UserContext)
+	const { darkMode, setDarkMode, usuario, account, setUsuario, setAccount } = useContext(UserContext)
 	const [activeItem, setActiveItem] = useState(null)
 	const handleItemClick = (itemName) => {
 		setActiveItem(itemName === activeItem ? null : itemName)
@@ -113,10 +113,12 @@ const Navbar = () => {
 		let DataOtherUser = await otherCustomer.data.map((item) => {
 			return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
 		})
+		console.log(DataOtherUser)
 		if (!DataOtherUser.length) {
 			DataOtherUser = [{ level: 1, primary: true }]
 		}
 		const user = { ...usuario, accounts: [...DataOtherUser] }
+		setAccount(DataOtherUser.filter((item) => item.primary)[0])
 		setUsuario(user)
 	}
 

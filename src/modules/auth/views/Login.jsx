@@ -69,7 +69,6 @@ const Login = () => {
 				let DataOtherUser = await otherCustomer.data.map((item) => {
 					return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
 				})
-				console.log(decoded)
 				if (!DataOtherUser.length) {
 					DataOtherUser = [{ level: 1, primary: true }]
 				}
