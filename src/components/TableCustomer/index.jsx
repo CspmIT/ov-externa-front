@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -7,7 +6,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Button from '../Button'
-import { FaTrashCan, FaPencil } from 'react-icons/fa6'
+import { FaTrashCan, FaArrowUp } from 'react-icons/fa6'
 import { UserContext } from '../../contexts/UserContext'
 import { useContext, useState } from 'react'
 import { request } from '../../utils/request'
@@ -18,7 +17,7 @@ import { MdCancel } from 'react-icons/md'
 import { FaCheckCircle } from 'react-icons/fa'
 
 export default function TableCustomer() {
-	const { usuario, setUsuario } = useContext(UserContext)
+	const { usuario, setUsuario, account, setAccount } = useContext(UserContext)
 	const [openEdit, setOpenEdit] = useState('none')
 	const [value, setValue] = useState()
 	const handleCustomer = (item) => {
@@ -30,7 +29,7 @@ export default function TableCustomer() {
 			})
 			return false
 		}
-		item.main ? setOpenEdit('table-row') : deleteCustomer(item.id)
+		item.primary ? setOpenEdit('table-row') : deleteCustomer(item.id_relation)
 	}
 	const handleCancelEdit = () => {
 		setOpenEdit('none')
@@ -91,6 +90,56 @@ export default function TableCustomer() {
 			})
 		}
 	}
+	const handlePrimaryAccount = async (row) => {
+		try {
+			const swal = await Swal.fire({
+				title: 'Atención',
+				text: '¿Deseas convertir en cuenta principal al socio seleccionado?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Sí',
+				cancelButtonText: 'Cancelar',
+			})
+
+			if (swal.isConfirmed) {
+				const operation = await request(`${import.meta.env.VITE_APP_API_URL}/chagePrimayMember?id_relation=${row.id_relation}`, 'patch')
+				if (operation.status === 200) {
+					Swal.fire({
+						title: '¡Perfecto!',
+						text: 'El socio principal ha sido cambiado con éxito',
+						icon: 'success',
+						allowOutsideClick: false,
+					}).then(async (result) => {
+						if (result.isConfirmed) {
+							const user = { ...usuario }
+							const updatedUsuario = await user.accounts.map((item) => {
+								item.primary = parseInt(item.id_relation) === parseInt(row.id_relation)
+								return item
+							})
+							user.accounts = updatedUsuario
+							user.accounts.sort((a, b) => {
+								if (a.primary && !b.primary) {
+									return -1
+								}
+								if (b.primary && !a.primary) {
+									return 1
+								}
+								return 0
+							})
+							setUsuario(user)
+							const updatedStorage = storage.get('usuario')
+							updatedStorage.accounts = user.accounts
+							storage.set('usuario', updatedStorage)
+							handleCancelEdit()
+						}
+					})
+				}
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	const deleteCustomer = async (id) => {
 		try {
 			const swal = await Swal.fire({
@@ -103,8 +152,8 @@ export default function TableCustomer() {
 			})
 
 			if (swal.isConfirmed) {
-				const operation = await request(`${import.meta.env.VITE_APP_API_URL}/deleteOther/${id}`, 'delete')
-				if (operation.message) {
+				const operation = await request(`${import.meta.env.VITE_APP_API_URL}/deleteOther?id_relation=${id}`, 'delete')
+				if (operation.status === 200) {
 					Swal.fire({
 						title: '¡Perfecto!',
 						text: 'El socio ha sido eliminado con éxito',
@@ -113,8 +162,11 @@ export default function TableCustomer() {
 					}).then((result) => {
 						if (result.isConfirmed) {
 							const updatedUsuario = { ...usuario }
-							updatedUsuario.accounts = updatedUsuario.accounts.filter((obj) => obj.id !== id)
+							updatedUsuario.accounts = updatedUsuario.accounts.filter((obj) => obj.id_relation !== id)
 							setUsuario(updatedUsuario)
+							if (id === account.id_relation) {
+								setAccount(updatedUsuario.accounts.filter((obj) => obj.primary)[0])
+							}
 							const updatedStorage = storage.get('usuario')
 							updatedStorage.accounts = [updatedUsuario.accounts]
 							storage.set('usuario', updatedStorage)
@@ -169,12 +221,19 @@ export default function TableCustomer() {
 								<span className='dark:text-white'>{row.name}</span>
 							</TableCell>
 							<TableCell align='right'>
-								<Button
-									onclick={() => handleCustomer(row)}
-									props={{ class: `${row.main ? 'bg-amber-500' : 'bg-red-500'} m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white` }}
-								>
-									{row.main ? <FaPencil /> : <FaTrashCan />}
-								</Button>
+								{row.primary ? null : (
+									<>
+										<Button
+											onclick={() => handleCustomer(row)}
+											props={{ class: `${row.primary ? 'bg-amber-500' : 'bg-red-500'} m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white` }}
+										>
+											<FaTrashCan />
+										</Button>
+										<Button onclick={() => handlePrimaryAccount(row)} props={{ class: `ml-2 bg-amber-500 m-0 rounded-xl  max-sm:rounded-full max-sm:p-1.5 text-center py-0.7 px-1.5 text-white` }}>
+											<FaArrowUp />
+										</Button>
+									</>
+								)}
 							</TableCell>
 						</TableRow>
 					))}

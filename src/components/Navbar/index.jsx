@@ -14,7 +14,7 @@ import ModalSocio from '../ModalSocio'
 
 const Navbar = () => {
 	const [OpenModal, setOpenModal] = useState(false)
-	const { darkMode, setDarkMode, usuario, account, setAccount, setUsuario } = useContext(UserContext)
+	const { darkMode, setDarkMode, usuario, account, setUsuario } = useContext(UserContext)
 	const [activeItem, setActiveItem] = useState(null)
 	const handleItemClick = (itemName) => {
 		setActiveItem(itemName === activeItem ? null : itemName)
@@ -50,7 +50,7 @@ const Navbar = () => {
 			const array = { dark }
 			await request(import.meta.env.VITE_APP_API_URL + '/updateUser', 'patch', array)
 		} catch (error) {
-			console.log('Error al obtener datos:', error)
+			console.error('Error al obtener datos:', error)
 		}
 	}
 
@@ -111,7 +111,7 @@ const Navbar = () => {
 	const getAccounts = async () => {
 		const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 		let DataOtherUser = await otherCustomer.data.map((item) => {
-			return { name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+			return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
 		})
 		if (!DataOtherUser.length) {
 			DataOtherUser = [{ level: 1, primary: true }]
@@ -125,9 +125,6 @@ const Navbar = () => {
 			if (!usuario.accounts) {
 				getAccounts()
 			}
-			if (usuario.accounts?.length) {
-				setAccount(usuario.accounts.filter((item) => item.primary)[0])
-			}
 		}
 	}, [usuario])
 	return (
@@ -140,7 +137,7 @@ const Navbar = () => {
 					<hr className='m-2' />
 					<ul className='space-y-2 font-medium'>
 						{itemsData.map((item, index) => {
-							if (item.level.find((level) => level === usuario?.level)) {
+							if (item.level.find((level) => level === account?.level)) {
 								return <ItemNav key={index} props={item} isActive={item.name === activeItem} actionMobile={() => toggleMobileMenu()} onButtonClick={() => handleItemClick(item.name)} />
 							}
 							return null

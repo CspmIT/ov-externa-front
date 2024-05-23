@@ -112,10 +112,10 @@ const leveldos = () => {
 				const res = await request(url, 'GET')
 				if (res.status === 200) {
 					const data = res.data
-					if (data.user) {
+					if (data) {
 						Swal.fire({
 							title: 'El Numero de documento ya fue cargado en el sistema',
-							text: `¿Sos ${data.user.last_name + ' ' + data.user.name}?`,
+							text: `¿Sos ${data.last_name + ' ' + data.name}?`,
 							icon: 'question',
 							allowOutsideClick: false,
 							showCancelButton: true,
@@ -123,20 +123,20 @@ const leveldos = () => {
 							cancelButtonText: 'Cancelar',
 						}).then(async (result) => {
 							if (result.isConfirmed) {
-								setValue('document_type', data.user.type_dni)
-								setValue('sex', data.user.TypeSex.id)
-								setValue('StateId', data.Address.State.COD_PRO)
-								setValue('number_address', data.Address.number_address)
-								setValue('phoneCaract', data.user.cell_phone.split(' ')[0])
-								setValue('numberPhone', data.user.cell_phone.split(' ')[1])
-								setValue('birthdate', formatDateForInput(data.user.born_date))
+								setValue('document_type', data.type_dni)
+								setValue('sex', data.TypeSex.id)
+								setValue('StateId', data?.Person_Address?.Address?.State?.COD_PRO || null)
+								setValue('number_address', data?.Person_Address?.Address?.number_address || null)
+								setValue('phoneCaract', data.cell_phone.split(' ')[0])
+								setValue('numberPhone', data.cell_phone.split(' ')[1])
+								setValue('birthdate', formatDateForInput(data.born_date))
 								await handleProvinceChange()
 								await setTimeout(() => {
-									setValue('CityId', data.Address.City.COD_LOC)
+									setValue('CityId', data?.Person_Address?.Address?.City?.COD_LOC || null)
 									handleCityChange()
 								}, 200)
 								await setTimeout(() => {
-									setValue('StreetId', data.Address.Street.id)
+									setValue('StreetId', data?.Person_Address?.Address?.Street?.id || null)
 								}, 300)
 							} else {
 								setValue('document_number', '')
