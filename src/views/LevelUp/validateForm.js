@@ -1,6 +1,7 @@
 // import Axios from 'axios'
 import Swal from 'sweetalert2'
 import { request } from '../../utils/request'
+import Cookies from 'js-cookie'
 // Funcion para obtener el socio cuando se envia el formulario
 const getCustomer = async (data) => {
 	const numberCustomer = data.number_customer
@@ -19,7 +20,7 @@ const updateLevel = async (data) => {
 	const url = import.meta.env.VITE_APP_API_URL + '/upgradeLevelUser'
 	const res = await request(url, 'PATCH', data)
 	// const res = await Axios.patch(url, data)
-	return res.data
+	return res
 }
 
 const validateForm = async (data, navigate) => {
@@ -41,7 +42,8 @@ const validateForm = async (data, navigate) => {
 		if (swal.isConfirmed) {
 			const result = await updateLevel(data)
 			// Muestro una alerta si se subio de nivel
-			if (result.message) {
+
+			if (result.status === 200) {
 				Swal.fire({
 					title: '¡Has subido al nivel 2!',
 					text: 'Te pediremos que vuelvas a iniciar sesión',
@@ -50,6 +52,7 @@ const validateForm = async (data, navigate) => {
 				}).then((result) => {
 					if (result.isConfirmed) {
 						localStorage.removeItem('usuario')
+						Cookies.remove('token')
 						// Cierro la sesion del usuario
 						navigate('/Login')
 						window.location.reload()
