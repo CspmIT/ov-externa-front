@@ -11,13 +11,42 @@ import { request } from '../../../utils/request'
 const SelectServices = ({ services }) => {
 	const [visibleService, setVisibleService] = useState(null)
 	const [selectedServices, setSelectedServices] = useState([...services])
+	const [state, dispatch] = useRegForm()
 
 	useEffect(() => {
-		dispatch({ type: 'reset' })
+		const fetchData = async () => {
+			try {
+				if (!state?.services) {
+					const baseUrl = import.meta.env.VITE_APP_API_URL
+					const url = `${baseUrl}/getRequestsByUser`
+					const response = await request(url, 'POST')
+					const serviceRequest = response.data[0]
+					if (serviceRequest) {
+						Swal.fire({
+							icon: 'success',
+							title: 'Exito',
+							html: `Encontramos la siguiente solicitud de la fecha: ${serviceRequest.createdAt}. Desea continuar con ella?`,
+						}).then((result) => {
+							if (result.isConfirmed) {
+								// Armo el objeto con los servicios seleccionados
+								const { items } = serviceRequest
+								const selectedServicesRequest = items.map((item) => ({ nombre: item.service_name, tipo: item.service_type }))
+								dispatch({ type: 'select_services', selectedServices: selectedServicesRequest })
+								dispatch({ type: 'next' })
+								navigate(`/multiStepForm/Datos Personales`)
+							}
+						})
+					}
+				}
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		fetchData()
 	}, [])
 
 	const handleSelectService = (service) => {
-		console.log(service)
 		// Crear una copia de selectedServices para evitar la mutación directa
 		const newSelectedServices = [...selectedServices]
 
@@ -37,8 +66,9 @@ const SelectServices = ({ services }) => {
 	}
 	const navigate = useNavigate()
 
-	const [, dispatch] = useRegForm()
 	const onSubmit = async () => {
+		dispatch({ type: 'reset' })
+
 		if (selectedServices.length === 0) {
 			Swal.fire({
 				icon: 'warning',

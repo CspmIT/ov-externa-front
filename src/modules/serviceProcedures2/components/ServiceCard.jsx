@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
+import { useRegForm } from '../providers/RegFormProvider'
 
 const ServiceCard = ({ service, seeRqueriments, visibleService, setVisibleService, onSelectionChange }) => {
 	const [isChecked, setChecked] = useState(true)
@@ -9,6 +10,20 @@ const ServiceCard = ({ service, seeRqueriments, visibleService, setVisibleServic
 		setChecked(newCheckedState)
 		onSelectionChange(service, newCheckedState)
 	}
+
+	const [state] = useRegForm()
+	useEffect(() => {
+		const { services } = state
+		if (services) {
+			// Verificar si el objeto service existe en services
+			const isSelected = Object.values(services).some((innerService) => innerService.nombre === service.nombre)
+			if (isSelected) {
+				setChecked(true)
+			} else {
+				setChecked(false)
+			}
+		}
+	}, [])
 
 	return (
 		<div onClick={handleClick} className='w-full md:w-1/4 lg:w-1/4 justify-self-center '>
