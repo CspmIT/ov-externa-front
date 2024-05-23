@@ -65,23 +65,24 @@ const Login = () => {
 					sameSite: 'Lax',
 				})
 				localStorage.setItem('usuario', JSON.stringify(decoded))
-				// const bodyOtherCustomer = { id_user: responseData.data.id }
 				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
-				const DataOtherUser = await otherCustomer.data.map((item) => {
+				let DataOtherUser = await otherCustomer.data.map((item) => {
 					return { name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
 				})
-				setAccount(DataOtherUser.filter((item) => item.select)[0])
+				if (!DataOtherUser.length) {
+					DataOtherUser = [{ level: 1, primary: true }]
+				}
+				setAccount(DataOtherUser.filter((item) => item.primary)[0])
 				const user = { ...decoded, accounts: DataOtherUser }
 				setDarkMode(decoded.dark)
 				setUsuario(user)
 				navigate('/')
 			}
 		} catch (error) {
-			console.log(error.message)
 			Swal.fire({
 				icon: 'warning',
 				title: error?.response?.data?.error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
-				text: error?.response?.data?.error !== '' ? error.message : 'Intente ingresar nuevamente mas tarde',
+				text: error?.response?.data?.error !== '' ? error.response.data : 'Intente ingresar nuevamente mas tarde',
 				allowOutsideClick: false,
 			})
 		}

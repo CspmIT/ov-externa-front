@@ -110,9 +110,12 @@ const Navbar = () => {
 	]
 	const getAccounts = async () => {
 		const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
-		const DataOtherUser = await otherCustomer.data.map((item) => {
+		let DataOtherUser = await otherCustomer.data.map((item) => {
 			return { name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
 		})
+		if (!DataOtherUser.length) {
+			DataOtherUser = [{ level: 1, primary: true }]
+		}
 		const user = { ...usuario, accounts: [...DataOtherUser] }
 		setUsuario(user)
 	}
@@ -121,11 +124,13 @@ const Navbar = () => {
 		if (!account.length) {
 			if (!usuario.accounts) {
 				getAccounts()
-			} else {
+			}
+			if (usuario.accounts?.length) {
 				setAccount(usuario.accounts.filter((item) => item.primary)[0])
 			}
 		}
 	}, [usuario])
+	console.log(usuario, account)
 	return (
 		<div>
 			<aside id='mobileMenu' className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}>
