@@ -28,3 +28,20 @@ export function validarFecha(anio, mes, dia) {
 	// Si la fecha ingresada es válida, devolver true
 	return true
 }
+
+export const formatDateForInput = (date) => {
+	// Suponiendo que date es la cadena de fecha en formato ISO 8601
+	const isoDateString = date
+	// Convertirlo a un objeto Date
+	const dateObject = new Date(isoDateString)
+	// Extraer el año, mes y día como números
+	const year = dateObject.getFullYear()
+	const month = dateObject.getMonth() + 1 // getMonth() devuelve 0-11
+	const day = dateObject.getDate()
+	// Agregar ceros a la izquierda si es necesario para el mes y el día
+	const formattedMonth = month.toString().padStart(2, '0')
+	const formattedDay = day.toString().padStart(2, '0')
+	// Combinarlos en el formato "yyyy-MM-dd"
+	const formattedDate = `${year}-${formattedMonth}-${formattedDay}`
+	return formattedDate
+}
