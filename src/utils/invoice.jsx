@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 // import axios from 'axios'
 import { useContext } from 'react'
 import { UserContext } from '../contexts/UserContext'
+import { formatDateForInput } from './dateFunction'
 
 export const columns = [
 	{
@@ -37,6 +38,23 @@ export const columns = [
 		header: 'Vencimiento',
 		accessorKey: 'vto',
 		size: 30,
+		Cell: ({ row, cell }) => {
+			const { darkMode } = useContext(UserContext)
+			if (!row.original.subRows) {
+				return (
+					<Box
+						component='span'
+						sx={() => ({
+							color: !darkMode ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)',
+							fontWeight: 'bold',
+							fontSize: '15px',
+						})}
+					>
+						{formatDateForInput(cell.getValue())}
+					</Box>
+				)
+			}
+		},
 	},
 	{
 		header: 'Importe',
@@ -118,7 +136,7 @@ export const columnsCel = [
 		AggregatedCell: ({ row }) => {
 			return <p className='m-0 text-sm font-bold'>Cuenta Nº: {row.original.account}</p>
 		},
-		Cell: ({ cell }) => {
+		Cell: ({ row, cell }) => {
 			const { darkMode } = useContext(UserContext)
 			const amount = cell.row.original.info?.amount ?? cell.row.original.amount
 			return (
@@ -137,9 +155,9 @@ export const columnsCel = [
 						<b>Periodo:</b> {cell.row.original.info?.period ?? cell.row.original.period}
 					</p>
 					<p className='m-0'>
-						<b>Vencimiento:</b> {cell.row.original.info?.vto ?? cell.row.original.vto}
+						<b>Vencimiento:</b> {formatDateForInput(cell.row.original.info?.vto ?? cell.row.original.vto)}
 					</p>
-					<p className='m-0 text-red-500'>
+					<p className={`m-0 ${row.original?.status > 0 ? (row.original?.status === 1 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`}>
 						<b>Importe:</b>{' '}
 						{amount.toLocaleString?.('es-AR', {
 							style: 'currency',
@@ -152,17 +170,17 @@ export const columnsCel = [
 			)
 		},
 	},
-	{
-		header: '',
-		accessorKey: 'status',
-		size: 10,
-		enableGlobalFilter: false,
-		Cell: ({ row }) => {
-			if (!row.original.subRows) {
-				return <Circle className={`max-sm:m-0 max-sm:text-sm ${row.original?.status > 0 ? (row.original?.status === 2 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`} />
-			}
-		},
-	},
+	// {
+	// 	header: '',
+	// 	accessorKey: 'status',
+	// 	size: 10,
+	// 	enableGlobalFilter: false,
+	// 	Cell: ({ row }) => {
+	// 		if (!row.original.subRows) {
+	// 			return <Circle className={`max-sm:m-0 max-sm:text-sm ${row.original?.status > 0 ? (row.original?.status === 2 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`} />
+	// 		}
+	// 	},
+	// },
 	{
 		header: '',
 		accessorKey: 'url',
@@ -229,7 +247,6 @@ export const InvoiceDeus = async (user) => {
 	const url = `${import.meta.env.VITE_APP_API_URL}/facturas?id_procoop=${socio}`
 	try {
 		const response = await request(url, 'GET')
-		console.log(response)
 		if (response.status !== 200) throw new Error('Error en la solicitud')
 		const responseData = response.data
 		if (!Object.keys(responseData).length) {
