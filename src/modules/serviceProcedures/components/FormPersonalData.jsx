@@ -10,18 +10,15 @@ import {
   TextField,
   InputAdornment
 } from '@mui/material'
-import Axios from 'axios'
+// import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone'
 import Webcam from 'react-webcam'
 import { FormValidContext } from '../../../contexts/FormsContext'
-import {
-  inputsBusinessData,
-  inputsPersonalData,
-  typePersonArray
-} from '../utils/data'
+import { inputsBusinessData, typePersonArray } from '../utils/data'
 import Swal from 'sweetalert2'
+import { request } from '../../../utils/request'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -63,11 +60,12 @@ const FormPersonalData = ({ onFormChange }) => {
         cuit: searchTerm
       }
     }
-
-    const response = await Axios.post(
-      'http://localhost:4000/api/procoop/personaPorDni',
+    const response = await request(
+      import.meta.env.VITE_APP_API_URL + '/procoop/personaPorDni',
+      'POST',
       object
     )
+    // const response = await Axios.post(import.meta.env.VITE_APP_API_URL + '/procoop/personaPorDni', object)
     if (response) {
       return response.data
     }
@@ -106,18 +104,18 @@ const FormPersonalData = ({ onFormChange }) => {
           data.year = fecha[0]
           setSearchResults(data)
           // Pinto los datos en los inputs
-          inputsPersonalData.forEach((input) => {
-            setValue(input.name, data[input.name])
-          })
+          // inputsPersonalData.forEach((input) => {
+          //   setValue(input.name, data[input.name])
+          // })
         } else {
           setSearchResults(false)
           inputsBusinessData.forEach((input) => {
             setValue(input.name, '')
           })
           // Limpio todos los campos del formulario
-          inputsPersonalData.forEach((input) => {
-            setValue(input.name, '')
-          })
+          // inputsPersonalData.forEach((input) => {
+          //   setValue(input.name, '')
+          // })
           setValue('day', '')
           setValue('month', '')
           setValue('year', '')
@@ -136,9 +134,9 @@ const FormPersonalData = ({ onFormChange }) => {
         setValue(input.name, '')
       })
       // Limpio todos los campos del formulario
-      inputsPersonalData.forEach((input) => {
-        setValue(input.name, '')
-      })
+      // inputsPersonalData.forEach((input) => {
+      //   setValue(input.name, '')
+      // })
       setValue('day', '')
       setValue('month', '')
       setValue('year', '')
@@ -210,59 +208,60 @@ const FormPersonalData = ({ onFormChange }) => {
           </Grid>
         )}
 
-        {searchResults && typePerson === 1 && (
-          <>
-            {inputsPersonalData.map((input, index) => (
-              <Grid item md={input.grid} key={index}>
-                {input.component === 'Select' ? (
-                  <FormControl className='w-full'>
-                    <InputLabel id={input.name}>{input.label}</InputLabel>
-                    <Select
-                      defaultValue={searchResults[input.name]}
-                      labelId={input.name}
-                      id={input.name}
-                      label={input.label}
-                      {...register(input.name, { required: true })}
-                      onChange={(e) => setValue(input.name, e.target.value)}
-                    >
-                      {input.options.map((item) => (
-                        <MenuItem key={item.id} selected value={item.id}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                ) : (
-                  <FormControl className='w-full'>
-                    <TextField
-                      label={input.label}
-                      type={input.type}
-                      id={input.name}
-                      {...register(input.name, {
-                        required: input?.groupLabel !== 'Telefono fijo'
-                      })}
-                      defaultValue={searchResults[input.name]?.trim()}
-                      InputProps={
-                        input.start
-                          ? {
-                              startAdornment: (
-                                <InputAdornment position='start'>
-                                  {input.start}
-                                </InputAdornment>
-                              )
-                            }
-                          : {}
-                      }
-                    />
-                  </FormControl>
-                )}
-                {errors[input.name] && (
-                  <span className='text-red-500'>Este campo es requerido</span>
-                )}
-              </Grid>
-            ))}
-          </>
-        )}
+        {searchResults &&
+          typePerson === 1 &&
+          // <>
+          //   {inputsPersonalData.map((input, index) => (
+          //     <Grid item md={input.grid} key={index}>
+          //       {input.component === 'Select' ? (
+          //         <FormControl className='w-full'>
+          //           <InputLabel id={input.name}>{input.label}</InputLabel>
+          //           <Select
+          //             defaultValue={searchResults[input.name]}
+          //             labelId={input.name}
+          //             id={input.name}
+          //             label={input.label}
+          //             {...register(input.name, { required: true })}
+          //             onChange={(e) => setValue(input.name, e.target.value)}
+          //           >
+          //             {input.options.map((item) => (
+          //               <MenuItem key={item.id} selected value={item.id}>
+          //                 {item.name}
+          //               </MenuItem>
+          //             ))}
+          //           </Select>
+          //         </FormControl>
+          //       ) : (
+          //         <FormControl className='w-full'>
+          //           <TextField
+          //             label={input.label}
+          //             type={input.type}
+          //             id={input.name}
+          //             {...register(input.name, {
+          //               required: input?.groupLabel !== 'Telefono fijo'
+          //             })}
+          //             defaultValue={searchResults[input.name]?.trim()}
+          //             InputProps={
+          //               input.start
+          //                 ? {
+          //                     startAdornment: (
+          //                       <InputAdornment position='start'>
+          //                         {input.start}
+          //                       </InputAdornment>
+          //                     )
+          //                   }
+          //                 : {}
+          //             }
+          //           />
+          //         </FormControl>
+          //       )}
+          //       {errors[input.name] && (
+          //         <span className='text-red-500'>Este campo es requerido</span>
+          //       )}
+          //     </Grid>
+          //   ))}
+          // </>
+          ''}
         {searchResults && typePerson === 2 && (
           <>
             {inputsBusinessData.map((input, index) => (
