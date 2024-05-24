@@ -31,7 +31,7 @@ function DashboardLvl1() {
 			</div>
 			<div className='flex w-full flex-wrap'>
 				<div className='w-full md:w-1/4 lg:w-1/4'>
-					<Link to={'/SelectServices'}>
+					<Link to={'/MultiStepForm'}>
 						<CardCustom className={`p-8 rounded-[2.5em] m-3 flex align-middle justify-center ${styles.cardHover} shadowCards dark:bg-zinc-700 dark:text-gray-300 w-auto`}>
 							<div className={styles.cardContent}>
 								<div className={`${styles.cardTop} me-4`}>

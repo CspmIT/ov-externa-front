@@ -7,12 +7,12 @@ import seeRqueriments from '../../serviceProcedures/utils/seeRequirements'
 import { useRegForm } from '../providers/RegFormProvider'
 import Swal from 'sweetalert2'
 import { request } from '../../../utils/request'
+import { formatDateForInput } from '../../../utils/dateFunction'
 
 const SelectServices = ({ services }) => {
 	const [visibleService, setVisibleService] = useState(null)
 	const [selectedServices, setSelectedServices] = useState([...services])
 	const [state, dispatch] = useRegForm()
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -22,10 +22,11 @@ const SelectServices = ({ services }) => {
 					const response = await request(url, 'POST')
 					const serviceRequest = response.data[0]
 					if (serviceRequest) {
+						const dateFormated = formatDateForInput(serviceRequest.createdAt, true)
 						Swal.fire({
 							icon: 'success',
 							title: 'Exito',
-							html: `Encontramos la siguiente solicitud de la fecha: ${serviceRequest.createdAt}. Desea continuar con ella?`,
+							html: `Encontramos la siguiente solicitud de la fecha: ${dateFormated}. Desea continuar con ella?`,
 						}).then((result) => {
 							if (result.isConfirmed) {
 								// Armo el objeto con los servicios seleccionados
@@ -67,43 +68,46 @@ const SelectServices = ({ services }) => {
 	const navigate = useNavigate()
 
 	const onSubmit = async () => {
-		dispatch({ type: 'reset' })
+		if (!state?.services) {
+			dispatch({ type: 'reset' })
 
-		if (selectedServices.length === 0) {
-			Swal.fire({
-				icon: 'warning',
-				title: 'Oops...',
-				text: 'Debes seleccionar al menos un servicio para continuar.',
-			})
-			return
-		}
-		// Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
-		const personalDataExists = selectedServices.some((service) => service.nombre === 'Datos Personales' && service.tipo === 0)
+			if (selectedServices.length === 0) {
+				Swal.fire({
+					icon: 'warning',
+					title: 'Oops...',
+					text: 'Debes seleccionar al menos un servicio para continuar.',
+				})
+				return
+			}
+			// Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
+			const personalDataExists = selectedServices.some((service) => service.nombre === 'Datos Personales' && service.tipo === 0)
 
-		// Si 'Datos Personales' no está en la lista, agregarlo
-		if (!personalDataExists) {
-			selectedServices.unshift({ nombre: 'Datos Personales', tipo: 0 })
-		}
-		// Ordenar los servicios seleccionados por tipo
-		selectedServices.sort((a, b) => a.tipo - b.tipo)
-		// Genero un registro en la DB con los servicios seleccionados
+			// Si 'Datos Personales' no está en la lista, agregarlo
+			if (!personalDataExists) {
+				selectedServices.unshift({ nombre: 'Datos Personales', tipo: 0 })
+			}
+			// Ordenar los servicios seleccionados por tipo
+			selectedServices.sort((a, b) => a.tipo - b.tipo)
+			// Genero un registro en la DB con los servicios seleccionados
 
-		const baseUrl = import.meta.env.VITE_APP_API_URL
-		const url = `${baseUrl}/createRequestService`
-		const sendData = { services: selectedServices }
-		try {
-			const data = await request(url, 'POST', sendData)
-			console.log(data)
-		} catch (error) {
-			console.log()
-			const { message } = error.response.data
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: message,
-			})
-			return
+			const baseUrl = import.meta.env.VITE_APP_API_URL
+			const url = `${baseUrl}/createRequestService`
+			const sendData = { services: selectedServices }
+			try {
+				const data = await request(url, 'POST', sendData)
+				console.log(data)
+			} catch (error) {
+				console.log()
+				const { message } = error.response.data
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: message,
+				})
+				return
+			}
 		}
+
 		dispatch({ type: 'select_services', selectedServices })
 		dispatch({ type: 'next' })
 		navigate(`/multiStepForm/Datos Personales`)

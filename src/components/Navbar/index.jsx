@@ -80,7 +80,7 @@ const Navbar = () => {
 		{
 			name: 'Solicitar un Servicio',
 			icon: <FaHandshake />,
-			link: '/SelectServices',
+			link: '/MultiStepForm',
 			level: [1, 2, 3],
 		},
 		{

@@ -29,7 +29,7 @@ export function validarFecha(anio, mes, dia) {
 	return true
 }
 
-export const formatDateForInput = (date) => {
+export const formatDateForInput = (date, timezone = false) => {
 	// Suponiendo que date es la cadena de fecha en formato ISO 8601
 	const isoDateString = date
 	// Convertirlo a un objeto Date
@@ -42,6 +42,7 @@ export const formatDateForInput = (date) => {
 	const formattedMonth = month.toString().padStart(2, '0')
 	const formattedDay = day.toString().padStart(2, '0')
 	// Combinarlos en el formato "yyyy-MM-dd"
+	if (timezone) return `${formattedDay}-${formattedMonth}-${year}`
 	const formattedDate = `${year}-${formattedMonth}-${formattedDay}`
 	return formattedDate
 }
