@@ -24,9 +24,15 @@ const SelectServices = ({ services }) => {
 					if (serviceRequest) {
 						const dateFormated = formatDateForInput(serviceRequest.createdAt, true)
 						Swal.fire({
-							icon: 'success',
-							title: 'Exito',
-							html: `Encontramos la siguiente solicitud de la fecha: ${dateFormated}. Desea continuar con ella?`,
+							icon: 'question',
+							title: 'Atencion',
+							html: `Encontramos la siguiente solicitud de la fecha: <b>${dateFormated}</b> <br>
+							Los servicios solicitados son: <br>
+							${serviceRequest.items.map((item) => `<b>${item.service_name}</b>`).join(', ')}. <br> 
+							¿Desea continuar con ella?`,
+							showCancelButton: true,
+							confirmButtonText: 'Si, seguir con esta solicitud',
+							cancelButtonText: 'Cancelar',
 						}).then((result) => {
 							if (result.isConfirmed) {
 								// Armo el objeto con los servicios seleccionados
