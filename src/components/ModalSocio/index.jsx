@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CardCustom from '../CardCustom'
 import { Close } from '@mui/icons-material'
 import { Box, Tab, Tabs, TextField } from '@mui/material'
@@ -9,9 +9,10 @@ import TableCustomer from '../TableCustomer'
 import { request } from '../../utils/request'
 import Swal from 'sweetalert2'
 import { UserContext } from '../../contexts/UserContext'
+import Dropdown from '../Dropdown'
 
 const ModalSocio = ({ handleCloseModal }) => {
-	const { usuario, setUsuario } = useContext(UserContext)
+	const { usuario, setUsuario, account } = useContext(UserContext)
 	const [value, setValue] = useState(0)
 	const [number, setNumber] = useState('')
 	const handleChange = (event, newValue) => {
@@ -66,8 +67,18 @@ const ModalSocio = ({ handleCloseModal }) => {
 			})
 		}
 	}
+	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
+	const changeScreen = () => {
+		setWidthPhone(window.innerWidth <= 768)
+	}
+	useEffect(() => {
+		window.addEventListener('resize', changeScreen)
+		return () => {
+			window.removeEventListener('resize', changeScreen)
+		}
+	}, [])
 	return (
-		<CardCustom className={' w-1/3 max-sm:w-full rounded-xl bg-white shadow-lg'}>
+		<CardCustom className={'lg:w-1/3 w-2/3 max-sm:w-full rounded-xl bg-white shadow-lg'}>
 			<div className='rounded-xl '>
 				<div className='relative rounded-t-xl bg-slate-200 p-5 '>
 					<h3 className='text-gray-900 m-0 font-bold text-center font-sans' id='exampleModalLabel'>
@@ -82,15 +93,16 @@ const ModalSocio = ({ handleCloseModal }) => {
 					<Box sx={{ width: '100%' }}>
 						<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 							<Tabs value={value} onChange={handleChange} aria-label='basic tabs example'>
-								<Tab label='Ver socios' {...a11yProps(0)} />
-								<Tab label='Agregar socio' {...a11yProps(1)} />
+								{widthPhone ? <Tab label='Cambiar' {...a11yProps(2)} /> : null}
+								<Tab label='listado' {...a11yProps(0)} />
+								<Tab label='Agregar' {...a11yProps(1)} />
 							</Tabs>
 						</Box>
 						<Box sx={{ padding: 2, border: 2, borderTop: 0, borderRadius: '0px 0px 10px 10px', borderColor: 'divider' }}>
-							<CustomTabPanel className={'flex flex-col'} value={value} index={0}>
+							<CustomTabPanel className={'flex flex-col'} value={value} index={widthPhone ? 1 : 0}>
 								<TableCustomer />
 							</CustomTabPanel>
-							<CustomTabPanel className={'flex flex-col'} value={value} index={1}>
+							<CustomTabPanel className={'flex flex-col'} value={value} index={widthPhone ? 2 : 1}>
 								<div className='w-full flex flex-row justify-evenly items-center'>
 									<TextField type='tel' value={number} onChange={handleChangeCustomer} className='w-3/4' label='Ingrese un número de socio' variant='outlined' />
 									<Button onclick={() => handleAddCustomer()} props={{ class: 'bg-green-500' }}>
@@ -98,6 +110,13 @@ const ModalSocio = ({ handleCloseModal }) => {
 									</Button>
 								</div>
 							</CustomTabPanel>
+							{widthPhone ? (
+								<CustomTabPanel className={'flex flex-col'} value={value} index={0}>
+									<div className='w-full flex flex-row justify-evenly items-center'>
+										<Dropdown data={account} titleColor='bg-slate-100 text-gray-900 hover:bg-slate-300' childrenColor='text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800' />
+									</div>
+								</CustomTabPanel>
+							) : null}
 						</Box>
 					</Box>
 				</div>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import ButtonAnimate from '../ButtonAnimate'
 import { LuDollarSign } from 'react-icons/lu'
-import { FaChartBar, FaFileInvoiceDollar, FaPlus, FaQuestion, FaReceipt } from 'react-icons/fa6'
+import { FaChartBar, FaFileInvoiceDollar, FaQuestion, FaReceipt, FaUser } from 'react-icons/fa6'
 import CardCustom from '../CardCustom'
 import LoaderComponent from '../Loader'
 import TableNew from '../TableNew'
@@ -10,28 +10,45 @@ import { Box, Modal } from '@mui/material'
 import ModalHelpHome from '../ModalHelpHome'
 import { Link } from 'react-router-dom'
 import { InvoiceDeus, columns, columnsCel } from '../../utils/invoice'
-import { FaExchangeAlt } from 'react-icons/fa'
 import { UserContext } from '../../contexts/UserContext'
+import ModalSocio from '../ModalSocio'
 function DashboardLvl2() {
 	const [invoices, setInvoices] = useState([])
 	const [columnsTable, setColumnsTable] = useState([])
 	const [openModalHelp, setOpenModalHelp] = useState(false)
+	const [openModalSocio, setOpenModalSocio] = useState(false)
 	const [amountpay, setAmountpay] = useState(0)
 	const [amountTotalpay, setAmountTotalpay] = useState(0)
 	const handleOpenModalHelp = () => setOpenModalHelp(true)
 	const handleCloseModalHelp = () => setOpenModalHelp(false)
-	const { usuario, account } = useContext(UserContext)
+	const handleOpenModalSocio = () => setOpenModalSocio(true)
+	const handleCloseModalSocio = () => setOpenModalSocio(false)
+	const { account } = useContext(UserContext)
+
+	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
+	const changeScreen = () => {
+		setWidthPhone(window.innerWidth <= 768)
+	}
+	useEffect(() => {
+		window.addEventListener('resize', changeScreen)
+		return () => {
+			window.removeEventListener('resize', changeScreen)
+		}
+	}, [])
+
 	useEffect(() => {
 		if (account.length !== 0) {
 			const invoiceList = async () => {
 				try {
 					const data = await InvoiceDeus(account)
 					let dataTable = []
-					if (window.innerWidth < 768) {
-						dataTable = data.map((item) => ({
-							account: item.account,
-							info: { ...item },
-						}))
+					if (widthPhone) {
+						if (typeof data === 'object') {
+							dataTable = data.map((item) => ({
+								account: item.account,
+								...item,
+							}))
+						}
 						setColumnsTable(columnsCel)
 					} else {
 						dataTable = data
@@ -44,7 +61,7 @@ function DashboardLvl2() {
 			}
 			invoiceList()
 		}
-	}, [screen.width, account])
+	}, [widthPhone, account])
 	const handleAmountPay = (amount) => {
 		setAmountpay(amount[0])
 		setAmountTotalpay(amount[1])
@@ -57,20 +74,20 @@ function DashboardLvl2() {
 					<img src='https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png' className='w-full' />
 					<div className='pt-4 w-3/4 mt-2'>
 						<p className='mb-2'>
-							NIVEL: <b>{usuario.level}</b>
+							NIVEL: <b>{account.level}</b>
 						</p>
 						<p className='mb-2'>
-							N° de Socio: <b>{usuario.number_customer}</b>
+							N° de Socio: <b>{account.num}</b>
 						</p>
-						<p className='mb-2'>{usuario.name_customer}</p>
+						<p className='mb-2'>{account.name}</p>
 					</div>
-					<div className='pt-4 w-1/4'>
-						<div className='m-1 justify-center flex'>
-							<ButtonAnimate icon={<FaExchangeAlt className='text-white' />} text={'Socio'} bgIcon={'bg-emerald-600'} color={'text-white'} animation={'false'} />
+					<div className='pt-4 w-1/4 flex items-center justify-center'>
+						<div className='justify-center flex'>
+							<ButtonAnimate onClick={() => handleOpenModalSocio()} icon={<FaUser className='text-white' />} text={'Socio'} bgIcon={'bg-emerald-600'} color={'text-white'} animation={'false'} />
 						</div>
-						<div className='mt-2 justify-center flex'>
+						{/* <div className='mt-2 justify-center flex'>
 							<ButtonAnimate icon={<FaPlus className='text-white' />} text={'Seleccionar Socio'} bgIcon={'bg-amber-300'} color={'text-white'} animation={'false'} />
-						</div>
+						</div> */}
 					</div>
 				</div>
 				<div className='flex  flex-wrap '>
@@ -140,13 +157,13 @@ function DashboardLvl2() {
 							<ButtonAnimate onClick={handleOpenModalHelp} icon={<FaQuestion className='text-white' />} text={'Ayuda'} bgIcon={'bg-gray-400'} color={'text-white'} />
 						</div>
 					</div>
-					{invoices.length < 1 ? (
+					{columnsTable.length < 1 ? (
 						<div className='flex w-full justify-center items-center'>
 							<LoaderComponent />
 						</div>
 					) : (
 						<div className={`relative overflow-x-auto w-full rounded-xl`}>
-							<TableNew data={invoices} columns={columnsTable} groupBy={'account'} checkbox={true} amountPay={handleAmountPay} />
+							<TableNew widthPhone data={invoices} columns={columnsTable} groupBy={'account'} checkbox={true} amountPay={handleAmountPay} />
 						</div>
 					)}
 					{amountpay > 0 ? (
@@ -160,6 +177,11 @@ function DashboardLvl2() {
 			<Modal className='flex justify-center items-center' open={openModalHelp} onClose={handleCloseModalHelp} aria-labelledby='parent-modal-title' aria-describedby='parent-modal-description'>
 				<Box className={'w-full flex justify-center items-center'}>
 					<ModalHelpHome handleCloseModal={handleCloseModalHelp} />
+				</Box>
+			</Modal>
+			<Modal className='flex justify-center items-center !z-50' open={openModalSocio} onClose={handleCloseModalSocio} aria-labelledby='parent-modal-title' aria-describedby='parent-modal-description'>
+				<Box className={'w-full flex justify-center items-center'}>
+					<ModalSocio handleCloseModal={handleCloseModalSocio} />
 				</Box>
 			</Modal>
 		</>
