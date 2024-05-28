@@ -1,35 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import InputGroup from '../../components/InputGroup'
-import Axios from 'axios'
+import InputGroup from '../../../components/InputGroup'
+// import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { Button, CircularProgress } from '@mui/material'
-
+import { request } from '../../../utils/request'
 function RestorePassword() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
   const [spinner, setSpinner] = useState(false)
-  const handleChangeMail = (e) => {
-    setEmail(e.target.value)
-  }
 
-  const passwordRecover = async () => {
+  const passwordRecover = async (data) => {
     setSpinner(true)
-    const url = 'http://cooptech.com.ar:30888/api/password_recover'
-    // const url = "http://localhost:8000/api/password_recover";
-    const info = { email }
+    const url = import.meta.env.VITE_APP_API_URL + '/password_recover'
     try {
-      const responseData = await Axios.post(url, info)
-      if (responseData === 'Error') {
-        alert('No existe el usuario')
-        return
+      const responseData = await request(url, 'POST', data)
+      // const responseData = await Axios.post(url, data)
+      if (responseData.status !== 200) {
+        throw new Error('No existe el usuario')
       }
       Swal.fire({
         icon: 'success',
         title: 'Perfecto!',
-        text: `Se ha enviado un correo a ${info.email}, para restablecer su contraseña`
+        text: `Se ha enviado un correo a ${data.email}, para restablecer su contraseña`
       })
     } catch (error) {
       console.error('Error en la solicitud:', error)
@@ -45,6 +39,11 @@ function RestorePassword() {
       navigate('/Login')
     }
   }
+
+  useEffect(() => {
+    document.body.classList.remove('dark')
+  }, [])
+
   const {
     register,
     formState: { errors },
@@ -54,7 +53,7 @@ function RestorePassword() {
     <>
       <h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Recuperar contraseña </h2>
       <form onSubmit={handleSubmit((data) => passwordRecover(data))}>
-        <InputGroup onChange={handleChangeMail} required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} value={email} />
+        <InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
         <div className='w-full mt-3 flex text-center items-center justify-center'>
           <Button
             onClick={() => {
