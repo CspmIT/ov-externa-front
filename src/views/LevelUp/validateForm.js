@@ -25,14 +25,15 @@ const updateLevel = async (data) => {
 
 const validateForm = async (data, navigate) => {
 	try {
-		const nombreSocio = await getCustomer(data)
-		if (nombreSocio.status !== 200) {
-			throw new Error(nombreSocio.error)
-		}
-		// Muestro una alerta con el nombre del socio
+		// const nombreSocio = await getCustomer(data)
+		// if (nombreSocio.status !== 200) {
+		// 	throw new Error(nombreSocio.error)
+		// }
+		// // Muestro una alerta con el nombre del socio
+		// console.log(data)
 		const swal = await Swal.fire({
-			title: '¿Este es el socio que deseas agregar?',
-			text: nombreSocio.data,
+			title: '¿Deseas subir a nivel 2 con el socio?',
+			text: data.last_name_customer + ' ' + data.name_customer,
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Si, agregar',

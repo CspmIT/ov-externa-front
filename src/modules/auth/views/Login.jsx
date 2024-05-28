@@ -102,10 +102,11 @@ const Login = () => {
 				navigate('/Login')
 			})
 		} catch (error) {
+			console.log(error)
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atención!',
-				text: error.response.data.message,
+				text: error.response.data,
 				confirmButtonText: 'Reenviar Token',
 				allowOutsideClick: false,
 				showCancelButton: true,
@@ -122,14 +123,13 @@ const Login = () => {
 		if (token && idUser && (!usuario || !usuario.length)) {
 			validacionToken(token, idUser)
 		}
-		const tokenCookie = Cookies.get('token')
-		if (tokenCookie && !token) {
-			navigate('/')
-		} else {
+		const authUser = Cookies.get('token')
+		const storedUser = localStorage.getItem('usuario')
+		if (!authUser || !storedUser) {
 			localStorage.removeItem('usuario')
-			navigate('/Login')
+			Cookies.remove('token')
 		}
-	}, [idUser, token])
+	}, [])
 
 	const {
 		register,
