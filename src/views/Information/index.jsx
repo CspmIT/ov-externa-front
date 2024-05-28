@@ -4,7 +4,7 @@ import { Carousel } from 'react-responsive-carousel'
 import { FaQuestion } from 'react-icons/fa'
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io'
 import Cardstyles from '../../components/CardBasic/Card.module.css'
-import CardBasic from '../../components/CardBasic'
+import CardCustom from '../../components/CardCustom'
 
 const Information = () => {
   const [dropMode, setdropMode] = useState('hidden')
@@ -21,75 +21,51 @@ const Information = () => {
         <h5>Tutoriales Nivel 3{iconMode}</h5>
         <div className={`w-full flex flex-wrap justify-center ${dropMode}`}>
           <div className='w-full md:w-1/2 xl:w-1/4'>
-            <a href='https://app.coopmorteros.coop/public/documentos/SubirNivel3.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo subo a ',
-                  subtitle: 'Nivel 3?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
-            </a>
+            <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+              <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                <FaQuestion className='w-full' />
+              </div>
+              <div className="flex flex-col w-full">
+                <p className="text-xl font-bold m-0 mb-1">¿Cómo subo a </p>
+                <p className={`text-yellow-500 m-0`}>Nivel 3?</p>
+              </div>
+            </CardCustom>
           </div>
           <div className='w-full md:w-1/2 xl:w-1/4'>
             <a href='https://app.coopmorteros.coop/public/documentos/CambiarPlanInternet.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo cambio mi ',
-                  subtitle: 'Plan de Internet?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
+              <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+                <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                  <FaQuestion className='w-full' />
+                </div>
+                <div className="flex flex-col w-full">
+                  <p className="text-xl font-bold m-0 mb-1">¿Cómo cambio mi </p>
+                  <p className={`text-yellow-500 m-0`}>Plan de Internet?</p>
+                </div>
+              </CardCustom>
             </a>
           </div>
           <div className='w-full md:w-1/2 xl:w-1/4'>
-            <a href='https://app.coopmorteros.coop/public/documentos/CambiarCredencialesWiFi.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo cambio mis ',
-                  subtitle: 'Credenciales de WIFI?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
-            </a>
+            <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+              <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                <FaQuestion className='w-full' />
+              </div>
+              <div className="flex flex-col w-full">
+                <p className="text-xl font-bold m-0 mb-1">¿Cómo cambio mis </p>
+                <p className={`text-yellow-500 m-0`}>Credenciales de WIFI?</p>
+              </div>
+            </CardCustom>
           </div>
           <div className='w-full md:w-1/2 xl:w-1/4'>
             <a href='https://app.coopmorteros.coop/public/documentos/ActivarPackTV.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo activo un ',
-                  subtitle: 'Pack de TV?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
+              <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+                <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                  <FaQuestion className='w-full' />
+                </div>
+                <div className="flex flex-col w-full">
+                  <p className="text-xl font-bold m-0 mb-1">¿Cómo activo un </p>
+                  <p className={`text-yellow-500 m-0`}>Pack de TV?</p>
+                </div>
+              </CardCustom>
             </a>
           </div>
         </div>
@@ -128,219 +104,108 @@ const Information = () => {
           </div>
         </div>
         <div className='w-full md:w-1/2'>
-          <CardBasic props={{ phone: '', title: <span>Adhesión Débito / Automático / Tarjeta de Crédito</span>, widht: 'w-auto', bg: 'bg-white', positionBtn: 'absolute' }} />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <p className="text-xl font-bold m-0 mb-1">Adhesión Débito / Automático / Tarjeta de Crédito</p>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/2'>
-          <CardBasic props={{ phone: '', title: <span>Adhesión Débito / Automático / Caja de Ahorro - CC</span>, widht: 'w-auto', bg: 'bg-white', positionBtn: 'absolute' }} />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <p className="text-xl font-bold m-0 mb-1">Adhesión Débito / Automático / Caja de Ahorro - CC</p>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Atención al Cliente</b>
-                  </h4>
-                  Lunes a Viernes
-                  <br />
-                  <i className='fas fa-clock pr-1'></i> 07:00 a 13:00hs
-                  <br />
-                  <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    (03562) - 402000
-                  </a>
-                  <br />
-                  <a href='https://wa.me/543562670000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    (03562) - 670000
-                  </a>
-                  <br />
-                  <a href='mailto:info@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    info@coopmorteros.coop{' '}
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <p className='font-bold m-0 mb-1 text-center'>
+              <h4 className='font-bold'>Atención al Cliente</h4>
+                <p className='m-0'>Lunes a Viernes<br /> 07:00 a 13:00hs</p>
+                <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>(03562) - 402000</a><br />
+                <a href='https://wa.me/543562670000' target='_blank' rel='noreferrer' className='text-blue-400'>(03562) - 670000</a><br />
+                <a href='mailto:info@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'>info@coopmorteros.coop</a>
+              </p>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Banco de Sangre </b>
-                  </h4>
-                  Lunes a Viernes
-                  <br />
-                  <i className='fas fa-clock pr-1'></i> 06:00 a 13:00hs
-                  <br />
-                  <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    (03562) - 405001{' '}
-                  </a>
-                  <br />
-                  <a href='https://wa.me/543562670000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    (03562) - 451683{' '}
-                  </a>
-                  <br />
-                  <a href='mailto:atencionbancodesangre@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    atencionbancodesangre@coopmorteros.coop{' '}
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <p className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Banco de Sangre</h4>
+                <p className='m-0'>Lunes a Viernes<br /> 06:00 a 13:00hs</p>
+                <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>(03562) - 405001</a><br />
+                <a href='https://wa.me/543562670000' target='_blank' rel='noreferrer' className='text-blue-400'>(03562) - 451683</a><br />
+                <a href='mailto:atencionbancodesangre@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'>atencionbancodesangre@coopmorteros.coop</a>
+              </p>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Canal 50</b>
-                  </h4>
-                  Lunes a Viernes
-                  <br />
-                  <i className='fas fa-clock pr-1'></i> 07:00 a 13:00hs
-                  <br />
-                  <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    (03562) - 403458{' '}
-                  </a>
-                  <br />
-                  <a href='https://wa.me/543562670000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    (03562) - 411929{' '}
-                  </a>
-                  <br />
-                  <a href='mailto:prensa@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    prensa@coopmorteros.coop{' '}
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <div className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Canal 50 </h4>
+                <p className='m-0'>Lunes a Viernes<br /> 07:00 a 13:00hs</p>
+                <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400 w-full'>(03562) - 403458</a><br />
+                <a href='https://wa.me/543562670000' target='_blank' rel='noreferrer' className='text-blue-400 w-full'>(03562) - 411929</a><br />
+                <a href='mailto:prensa@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400 w-full'>prensa@coopmorteros.coop</a>
+              </div>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Coopnet</b>
-                  </h4>
-                  <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    (03562) - 404700{' '}
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <div className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Coopnet </h4>
+                <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'> (03562) - 404700 </a>
+              </div>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Reparto </b>
-                  </h4>
-                  <a href='mailto:reparto@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    reparto@coopmorteros.coop
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <div className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Reparto </h4>
+                <a href='mailto:reparto@coopmorteros.coop' target='_blank' rel='noreferrer' className='text-blue-400'> reparto@coopmorteros.coop</a>
+              </div>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Sepelio </b>
-                  </h4>
-                  <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    {' '}
-                    (03562) - 402625{' '}
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <div className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Sepelio </h4>
+                <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>(03562) - 402625</a>
+              </div>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Cajas</b>
-                  </h4>
-                  Lunes a Viernes
-                  <br />
-                  <i className='fas fa-clock pr-1'></i> 07:00 a 12:30hs
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <div className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Cajas </h4>
+                <p className='m-0'>Lunes a Viernes <br />07:00 a 12:30hs </p>
+              </div>
+            </div>
+          </CardCustom>
         </div>
         <div className='w-full md:w-1/3'>
-          <CardBasic
-            props={{
-              phone: '',
-              subtitle: (
-                <p className='w-full text-center leading-6'>
-                  <h4>
-                    <b>Crédito y Cobranza </b>
-                  </h4>
-                  Lunes a Viernes
-                  <br />
-                  <i className='fas fa-clock pr-1'></i> 07:00 a 12:30hs
-                  <br />
-                  <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>
-                    (03562) - 402000{' '}
-                  </a>
-                </p>
-              ),
-              widht: 'w-auto',
-              bg: 'bg-white',
-              positionBtn: 'absolute'
-            }}
-          />
+          <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+            <div className="flex flex-col w-full">
+              <div className='font-bold m-0 mb-1 text-center'>
+                <h4 className='font-bold'>Crédito y Cobranza </h4>
+                <p className='m-0'>Lunes a Viernes <br />07:00 a 12:30hs </p>
+                <a href='tel:+54-03562-402000' target='_blank' rel='noreferrer' className='text-blue-400'>(03562) - 402000</a>
+              </div>
+            </div>
+          </CardCustom>
         </div>
       </div>
       <div className={`mt-10 rounded-xl p-10 bg-gray-200 dark:bg-zinc-800`}>
@@ -348,74 +213,54 @@ const Information = () => {
         <div className={`w-full flex flex-wrap justify-center`}>
           <div className='w-full md:w-1/2 xl:w-1/4'>
             <a href='https://app.coopmorteros.coop/public/documentos/RegistroV2.0.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo me ',
-                  subtitle: 'REGISTRO?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
+              <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+                <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                  <FaQuestion className='w-full' />
+                </div>
+                <div className="flex flex-col w-full">
+                  <p className="text-xl font-bold m-0 mb-1">¿Cómo me </p>
+                  <p className={`text-yellow-500 m-0`}>REGISTRO?</p>
+                </div>
+              </CardCustom>
             </a>
           </div>
           <div className='w-full md:w-1/2 xl:w-1/4'>
             <a href='https://app.coopmorteros.coop/public/documentos/SubirDeNivelV1.0.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo subo de ',
-                  subtitle: 'NIVEL?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
+              <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+                <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                  <FaQuestion className='w-full' />
+                </div>
+                <div className="flex flex-col w-full">
+                  <p className="text-xl font-bold m-0 mb-1">¿Cómo subo de </p>
+                  <p className={`text-yellow-500 m-0`}>NIVEL?</p>
+                </div>
+              </CardCustom>
             </a>
           </div>
           <div className='w-full md:w-1/2 xl:w-1/4'>
             <a href='https://app.coopmorteros.coop/public/documentos/EfectuarPagosV3.0.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo realizo un ',
-                  subtitle: 'PAGO?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
+              <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+                <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                  <FaQuestion className='w-full' />
+                </div>
+                <div className="flex flex-col w-full">
+                  <p className="text-xl font-bold m-0 mb-1">¿Cómo realizo un </p>
+                  <p className={`text-yellow-500 m-0`}>PAGO?</p>
+                </div>
+              </CardCustom>
             </a>
           </div>
           <div className='w-full md:w-1/2 xl:w-1/4'>
             <a href='https://app.coopmorteros.coop/public/documentos/TurnosOnlineV2.0.pdf' target='_bank'>
-              <CardBasic
-                props={{
-                  phone: '',
-                  title: '¿Cómo reservo un ',
-                  subtitle: 'TURNO?',
-                  icon: <FaQuestion className='w-full' />,
-                  color: 'text-yellow-500',
-                  bgIcon: 'fondoPrincipal',
-                  colorIcon: 'text-yellow-900',
-                  widht: 'w-auto',
-                  bg: 'bg-white',
-                  positionBtn: 'absolute'
-                }}
-              />
+              <CardCustom className={`relative rounded-[2.5em] m-2 p-8 max-sm:mt-3 hover:scale-95 transition ease-in-out duration-300 flex items-center shadowCards dark:bg-zinc-700 dark:text-gray-300`}>
+                <div className={`absolute right-5 max-xl:right-2 p-2 rounded-full text-xl bg-yellow-400 text-yellow-900`}>
+                  <FaQuestion className='w-full' />
+                </div>
+                <div className="flex flex-col w-full">
+                  <p className="text-xl font-bold m-0 mb-1">¿Cómo reservo un </p>
+                  <p className={`text-yellow-500 m-0`}>TURNO?</p>
+                </div>
+              </CardCustom>
             </a>
           </div>
         </div>

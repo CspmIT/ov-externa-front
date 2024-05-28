@@ -98,6 +98,7 @@ function App() {
     { path: "/levelup2", element: <LevelUp2 /> },
     { path: "/authentication", element: <Authentication /> },
     { path: "/myconsumption", element: <MyConsumption /> },
+    { path: "/Opinion", element: <Opinion /> },
   ];
   return (
     <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">
