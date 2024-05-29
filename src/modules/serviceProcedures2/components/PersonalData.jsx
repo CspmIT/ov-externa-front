@@ -11,7 +11,7 @@ const PersonalData = () => {
 	// Hooks
 	const [state, dispatch] = useRegForm()
 	const [searchExecuted, setSearchExecuted] = useState(false)
-
+	const [errorSearch, setErrorSearch] = useState(false)
 	const {
 		register,
 		handleSubmit,
@@ -26,7 +26,6 @@ const PersonalData = () => {
 	const watchCUIT = watch('CUIT')
 	const watchTypePerson = watch('typePerson')
 
-	console.log(state)
 	const step = state?.step
 
 	useEffect(() => {
@@ -50,9 +49,11 @@ const PersonalData = () => {
 	// Cuando se hace click en buscar limpio los datos del objeto person
 	const searchPerson = async () => {
 		dispatch({ type: 'reset_person' })
-		console.log(errors)
-		console.log(isValid)
-		if (!isValid) return false
+		if (!isValid) {
+			setErrorSearch(true)
+			return false
+		}
+		setErrorSearch(false)
 		const sendData = {
 			number_document: watchTypePerson === '1' ? watchDNI : watchCUIT,
 			type_person: watchTypePerson,
@@ -62,7 +63,8 @@ const PersonalData = () => {
 
 		try {
 			const response = await request(url, 'POST', sendData)
-			dispatch({ type: 'set_person', data: response.data[0] })
+
+			dispatch({ type: 'set_person', data: response.data[0] ? response.data[0] : response.data })
 		} catch (error) {
 			Swal.fire({
 				icon: 'warning',
@@ -77,7 +79,7 @@ const PersonalData = () => {
 
 	function renderForm() {
 		if (watchTypePerson === '1' && state?.person) {
-			return <PersonalForm setValues={setValue} watch={watch} person={state?.person} errors={errors} register={register} />
+			return <PersonalForm watch={watch} person={state?.person} errors={errors} register={register} />
 		} else {
 			return <h1>Empresa</h1>
 		}
@@ -102,7 +104,7 @@ const PersonalData = () => {
 							{/* Si la persona ya existe no muestro el input de busqueda ni el boton */}
 							{!state?.person && (
 								<>
-									<TextField error={!isValid} label='DNI' {...register('DNI', { required: true })} className='w-4/12' helperText={!isValid && 'El campo es requerido'} />
+									<TextField error={errorSearch} label='DNI' {...register('DNI', { required: true })} className='w-4/12' helperText={errorSearch && 'El campo es requerido'} />
 									<Button className='w-1/12 h-full' variant='outlined' type='button' onClick={searchPerson}>
 										Buscar
 									</Button>

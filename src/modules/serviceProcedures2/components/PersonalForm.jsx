@@ -1,14 +1,11 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import { separateCellPhone } from '../../../utils/cellphoneFunctions'
 import { validarFecha } from '../../../utils/dateFunction'
 import InputAdornment from '@mui/material/InputAdornment'
 import { dniArray, monthArray, impositiveSituationArray, daysArray, separateProcopDate } from '../../serviceProcedures/utils/data'
 
-const PersonalForm = ({ person, register, errors, setValues, watch }) => {
-	setValues('fullName', person?.APELLIDOS)
-	setValues('numDoc', person?.NUM_DNI)
-	setValues('email', person?.EMAIL)
-
-	const { day, month, year } = separateProcopDate(person.FEC_NAC)
+const PersonalForm = ({ person, register, errors, watch }) => {
+	const { day, month, year } = separateProcopDate(person?.Person_physical?.born_date || person.FEC_NAC)
 	// Valido la fecha de nacimiento
 	const validateDate = () => {
 		const anio = watch('año')
@@ -16,34 +13,52 @@ const PersonalForm = ({ person, register, errors, setValues, watch }) => {
 		const dia = watch('dia')
 		return validarFecha(anio, mes, dia)
 	}
+	console.log(person)
+	const { characteristic, number } = separateCellPhone(person?.cell_phone)
+	const { characteristic: characteristicFijo, number: numberFijo } = separateCellPhone(person?.fixed_phone)
 	return (
 		<div className='flex flex-col w-full gap-3'>
-			<div className='w-full flex items-center justify-center gap-3 max-sm:flex-col'>
-				<TextField
-					error={errors.APELLIDOS}
-					label='Apellido y Nombre completo'
-					defaultValue={person.APELLIDOS}
-					{...register('APELLIDOS', {
-						required: true,
-					})}
-					className='w-1/2 max-sm:w-full'
-					helperText={errors.APELLIDOS && 'El campo es requerido'}
-				/>
-				<FormControl className='w-1/2 max-sm:w-full' error={errors.SEXO}>
-					<InputLabel id='sexo'>Sexo *</InputLabel>
-					<Select labelId='sexo' label='Sexo *' id='sexo' defaultValue={person.SEXO || ''} {...register('SEXO', { required: true })}>
-						<MenuItem value='F'>Femenino</MenuItem>
-						<MenuItem value='M'>Masculino</MenuItem>
-					</Select>
-					{/* Uso la validacion de react hook form */}
-					{errors.SEXO && <FormHelperText>El campo es requerido </FormHelperText>}
-				</FormControl>
+			<div className='w-full flex gap-3 max-sm:flex-col'>
+				<div className='w-1/2 gap-3 flex max-sm:w-full'>
+					<TextField
+						error={errors.name}
+						label='Nombre completo'
+						defaultValue={person?.Person_physical?.name || person.APELLIDOS || person.name}
+						{...register('name', {
+							required: true,
+						})}
+						className='w-1/2 max-sm:w-full'
+						helperText={errors.name && 'El campo es requerido'}
+					/>
+					<TextField
+						error={errors.last_name}
+						label='Apellido'
+						defaultValue={person?.Person_physical?.last_name || person.APELLIDOS || person.last_name}
+						{...register('last_name', {
+							required: true,
+						})}
+						className='w-1/2 max-sm:w-full'
+						helperText={errors.last_name && 'El campo es requerido'}
+					/>
+				</div>
+
+				<div className='w-1/2 gap-3 flex max-sm:w-full'>
+					<FormControl className='w-full max-sm:w-full' error={errors.SEXO}>
+						<InputLabel id='sexo'>Sexo *</InputLabel>
+						<Select labelId='sexo' label='Sexo *' id='sexo' defaultValue={person?.Person_physical?.id_type_sex || person.SEXO} {...register('SEXO', { required: true })}>
+							<MenuItem value='1'>Femenino</MenuItem>
+							<MenuItem value='2'>Masculino</MenuItem>
+						</Select>
+						{/* Uso la validacion de react hook form */}
+						{errors.SEXO && <FormHelperText>El campo es requerido </FormHelperText>}
+					</FormControl>
+				</div>
 			</div>
 			<div className='w-full flex gap-3 max-sm:flex-col'>
 				<div className='w-1/2 gap-3 flex max-sm:w-full'>
 					<FormControl className='w-1/3' error={errors.TIP_DNI}>
 						<InputLabel id='TIP_DNI'>Tipo de Documento</InputLabel>
-						<Select labelId='TIP_DNI' label='Tipo de Documento' id='TIP_DNI' defaultValue={person.TIP_DNI} {...register('TIP_DNI', { required: true })}>
+						<Select labelId='TIP_DNI' label='Tipo de Documento' id='TIP_DNI' defaultValue={person.type_document || person?.TIP_DNI} {...register('TIP_DNI', { required: true })}>
 							{dniArray.map((item) => (
 								<MenuItem key={item.id} value={item.id}>
 									{item.name}
@@ -57,7 +72,7 @@ const PersonalForm = ({ person, register, errors, setValues, watch }) => {
 						{...register('NUM_DNI', { required: true })}
 						className='w-2/3'
 						helperText={errors.NUM_DNI && 'El campo es requerido'}
-						defaultValue={person.NUM_DNI}
+						defaultValue={person?.NUM_DNI || person.number_document}
 					/>
 				</div>
 				<div className='w-1/2 gap-3 flex max-sm:w-full'>
@@ -96,16 +111,23 @@ const PersonalForm = ({ person, register, errors, setValues, watch }) => {
 			</div>
 			<div className='w-full flex items-center justify-center gap-3'>
 				<div className='w-1/2'>
-					<TextField className='w-full' defaultValue={person.EMAIL} {...register('EMAIL', { required: true })} error={errors.EMAIL} label='Email' helperText={errors.EMAIL && 'El campo es requerido'} />
+					<TextField
+						className='w-full'
+						defaultValue={person.EMAIL || person.email}
+						{...register('EMAIL', { required: true })}
+						error={errors.EMAIL}
+						label='Email'
+						helperText={errors.EMAIL && 'El campo es requerido'}
+					/>
 				</div>
 				<div className='w-1/2 flex gap-3'>
 					<TextField
 						error={errors.caracteristica}
 						label='Caracteristica celular'
-						{...register('caracteristica', { required: true })}
+						{...register('characteristic', { required: true })}
 						className='w-1/4'
 						helperText={errors.caracteristica && 'El campo es requerido'}
-						defaultValue={person?.caracteristica}
+						defaultValue={characteristic || person?.characteristic}
 						InputProps={{
 							maxLength: 4,
 							startAdornment: <InputAdornment position='start'>+54 0</InputAdornment>,
@@ -114,9 +136,9 @@ const PersonalForm = ({ person, register, errors, setValues, watch }) => {
 					<TextField
 						error={errors.telefono}
 						label='Numero celular'
-						{...register('telefono', { required: true })}
+						{...register('number', { required: true })}
 						className='w-3/4'
-						defaultValue={person?.telefono}
+						defaultValue={number || person?.number}
 						helperText={errors.telefono && 'El campo es requerido'}
 						InputProps={{
 							startAdornment: <InputAdornment position='start'>15</InputAdornment>,
@@ -130,17 +152,17 @@ const PersonalForm = ({ person, register, errors, setValues, watch }) => {
 						label='Caracteristica fijo'
 						{...register('caracteristicaFijo')}
 						className='w-1/4'
-						defaultValue={person?.caracteristicaFijo}
+						defaultValue={characteristicFijo || person?.caracteristicaFijo}
 						InputProps={{
 							startAdornment: <InputAdornment position='start'>+54 0</InputAdornment>,
 						}}
 					/>
-					<TextField label='Numero fijo' defaultValue={person?.numeroFijo} {...register('numeroFijo')} className='w-3/4' />
+					<TextField label='Numero fijo' defaultValue={numberFijo || person?.numeroFijo} {...register('numeroFijo')} className='w-3/4' />
 				</div>
 
 				<FormControl className='w-1/2' error={errors.COD_SIT}>
 					<InputLabel id='situacionImpositiva'>Situación Impositiva</InputLabel>
-					<Select labelId='situacionImpositiva' label='Situación Impositiva' id='situacionImpositiva' {...register('COD_SIT', { required: true })} defaultValue={person?.COD_SIT}>
+					<Select labelId='situacionImpositiva' label='Situación Impositiva' id='situacionImpositiva' {...register('COD_SIT', { required: true })} defaultValue={person?.COD_SIT || person.situation_tax}>
 						{impositiveSituationArray.map((item) => (
 							<MenuItem key={item.id} value={item.id}>
 								{item.name}

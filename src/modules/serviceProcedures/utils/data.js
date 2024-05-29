@@ -4,8 +4,8 @@ const typePersonArray = [
 ]
 
 const sexArray = [
-	{ id: 'F', name: 'Femenino' },
-	{ id: 'M', name: 'Masculino' },
+	{ id: '1', name: 'Femenino' },
+	{ id: '2', name: 'Masculino' },
 ]
 
 const dniArray = [

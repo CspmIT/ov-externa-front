@@ -7,11 +7,19 @@ const ElectricPowerForm = () => {
 	const currentStep = state?.step - 1
 	console.log(state.person)
 	const navigate = useNavigate()
+	const step = state?.step
 
 	return (
 		<>
 			<div>Formulario de Energia Electrica</div>
-			<Button>Siguiente</Button>
+			<Button
+				onClick={() => {
+					dispatch({ type: 'next' })
+					navigate(`/multiStepForm/${state?.services[step].nombre}`)
+				}}
+			>
+				Siguiente
+			</Button>
 			<Button
 				onClick={() => {
 					dispatch({ type: 'back' })

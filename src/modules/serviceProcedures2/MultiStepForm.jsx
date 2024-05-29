@@ -5,6 +5,7 @@ import RegFormProvider from './providers/RegFormProvider'
 import SelectServices from './components/SelectServices'
 import HeaderForm from './components/HeaderForm'
 import ElectricPowerForm from './components/ElectricPowerForm'
+import DrinkingWaterForm from './components/DrinkingWaterForm'
 const services = [
 	{ nombre: 'Energia Electrica', tipo: 1 },
 	{ nombre: 'Agua Potable', tipo: 2 },
@@ -23,11 +24,11 @@ const MultiStepForm = () => {
 			case 'Energia Electrica':
 				return <ElectricPowerForm />
 			case 'Agua Potable':
-				return <PersonalData />
+				return <DrinkingWaterForm />
 			case 'Telecomunicaciones':
-				return <PersonalData />
+				return <h1>Telecomunicaciones</h1>
 			case 'Servicios Sociales':
-				return <PersonalData />
+				return <h1>Servicios Sociales</h1>
 			default:
 				return <SelectServices services={services} />
 		}
