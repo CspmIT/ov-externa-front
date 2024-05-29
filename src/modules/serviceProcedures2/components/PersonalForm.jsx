@@ -7,7 +7,7 @@ import { memo } from 'react'
 const PersonalForm = memo(({ person, register, errors, setValues, watch }) => {
 	setValues('fullName', person?.APELLIDOS)
 	setValues('numDoc', person?.NUM_DNI)
-	setValues('email', person?.EMAIL.trim())
+	setValues('email', person?.EMAIL?.trim())
 
 	const { day, month, year } = separateProcopDate(person.FEC_NAC)
 	// Valido la fecha de nacimiento

@@ -28,7 +28,7 @@ const SelectServices = ({ services }) => {
 							title: 'Atencion',
 							html: `Encontramos la siguiente solicitud de la fecha: <b>${dateFormated}</b> <br>
 							Los servicios solicitados son: <br>
-							${serviceRequest.items.map((item) => `<b>${item.service_name}</b>`).join(', ')}. <br> 
+							${serviceRequest.ServiceItems.map((item) => `<b>${item.service_name}</b>`).join(', ')}. <br> 
 							¿Desea continuar con ella?`,
 							showCancelButton: true,
 							confirmButtonText: 'Si, seguir con esta solicitud',
@@ -36,8 +36,20 @@ const SelectServices = ({ services }) => {
 						}).then((result) => {
 							if (result.isConfirmed) {
 								// Armo el objeto con los servicios seleccionados
-								const { items } = serviceRequest
-								const selectedServicesRequest = items.map((item) => ({ nombre: item.service_name, tipo: item.service_type }))
+								const { ServiceItems } = serviceRequest
+
+								const selectedServicesRequest = ServiceItems.map((item) => ({ nombre: item.service_name, tipo: item.service_type }))
+
+								// Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
+								const personalDataExists = selectedServicesRequest.some((service) => service.nombre === 'Datos Personales' && service.tipo === 0)
+
+								// Si 'Datos Personales' no está en la lista, agregarlo
+								if (!personalDataExists) {
+									selectedServicesRequest.unshift({ nombre: 'Datos Personales', tipo: 0 })
+								}
+								// Ordenar los servicios seleccionados por tipo
+								selectedServicesRequest.sort((a, b) => a.tipo - b.tipo)
+
 								dispatch({ type: 'select_services', selectedServices: selectedServicesRequest })
 								dispatch({ type: 'next' })
 								navigate(`/multiStepForm/Datos Personales`)
@@ -85,6 +97,7 @@ const SelectServices = ({ services }) => {
 				})
 				return
 			}
+
 			// Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
 			const personalDataExists = selectedServices.some((service) => service.nombre === 'Datos Personales' && service.tipo === 0)
 
@@ -94,8 +107,8 @@ const SelectServices = ({ services }) => {
 			}
 			// Ordenar los servicios seleccionados por tipo
 			selectedServices.sort((a, b) => a.tipo - b.tipo)
-			// Genero un registro en la DB con los servicios seleccionados
 
+			// Genero un registro en la DB con los servicios seleccionados
 			const baseUrl = import.meta.env.VITE_APP_API_URL
 			const url = `${baseUrl}/createRequestService`
 			const sendData = { services: selectedServices }

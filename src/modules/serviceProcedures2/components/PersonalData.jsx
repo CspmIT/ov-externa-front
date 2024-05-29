@@ -31,7 +31,6 @@ const PersonalData = () => {
 	useEffect(() => {
 		if (state?.person) {
 			setValue('typePerson', state?.person?.TIP_PERSO)
-			// setSearchExecuted(true)
 		}
 	}, [])
 
@@ -50,28 +49,30 @@ const PersonalData = () => {
 	// Cuando se hace click en buscar limpio los datos del objeto person
 	const searchPerson = async () => {
 		dispatch({ type: 'reset_person' })
-		const endPoint = watchTypePerson === '1' ? 'searchDni' : 'searchCuit'
-		const sendData = watchTypePerson === '1' ? { dni: watchDNI } : { cuit: watchCUIT }
+		const sendData = {
+			number_document: watchTypePerson === '1' ? watchDNI : watchCUIT,
+			type_person: watchTypePerson,
+		}
 		const baseUrl = import.meta.env.VITE_APP_API_URL
-		const url = `${baseUrl}/${endPoint}`
-		const response = await request(url, 'POST', sendData)
+		const url = `${baseUrl}/searchPeopleByDocumentNumber`
 
-		if (response.data?.error) {
+		try {
+			const response = await request(url, 'POST', sendData)
+			dispatch({ type: 'set_person', data: response.data[0] })
+		} catch (error) {
 			Swal.fire({
 				icon: 'warning',
-				title: 'Oops...',
-				text: response.data.error,
+				title: '¡Atencion!',
+				text: error.response.data,
 			}).then(() => {
 				dispatch({ type: 'set_person', data: null })
 			})
 		}
-		dispatch({ type: 'set_person', data: response.data[0] })
 		setSearchExecuted(true)
 	}
 
 	function renderForm() {
-		if (!watchTypePerson || !state?.person) return null
-		if (watchTypePerson === '1') {
+		if (watchTypePerson === '1' && state?.person) {
 			return <PersonalForm setValues={setValue} watch={watch} person={state?.person} errors={errors} register={register} />
 		} else {
 			return <h1>Empresa</h1>
@@ -94,10 +95,15 @@ const PersonalData = () => {
 					!searchExecuted &&
 					(watchTypePerson === '1' ? (
 						<div className='col-span-12 flex items-center justify-center gap-3'>
-							<TextField error={errors.DNI} label='DNI' {...register('DNI', { required: true })} className='w-4/12' helperText={errors.DNI && 'El campo es requerido'} />
-							<Button className='w-1/12 h-full' variant='outlined' type='button' onClick={searchPerson}>
-								Buscar
-							</Button>
+							{/* Si la persona ya existe no muestro el input de busqueda ni el boton */}
+							{!state?.person && (
+								<>
+									<TextField error={errors.DNI} label='DNI' {...register('DNI', { required: true })} className='w-4/12' helperText={errors.DNI && 'El campo es requerido'} />
+									<Button className='w-1/12 h-full' variant='outlined' type='button' onClick={searchPerson}>
+										Buscar
+									</Button>
+								</>
+							)}
 						</div>
 					) : (
 						<div className='col-span-12 flex items-center justify-center gap-3'>
@@ -122,7 +128,7 @@ const PersonalData = () => {
 					<Button className='w-1/9' variant='contained' color='secondary'>
 						Guardar y continuar despues
 					</Button>
-					<Button disabled={!searchExecuted} className='w-1/6' variant='contained' color='success' type='submit'>
+					<Button disabled={!state?.person} className='w-1/6' variant='contained' color='success' type='submit'>
 						Siguiente
 					</Button>
 				</div>
