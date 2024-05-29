@@ -8,6 +8,8 @@ const ProtectedRoutes = ({ children }) => {
 	const authUser = Cookies.get('token')
 	const storedUser = localStorage.getItem('usuario')
 	if (!authUser || !storedUser) {
+		localStorage.removeItem('usuario')
+		Cookies.remove('token')
 		return <Navigate to='/login' />
 	}
 	return (
