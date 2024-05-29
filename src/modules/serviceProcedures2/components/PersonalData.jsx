@@ -26,6 +26,7 @@ const PersonalData = () => {
 	const watchCUIT = watch('CUIT')
 	const watchTypePerson = watch('typePerson')
 
+	console.log(state)
 	const step = state?.step
 
 	useEffect(() => {
@@ -34,13 +35,13 @@ const PersonalData = () => {
 		}
 	}, [])
 
-	const onSubmit = (values) => {
+	const onSubmit = async (values) => {
 		if (isValid) {
 			// Guardo los datos en la DB
 			const baseUrl = import.meta.env.VITE_APP_API_URL
 			const url = `${baseUrl}/savePersonalData`
 			console.log(url)
-			dispatch({ type: 'set_step_1', data: values })
+			dispatch({ type: 'set_person', data: values })
 			dispatch({ type: 'next' })
 			navigate(`/multiStepForm/${state?.services[step].nombre}`)
 		}
@@ -49,6 +50,9 @@ const PersonalData = () => {
 	// Cuando se hace click en buscar limpio los datos del objeto person
 	const searchPerson = async () => {
 		dispatch({ type: 'reset_person' })
+		console.log(errors)
+		console.log(isValid)
+		if (!isValid) return false
 		const sendData = {
 			number_document: watchTypePerson === '1' ? watchDNI : watchCUIT,
 			type_person: watchTypePerson,
@@ -98,7 +102,7 @@ const PersonalData = () => {
 							{/* Si la persona ya existe no muestro el input de busqueda ni el boton */}
 							{!state?.person && (
 								<>
-									<TextField error={errors.DNI} label='DNI' {...register('DNI', { required: true })} className='w-4/12' helperText={errors.DNI && 'El campo es requerido'} />
+									<TextField error={!isValid} label='DNI' {...register('DNI', { required: true })} className='w-4/12' helperText={!isValid && 'El campo es requerido'} />
 									<Button className='w-1/12 h-full' variant='outlined' type='button' onClick={searchPerson}>
 										Buscar
 									</Button>
