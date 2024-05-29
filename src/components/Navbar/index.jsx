@@ -111,9 +111,14 @@ const Navbar = () => {
 	const getAccounts = async () => {
 		const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 		let DataOtherUser = await otherCustomer.data.map((item) => {
-			return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+			return {
+				id_relation: item.id,
+				name: item.data_Person.procoop_last_name,
+				num: item.data_Person.number_customer,
+				primary: item.primary_account,
+				level: item.level,
+			}
 		})
-		console.log(DataOtherUser)
 		if (!DataOtherUser.length) {
 			DataOtherUser = [{ level: 1, primary: true }]
 		}

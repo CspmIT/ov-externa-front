@@ -19,6 +19,7 @@ const leveldos = () => {
 		handleSubmit,
 	} = useForm()
 
+	const [numberSocio, setNumberSocio] = useState()
 	const [provinces, setProvinces] = useState([])
 	const [localidades, setLocalidades] = useState([])
 	const [streets, setStreets] = useState([])
@@ -152,7 +153,13 @@ const leveldos = () => {
 	const controlNumberCustomer = async () => {
 		try {
 			const number = parseInt(watch('number_customer')) || ''
+
 			if (number.toString().length > 0 && number !== '') {
+				if (number === numberSocio) {
+					return false
+				} else {
+					setNumberSocio(number)
+				}
 				const url = `${import.meta.env.VITE_APP_API_URL}/searchUserxNumCustomer/?num=${number}`
 				const res = await request(url, 'GET')
 				if (res.status === 200) {
@@ -161,8 +168,8 @@ const leveldos = () => {
 						const name = data.name ? data.name : data.social_raeson
 						const lastName = data.last_name ? data.last_name : data.fantasy_name
 						Swal.fire({
-							title: 'El Numero de Socio  ya fue cargado en el sistema',
-							text: `¿Sos ${lastName + ' ' + (name || '')}?`,
+							title: 'Atención',
+							text: `¿Queres utilizar a ${lastName + ' ' + (name || '')} como socio?`,
 							icon: 'question',
 							allowOutsideClick: false,
 							showCancelButton: true,
@@ -208,11 +215,15 @@ const leveldos = () => {
 					className='w-full flex flex-wrap p-7'
 				>
 					<div className='w-full flex-row gap-3 p-2 mb-5'>
-						<h3 className='w-full text-center'>Datos del Socio</h3>
+						<h2 className='w-full text-center'>Datos del Socio</h2>
+						<p className=' w-100 text-center p-0 m-0 '>
+							los campos con (<span className='text-red-500 text-3xl align-sub'>*</span>) son obligatorios
+						</p>
+						<p className='text-red-500 w-100  p-0 m-0 text-center text-lg'>Se solicita corregir el nombre y el apellido de ser necesario del socio que seleccione</p>
 						<div className='w-full flex gap-3'>
 							<div className='mt-2 md:w-1/2 lg:w-1/3 '>
 								<label htmlFor='number_customer' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Nº Socio
+									Nº Socio <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<input
 									id='number_customer'
@@ -232,7 +243,7 @@ const leveldos = () => {
 							</div>
 							<div className='mt-2 md:w-1/2 lg:w-1/3 '>
 								<label htmlFor='name_customer' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Nombre
+									Nombre <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<input
 									id='name_customer'
@@ -252,7 +263,7 @@ const leveldos = () => {
 							</div>
 							<div className='mt-2 md:w-1/2 lg:w-1/3 '>
 								<label htmlFor='name_customer' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Apellido
+									Apellido <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<input
 									id='last_name_customer'
@@ -273,8 +284,7 @@ const leveldos = () => {
 						</div>
 					</div>
 					<div className='w-full flex flex-wrap'>
-						<h3 className='w-full text-center'>Datos del Usuario</h3>
-						{/* <div className='w-full flex-wrap flex gap-3'> */}
+						<h2 className='w-full text-center'>Datos del Usuario</h2>
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
 								<label htmlFor='document_type' className='block font-semibold ml-1 mb-2 dark:text-white'>
@@ -302,7 +312,7 @@ const leveldos = () => {
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
 								<label htmlFor='document_number' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Nº de Documento
+									Nº de Documento <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<input
 									id='document_number'
@@ -323,7 +333,7 @@ const leveldos = () => {
 							<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 								<div className='mt-2'>
 									<label htmlFor='sex' className='block font-semibold ml-1 mb-2 dark:text-white'>
-										Sexo
+										Sexo <span className='text-red-500 text-lg'>*</span>
 									</label>
 									<select
 										id='sex'
@@ -343,7 +353,7 @@ const leveldos = () => {
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
 								<label htmlFor='StateId' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Provincias
+									Provincias <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<select
 									id='StateId'
@@ -365,7 +375,7 @@ const leveldos = () => {
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
 								<label htmlFor='CityId' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Localidades
+									Localidades <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<select
 									id='CityId'
@@ -388,7 +398,7 @@ const leveldos = () => {
 							<div className='mt-2 w-2/3'>
 								<div className='w-full flex relative'>
 									<label htmlFor='StreetId' className='block font-semibold ml-1 mb-2 dark:text-white'>
-										Dirección
+										Dirección <span className='text-red-500 text-lg'>*</span>
 									</label>
 									<IconButton className='top-0 right-0 !absolute' color='error' size='small' onClick={() => openModalStreetApi()}>
 										<Add />
@@ -412,7 +422,7 @@ const leveldos = () => {
 							</div>
 							<div className='ml-2 mt-2 w-1/3'>
 								<label htmlFor='number_address' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									Numero
+									Numero <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<input
 									id='number_address'
@@ -426,7 +436,9 @@ const leveldos = () => {
 						</div>
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
-								<label className='block font-semibold ml-1 mb-2 dark:text-white'>Caracteristica</label>
+								<label className='block font-semibold ml-1 mb-2 dark:text-white'>
+									Caracteristica <span className='text-red-500 text-lg'>*</span>
+								</label>
 								<div className='flex'>
 									<span className='inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600'>
 										0
@@ -448,7 +460,9 @@ const leveldos = () => {
 						</div>
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
-								<label className='block font-semibold ml-1 mb-2 dark:text-white'>Número de Celular</label>
+								<label className='block font-semibold ml-1 mb-2 dark:text-white'>
+									Número de Celular <span className='text-red-500 text-lg'>*</span>
+								</label>
 								<div className='flex'>
 									<span className='inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600'>
 										15
@@ -471,13 +485,13 @@ const leveldos = () => {
 						<div className='w-full md:w-1/2 lg:w-1/3 p-2'>
 							<div className='mt-2'>
 								<label htmlFor='birthday' className='block font-semibold ml-1 mb-2 dark:text-white'>
-									{TypeUser === 1 ? 'Fecha de Nacimiento' : 'Fecha de Registro'}
+									{TypeUser === 1 ? 'Fecha de Nacimiento' : 'Fecha de Registro'} <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<input
 									{...register('birthdate', { required: true })}
 									type='date'
 									id='birthday'
-									className='block ring-1 rounded-none rounded-e-md dark:bg-zinc-700 dark:text-gray-200 shadow border-0 p-2.5 text-gray-900 w-full placeholder:text-gray-400 sm:text-sm sm:leading-6'
+									className='block  w-full rounded-md border-0 p-2 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-1  placeholder:text-gray-400 sm:text-sm sm:leading-6'
 								/>
 								{errors.birthdate?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
 							</div>
@@ -488,7 +502,6 @@ const leveldos = () => {
 								Guardar
 							</Button>
 						</div>
-						{/* </div> */}
 					</div>
 					<Modal className='flex justify-center items-center' open={openModalStreet} onClose={handleCloseModalAPI} aria-labelledby='parent-modal-title' aria-describedby='parent-modal-description'>
 						<Box className={'w-full flex justify-center items-center'}>
