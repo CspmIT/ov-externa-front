@@ -1,22 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
 import CardCustom from '../CardCustom'
 import { Close } from '@mui/icons-material'
-import { Box, Tab, Tabs, TextField } from '@mui/material'
+import { Box, Button, Tab, Tabs, TextField } from '@mui/material'
 import { CustomTabPanel, a11yProps } from '../PanelTab'
-import Button from '../Button'
 import { storage } from '../../storage/storage'
 import TableCustomer from '../TableCustomer'
 import { request } from '../../utils/request'
 import Swal from 'sweetalert2'
 import { UserContext } from '../../contexts/UserContext'
 import Dropdown from '../Dropdown'
+import { FaSearch } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
 
 const ModalSocio = ({ handleCloseModal }) => {
 	const { usuario, setUsuario, account } = useContext(UserContext)
-	const [value, setValue] = useState(0)
+	const [value, setValor] = useState(0)
 	const [number, setNumber] = useState('')
+	const [dataSocio, setDataSocio] = useState(false)
 	const handleChange = (event, newValue) => {
-		setValue(newValue)
+		setValor(newValue)
 		setNumber('')
 	}
 	const handleChangeCustomer = (e) => {
@@ -36,29 +38,76 @@ const ModalSocio = ({ handleCloseModal }) => {
 			})
 
 			if (swal.isConfirmed) {
-				const operation = await request(import.meta.env.VITE_APP_API_URL + '/createOther', 'post', array)
-				if (operation.status === 200) {
-					Swal.fire({
-						title: '¡Perfecto!',
-						text: 'El socio ha sido agregado con éxito',
-						icon: 'success',
-						allowOutsideClick: false,
-					}).then((result) => {
-						if (result.isConfirmed) {
-							const updatedUsuario = { ...usuario }
-							updatedUsuario.accounts = [...updatedUsuario.accounts, operation.data]
-							setUsuario(updatedUsuario)
-							const updatedStorage = storage.get('usuario')
-							updatedStorage.accounts = [updatedUsuario.accounts]
-							storage.set('usuario', updatedStorage)
-							handleChange(false, 0)
-						}
-					})
+				setDataSocio(array)
+				// const operation = await request(import.meta.env.VITE_APP_API_URL + '/createOther', 'post', array)
+				// if (operation.status === 200) {
+				// 	Swal.fire({
+				// 		title: '¡Perfecto!',
+				// 		text: 'El socio ha sido agregado con éxito',
+				// 		icon: 'success',
+				// 		allowOutsideClick: false,
+				// 	}).then((result) => {
+				// 		if (result.isConfirmed) {
+				// 			const updatedUsuario = { ...usuario }
+				// 			updatedUsuario.accounts = [...updatedUsuario.accounts, operation.data]
+				// 			setUsuario(updatedUsuario)
+				// 			const updatedStorage = storage.get('usuario')
+				// 			updatedStorage.accounts = [updatedUsuario.accounts]
+				// 			storage.set('usuario', updatedStorage)
+				// 			handleChange(false, 0)
+				// 		}
+				// 	})
+				// } else {
+				// 	throw new Error()
+				// }
+			}
+		} catch (error) {
+			const errorText = JSON.parse(error.request.response).message || error
+			Swal.fire({
+				title: 'Error',
+				text: errorText,
+				icon: 'error',
+			})
+		}
+	}
+	const handleSearchCustomer = async () => {
+		try {
+			const array = { customer: number }
+			const user = await request(import.meta.env.VITE_APP_API_URL + '/getCustomer', 'post', array)
+			let nameCustomer = ''
+			if (user.data.Person_physical || user.data.Person_legal) {
+				nameCustomer = user.data.Person_physical
+					? (user.data.Person_physical.last_name + ' ' + user.data.Person_physical.name).toUpperCase()
+					: (user.data.Person_physical.social_raeson + ' ' + user.data.Person_physical.fantasy_name).toUpperCase()
+			} else {
+				nameCustomer = user.data[0].APELLIDOS
+			}
+			const swal = await Swal.fire({
+				title: '¿El socio que busca es?',
+				text: nameCustomer,
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Si',
+				cancelButtonText: 'Cancelar',
+			})
+
+			if (swal.isConfirmed) {
+				if (user.data.Person_physical || user.data.Person_legal) {
+					const name = user.data.Person_physical ? user.data.Person_physical.name : user.data.Person_physical.social_raeson
+					const lastName = user.data.Person_physical ? user.data.Person_physical.last_name : user.data.Person_physical.fantasy_name
+					setValue('name', name)
+					setValue('last_name', lastName)
+					setDataSocio(true)
 				} else {
-					throw new Error()
+					const name = ''
+					const lastName = user.data[0].APELLIDOS
+					setValue('name', name)
+					setValue('last_name', lastName)
+					setDataSocio(true)
 				}
 			}
 		} catch (error) {
+			setDataSocio(false)
 			const errorText = JSON.parse(error.request.response).message || error
 			Swal.fire({
 				title: 'Error',
@@ -77,6 +126,14 @@ const ModalSocio = ({ handleCloseModal }) => {
 			window.removeEventListener('resize', changeScreen)
 		}
 	}, [])
+	const {
+		register,
+		setValue,
+		formState: { errors },
+		handleSubmit,
+	} = useForm()
+	console.log(Object.keys(dataSocio).length)
+	console.log(dataSocio)
 	return (
 		<CardCustom className={'lg:w-1/3 w-2/3 max-sm:w-full rounded-xl bg-white shadow-lg'}>
 			<div className='rounded-xl '>
@@ -103,12 +160,62 @@ const ModalSocio = ({ handleCloseModal }) => {
 								<TableCustomer />
 							</CustomTabPanel>
 							<CustomTabPanel className={'flex flex-col'} value={value} index={widthPhone ? 2 : 1}>
-								<div className='w-full flex flex-row justify-evenly items-center'>
-									<TextField type='tel' value={number} onChange={handleChangeCustomer} className='w-3/4' label='Ingrese un número de socio' variant='outlined' />
-									<Button onclick={() => handleAddCustomer()} props={{ class: 'bg-green-500' }}>
-										Agregar
-									</Button>
-								</div>
+								<form onSubmit={handleSubmit(handleAddCustomer)}>
+									<div className='w-full flex flex-row justify-evenly items-center'>
+										<TextField type='tel' value={number} onChange={handleChangeCustomer} className='w-3/4' label='Nro Socio' placeholder='Ingrese un número de socio' variant='outlined' />
+										<Button type='button' onClick={() => handleSearchCustomer()} variant='contained' color='success'>
+											<FaSearch />
+										</Button>
+									</div>
+									{dataSocio ? (
+										<>
+											<p className='w-full text-red-500 w-100  p-0 m-0 text-center mt-5'>Se solicita corregir el nombre y el apellido de ser necesario</p>
+											<div className='w-full mt-3 flex gap-3 flex-row justify-evenly items-center'>
+												<div className='flex flex-col w-full'>
+													<TextField
+														type='text'
+														errors={errors}
+														{...register('name', {
+															required: true,
+															onChange: (e) => {
+																setValue('name', e.target.value.toUpperCase())
+															},
+														})}
+														name={'name'}
+														id={'name'}
+														label='Nombre'
+														placeholder='Ingrese nombre del socio'
+														variant='outlined'
+													/>
+													{errors.name?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
+												</div>
+												<div className='flex flex-col w-full'>
+													<TextField
+														type='text'
+														errors={errors}
+														{...register('last_name', {
+															required: true,
+															onChange: (e) => {
+																setValue('last_name', e.target.value.toUpperCase())
+															},
+														})}
+														name={'last_name'}
+														id={'last_name'}
+														label='Apellido'
+														placeholder='Ingrese apellido del socio'
+														variant='outlined'
+													/>
+													{errors.last_name?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
+												</div>
+											</div>
+											<div className='w-full mt-4 flex flex-col justify-center items-center'>
+												<Button type='submit' variant='contained' color='success'>
+													Agregar
+												</Button>
+											</div>
+										</>
+									) : null}
+								</form>
 							</CustomTabPanel>
 							{widthPhone ? (
 								<CustomTabPanel className={'flex flex-col'} value={value} index={0}>
