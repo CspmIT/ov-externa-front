@@ -39,10 +39,11 @@ const PersonalData = () => {
 			// Guardo los datos en la DB
 			const baseUrl = import.meta.env.VITE_APP_API_URL
 			const url = `${baseUrl}/savePersonalData`
-			console.log(url)
+
+			console.log(values)
 			dispatch({ type: 'set_person', data: values })
-			dispatch({ type: 'next' })
-			navigate(`/multiStepForm/${state?.services[step].nombre}`)
+			// dispatch({ type: 'next' })
+			// navigate(`/multiStepForm/${state?.services[step].nombre}`)
 		}
 	}
 

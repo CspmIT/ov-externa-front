@@ -13,7 +13,6 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 		const dia = watch('dia')
 		return validarFecha(anio, mes, dia)
 	}
-	console.log(person)
 	const { characteristic, number } = separateCellPhone(person?.cell_phone)
 	const { characteristic: characteristicFijo, number: numberFijo } = separateCellPhone(person?.fixed_phone)
 	return (
