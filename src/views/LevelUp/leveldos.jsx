@@ -29,8 +29,8 @@ const leveldos = () => {
 		setOpenModalStreet(false)
 	}
 	const openModalStreetApi = async () => {
-		const Provincia = provinces.filter((item) => item.id === parseInt(watch('StateId')))
-		const City = localidades.filter((item) => item.id === parseInt(watch('CityId')))
+		const Provincia = provinces.filter((item) => item.id === parseInt(watch('id_state')))
+		const City = localidades.filter((item) => item.id === parseInt(watch('id_city')))
 		const url = `https://apis.datos.gob.ar/georef/api/calles?max=5000&provincia=${Provincia[0].nombre}&localidad_censal=${City[0].nombre.split(' - CP ')[0]}&orden=nombre`
 		const res = await requestApiExt(url, 'GET')
 		const calles = await res.data.calles.map((item) => {
@@ -60,7 +60,7 @@ const leveldos = () => {
 
 	const handleProvinceChange = async () => {
 		try {
-			const provinceId = watch('StateId')
+			const provinceId = watch('id_state')
 			const url = `${import.meta.env.VITE_APP_API_URL}/listCity/?id=${provinceId}`
 			const res = await request(url, 'GET')
 			const localidades = res.data
@@ -75,8 +75,9 @@ const leveldos = () => {
 	}
 	const handleCityChange = async () => {
 		try {
-			const cityId = parseInt(watch('CityId'))
-			const url = `${import.meta.env.VITE_APP_API_URL}/listStreet/?id=${cityId}`
+			const idCity = parseInt(watch('id_city'))
+			console.log(idCity)
+			const url = `${import.meta.env.VITE_APP_API_URL}/listStreet/?id=${idCity}`
 			const res = await request(url, 'GET')
 			const Calles = res.data
 				.map((item) => {
@@ -91,7 +92,7 @@ const leveldos = () => {
 	const saveNewStreet = async () => {
 		try {
 			const dataApi = streetsApi.filter((item) => item.id === watch('addressApi'))
-			const data = { name: dataApi[0].nombre, id_api: dataApi[0].id, idCity: parseInt(watch('CityId')) }
+			const data = { name: dataApi[0].nombre, id_api: dataApi[0].id, idCity: parseInt(watch('id_city')) }
 			const url = `${import.meta.env.VITE_APP_API_URL}/addStreet`
 			const res = await request(url, 'POST', data)
 			if (res.status === 200) {
@@ -125,19 +126,20 @@ const leveldos = () => {
 						}).then(async (result) => {
 							if (result.isConfirmed) {
 								setValue('document_type', data.type_dni)
-								setValue('sex', data.TypeSex.id)
-								setValue('StateId', data?.Person_Address?.Address?.State?.cod_pro || null)
-								setValue('number_address', data?.Person_Address?.Address?.number_address || null)
-								setValue('phoneCaract', data.cell_phone.split(' ')[0])
-								setValue('numberPhone', data.cell_phone.split(' ')[1])
-								setValue('birthdate', formatDateForInput(data.born_date))
+								setValue('sex', data.typeSex.id)
+								setValue('id_state', data?.dataPerson?.Person_Address[0]?.Address?.state?.cod_pro || null)
+								setValue('number_address', data?.dataPerson?.Person_Address[0]?.Address?.number_address || null)
+								setValue('phoneCaract', data.dataPerson.cell_phone.split(' ')[0])
+								setValue('numberPhone', data.dataPerson.cell_phone.split(' ')[1])
+								setValue('birthdate', formatDateForInput(data.born_date || data.date_registration))
 								await handleProvinceChange()
-								await setTimeout(() => {
-									setValue('CityId', data?.Person_Address?.Address?.City?.cod_loc || null)
+								setTimeout(() => {
+									console.log(data?.dataPerson?.Person_Address[0]?.Address?.city?.cod_loc)
+									setValue('id_city', data?.dataPerson?.Person_Address[0]?.Address?.city?.cod_loc || null)
 									handleCityChange()
 								}, 200)
-								await setTimeout(() => {
-									setValue('StreetId', data?.Person_Address?.Address?.Street?.id || null)
+								setTimeout(() => {
+									setValue('id_street', data?.dataPerson?.Person_Address[0]?.Address?.street?.id || null)
 								}, 300)
 							} else {
 								setValue('document_number', '')
@@ -194,6 +196,11 @@ const leveldos = () => {
 			})
 		}
 	}
+	const handleKeyPress = (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault() // Evita que el formulario se envíe
+		}
+	}
 	return (
 		<CardCustom>
 			<div className='flex flex-wrap w-full'>
@@ -212,6 +219,7 @@ const leveldos = () => {
 					onSubmit={handleSubmit(async (data) => {
 						formulario(data, navigate)
 					})}
+					onKeyPress={handleKeyPress}
 					className='w-full flex flex-wrap p-7'
 				>
 					<div className='w-full flex-row gap-3 p-2 mb-5'>
@@ -352,12 +360,12 @@ const leveldos = () => {
 						) : null}
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
-								<label htmlFor='StateId' className='block font-semibold ml-1 mb-2 dark:text-white'>
+								<label htmlFor='id_state' className='block font-semibold ml-1 mb-2 dark:text-white'>
 									Provincias <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<select
-									id='StateId'
-									{...register('StateId', { required: true, onChange: (e) => handleProvinceChange() })}
+									id='id_state'
+									{...register('id_state', { required: true, onChange: (e) => handleProvinceChange() })}
 									className='block ring-1 bg-white dark:bg-zinc-800 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'
 								>
 									<option className='robotoCondensed' value=''>
@@ -369,17 +377,17 @@ const leveldos = () => {
 										</option>
 									))}
 								</select>
-								{errors.StateId?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
+								{errors.id_state?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
 							</div>
 						</div>
 						<div className='w-full md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2'>
-								<label htmlFor='CityId' className='block font-semibold ml-1 mb-2 dark:text-white'>
+								<label htmlFor='id_city' className='block font-semibold ml-1 mb-2 dark:text-white'>
 									Localidades <span className='text-red-500 text-lg'>*</span>
 								</label>
 								<select
-									id='CityId'
-									{...register('CityId', { required: true, onChange: () => handleCityChange() })}
+									id='id_city'
+									{...register('id_city', { required: true, onChange: () => handleCityChange() })}
 									className='block ring-1 bg-white dark:bg-zinc-800 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'
 								>
 									<option className='robotoCondensed' value=''>
@@ -391,13 +399,13 @@ const leveldos = () => {
 										</option>
 									))}
 								</select>
-								{errors.CityId?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
+								{errors.id_city?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
 							</div>
 						</div>
 						<div className='w-full flex flex-row md:w-1/2 lg:w-1/3  p-2'>
 							<div className='mt-2 w-2/3'>
 								<div className='w-full flex relative'>
-									<label htmlFor='StreetId' className='block font-semibold ml-1 mb-2 dark:text-white'>
+									<label htmlFor='id_street' className='block font-semibold ml-1 mb-2 dark:text-white'>
 										Dirección <span className='text-red-500 text-lg'>*</span>
 									</label>
 									<IconButton className='top-0 right-0 !absolute' color='error' size='small' onClick={() => openModalStreetApi()}>
@@ -405,8 +413,8 @@ const leveldos = () => {
 									</IconButton>
 								</div>
 								<select
-									id='StreetId'
-									{...register('StreetId', { required: true })}
+									id='id_street'
+									{...register('id_street', { required: true })}
 									className='block ring-1 bg-white dark:bg-zinc-800 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'
 								>
 									<option className='robotoCondensed' value=''>
@@ -418,7 +426,7 @@ const leveldos = () => {
 										</option>
 									))}
 								</select>
-								{errors.StreetId?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
+								{errors.id_street?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
 							</div>
 							<div className='ml-2 mt-2 w-1/3'>
 								<label htmlFor='number_address' className='block font-semibold ml-1 mb-2 dark:text-white'>
