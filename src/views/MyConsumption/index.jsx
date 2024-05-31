@@ -31,14 +31,12 @@ const MyConsumption = () => {
 	useEffect(() => {
 		const searchData = async () => {
 			const socio = account.num
-			console.log(socio)
 			const url = `${import.meta.env.VITE_APP_API_URL}/getConsumo?id_procoop=${socio}`
 			try {
 				const response = await request(url, 'get')
 				if (response.status !== 200) throw new Error('Problemas con Consulta')
 				const responseData = response.data
 				if (!responseData.water.data?.length && !responseData.electric.data?.length) throw new Error('No tiene servicos de Agua y/o Electricidad relacionados')
-				console.log(responseData)
 				if (responseData.water.data.length) {
 					setDifConsumoWater(responseData?.water?.info?.difConsumo)
 					setStatusWater(statusDifService(responseData?.water?.info?.difConsumo))
