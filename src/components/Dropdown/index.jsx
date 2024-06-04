@@ -2,8 +2,10 @@ import React, { useContext, useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
 import { UserContext } from '../../contexts/UserContext'
 import styles from './dropdown.module.css'
+import { useNavigate } from 'react-router-dom'
 
 const Dropdown = ({ ...props }) => {
+	const navigate = useNavigate()
 	const [isDropdownOpen, setDropdownOpen] = useState(false)
 	const { usuario, account, setAccount } = useContext(UserContext)
 	const toggleDropdown = () => {
@@ -15,6 +17,7 @@ const Dropdown = ({ ...props }) => {
 			return
 		}
 		setAccount(item)
+		navigate('/')
 		toggleDropdown()
 	}
 	return (

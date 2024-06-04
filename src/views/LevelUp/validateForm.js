@@ -3,13 +3,13 @@ import Swal from 'sweetalert2'
 import { request } from '../../utils/request'
 import Cookies from 'js-cookie'
 // Funcion para obtener el socio cuando se envia el formulario
-const getCustomer = async (data) => {
-	const numberCustomer = data.number_customer
-	const url = import.meta.env.VITE_APP_API_URL + '/getCustomer'
-	const res = await request(url, 'POST', { customer: numberCustomer })
-	// const res = await Axios.post(url, { customer: numberCustomer })
-	return res
-}
+// const getCustomer = async (data) => {
+// 	const numberCustomer = data.number_customer
+// 	const url = import.meta.env.VITE_APP_API_URL + '/getCustomer'
+// 	const res = await request(url, 'POST', { customer: numberCustomer })
+// 	// const res = await Axios.post(url, { customer: numberCustomer })
+// 	return res
+// }
 
 // Funcion para actualizar los datos del usuario en la db y subir de nivel
 const updateLevel = async (data) => {
@@ -25,14 +25,9 @@ const updateLevel = async (data) => {
 
 const validateForm = async (data, navigate) => {
 	try {
-		const nombreSocio = await getCustomer(data)
-		if (nombreSocio.status !== 200) {
-			throw new Error(nombreSocio.error)
-		}
-		// Muestro una alerta con el nombre del socio
 		const swal = await Swal.fire({
-			title: '¿Este es el socio que deseas agregar?',
-			text: nombreSocio.data,
+			title: '¿Deseas subir a nivel 2 con el socio?',
+			text: data.last_name_customer + ' ' + data.name_customer,
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Si, agregar',

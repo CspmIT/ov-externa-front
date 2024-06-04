@@ -20,7 +20,7 @@ import Profile from './views/Profile'
 import BaseInitial from './views/BaseInitial'
 import RestorePassword from './modules/auth/views/RestorePassword'
 import ChangePassword from './modules/auth/views/ChangePassword'
-import Comments from './views/Comments'
+import Opinion from './views/Opinion'
 import SelectServices from './modules/serviceProcedures/views/selectServices'
 import FormServicesData from './modules/serviceProcedures/views/formServicesData'
 import { UserContext } from './contexts/UserContext'
@@ -108,7 +108,7 @@ function App() {
 		{ path: '/levelup2', element: <LevelUp2 /> },
 		{ path: '/authentication', element: <Authentication /> },
 		{ path: '/myconsumption', element: <MyConsumption /> },
-		{ path: '/comments', element: <Comments /> },
+		{ path: '/Opinion', element: <Opinion /> },
 		{ path: '/selectServices', element: <SelectServices /> },
 		{ path: '/formServicesData', element: <FormServicesData /> },
 		{

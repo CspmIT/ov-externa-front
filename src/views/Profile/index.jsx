@@ -93,15 +93,12 @@ function Profile() {
 	// TODO: Falta agregar los ojitos para mostrar la contraseña en los inputs.
 	// TODO: Falta ver que accion al finalizar la actualizacion de la contraseña.
 	const updatePassword = async (data) => {
-		// const { id } = JSON.parse(localStorage.getItem('usuario'))
-		// const { id, token } = JSON.parse(localStorage.getItem('usuario'))
 		const { password, newPassword } = data
 		const url = import.meta.env.VITE_APP_API_URL + '/updatePassword'
 		const info = {
 			// id,
 			password,
 			newPassword,
-			// newPassword_confirmation: confirmPassword,
 		}
 		try {
 			// Envio los datos a la api, paso el token en el header

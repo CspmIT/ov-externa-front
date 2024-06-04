@@ -67,9 +67,14 @@ const Login = () => {
 				localStorage.setItem('usuario', JSON.stringify(decoded))
 				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 				let DataOtherUser = await otherCustomer.data.map((item) => {
-					return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+					return {
+						id_relation: item.id,
+						name: item.data_Person.procoop_last_name,
+						num: item.data_Person.number_customer,
+						primary: item.primary_account,
+						level: item.level,
+					}
 				})
-				console.log(decoded)
 				if (!DataOtherUser.length) {
 					DataOtherUser = [{ level: 1, primary: true }]
 				}
@@ -82,8 +87,8 @@ const Login = () => {
 		} catch (error) {
 			Swal.fire({
 				icon: 'warning',
-				title: error?.response?.data?.error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
-				text: error?.response?.data?.error !== '' ? error.response.data : 'Intente ingresar nuevamente mas tarde',
+				title: error?.response.data !== '' ? 'Atención!' : 'Sitio en mantenimiento',
+				text: error?.response.data !== '' ? error.response.data : 'Intente ingresar nuevamente mas tarde',
 				allowOutsideClick: false,
 			})
 		}
@@ -103,10 +108,11 @@ const Login = () => {
 				navigate('/Login')
 			})
 		} catch (error) {
+			console.log(error)
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atención!',
-				text: error.response.data.message,
+				text: error.response.data,
 				confirmButtonText: 'Reenviar Token',
 				allowOutsideClick: false,
 				showCancelButton: true,
@@ -123,14 +129,13 @@ const Login = () => {
 		if (token && idUser && (!usuario || !usuario.length)) {
 			validacionToken(token, idUser)
 		}
-		const tokenCookie = Cookies.get('token')
-		if (tokenCookie && !token) {
-			navigate('/')
-		} else {
+		const authUser = Cookies.get('token')
+		const storedUser = localStorage.getItem('usuario')
+		if (!authUser || !storedUser) {
 			localStorage.removeItem('usuario')
-			navigate('/Login')
+			Cookies.remove('token')
 		}
-	}, [idUser, token])
+	}, [])
 
 	const {
 		register,
