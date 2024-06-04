@@ -1,15 +1,14 @@
 import CardCustom from '../../components/CardCustom/index'
 // import Axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
-import { Input, Tab, Tabs, FormHelperText, FormControl, Box } from '@mui/material'
+import { Input, Tab, Tabs, FormHelperText, FormControl, Box, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import { CustomTabPanel, a11yProps } from '../../components/PanelTab'
-import { request } from '../../utils/request'
+import { request, requestFiles } from '../../utils/request'
 import { UserContext } from '../../contexts/UserContext'
-import { Button } from '@mui/material'
 import { PhotoCamera } from '@mui/icons-material'
 function Profile() {
 	const getUserData = async () => {
@@ -94,15 +93,15 @@ function Profile() {
 	// TODO: Falta agregar los ojitos para mostrar la contraseña en los inputs.
 	// TODO: Falta ver que accion al finalizar la actualizacion de la contraseña.
 	const updatePassword = async (data) => {
-		const { id } = JSON.parse(localStorage.getItem('usuario'))
+		// const { id } = JSON.parse(localStorage.getItem('usuario'))
 		// const { id, token } = JSON.parse(localStorage.getItem('usuario'))
-		const { password, newPassword, confirmPassword } = data
+		const { password, newPassword } = data
 		const url = import.meta.env.VITE_APP_API_URL + '/updatePassword'
 		const info = {
-			//id,
+			// id,
 			password,
 			newPassword,
-			//newPassword_confirmation: confirmPassword,
+			// newPassword_confirmation: confirmPassword,
 		}
 		try {
 			// Envio los datos a la api, paso el token en el header
@@ -188,7 +187,7 @@ function Profile() {
 			setEyeConfirmPass(<TbEyeClosed />)
 		}
 	}
-	//Chequeo si existe la imagen en el servidor y si el servidor esta activo
+	// Chequeo si existe la imagen en el servidor y si el servidor esta activo
 	const [imgProfile, setImgProfile] = useState('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
 	useEffect(() => {
 		const checkServerStatus = async () => {
