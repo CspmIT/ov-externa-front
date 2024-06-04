@@ -87,8 +87,8 @@ const Login = () => {
 		} catch (error) {
 			Swal.fire({
 				icon: 'warning',
-				title: error?.response.data !== '' ? 'Atención!' : 'Sitio en mantenimiento',
-				text: error?.response.data !== '' ? error.response.data : 'Intente ingresar nuevamente mas tarde',
+				title: error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
+				text: error,
 				allowOutsideClick: false,
 			})
 		}

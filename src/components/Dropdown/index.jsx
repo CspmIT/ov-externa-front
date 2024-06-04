@@ -21,11 +21,11 @@ const Dropdown = ({ ...props }) => {
 		toggleDropdown()
 	}
 	return (
-		<div className='relative inline-block text-left'>
+		<div className='relative inline-block text-left max-md:hidden'>
 			<div>
 				<button
 					type='button'
-					className={`${props.titleColor} inline-flex w-full justify-center gap-x-1.5 rounded-md  px-3 py-1 font-medium shadow-sm`}
+					className={`${props.titleColor} h-8 overflow-hidden inline-flex w-full justify-center gap-x-1.5 rounded-md  px-3 py-1 font-medium shadow-sm`}
 					id='menu-button-test'
 					aria-expanded={isDropdownOpen}
 					aria-haspopup='true'

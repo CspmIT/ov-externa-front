@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form'
 import formulario from './validateForm'
 import { useNavigate } from 'react-router-dom'
 // import axios from 'axios'
-import { request, requestApiExt } from '../../utils/request'
-import { Box, Button, IconButton, Modal } from '@mui/material'
-import { Add, Close } from '@mui/icons-material'
+import { request } from '../../utils/request'
+import { Button, IconButton } from '@mui/material'
+import { Add } from '@mui/icons-material'
 import Swal from 'sweetalert2'
 import { formatDateForInput } from '../../utils/dateFunction'
+import ModalNewStreet from '../../modules/Profile/components/ModalNewStreet'
+import { getAllStreet } from './utils/Address'
 const leveldos = () => {
 	const { NameUser, TypeUser } = JSON.parse(localStorage.getItem('usuario'))
 	const {
@@ -25,19 +27,13 @@ const leveldos = () => {
 	const [streets, setStreets] = useState([])
 	const [streetsApi, setStreetsApi] = useState([])
 	const [openModalStreet, setOpenModalStreet] = useState(false)
-	const handleCloseModalAPI = () => {
-		setOpenModalStreet(false)
-	}
 	const openModalStreetApi = async () => {
-		const Provincia = provinces.filter((item) => item.id === parseInt(watch('id_state')))
-		const City = localidades.filter((item) => item.id === parseInt(watch('id_city')))
-		const url = `https://apis.datos.gob.ar/georef/api/calles?max=5000&provincia=${Provincia[0].nombre}&localidad_censal=${City[0].nombre.split(' - CP ')[0]}&orden=nombre`
-		const res = await requestApiExt(url, 'GET')
-		const calles = await res.data.calles.map((item) => {
-			return { nombre: item.nombre, id: item.id }
-		})
-		setStreetsApi(calles)
-		setOpenModalStreet(true)
+		if (!openModalStreet && !streetsApi.length) {
+			getAllStreet().then((streets) => {
+				setStreetsApi(streets)
+			})
+		}
+		setOpenModalStreet(!openModalStreet)
 	}
 	useEffect(() => {
 		const getProvinces = async () => {
@@ -46,9 +42,9 @@ const leveldos = () => {
 				const res = await request(url, 'GET')
 				const provincias = res.data
 					.map((item) => {
-						return { id: item.cod_pro, nombre: item.des_pro }
+						return { id: item.cod_pro, name: item.des_pro }
 					})
-					.sort((a, b) => a.nombre.localeCompare(b.nombre))
+					.sort((a, b) => a.name.localeCompare(b.name))
 				// Una vez que obtengo las provincias, las guardo en el estado
 				setProvinces(provincias)
 			} catch (error) {
@@ -65,9 +61,9 @@ const leveldos = () => {
 			const res = await request(url, 'GET')
 			const localidades = res.data
 				.map((item) => {
-					return { id: item.id, nombre: `${item.des_loc} - CP : ${item.cod_pos}` }
+					return { id: item.id, name: `${item.des_loc} - CP : ${item.cod_pos}` }
 				})
-				.sort((a, b) => a.nombre.localeCompare(b.nombre))
+				.sort((a, b) => a.name.localeCompare(b.name))
 			await setLocalidades(localidades)
 		} catch (error) {
 			console.error({ message: error.message })
@@ -81,28 +77,12 @@ const leveldos = () => {
 			const res = await request(url, 'GET')
 			const Calles = res.data
 				.map((item) => {
-					return { id: item.id, nombre: item.name }
+					return { id: item.id, name: item.name }
 				})
-				.sort((a, b) => a.nombre.localeCompare(b.nombre))
+				.sort((a, b) => a.name.localeCompare(b.name))
 			setStreets(Calles)
 		} catch (error) {
 			console.error({ message: error.message })
-		}
-	}
-	const saveNewStreet = async () => {
-		try {
-			const dataApi = streetsApi.filter((item) => item.id === watch('addressApi'))
-			const data = { name: dataApi[0].nombre, id_api: dataApi[0].id, idCity: parseInt(watch('id_city')) }
-			const url = `${import.meta.env.VITE_APP_API_URL}/addStreet`
-			const res = await request(url, 'POST', data)
-			if (res.status === 200) {
-				Swal.fire({ icon: 'success', title: '¡Calle agregada!', text: 'La calle ha sido agregada correctamente' })
-				handleCloseModalAPI()
-				handleCityChange()
-				return true
-			}
-		} catch (error) {
-			Swal.fire({ icon: 'error', title: '¡Error!', text: 'No se pudo agregar la calle' })
 		}
 	}
 	const navigate = useNavigate()
@@ -134,13 +114,12 @@ const leveldos = () => {
 								setValue('birthdate', formatDateForInput(data.born_date || data.date_registration))
 								await handleProvinceChange()
 								setTimeout(() => {
-									console.log(data?.dataPerson?.Person_Address[0]?.Address?.city?.cod_loc)
 									setValue('id_city', data?.dataPerson?.Person_Address[0]?.Address?.city?.cod_loc || null)
 									handleCityChange()
 								}, 200)
 								setTimeout(() => {
 									setValue('id_street', data?.dataPerson?.Person_Address[0]?.Address?.street?.id || null)
-								}, 300)
+								}, 400)
 							} else {
 								setValue('document_number', '')
 							}
@@ -373,7 +352,7 @@ const leveldos = () => {
 									</option>
 									{provinces.map((item, index) => (
 										<option key={index} className='robotoCondensed' value={item.id}>
-											{item.nombre}
+											{item.name}
 										</option>
 									))}
 								</select>
@@ -395,7 +374,7 @@ const leveldos = () => {
 									</option>
 									{localidades.map((item, index) => (
 										<option key={index} className='robotoCondensed' value={item.id}>
-											{item.nombre}
+											{item.name}
 										</option>
 									))}
 								</select>
@@ -422,7 +401,7 @@ const leveldos = () => {
 									</option>
 									{streets.map((item, index) => (
 										<option key={index} className='robotoCondensed' value={item.id}>
-											{item.nombre}
+											{item.name}
 										</option>
 									))}
 								</select>
@@ -511,41 +490,15 @@ const leveldos = () => {
 							</Button>
 						</div>
 					</div>
-					<Modal className='flex justify-center items-center' open={openModalStreet} onClose={handleCloseModalAPI} aria-labelledby='parent-modal-title' aria-describedby='parent-modal-description'>
-						<Box className={'w-full flex justify-center items-center'}>
-							<div className=' bg-white w-1/2 p-5 flex-col justify-center items-center'>
-								<div className='relative  p-5 '>
-									<h3 className='text-gray-900 m-0 font-bold text-center font-sans' id='exampleModalLabel'>
-										Calles segun Nacion
-									</h3>
-									<div className='absolute  right-5 top-5'>
-										<Close onClick={handleCloseModalAPI} className='text-gray-500 hover:text-gray-800 hover:cursor-pointer' />
-									</div>
-								</div>
-
-								<select
-									id='addressApi'
-									{...register('addressApi')}
-									className='block ring-1 bg-white dark:bg-zinc-800 w-full rounded-md border-0 p-3 text-gray-900 dark:text-gray-200 shadow placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'
-								>
-									<option className='robotoCondensed' value=''>
-										Seleccionar...
-									</option>
-									{streetsApi.map((item, index) => (
-										<option key={index} className='robotoCondensed' value={item.id}>
-											{item.nombre}
-										</option>
-									))}
-								</select>
-								<div className='w-100 mt-5 flex justify-center items-center'>
-									<Button variant='contained' type='button' color='primary' onClick={saveNewStreet}>
-										Guardar
-									</Button>
-								</div>
-							</div>
-						</Box>
-					</Modal>
 				</form>
+				<ModalNewStreet
+					streetsAdd={streetsApi}
+					openModalStreet={openModalStreet}
+					handleModalStreet={() => openModalStreetApi}
+					userData={{ city: watch('id_city') }}
+					setStreets={setStreets}
+					editWatch={watch('id_city')}
+				/>
 			</div>
 		</CardCustom>
 	)

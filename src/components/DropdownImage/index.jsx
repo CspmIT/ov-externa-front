@@ -22,7 +22,7 @@ const DropdownImage = ({ props }) => {
 			navigator('/login')
 		}, 750)
 	}
-	//Chequeo si existe la imagen en el servidor y si el servidor esta activo
+	// Chequeo si existe la imagen en el servidor y si el servidor esta activo
 	useEffect(() => {
 		const checkServerStatus = async () => {
 			setImgProfile('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
@@ -40,7 +40,7 @@ const DropdownImage = ({ props }) => {
 			}
 		}
 		checkServerStatus()
-	}, [])
+	}, [usuario])
 
 	return (
 		<div className='relative inline-block text-left ml-3'>
