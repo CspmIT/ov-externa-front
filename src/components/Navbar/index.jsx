@@ -104,7 +104,7 @@ const Navbar = () => {
 		{
 			name: 'Dejanos tu Opinión',
 			icon: <FaComments />,
-			link: '/Comments',
+			link: '/Opinion',
 			level: [1, 2, 3],
 		},
 	]

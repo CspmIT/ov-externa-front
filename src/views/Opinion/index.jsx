@@ -1,47 +1,37 @@
 import React, { useState } from 'react'
-import InputGroup from '../../components/InputGroup'
 import Button from '../../components/Button'
-import { requestAuth } from '../../utils/request';
 import Swal from 'sweetalert2';
-import { useContext } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+import { useForm } from 'react-hook-form'
+import { TextField } from '@mui/material';
+import { request } from '../../utils/request';
 
-const index = () => {
+const Opinion = () => {
     const [inputVisibility, setInputVisibility] = useState('hidden');
-    const [valor, setValor] = useState(null);
-    const {usuario} = useContext(UserContext);
-
-    const initialData = {
-        id_score: "",
-        text_opinion: "",
-        id_customer: "",
-    };
-
-    const [userData, setUserData] = useState(initialData);
+    const [score, setScore] = useState();
 
     const showInput = (variab) => {
-        setInputVisibility(variab === valor ? (inputVisibility === 'hidden' ? '' : 'hidden') : '');
-        setValor(variab);
+        setInputVisibility(variab === score ? (inputVisibility === 'hidden' ? '' : 'hidden') : '');
+        setScore(variab);
     };
 
-    const handleChangeUserData = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value, ['id_score']: valor, ['id_customer']: usuario.number_customer || null});
-    };
-
-    const formulario = async () => {
-        const url = 'http://localhost:8000/api/addOpinions'
-        // const url = `http://cooptech.com.ar:30888/api/addOpinions`;
+    const formulario = async (data) => {
         try {
-            await requestAuth(url, "POST", userData);
-            Swal.fire({
-                icon: "success",
-                title: "Opinión Guardada!",
-                text: "Muchas gracias",
-            });
+            data.score = score;
+            const response = await request(import.meta.env.VITE_APP_API_URL + '/addCommentary', 'post', data);
+            if (response.status === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "¡Opinión Guardada!",
+                    text: "Muchas gracias",
+                });
+            }
         } catch (error) {
             console.error("Error en la solicitud:", error);
         }
     };
+
+    const { register: opinionRegister,
+        handleSubmit } = useForm()
 
     return (
         <div>
@@ -63,21 +53,17 @@ const index = () => {
                         <img className='w-full' src='../../src/assets/img/opinion/feliz.png' />
                     </div>
                 </div>
-                <div className={`w-2/3 text-center`} style={{ visibility: inputVisibility }} >
-                    <InputGroup
-                        onChange={handleChangeUserData}
-                        id={"text_opinion"}
-                        name={"text_opinion"}
-                        required
-                        ph={"Ayudanos a mejorar ingresando tu comentario..."}
-                        type={"text"}
-                        value={userData.text_opinion}
-                    />
-                    <Button onclick={() => formulario()} props={{ class: `text-black bg-yellow-300 mt-5 hover:bg-yellow-400 focus:bg-yellow-400 m-2`, text: "Enviar", type: 'button' }} />
-                </div>
             </div>
+            <form id='formInformation' onSubmit={handleSubmit(formulario)}>
+                <div className={`w-full text-center`} style={{ visibility: inputVisibility }} >
+                    <TextField className='w-1/2' label='Ecriba un comentario' variant='outlined' {...opinionRegister('text_opinion')} />
+                </div>
+                <div className={`w-full text-center`} style={{ visibility: inputVisibility }} >
+                    <Button props={{ class: `text-black bg-yellow-300 mt-5 hover:bg-yellow-400 focus:bg-yellow-400 m-2`, text: "Guardar", type: 'submit' }} />
+                </div>
+            </form>
         </div>
     )
 }
 
-export default index
+export default Opinion
