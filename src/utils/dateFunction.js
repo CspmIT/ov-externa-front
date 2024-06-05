@@ -37,7 +37,7 @@ export const formatDateForInput = (date, timezone = false) => {
 	// Extraer el año, mes y día como números
 	const year = dateObject.getFullYear()
 	const month = dateObject.getMonth() + 1 // getMonth() devuelve 0-11
-	const day = dateObject.getDate()
+	const day = dateObject.getDate() + 1
 	// Agregar ceros a la izquierda si es necesario para el mes y el día
 	const formattedMonth = month.toString().padStart(2, '0')
 	const formattedDay = day.toString().padStart(2, '0')

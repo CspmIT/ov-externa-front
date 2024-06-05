@@ -35,10 +35,19 @@ const validateForm = async (data, navigate) => {
 		})
 
 		if (swal.isConfirmed) {
+			Swal.fire({
+				title: 'Por favor espere...',
+				text: 'Estamos ejecutando su petición',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading()
+				},
+			})
 			const result = await updateLevel(data)
 			// Muestro una alerta si se subio de nivel
 
 			if (result.status === 200) {
+				Swal.close()
 				Swal.fire({
 					title: '¡Has subido al nivel 2!',
 					text: 'Te pediremos que vuelvas a iniciar sesión',
@@ -58,33 +67,39 @@ const validateForm = async (data, navigate) => {
 			}
 		}
 	} catch (error) {
-		const { message } = error.response.data
-		const errorMessages = []
-
-		if (message === 'El socio no existe') {
-			Swal.fire({
-				title: 'Error',
-				text: message,
-				icon: 'error',
-			})
-			return
-		}
-
-		for (const i in message) {
-			if (i === 'user' || i === 'level') {
-				errorMessages.push('Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.')
-				break
-			}
-			errorMessages.push(...message[i])
-		}
-
-		const alertMessage = errorMessages.join('\n')
-
+		Swal.close()
 		Swal.fire({
-			title: 'Error',
-			text: alertMessage,
 			icon: 'error',
+			title: 'Error',
+			text: error,
 		})
+		// const { message } = error.response.data
+		// const errorMessages = []
+
+		// if (message === 'El socio no existe') {
+		// 	Swal.fire({
+		// 		title: 'Error',
+		// 		text: message,
+		// 		icon: 'error',
+		// 	})
+		// 	return
+		// }
+
+		// for (const i in message) {
+		// 	if (i === 'user' || i === 'level') {
+		// 		errorMessages.push('Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.')
+		// 		break
+		// 	}
+		// 	errorMessages.push(...message[i])
+		// }
+
+		// const alertMessage = errorMessages.join('\n')
+
+		// Swal.fire({
+		// 	title: 'Error',
+		// 	text: alertMessage,
+		// 	icon: 'error',
+		// })
 	}
 }
 

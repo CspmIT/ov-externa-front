@@ -51,6 +51,13 @@ const Login = () => {
 	const formulario = async (datos) => {
 		// const url = import.meta.env.VITE_APP_API_URL + '/login'
 		const urlNode = import.meta.env.VITE_APP_API_URL + '/login'
+		Swal.fire({
+			title: 'Por favor espere...',
+			allowOutsideClick: false,
+			didOpen: () => {
+				Swal.showLoading()
+			},
+		})
 		try {
 			const responseData = await request(urlNode, 'POST', datos)
 			// const responseData = await Axios.post(urlNode, datos)
@@ -82,13 +89,15 @@ const Login = () => {
 				const user = { ...decoded, accounts: DataOtherUser }
 				setDarkMode(decoded.dark)
 				setUsuario(user)
+				Swal.close()
 				navigate('/')
 			}
 		} catch (error) {
+			Swal.close()
 			Swal.fire({
 				icon: 'warning',
-				title: error?.response.data !== '' ? 'Atención!' : 'Sitio en mantenimiento',
-				text: error?.response.data !== '' ? error.response.data : 'Intente ingresar nuevamente mas tarde',
+				title: error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
+				text: error,
 				allowOutsideClick: false,
 			})
 		}
@@ -97,8 +106,16 @@ const Login = () => {
 	const validacionToken = async (token, id) => {
 		const url = import.meta.env.VITE_APP_API_URL + '/validationUser'
 		const info = { token_temp: token, id }
+		Swal.fire({
+			title: 'Por favor espere...',
+			allowOutsideClick: false,
+			didOpen: () => {
+				Swal.showLoading()
+			},
+		})
 		try {
 			await request(url, 'POST', info)
+			Swal.close()
 			Swal.fire({
 				icon: 'success',
 				title: 'Perfecto!',
@@ -109,6 +126,7 @@ const Login = () => {
 			})
 		} catch (error) {
 			console.log(error)
+			Swal.close()
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atención!',
