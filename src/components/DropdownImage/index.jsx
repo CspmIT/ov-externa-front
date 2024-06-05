@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FaUser, FaSignOutAlt } from 'react-icons/fa'
 import { useNavigate, Link } from 'react-router-dom'
 import { UserContext } from '../../contexts/UserContext'
@@ -14,6 +14,7 @@ const DropdownImage = ({ props }) => {
 		setDropdownOpen(!isDropdownOpen)
 	}
 	const handleLogout = () => {
+		toggleDropdown()
 		localStorage.removeItem('usuario')
 		Cookies.remove('token')
 		setUsuario('')
@@ -22,6 +23,23 @@ const DropdownImage = ({ props }) => {
 			navigator('/login')
 		}, 750)
 	}
+
+	const dropdownRef = useRef(null) // Referencia al dropdown
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			console.log('hola')
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setDropdownOpen(false)
+			}
+		}
+
+		// Agregar el escuchador de eventos al montar el componente
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => {
+			// Limpiar el escuchador de eventos al desmontar el componente
+			document.removeEventListener('mousedown', handleClickOutside)
+		}
+	}, [])
 	// Chequeo si existe la imagen en el servidor y si el servidor esta activo
 	useEffect(() => {
 		const checkServerStatus = async () => {
@@ -43,7 +61,7 @@ const DropdownImage = ({ props }) => {
 	}, [usuario])
 
 	return (
-		<div className='relative inline-block text-left ml-3'>
+		<div className='relative inline-block text-left ml-3' ref={dropdownRef}>
 			<div>
 				<button
 					type='button'
@@ -65,7 +83,14 @@ const DropdownImage = ({ props }) => {
 					tabIndex='-1'
 				>
 					<div className='py-1' role='none'>
-						<Link to='/Profile' className='px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700' role='menuitem' tabIndex='-1' id='user-menu-item-0'>
+						<Link
+							to='/Profile'
+							onClick={toggleDropdown}
+							className='px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700'
+							role='menuitem'
+							tabIndex='-1'
+							id='user-menu-item-0'
+						>
 							<FaUser className='mr-2' /> Perfil
 						</Link>
 						<a

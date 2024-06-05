@@ -105,7 +105,6 @@ function Profile() {
 			<Box sx={{ width: '100%' }}>
 				<Tabs aria-label='Opciones del Perfil' variant='fullWidth' indicatorColor='transparent' value={value} onChange={handleChange}>
 					<Tab className={`${classTabs} ${classTabStatus[value === 0 ? 0 : 1]}`} {...a11yProps(0)} label='Datos Personales' />
-					{/* <Tab className={classTabs + ' ' + classTabStatus[value === 1 ? 0 : 1]} label='Modificar Datos' {...a11yProps(1)} /> */}
 					<Tab
 						className={classTabs + ' ' + classTabStatus[value === 1 ? 0 : 1]}
 						{...a11yProps(1)}
