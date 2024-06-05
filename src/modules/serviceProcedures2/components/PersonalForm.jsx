@@ -18,7 +18,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 	return (
 		<div className='flex flex-col w-full gap-3'>
 			<div className='w-full flex gap-3 max-sm:flex-col'>
-				<div className='w-1/2 gap-3 flex max-sm:w-full'>
+				<div className='w-1/2 gap-3 flex max-sm:w-full max-sm:flex-col'>
 					<TextField
 						error={errors.name}
 						label='Nombre completo'
@@ -54,8 +54,8 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 				</div>
 			</div>
 			<div className='w-full flex gap-3 max-sm:flex-col'>
-				<div className='w-1/2 gap-3 flex max-sm:w-full'>
-					<FormControl className='w-1/3' error={errors.TIP_DNI}>
+				<div className='w-1/2 gap-3 flex max-sm:w-full max-sm:flex-col'>
+					<FormControl className='w-1/3 max-sm:w-full ' error={errors.TIP_DNI}>
 						<InputLabel id='TIP_DNI'>Tipo de Documento</InputLabel>
 						<Select labelId='TIP_DNI' label='Tipo de Documento' id='TIP_DNI' defaultValue={person.type_document || person?.TIP_DNI} {...register('TIP_DNI', { required: true })}>
 							{dniArray.map((item) => (
@@ -69,7 +69,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 						error={errors.NUM_DNI}
 						label='Numero de Documento'
 						{...register('NUM_DNI', { required: true })}
-						className='w-2/3'
+						className='w-2/3 max-sm:w-full '
 						helperText={errors.NUM_DNI && 'El campo es requerido'}
 						defaultValue={person?.NUM_DNI || person.number_document}
 					/>
@@ -129,7 +129,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 						defaultValue={characteristic || person?.characteristic}
 						InputProps={{
 							maxLength: 4,
-							startAdornment: <InputAdornment position='start'>+54 0</InputAdornment>,
+							startAdornment: <InputAdornment position='start'>+549 0</InputAdornment>,
 						}}
 					/>
 					<TextField
@@ -153,7 +153,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 						className='w-1/4'
 						defaultValue={characteristicFijo || person?.caracteristicaFijo}
 						InputProps={{
-							startAdornment: <InputAdornment position='start'>+54 0</InputAdornment>,
+							startAdornment: <InputAdornment position='start'>+549 0</InputAdornment>,
 						}}
 					/>
 					<TextField label='Numero fijo' defaultValue={numberFijo || person?.numeroFijo} {...register('numeroFijo')} className='w-3/4' />

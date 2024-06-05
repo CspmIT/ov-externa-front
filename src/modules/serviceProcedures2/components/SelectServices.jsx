@@ -49,8 +49,12 @@ const SelectServices = ({ services }) => {
 								}
 								// Ordenar los servicios seleccionados por tipo
 								selectedServicesRequest.sort((a, b) => a.tipo - b.tipo)
+								console.log('serviceRequest.id', serviceRequest.id)
+								dispatch({ type: 'set_request_service_id', data: serviceRequest.id })
 
-								dispatch({ type: 'select_services', selectedServices: selectedServicesRequest })
+								console.log('selectedServicesRequest', selectedServicesRequest)
+								dispatch({ type: 'select_services', data: selectedServicesRequest })
+
 								dispatch({ type: 'next' })
 								navigate(`/multiStepForm/Datos Personales`)
 							}
@@ -116,7 +120,6 @@ const SelectServices = ({ services }) => {
 				const data = await request(url, 'POST', sendData)
 				console.log(data)
 			} catch (error) {
-				console.log()
 				const { message } = error.response.data
 				Swal.fire({
 					icon: 'error',
@@ -127,7 +130,8 @@ const SelectServices = ({ services }) => {
 			}
 		}
 
-		dispatch({ type: 'select_services', selectedServices })
+		console.log('selectedServices', selectedServices)
+		dispatch({ type: 'select_services', data: selectedServices })
 		dispatch({ type: 'next' })
 		navigate(`/multiStepForm/Datos Personales`)
 	}

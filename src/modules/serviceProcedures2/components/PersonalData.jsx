@@ -5,7 +5,7 @@ import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, Text
 import Swal from 'sweetalert2'
 import { request } from '../../../utils/request'
 import PersonalForm from './PersonalForm'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const PersonalData = () => {
 	// Hooks
@@ -26,24 +26,42 @@ const PersonalData = () => {
 	const watchCUIT = watch('CUIT')
 	const watchTypePerson = watch('typePerson')
 
-	const step = state?.step
-
 	useEffect(() => {
-		if (state?.person) {
-			setValue('typePerson', state?.person?.TIP_PERSO)
+		const getData = async () => {
+			if (state?.person) {
+				setValue('typePerson', state?.person?.typePerson)
+				return
+			}
+			const baseUrl = import.meta.env.VITE_APP_API_URL
+			const requestID = state?.requestServiceID
+			const obj = { requestID }
+			const requestData = await request(`${baseUrl}/getRequestsData`, 'POST', obj)
+
+			if (requestData?.data) {
+				dispatch({ type: 'set_person', data: requestData?.data?.People })
+				dispatch({ type: 'set_services_items', data: requestData?.data?.ServiceItems })
+			}
 		}
+		getData()
 	}, [])
 
+	const step = state?.step
 	const onSubmit = async (values) => {
 		if (isValid) {
 			// Guardo los datos en la DB
 			const baseUrl = import.meta.env.VITE_APP_API_URL
-			const url = `${baseUrl}/savePersonalData`
-
-			console.log(values)
+			const url = `${baseUrl}/createOrUpdatePeople`
+			if (state?.person?.id) {
+				const sendData = {
+					person: { ...values },
+					serviceReques: state.requestServiceID,
+				}
+				const response = await request(url, 'POST', sendData)
+				console.log(response)
+			}
 			dispatch({ type: 'set_person', data: values })
-			// dispatch({ type: 'next' })
-			// navigate(`/multiStepForm/${state?.services[step].nombre}`)
+			dispatch({ type: 'next' })
+			navigate(`/multiStepForm/${state?.services[step].nombre}`)
 		}
 	}
 
@@ -64,7 +82,7 @@ const PersonalData = () => {
 
 		try {
 			const response = await request(url, 'POST', sendData)
-
+			setValue('id', response.data?.id)
 			dispatch({ type: 'set_person', data: response.data[0] ? response.data[0] : response.data })
 		} catch (error) {
 			Swal.fire({
@@ -78,6 +96,22 @@ const PersonalData = () => {
 		setSearchExecuted(true)
 	}
 
+	const SaveAndreturnLater = () => {
+		const baseURL = import.meta.env.VITE_APP_API_URL
+		const url = `${baseURL}/updateServiceRequest`
+		const sendData = {
+			person: { ...state.person },
+			serviceRequest: {
+				id: state.requestServiceID,
+				id_person: state.person.id,
+				return_later: true,
+				step: state.step - 1,
+			},
+			ServiceItems: state.serviceItems,
+		}
+		request(url, 'POST', sendData)
+	}
+
 	function renderForm() {
 		if (watchTypePerson === '1' && state?.person) {
 			return <PersonalForm watch={watch} person={state?.person} errors={errors} register={register} />
@@ -85,10 +119,10 @@ const PersonalData = () => {
 			return <h1>Empresa</h1>
 		}
 	}
-
 	return (
 		<div>
-			<form className='grid grid-cols-12 gap-4' onSubmit={handleSubmit(onSubmit)}>
+			<form className='flex flex-col w-full gap-3' onSubmit={handleSubmit(onSubmit)}>
+				<input type='hidden' {...register('id')} />
 				<FormControl className='col-span-8 col-start-3 max-sm:col-span-12' error={errors.typePerson}>
 					<InputLabel id='typePerson'>Tipo de Persona *</InputLabel>
 					<Select defaultValue='' labelId='typePerson' disabled={searchExecuted} label='Tipo de Persona *' id='typePerson' {...register('typePerson', { required: true })}>
@@ -132,7 +166,7 @@ const PersonalData = () => {
 					>
 						Volver
 					</Button>
-					<Button className='w-1/9' variant='contained' color='secondary'>
+					<Button onClick={SaveAndreturnLater} className='w-1/9' variant='contained' color='secondary'>
 						Guardar y continuar despues
 					</Button>
 					<Button disabled={!state?.person} className='w-1/6' variant='contained' color='success' type='submit'>
