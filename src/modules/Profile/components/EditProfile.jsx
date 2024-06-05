@@ -1,4 +1,4 @@
-import { Button, InputAdornment, MenuItem, TextField } from '@mui/material'
+import { Button, InputAdornment, MenuItem, Skeleton, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
@@ -12,6 +12,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 	const [provinces, setProvinces] = useState([])
 	const [cities, setCities] = useState([])
 	const [streets, setStreets] = useState([])
+	const [isLoaded, setIsLoaded] = useState(false)
 	useEffect(() => {
 		if (value === 1) {
 			Object.keys(userData).map((key) => setValue(key, userData[key]))
@@ -42,6 +43,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 	useEffect(() => {
 		if (streets.length) {
 			setValue('street', userData.street)
+			setIsLoaded(true)
 		}
 	}, [streets])
 
@@ -88,6 +90,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 			})
 			if (password) {
 				dato.pass = password
+				dato.id_person = userData.id_person
 				const url = import.meta.env.VITE_APP_API_URL + '/updateProfile'
 				const response = await request(url, 'PATCH', dato)
 				if (response.status === 200) {
@@ -134,6 +137,27 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 		}
 		setOpenModalStreet(!openModalStreet)
 	}
+	if (!isLoaded) {
+		return (
+			<div className='flex flex-col gap-3 pt-12'>
+				<div className='flex flex-row gap-3 '>
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+				</div>
+				<div className='flex flex-row gap-3 '>
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+				</div>
+				<div className='flex flex-row gap-3 '>
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+					<Skeleton variant='rectangular' className='!w-1/3' height={50} />
+				</div>
+			</div>
+		)
+	}
 	return (
 		<>
 			<div className='!bg-transparent'>
@@ -143,7 +167,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 							<TextField
 								error={editErrors.name}
 								type='text'
-								label='Nombre'
+								label={`${userData.type_person === 1 ? 'Nombre' : 'Razon social'}`}
 								{...editRegister('name', { required: 'El Campo es requerido' })}
 								className='w-1/3'
 								helperText={editErrors.name && editErrors.name.message}
@@ -152,28 +176,30 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 							<TextField
 								error={editErrors.last_name}
 								type='text'
-								label='Apellido'
+								label={`${userData.type_person === 1 ? 'Apellido' : 'Nombre de Fantasia'}`}
 								{...editRegister('last_name', { required: 'El Campo es requerido' })}
 								className='w-1/3'
 								helperText={editErrors.last_name && editErrors.last_name.message}
 								defaultValue={editProfile ? userData.last_name : ''}
 							/>
-							<TextField
-								select={true}
-								label='Sexo'
-								className='w-1/3'
-								{...editRegister('id_type_sex', { required: 'El Campo es requerido' })}
-								error={editErrors.id_type_sex}
-								helperText={editErrors.id_type_sex && editErrors.id_type_sex.message}
-								defaultValue={editProfile ? userData.id_type_sex : ''}
-							>
-								<MenuItem key={1} value={1}>
-									Femenino
-								</MenuItem>
-								<MenuItem key={2} value={2}>
-									Masculino
-								</MenuItem>
-							</TextField>
+							{userData.type_person === 1 && (
+								<TextField
+									select={true}
+									label='Sexo'
+									className='w-1/3'
+									{...editRegister('id_type_sex', { required: 'El Campo es requerido' })}
+									error={editErrors.id_type_sex}
+									helperText={editErrors.id_type_sex && editErrors.id_type_sex.message}
+									defaultValue={editProfile ? userData.id_type_sex : ''}
+								>
+									<MenuItem key={1} value={1}>
+										Femenino
+									</MenuItem>
+									<MenuItem key={2} value={2}>
+										Masculino
+									</MenuItem>
+								</TextField>
+							)}
 						</div>
 						<div className='flex w-full gap-2 justify-center items-center'>
 							<TextField
@@ -194,7 +220,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 							<TextField
 								error={editErrors.day}
 								select={true}
-								label='Día'
+								label={userData.type_person === 1 ? 'Día de Nac.' : 'Día de Reg.'}
 								id={'day'}
 								{...editRegister('day', { required: 'El Campo es requerido', validate: validateDate() })}
 								className='w-1/12'
@@ -210,7 +236,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 							<TextField
 								error={editErrors.month}
 								select={true}
-								label='Mes'
+								label={userData.type_person === 1 ? 'Mes de Nac.' : 'Mes de Reg.'}
 								id={'month'}
 								{...editRegister('month', { required: 'El Campo es requerido' })}
 								className='w-3/12'
@@ -226,7 +252,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 							<TextField
 								error={editErrors.year}
 								select={true}
-								label='Año'
+								label={userData.type_person === 1 ? 'Año de Nac.' : 'Año de Reg.'}
 								id={'year'}
 								{...editRegister('year', { required: 'El Campo es requerido' })}
 								className='w-3/12'

@@ -119,16 +119,23 @@ function DataProfile({ editProfile, userData, setEditProfile, setValor }) {
 					</div>
 				</div>
 				<div className={` w-full justify-center items-center flex flex-col gap-3`}>
-					<h1 className='text-2xl font-bold mt-4'>
-						{userData.name} {userData.last_name}
-					</h1>
+					{userData.type_person === 1 ? (
+						<h1 className='text-2xl font-bold mt-4'>
+							{userData.name} {userData.last_name}
+						</h1>
+					) : (
+						<>
+							<h1 className='text-3xl font-bold mt-4 mb-0'>{userData.name}</h1>
+							<h1 className='text-2xl font-bold m-0'>{userData.last_name}</h1>
+						</>
+					)}
 					<p className='text-gray-500 dark:text-gray-400 p-0 m-0'>
 						Correo:
 						<span className='text-black dark:text-white'> {userData.email} </span>
 					</p>
 					<p className='text-gray-500 dark:text-gray-400 p-0 m-0'>
 						Fecha de Nacimiento:
-						<span className='text-black dark:text-white'> {formatDateForInput(userData.born_date)} </span>
+						<span className='text-black dark:text-white'> {formatDateForInput(userData.born_date, true)} </span>
 					</p>
 					{userData.fixed_phone && (
 						<p className='text-gray-500 dark:text-gray-400 p-0 m-0'>
@@ -144,10 +151,12 @@ function DataProfile({ editProfile, userData, setEditProfile, setValor }) {
 						Dirección:
 						<span className='text-black dark:text-white'> {userData.address} </span>
 					</p>
-					<p className='text-gray-500 dark:text-gray-400 p-0 m-0'>
-						Sexo:
-						<span className='text-black dark:text-white'> {userData.id_type_sex === 1 ? 'Femenino' : 'Masculino'} </span>
-					</p>
+					{userData.type_person === 1 && (
+						<p className='text-gray-500 dark:text-gray-400 p-0 m-0'>
+							Sexo:
+							<span className='text-black dark:text-white'> {userData.id_type_sex === 1 ? 'Femenino' : 'Masculino'} </span>
+						</p>
+					)}
 				</div>
 			</div>
 		</>

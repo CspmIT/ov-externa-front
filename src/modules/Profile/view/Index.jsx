@@ -36,40 +36,47 @@ function Profile() {
 		}
 	}
 	const caractFixedPhone = (data) => {
-		const number = data?.PersonData?.fixed_phone?.split(' ')
-		if (number.length > 1) {
-			return number[0]
-		} else {
-			return ''
+		if (data.PersonData.fixed_phone) {
+			const number = data?.PersonData?.fixed_phone?.split(' ')
+			if (number.length > 1) {
+				return number[0]
+			}
 		}
+		return ''
 	}
 	const numbFixedPhone = (data) => {
-		const number = data?.PersonData?.fixed_phone?.split(' ')
-		if (number.length > 1) {
-			return number[1]
-		} else {
-			return number[0] || ''
+		if (data.PersonData.fixed_phone) {
+			const number = data?.PersonData?.fixed_phone?.split(' ')
+			if (number.length > 1) {
+				return number[1]
+			} else {
+				return number[0] || ''
+			}
 		}
+		return ''
 	}
 	// Función obtener los datos del usuario y cargarlos en el formulario.
 	const fetchData = async () => {
 		const data = await getUserDataProfile()
 		const Address = { ...data.PersonData.Person_Address[0].Address }
-		const birthdate = data.PersonData.Person_physical.born_date || data.PersonData.Person_legal.date_registration
+		const birthdate = data.PersonData.Person_physical?.born_date || data.PersonData.Person_legal?.date_registration
 		const { day, month, year } = separateProcopDate(birthdate)
 		const user = {
 			type_person: data.type_person,
 			email: data.PersonData.email,
 			...data.PersonData.Person_physical,
 			...data.PersonData.Person_legal,
+			name: data.PersonData.Person_physical?.name || data.PersonData.Person_legal?.social_raeson,
+			last_name: data.PersonData.Person_physical?.last_name || data.PersonData.Person_legal?.fantasy_name,
 			caractCellPhone: caractCellPhone(data),
 			numbCellPhone: numbCellPhone(data),
 			caractFixedPhone: caractFixedPhone(data),
 			numbFixedPhone: numbFixedPhone(data),
 			cell_phone: data.PersonData.cell_phone,
-			fixed_phone: data.PersonData.fixed_phone.length > 4 ? data.PersonData.fixed_phone : null,
+			fixed_phone: data.PersonData.fixed_phone?.length > 4 ? data.PersonData.fixed_phone : null,
 			address: `${Address.street.name} ${Address.number_address}, ${Address.city.des_loc}, ${Address.state.des_pro}`,
 			number_address: Address.number_address,
+			born_date: `${year}-${month}-${day}`,
 			day,
 			month,
 			year,
@@ -121,7 +128,7 @@ function Profile() {
 						<DataProfile editProfile={editProfile} userData={userData} setEditProfile={setEditProfile} setValor={setValor} />
 					</CustomTabPanel>
 					<CustomTabPanel className={`${editProfile ? '' : 'hidden'}`} value={value} index={0}>
-						<EditProfile value={value} editProfile={editProfile} userData={userData} setEditProfile={setEditProfile} setValor={setValor} fetchData={() => fetchData} />
+						<EditProfile value={value} editProfile={editProfile} userData={userData} setEditProfile={setEditProfile} setValor={setValor} fetchData={fetchData} />
 					</CustomTabPanel>
 					<CustomTabPanel value={value} index={1}>
 						<ChangePasswordProfile />

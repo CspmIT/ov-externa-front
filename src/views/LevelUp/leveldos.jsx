@@ -64,7 +64,7 @@ const leveldos = () => {
 					return { id: item.id, name: `${item.des_loc} - CP : ${item.cod_pos}` }
 				})
 				.sort((a, b) => a.name.localeCompare(b.name))
-			await setLocalidades(localidades)
+			setLocalidades(localidades)
 		} catch (error) {
 			console.error({ message: error.message })
 		}
@@ -95,9 +95,10 @@ const leveldos = () => {
 				if (res.status === 200) {
 					const data = res.data
 					if (data) {
+						const nombre = data.last_name ? `${data.last_name + ' ' + data.name}` : `${data.social_raeson + ' ' + data.fantasy_name}`
 						Swal.fire({
 							title: 'El Numero de documento ya fue cargado en el sistema',
-							text: `¿Sos ${data.last_name + ' ' + data.name}?`,
+							text: `¿Sos ${nombre}?`,
 							icon: 'question',
 							allowOutsideClick: false,
 							showCancelButton: true,
@@ -105,8 +106,10 @@ const leveldos = () => {
 							cancelButtonText: 'Cancelar',
 						}).then(async (result) => {
 							if (result.isConfirmed) {
-								setValue('document_type', data.type_dni)
-								setValue('sex', data.typeSex.id)
+								setValue('document_type', data.dataPerson.type_document)
+								if (data.dataPerson.type_person === 1) {
+									setValue('sex', data.typeSex.id)
+								}
 								setValue('id_state', data?.dataPerson?.Person_Address[0]?.Address?.state?.cod_pro || null)
 								setValue('number_address', data?.dataPerson?.Person_Address[0]?.Address?.number_address || null)
 								setValue('phoneCaract', data.dataPerson.cell_phone.split(' ')[0])

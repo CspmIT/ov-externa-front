@@ -59,7 +59,6 @@ const DropdownImage = ({ props }) => {
 		}
 		checkServerStatus()
 	}, [usuario])
-
 	return (
 		<div className='relative inline-block text-left ml-3' ref={dropdownRef}>
 			<div>
@@ -83,16 +82,18 @@ const DropdownImage = ({ props }) => {
 					tabIndex='-1'
 				>
 					<div className='py-1' role='none'>
-						<Link
-							to='/Profile'
-							onClick={toggleDropdown}
-							className='px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700'
-							role='menuitem'
-							tabIndex='-1'
-							id='user-menu-item-0'
-						>
-							<FaUser className='mr-2' /> Perfil
-						</Link>
+						{usuario.level >= 2 ? (
+							<Link
+								to='/Profile'
+								onClick={toggleDropdown}
+								className='px-2 py-1 flex items-center w-full md:w-auto hover:bg-gray-200 pl-4 dark:text-white dark:hover:bg-gray-700'
+								role='menuitem'
+								tabIndex='-1'
+								id='user-menu-item-0'
+							>
+								<FaUser className='mr-2' /> Perfil
+							</Link>
+						) : null}
 						<a
 							href='#'
 							onClick={() => handleLogout()}
