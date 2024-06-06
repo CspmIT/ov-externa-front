@@ -1,18 +1,18 @@
 const typePersonArray = [
 	{ id: 1, name: 'Persona Fisica' },
 	{ id: 2, name: 'Persona Juridica' },
-];
+]
 
 const sexArray = [
 	{ id: 'F', name: 'Femenino' },
 	{ id: 'M', name: 'Masculino' },
-];
+]
 
 const dniArray = [
 	{ id: 1, name: 'DNI' },
 	{ id: 2, name: 'LC' },
 	{ id: 3, name: 'LE' },
-];
+]
 
 const daysArray = [
 	{ id: '01', name: '1' },
@@ -46,7 +46,7 @@ const daysArray = [
 	{ id: '29', name: '29' },
 	{ id: '30', name: '30' },
 	{ id: '31', name: '31' },
-];
+]
 
 const monthArray = [
 	{ id: '01', name: 'Enero' },
@@ -61,7 +61,7 @@ const monthArray = [
 	{ id: '10', name: 'Octubre' },
 	{ id: '11', name: 'Noviembre' },
 	{ id: '12', name: 'Diciembre' },
-];
+]
 
 const impositiveSituationArray = [
 	{ id: 1, name: 'IVA Responsable Inscripto' },
@@ -77,7 +77,7 @@ const impositiveSituationArray = [
 	{ id: 11, name: 'Pequeño Contribuyente Eventual' },
 	{ id: 12, name: 'Monotributista Social' },
 	{ id: 13, name: 'Pequeño Contribuyente Eventual Social' },
-];
+]
 
 const grossIncomeArray = [
 	{ id: 1, name: 'Exento' },
@@ -86,7 +86,7 @@ const grossIncomeArray = [
 	{ id: 4, name: 'Inscripto' },
 	{ id: 5, name: 'No Alcanzado' },
 	{ id: 5, name: 'No Inscripto' },
-];
+]
 
 const inputsBusinessData = [
 	{
@@ -217,17 +217,17 @@ const inputsBusinessData = [
 		label: 'Numero',
 		name: 'numberPhone',
 	},
-];
+]
 
 // Funcion para separar la fecha de alta en tres campos
 const separateProcopDate = (date) => {
-	if (!date) return { day: '', month: '', year: '' };
-	const dateArray = date.split('-');
+	if (!date) return { day: '', month: '', year: '' }
+	const dateArray = date.split('-')
 	return {
 		day: dateArray[2].split('T')[0],
 		month: dateArray[1],
 		year: dateArray[0],
-	};
-};
+	}
+}
 
-export { typePersonArray, daysArray, inputsBusinessData, dniArray, sexArray, monthArray, impositiveSituationArray, grossIncomeArray, separateProcopDate };
+export { typePersonArray, daysArray, inputsBusinessData, dniArray, sexArray, monthArray, impositiveSituationArray, grossIncomeArray, separateProcopDate }
