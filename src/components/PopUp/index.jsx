@@ -58,7 +58,7 @@ const PopUp = () => {
 						<Slider {...settings}>
 							{listImgs.map((img, index) => (
 								<div key={index} className='!flex !justify-center !items-center h-[50vh] w-full'>
-									<img src={img} alt='img' className='max-h-full max-w-full' />
+									<img src={img} alt='Imagen no disponible' className='max-h-full max-w-full dark:text-white' />
 								</div>
 							))}
 						</Slider>

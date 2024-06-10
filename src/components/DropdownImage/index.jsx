@@ -8,7 +8,7 @@ import { request } from '../../utils/request'
 const DropdownImage = ({ props }) => {
 	const [isDropdownOpen, setDropdownOpen] = useState(false)
 	const navigator = useNavigate()
-	const { setUsuario, usuario } = useContext(UserContext)
+	const { setUsuario, usuario, setDarkMode } = useContext(UserContext)
 	const [imgProfile, setImgProfile] = useState('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
 	const toggleDropdown = () => {
 		setDropdownOpen(!isDropdownOpen)
@@ -19,6 +19,7 @@ const DropdownImage = ({ props }) => {
 		Cookies.remove('token')
 		setUsuario('')
 		document.body.classList.remove('dark')
+		setDarkMode(0)
 		setTimeout(() => {
 			navigator('/login')
 		}, 750)
@@ -27,7 +28,6 @@ const DropdownImage = ({ props }) => {
 	const dropdownRef = useRef(null) // Referencia al dropdown
 	useEffect(() => {
 		const handleClickOutside = (event) => {
-			console.log('hola')
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
 				setDropdownOpen(false)
 			}
