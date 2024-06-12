@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
@@ -18,6 +18,7 @@ const Login = () => {
 	const navigate = useNavigate()
 	const [pass, setPass] = useState('password')
 	const [remember, setRemember] = useState(false)
+	const location = useLocation()
 	const [iconEye, setIconEye] = useState(<TbEye />)
 	const showPassword = () => {
 		setPass(pass === 'password' ? 'text' : 'password')
@@ -152,6 +153,10 @@ const Login = () => {
 		if (!authUser || !storedUser) {
 			localStorage.removeItem('usuario')
 			Cookies.remove('token')
+		} else {
+			if (location.pathname === '/Login' || location.pathname === '/login') {
+				navigate('/')
+			}
 		}
 	}, [])
 

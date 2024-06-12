@@ -25,7 +25,7 @@ const Home = () => {
 			allowOutsideClick: false,
 		}).then(async () => {
 			// Limpio el localstorage
-			await localStorage.removeItem('usuario')
+			localStorage.removeItem('usuario')
 			navigate('/Login')
 		})
 	}
@@ -33,7 +33,7 @@ const Home = () => {
 		const dataUser = await request(import.meta.env.VITE_APP_API_URL + '/dataUser', 'GET')
 		if (dataUser.status !== 200) throw new Error('Error en consulta')
 		const data = dataUser.data
-		setUsuario({ ...usuario, name: data.name_register, last_name: data.lastName_register, level: data.level })
+		setUsuario({ ...usuario, name: data.name_register, last_name: data.last_name_register, level: data.level })
 		setlevel(data.level)
 	}
 	useEffect(() => {
