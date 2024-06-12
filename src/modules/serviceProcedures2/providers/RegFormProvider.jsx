@@ -24,10 +24,14 @@ const reducer = (state, action) => {
 			return { ...state, personalData: { ...action.data } }
 		case 'energia_electrica':
 			return { ...state, energiaElectrica: { ...action.data } }
+		case 'electric_files':
+			return { ...state, electricFiles: { ...action.data } }
 		case 'agua_potable':
 			return { ...state, aguaPotable: { ...action.data } }
 		case 'telecumunicaciones':
 			return { ...state, telecomunicaciones: { ...action.data } }
+		case 'connection_address':
+			return { ...state, connectionAddress: { ...action.data } }
 		case 'servicios_sociales':
 			return { ...state, servicios_sociales: { ...action.data } }
 		case 'set_person':

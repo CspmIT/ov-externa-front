@@ -161,7 +161,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 
 				<FormControl className='w-1/2' error={errors.COD_SIT}>
 					<InputLabel id='situacionImpositiva'>Situación Impositiva</InputLabel>
-					<Select labelId='situacionImpositiva' label='Situación Impositiva' id='situacionImpositiva' {...register('COD_SIT', { required: true })} defaultValue={person?.COD_SIT || person.situation_tax}>
+					<Select labelId='situacionImpositiva' label='Situación Impositiva' id='situacionImpositiva' {...register('COD_SIT', { required: true })} defaultValue={person?.situation_tax || person?.COD_SIT || ''}>
 						{impositiveSituationArray.map((item) => (
 							<MenuItem key={item.id} value={item.id}>
 								{item.name}

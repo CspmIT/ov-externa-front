@@ -27,7 +27,6 @@ const DropdownImage = ({ props }) => {
 	const dropdownRef = useRef(null) // Referencia al dropdown
 	useEffect(() => {
 		const handleClickOutside = (event) => {
-			console.log('hola')
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
 				setDropdownOpen(false)
 			}

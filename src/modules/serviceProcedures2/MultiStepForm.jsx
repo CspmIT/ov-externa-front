@@ -4,8 +4,8 @@ import PersonalData from './components/PersonalData'
 import RegFormProvider from './providers/RegFormProvider'
 import SelectServices from './components/SelectServices'
 import HeaderForm from './components/HeaderForm'
-import ElectricPowerForm from './components/ElectricPowerForm'
-import DrinkingWaterForm from './components/DrinkingWaterForm'
+import ElectricPowerForm from './components/ElectricalEnergy/ElectricPowerForm'
+import DrinkingWaterForm from './components/DrinkingWater/DrinkingWaterForm'
 const services = [
 	{ nombre: 'Energia Electrica', tipo: 1 },
 	{ nombre: 'Agua Potable', tipo: 2 },
