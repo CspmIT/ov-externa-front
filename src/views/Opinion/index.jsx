@@ -39,7 +39,7 @@ const Opinion = () => {
             <hr />
             <h5 className='text-center mt-5'>¿Como fue tu experiencia en la Oficina Virtual?</h5>
             <div className='w-full flex flex-wrap justify-center'>
-                <div className='w-1/2 flex flex-wrap p-5'>
+                <div className='md:w-1/2 w-full flex flex-wrap p-5'>
                     <div onClick={() => showInput(1)} className='w-1/4 p-2'>
                         <img className='w-full' src='../../src/assets/img/opinion/enojado.png' />
                     </div>
@@ -55,8 +55,8 @@ const Opinion = () => {
                 </div>
             </div>
             <form id='formInformation' onSubmit={handleSubmit(formulario)}>
-                <div className={`w-full text-center`} style={{ visibility: inputVisibility }} >
-                    <TextField className='w-1/2' label='Ecriba un comentario' variant='outlined' {...opinionRegister('text_opinion')} />
+                <div className={`w-full text-center px-2`} style={{ visibility: inputVisibility }} >
+                    <TextField className='md:w-1/2 w-full' label='Ecriba un comentario' variant='outlined' {...opinionRegister('text_opinion')} />
                 </div>
                 <div className={`w-full text-center`} style={{ visibility: inputVisibility }} >
                     <Button props={{ class: `text-black bg-yellow-300 mt-5 hover:bg-yellow-400 focus:bg-yellow-400 m-2`, text: "Guardar", type: 'submit' }} />

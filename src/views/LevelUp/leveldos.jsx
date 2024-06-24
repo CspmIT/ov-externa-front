@@ -186,7 +186,7 @@ const leveldos = () => {
 	return (
 		<CardCustom>
 			<div className='flex flex-wrap w-full'>
-				<p className='py-10 leading-7 pl-4 text-center w-full font-semibold text-gray-700 text-xl'>
+				<p className='py-10 px-3 leading-7 text-center w-full font-semibold text-gray-700 text-xl dark:text-gray-200 '>
 					Hola {NameUser}, estás a unos pasos de subir al Nivel 2. Para esto, te vamos a pedir una serie de datos necesarios para validar tu identidad y así poder usar tu Oficina Virtual aprovechando todos los
 					beneficios.
 					<br />
@@ -210,8 +210,8 @@ const leveldos = () => {
 							los campos con (<span className='text-red-500 text-3xl align-sub'>*</span>) son obligatorios
 						</p>
 						<p className='text-red-500 w-100  p-0 m-0 text-center text-lg'>Se solicita corregir el nombre y el apellido de ser necesario del socio que seleccione</p>
-						<div className='w-full flex gap-3'>
-							<div className='mt-2 md:w-1/2 lg:w-1/3 '>
+						<div className='w-full flex flex-wrap mt-3'>
+							<div className='mt-2 w-full md:w-1/2 lg:w-1/3 px-1'>
 								<label htmlFor='number_customer' className='block font-semibold ml-1 mb-2 dark:text-white'>
 									Nº Socio <span className='text-red-500 text-lg'>*</span>
 								</label>
@@ -231,7 +231,7 @@ const leveldos = () => {
 								{errors.number_customer?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
 								{errors.number_customer?.type === 'pattern' && <span className='text-red-500'>Solo se pueden ingresar numeros</span>}
 							</div>
-							<div className='mt-2 md:w-1/2 lg:w-1/3 '>
+							<div className='mt-2 w-full md:w-1/2 lg:w-1/3 px-1'>
 								<label htmlFor='name_customer' className='block font-semibold ml-1 mb-2 dark:text-white'>
 									Nombre <span className='text-red-500 text-lg'>*</span>
 								</label>
@@ -251,7 +251,7 @@ const leveldos = () => {
 								/>
 								{errors.name_customer?.type === 'required' && <span className='text-red-500'>Este campo es obligatorio</span>}
 							</div>
-							<div className='mt-2 md:w-1/2 lg:w-1/3 '>
+							<div className='mt-2 w-full md:w-1/2 lg:w-1/3 px-1'>
 								<label htmlFor='name_customer' className='block font-semibold ml-1 mb-2 dark:text-white'>
 									Apellido <span className='text-red-500 text-lg'>*</span>
 								</label>
