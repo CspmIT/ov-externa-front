@@ -5,8 +5,6 @@ import { useRegForm } from '../providers/RegFormProvider'
 
 const ConnectionAddress = ({ register, errors, markerPosition, setMarkerPosition, useData = true }) => {
 	const [state] = useRegForm()
-	console.log(state?.energiaElectrica)
-	console.log(state?.connectionAddress)
 	return (
 		<>
 			<div className='w-full flex gap-3 items-start justify-center'>

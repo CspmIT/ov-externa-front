@@ -24,7 +24,6 @@ const ElectricPowerForm = () => {
 	const step = state?.step
 
 	const {
-		unregister,
 		register,
 		handleSubmit,
 		watch,
@@ -53,6 +52,7 @@ const ElectricPowerForm = () => {
 	}, [])
 
 	const onSubmit = async (values) => {
+		console.log(errors)
 		if (!isValid) return
 		if (!documentation) {
 			setDocumentation(true)
@@ -85,6 +85,7 @@ const ElectricPowerForm = () => {
 			}
 			dispatch({ type: 'energia_electrica', data: electricData })
 		} else {
+			console.log(values)
 			// Validar dni garante
 			const files = {
 				impuestoMuni: values.impuestoMuni,
@@ -248,7 +249,7 @@ const ElectricPowerForm = () => {
 							)}
 						</div>
 					) : (
-						<ElectricalEnergyDocumentation register={register} errors={errors} unregister={unregister} />
+						<ElectricalEnergyDocumentation register={register} errors={errors} />
 					)}
 				</div>
 

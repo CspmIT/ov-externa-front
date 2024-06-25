@@ -5,7 +5,7 @@ import { Camera, CloudUpload } from '@mui/icons-material'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import { useRegForm } from '../../providers/RegFormProvider'
 
-const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
+const ElectricalEnergyDocumentation = ({ errors, register }) => {
 	const [state] = useRegForm()
 	// Archivos
 	const [municipalFile, setMunicipalFile] = useState(null)
@@ -39,6 +39,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 			setPlanchetaCatastral(state?.electricFiles?.planchetaCatastral[0].name)
 		}
 	}, [])
+
 	const handleFileChange = (event) => {
 		const file = event.target.files[0]
 		if (event.target.name === 'impuestoMuni') setMunicipalFile(file.name)
@@ -58,7 +59,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 				</FormLabel>
 				<Button component='label' className='w-2/12' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 					Subir archivo
-					<input type='file' hidden {...register('impuestoMuni', { required: true, onChange: (e) => handleFileChange(e) })} />
+					<input type='file' hidden {...register('impuestoMuni', { required: !municipalFile, onChange: (e) => handleFileChange(e) })} />
 				</Button>
 				<Button component='label' className='w-2/12' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 					Tomar foto
@@ -81,7 +82,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 
 				<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 					Subir archivo
-					<input type='file' hidden {...register('certificadoLey', { required: true, onChange: (e) => handleFileChange(e) })} />
+					<input type='file' hidden {...register('certificadoLey', { required: !leyFile, onChange: (e) => handleFileChange(e) })} />
 				</Button>
 				<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 					Tomar foto
@@ -100,7 +101,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 						</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('permisoConexion', { required: true, onChange: (e) => handleFileChange(e) })} />
+							<input type='file' hidden {...register('permisoConexion', { required: !permisoConexion, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -117,7 +118,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 						</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('planchetaCatastral', { required: true, onChange: (e) => handleFileChange(e) })} />
+							<input type='file' hidden {...register('planchetaCatastral', { required: !planchetaCatastral, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -137,7 +138,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 					</FormLabel>
 					<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 						Subir archivo
-						<input type='file' hidden {...register('tituloProp', { required: true, onChange: (e) => handleFileChange(e) })} />
+						<input type='file' hidden {...register('tituloProp', { required: !titleFile, onChange: (e) => handleFileChange(e) })} />
 					</Button>
 					<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 						Tomar foto
@@ -155,7 +156,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 						<FormLabel className='w-4/12'>Constancia de AFIP</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('constanciaAfip', { required: true, onChange: (e) => handleFileChange(e) })} />
+							<input type='file' hidden {...register('constanciaAfip', { required: !constanciaAfip, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -170,7 +171,7 @@ const ElectricalEnergyDocumentation = ({ errors, register, unregister }) => {
 						<FormLabel className='w-4/12'>Garantia Comercial</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('garantiaComercial', { required: true, onChange: (e) => handleFileChange(e) })} />
+							<input type='file' hidden {...register('garantiaComercial', { required: !garantiaComercial, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto

@@ -15,7 +15,6 @@ const DrinkingWaterForm = () => {
 	const [connectionState, setConnectionState] = useState('')
 	const [markerPosition, setMarkerPosition] = useState([-30.71624815384811, -62.005226726953374])
 	const [firstData, setFirstData] = useState(true)
-	console.log(state.energiaElectrica)
 
 	return (
 		<>
