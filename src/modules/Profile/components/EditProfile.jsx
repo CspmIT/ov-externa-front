@@ -42,7 +42,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 	}, [cities])
 	useEffect(() => {
 		if (streets.length) {
-			setValue('street', userData.street)
+			setValue('street', userData?.street)
 			setIsLoaded(true)
 		}
 	}, [streets])

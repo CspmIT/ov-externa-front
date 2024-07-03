@@ -1,14 +1,14 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, InputLabel, MenuItem, Modal, Radio, RadioGroup, Select, TextField, Tooltip } from '@mui/material'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
-import { useRegForm } from '../../providers/RegFormProvider'
+import { useRegForm } from '../providers/RegFormProvider'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { useTheme } from '@emotion/react'
-import { request } from '../../../../utils/request'
+import { request } from '../../../utils/request'
 // import Swal from 'sweetalert2'
-import ConnectionAddress from '../ConnectionAddress'
-import ElectricalEnergyDocumentation from './ElectricalEnergyDocumentation'
+import ConnectionAddress from '../components/ConnectionAddress'
+import ElectricalEnergyDocumentation from '../components/ElectricalEnergy/ElectricalEnergyDocumentation'
 const ElectricPowerForm = () => {
 	const [isOwner, setIsOwner] = useState(null)
 	const [markerPosition, setMarkerPosition] = useState([-30.71624815384811, -62.005226726953374])
@@ -52,7 +52,6 @@ const ElectricPowerForm = () => {
 	}, [])
 
 	const onSubmit = async (values) => {
-		console.log(errors)
 		if (!isValid) return
 		if (!documentation) {
 			setDocumentation(true)
@@ -61,8 +60,8 @@ const ElectricPowerForm = () => {
 				lat: markerPosition[0],
 				lng: markerPosition[1],
 				provincia: values.provincia,
-				localidad: values.localidad,
-				calle: values.calle,
+				city: values.city,
+				street: values.street,
 				numberAddress: values.numberAddress,
 				circ: values.circ,
 				sec: values.sec,

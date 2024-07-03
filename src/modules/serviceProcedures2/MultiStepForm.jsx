@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import PersonalData from './components/PersonalData'
 import RegFormProvider from './providers/RegFormProvider'
-import SelectServices from './components/SelectServices'
 import HeaderForm from './components/HeaderForm'
-import ElectricPowerForm from './components/ElectricalEnergy/ElectricPowerForm'
-import DrinkingWaterForm from './components/DrinkingWater/DrinkingWaterForm'
+import SelectServices from './views/SelectServices'
+import ElectricPowerForm from './views/ElectricPowerForm'
+import DrinkingWaterForm from './views/DrinkingWaterForm'
+import TelecommunicationsForm from './views/TelecommunicationsForm'
+
 const services = [
 	{ nombre: 'Energia Electrica', tipo: 1 },
 	{ nombre: 'Agua Potable', tipo: 2 },
@@ -15,7 +17,11 @@ const services = [
 
 const MultiStepForm = () => {
 	const { step } = useParams(['step'])
-	function renderStep(step) {
+	const [renderStep, setRenderStep] = useState(renderView(step))
+	useEffect(() => {
+		setRenderStep(renderView(step))
+	}, [step])
+	function renderView(step) {
 		switch (step) {
 			case 'select-service':
 				return <SelectServices services={services} />
@@ -26,7 +32,7 @@ const MultiStepForm = () => {
 			case 'Agua Potable':
 				return <DrinkingWaterForm />
 			case 'Telecomunicaciones':
-				return <h1>Telecomunicaciones</h1>
+				return <TelecommunicationsForm />
 			case 'Servicios Sociales':
 				return <h1>Servicios Sociales</h1>
 			default:
@@ -38,7 +44,7 @@ const MultiStepForm = () => {
 		<RegFormProvider>
 			<div className='p-10'>
 				<HeaderForm />
-				{renderStep(step)}
+				{renderStep}
 			</div>
 		</RegFormProvider>
 	)

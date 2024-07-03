@@ -1,10 +1,52 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import { Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 
 import LeafletMap from './LeafletMap'
 import { useRegForm } from '../providers/RegFormProvider'
+import { Add } from '@mui/icons-material'
+import { request } from '../../../utils/request'
+import { useEffect, useState } from 'react'
+import ModalNewStreet from '../../Profile/components/ModalNewStreet'
+import { getAllStreet } from '../../../views/LevelUp/utils/Address'
 
 const ConnectionAddress = ({ register, errors, markerPosition, setMarkerPosition, useData = true }) => {
 	const [state] = useRegForm()
+
+	const [streets, setStreets] = useState([])
+	const [streetsAdd, setStreetsAdd] = useState([])
+	const [city, setCity] = useState(0)
+
+	const [openModalStreet, setOpenModalStreet] = useState(false)
+	const handleModalStreet = async () => {
+		await getAllStreet().then((streets) => {
+			setStreetsAdd(streets)
+		})
+		setOpenModalStreet(!openModalStreet)
+	}
+
+	useEffect(() => {
+		if (useData) {
+			handleCityChange(state?.connectionAddress?.city)
+		}
+	}, [])
+	useEffect(() => {}, [streets])
+	const handleCityChange = async (id) => {
+		try {
+			// Capturo el valor de la ciudad seleccionada
+			const idCity = id
+			setCity(idCity)
+			const url = `${import.meta.env.VITE_APP_API_URL}/listStreet/?id=${idCity}`
+			const res = await request(url, 'GET')
+			const Calles = res.data
+				.map((item) => {
+					return { id: item.id, name: item.name }
+				})
+				.sort((a, b) => a.name.localeCompare(b.name))
+			setStreets(Calles)
+		} catch (error) {
+			console.error({ message: error.message })
+		}
+	}
+
 	return (
 		<>
 			<div className='w-full flex gap-3 items-start justify-center'>
@@ -13,17 +55,21 @@ const ConnectionAddress = ({ register, errors, markerPosition, setMarkerPosition
 					<FormControl className='w-full' error={errors.provincia}>
 						<InputLabel id='provincia'>Provincia *</InputLabel>
 						{/* Si use data es true, pinto los datos del estado */}
-						<Select labelId='provincia' label='Provincia' id='provincia' defaultValue={useData ? state?.connectionAddress?.provincia || '' : ''} {...register('provincia', { required: true })}>
+						<Select labelId='provincia' label='Provincia' id='provincia' defaultValue={'3'} {...register('provincia', { required: true })}>
 							<MenuItem value='3'>Cordoba</MenuItem>
-							<MenuItem value='4'>Santa Fe</MenuItem>
 						</Select>
 					</FormControl>
 					<div className='w-full flex gap-3'>
-						<FormControl className='w-1/2' error={errors.localidad}>
-							<InputLabel id='localidad'>Localidad *</InputLabel>
-							<Select labelId='localidad' label='Localidad' id='localidad' defaultValue={useData ? state?.connectionAddress?.localidad || '' : ''} {...register('localidad', { required: true })}>
-								<MenuItem value='1'>Morteros Zona Urbana</MenuItem>
-								<MenuItem value='2'>Morteros Zona Rural</MenuItem>
+						<FormControl className='w-1/2' error={errors.city}>
+							<InputLabel id='city'>Localidad *</InputLabel>
+							<Select
+								labelId='city'
+								label='Localidad'
+								id='city'
+								defaultValue={useData ? state?.connectionAddress?.city || '' : ''}
+								{...register('city', { required: true, onChange: (e) => handleCityChange(e.target.value) })}
+							>
+								<MenuItem value='1'>Morteros</MenuItem>
 								<MenuItem value='3'>Colonia 10 de Julio</MenuItem>
 								<MenuItem value='4'>Colonia 2 Hermanos</MenuItem>
 								<MenuItem value='5'>Colonia Mauniers</MenuItem>
@@ -34,22 +80,38 @@ const ConnectionAddress = ({ register, errors, markerPosition, setMarkerPosition
 								<MenuItem value='10'>Colonia San Pedro</MenuItem>
 							</Select>
 						</FormControl>
-						<FormControl className='w-1/4' error={errors.calle}>
-							<InputLabel id='calle'>Calle *</InputLabel>
-							<Select labelId='calle' label='Calle' id='calle' defaultValue={useData ? state?.connectionAddress?.calle || '' : ''} {...register('calle', { required: true })}>
-								<MenuItem value='1'>Calle 1</MenuItem>
-								<MenuItem value='2'>Calle 2</MenuItem>
-								<MenuItem value='3'>Calle 3</MenuItem>
-							</Select>
-						</FormControl>
-						<FormControl className='w-1/4'>
-							<TextField
-								defaultValue={useData ? state?.connectionAddress?.numberAddress || '' : ''}
-								label='Numero *'
-								error={errors.numberAddress}
-								{...register('numberAddress', { required: true })}
-							></TextField>
-						</FormControl>
+						<TextField
+							error={errors.street}
+							select={true}
+							label='Calle *'
+							id={'calle'}
+							InputProps={{
+								startAdornment: (
+									<InputAdornment position='start'>
+										<Add className='cursor-pointer hover:ring-1 rounded-xl' onClick={() => setOpenModalStreet(true)} />
+									</InputAdornment>
+								),
+							}}
+							{...register('street', { required: 'El Campo es requerido' })}
+							className='w-2/3'
+							helperText={errors.street && errors.street.message}
+							defaultValue={useData ? state?.connectionAddress?.street || '' : ''}
+						>
+							{streets.map((item) => (
+								<MenuItem key={item.id} value={item.id}>
+									{item.name}
+								</MenuItem>
+							))}
+						</TextField>
+						<TextField
+							error={errors.numberAddress}
+							label='Nro *'
+							id={'numberAddress'}
+							{...register('numberAddress', { required: 'El Campo es requerido' })}
+							className='w-1/3'
+							helperText={errors.numberAddress && errors.numberAddress.message}
+							defaultValue={useData ? state?.connectionAddress?.numberAddress || '' : ''}
+						/>
 					</div>
 					<h5>Dato catastral</h5>
 					<div className='w-full flex gap-3'>
@@ -73,6 +135,7 @@ const ConnectionAddress = ({ register, errors, markerPosition, setMarkerPosition
 					<LeafletMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
 				</div>
 			</div>
+			<ModalNewStreet streetsAdd={streetsAdd} openModalStreet={openModalStreet} handleModalStreet={() => handleModalStreet} userData={state?.connectionAddress} setStreets={setStreets} editWatch={city} />
 		</>
 	)
 }

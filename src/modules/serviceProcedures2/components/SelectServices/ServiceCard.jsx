@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
-import { useRegForm } from '../providers/RegFormProvider'
+import { useRegForm } from '../../providers/RegFormProvider'
 
 const ServiceCard = ({ service, seeRqueriments, visibleService, setVisibleService, onSelectionChange }) => {
 	const [isChecked, setChecked] = useState(true)

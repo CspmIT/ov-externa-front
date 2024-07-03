@@ -45,6 +45,7 @@ function ModalNewStreet({ streetsAdd, openModalStreet, handleModalStreet, userDa
 					})
 					resetModal()
 					handleModalStreet()
+					console.log(userData)
 					listStreetXIdCity(userData.city).then((streets) => {
 						setStreets(streets)
 					})

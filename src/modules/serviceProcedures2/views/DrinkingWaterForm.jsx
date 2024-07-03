@@ -1,9 +1,9 @@
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { useRegForm } from '../../providers/RegFormProvider'
+import { useRegForm } from '../providers/RegFormProvider'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import ConnectionAddress from '../ConnectionAddress'
+import ConnectionAddress from '../components/ConnectionAddress'
 import Swal from 'sweetalert2'
 
 const DrinkingWaterForm = () => {
