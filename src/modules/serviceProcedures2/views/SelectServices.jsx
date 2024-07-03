@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import ServiceCard from './ServiceCard'
+import ServiceCard from '../components/SelectServices/ServiceCard'
 import { useNavigate } from 'react-router-dom'
-import ListRequeriments from './ListRequeriments'
+import ListRequeriments from '../components/ListRequeriments'
 import Button from '@mui/material/Button'
 import seeRqueriments from '../../serviceProcedures/utils/seeRequirements'
 import { useRegForm } from '../providers/RegFormProvider'
@@ -24,15 +24,37 @@ const SelectServices = ({ services }) => {
 					if (serviceRequest) {
 						const dateFormated = formatDateForInput(serviceRequest.createdAt, true)
 						Swal.fire({
-							icon: 'success',
-							title: 'Exito',
-							html: `Encontramos la siguiente solicitud de la fecha: ${dateFormated}. Desea continuar con ella?`,
+							icon: 'question',
+							title: 'Atencion',
+							html: `Encontramos la siguiente solicitud de la fecha: <b>${dateFormated}</b> <br>
+							Los servicios solicitados son: <br>
+							${serviceRequest.ServiceItems.map((item) => `<b>${item.service_name}</b>`).join(', ')}. <br> 
+							¿Desea continuar con ella?`,
+							showCancelButton: true,
+							confirmButtonText: 'Si, seguir con esta solicitud',
+							cancelButtonText: 'Cancelar',
 						}).then((result) => {
 							if (result.isConfirmed) {
 								// Armo el objeto con los servicios seleccionados
-								const { items } = serviceRequest
-								const selectedServicesRequest = items.map((item) => ({ nombre: item.service_name, tipo: item.service_type }))
-								dispatch({ type: 'select_services', selectedServices: selectedServicesRequest })
+								const { ServiceItems } = serviceRequest
+
+								const selectedServicesRequest = ServiceItems.map((item) => ({ nombre: item.service_name, tipo: item.service_type }))
+
+								// Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
+								const personalDataExists = selectedServicesRequest.some((service) => service.nombre === 'Datos Personales' && service.tipo === 0)
+
+								// Si 'Datos Personales' no está en la lista, agregarlo
+								if (!personalDataExists) {
+									selectedServicesRequest.unshift({ nombre: 'Datos Personales', tipo: 0 })
+								}
+								// Ordenar los servicios seleccionados por tipo
+								selectedServicesRequest.sort((a, b) => a.tipo - b.tipo)
+								console.log('serviceRequest.id', serviceRequest.id)
+								dispatch({ type: 'set_request_service_id', data: serviceRequest.id })
+
+								console.log('selectedServicesRequest', selectedServicesRequest)
+								dispatch({ type: 'select_services', data: selectedServicesRequest })
+
 								dispatch({ type: 'next' })
 								navigate(`/multiStepForm/Datos Personales`)
 							}
@@ -79,6 +101,7 @@ const SelectServices = ({ services }) => {
 				})
 				return
 			}
+
 			// Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
 			const personalDataExists = selectedServices.some((service) => service.nombre === 'Datos Personales' && service.tipo === 0)
 
@@ -88,8 +111,8 @@ const SelectServices = ({ services }) => {
 			}
 			// Ordenar los servicios seleccionados por tipo
 			selectedServices.sort((a, b) => a.tipo - b.tipo)
-			// Genero un registro en la DB con los servicios seleccionados
 
+			// Genero un registro en la DB con los servicios seleccionados
 			const baseUrl = import.meta.env.VITE_APP_API_URL
 			const url = `${baseUrl}/createRequestService`
 			const sendData = { services: selectedServices }
@@ -97,7 +120,6 @@ const SelectServices = ({ services }) => {
 				const data = await request(url, 'POST', sendData)
 				console.log(data)
 			} catch (error) {
-				console.log()
 				const { message } = error.response.data
 				Swal.fire({
 					icon: 'error',
@@ -108,7 +130,8 @@ const SelectServices = ({ services }) => {
 			}
 		}
 
-		dispatch({ type: 'select_services', selectedServices })
+		console.log('selectedServices', selectedServices)
+		dispatch({ type: 'select_services', data: selectedServices })
 		dispatch({ type: 'next' })
 		navigate(`/multiStepForm/Datos Personales`)
 	}

@@ -11,6 +11,7 @@ import { UserContext } from '../../contexts/UserContext'
 import { request } from '../../utils/request'
 import { Box, Modal } from '@mui/material'
 import ModalSocio from '../ModalSocio'
+import { storage } from '../../storage/storage'
 
 const Navbar = () => {
 	const [OpenModal, setOpenModal] = useState(false)
@@ -57,6 +58,9 @@ const Navbar = () => {
 	const toggleDarkMode = () => {
 		updateDarkMode(!darkMode)
 		setDarkMode(!darkMode)
+		if (usuario.sub) {
+			storage.set('usuario', { ...usuario, dark: !darkMode })
+		}
 		setIconMode(!darkMode ? <FaMoon className='change' /> : <IoIosSunny className='change text-2xl' />)
 		setShadowMode(!darkMode ? 'styles.shadowDark' : 'styles.shadowLight')
 	}
@@ -104,16 +108,21 @@ const Navbar = () => {
 		{
 			name: 'Dejanos tu Opinión',
 			icon: <FaComments />,
-			link: '/Comments',
+			link: '/Opinion',
 			level: [1, 2, 3],
 		},
 	]
 	const getAccounts = async () => {
 		const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 		let DataOtherUser = await otherCustomer.data.map((item) => {
-			return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+			return {
+				id_relation: item.id,
+				name: item.data_Person.procoop_last_name,
+				num: item.data_Person.number_customer,
+				primary: item.primary_account,
+				level: item.level,
+			}
 		})
-		console.log(DataOtherUser)
 		if (!DataOtherUser.length) {
 			DataOtherUser = [{ level: 1, primary: true }]
 		}

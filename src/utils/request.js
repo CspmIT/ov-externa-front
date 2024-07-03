@@ -1,5 +1,4 @@
 import axios from 'axios'
-//import { storage } from '../storage/storage'
 export const request = async (url, method, data = false) => {
 	if (!url || !method) {
 		throw new Error('URL o método no proporcionados')
@@ -15,8 +14,18 @@ export const request = async (url, method, data = false) => {
 		})
 		return response
 	} catch (error) {
-		console.error('Error al enviar la solicitud:', error.response ? error.response.data : error.message)
-		throw error
+		if (error.response.status === 500) {
+			let messageError = ''
+			const errors = error.response.data
+			for (const key in errors) {
+				if (Object.hasOwnProperty.call(errors, key)) {
+					messageError += ' ' + errors[key].message
+				}
+			}
+			throw messageError
+		} else {
+			throw error.response.data
+		}
 	}
 }
 export const requestApiExt = async (url, method, data = false) => {

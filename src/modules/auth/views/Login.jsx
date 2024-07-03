@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
@@ -18,6 +18,7 @@ const Login = () => {
 	const navigate = useNavigate()
 	const [pass, setPass] = useState('password')
 	const [remember, setRemember] = useState(false)
+	const location = useLocation()
 	const [iconEye, setIconEye] = useState(<TbEye />)
 	const showPassword = () => {
 		setPass(pass === 'password' ? 'text' : 'password')
@@ -51,6 +52,13 @@ const Login = () => {
 	const formulario = async (datos) => {
 		// const url = import.meta.env.VITE_APP_API_URL + '/login'
 		const urlNode = import.meta.env.VITE_APP_API_URL + '/login'
+		Swal.fire({
+			title: 'Por favor espere...',
+			allowOutsideClick: false,
+			didOpen: () => {
+				Swal.showLoading()
+			},
+		})
 		try {
 			const responseData = await request(urlNode, 'POST', datos)
 			// const responseData = await Axios.post(urlNode, datos)
@@ -67,7 +75,13 @@ const Login = () => {
 				localStorage.setItem('usuario', JSON.stringify(decoded))
 				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 				let DataOtherUser = await otherCustomer.data.map((item) => {
-					return { id_relation: item.id, name: item.Procoop_Member.last_name, num: item.Procoop_Member.number_customer, primary: item.primary_account, level: item.level }
+					return {
+						id_relation: item.id,
+						name: item.data_Person.procoop_last_name,
+						num: item.data_Person.number_customer,
+						primary: item.primary_account,
+						level: item.level,
+					}
 				})
 				if (!DataOtherUser.length) {
 					DataOtherUser = [{ level: 1, primary: true }]
@@ -76,13 +90,15 @@ const Login = () => {
 				const user = { ...decoded, accounts: DataOtherUser }
 				setDarkMode(decoded.dark)
 				setUsuario(user)
+				Swal.close()
 				navigate('/')
 			}
 		} catch (error) {
+			Swal.close()
 			Swal.fire({
 				icon: 'warning',
-				title: error?.response?.data?.error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
-				text: error?.response?.data?.error !== '' ? error.response.data : 'Intente ingresar nuevamente mas tarde',
+				title: error !== '' ? 'Atención!' : 'Sitio en mantenimiento',
+				text: error,
 				allowOutsideClick: false,
 			})
 		}
@@ -91,8 +107,16 @@ const Login = () => {
 	const validacionToken = async (token, id) => {
 		const url = import.meta.env.VITE_APP_API_URL + '/validationUser'
 		const info = { token_temp: token, id }
+		Swal.fire({
+			title: 'Por favor espere...',
+			allowOutsideClick: false,
+			didOpen: () => {
+				Swal.showLoading()
+			},
+		})
 		try {
 			await request(url, 'POST', info)
+			Swal.close()
 			Swal.fire({
 				icon: 'success',
 				title: 'Perfecto!',
@@ -102,10 +126,12 @@ const Login = () => {
 				navigate('/Login')
 			})
 		} catch (error) {
+			console.log(error)
+			Swal.close()
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atención!',
-				text: error.response.data.message,
+				text: error.response.data,
 				confirmButtonText: 'Reenviar Token',
 				allowOutsideClick: false,
 				showCancelButton: true,
@@ -122,14 +148,17 @@ const Login = () => {
 		if (token && idUser && (!usuario || !usuario.length)) {
 			validacionToken(token, idUser)
 		}
-		const tokenCookie = Cookies.get('token')
-		if (tokenCookie && !token) {
-			navigate('/')
-		} else {
+		const authUser = Cookies.get('token')
+		const storedUser = localStorage.getItem('usuario')
+		if (!authUser || !storedUser) {
 			localStorage.removeItem('usuario')
-			navigate('/Login')
+			Cookies.remove('token')
+		} else {
+			if (location.pathname === '/Login' || location.pathname === '/login') {
+				navigate('/')
+			}
 		}
-	}, [idUser, token])
+	}, [])
 
 	const {
 		register,

@@ -3,13 +3,13 @@ import Swal from 'sweetalert2'
 import { request } from '../../utils/request'
 import Cookies from 'js-cookie'
 // Funcion para obtener el socio cuando se envia el formulario
-const getCustomer = async (data) => {
-	const numberCustomer = data.number_customer
-	const url = import.meta.env.VITE_APP_API_URL + '/getCustomer'
-	const res = await request(url, 'POST', { customer: numberCustomer })
-	// const res = await Axios.post(url, { customer: numberCustomer })
-	return res
-}
+// const getCustomer = async (data) => {
+// 	const numberCustomer = data.number_customer
+// 	const url = import.meta.env.VITE_APP_API_URL + '/getCustomer'
+// 	const res = await request(url, 'POST', { customer: numberCustomer })
+// 	// const res = await Axios.post(url, { customer: numberCustomer })
+// 	return res
+// }
 
 // Funcion para actualizar los datos del usuario en la db y subir de nivel
 const updateLevel = async (data) => {
@@ -25,14 +25,9 @@ const updateLevel = async (data) => {
 
 const validateForm = async (data, navigate) => {
 	try {
-		const nombreSocio = await getCustomer(data)
-		if (nombreSocio.status !== 200) {
-			throw new Error(nombreSocio.error)
-		}
-		// Muestro una alerta con el nombre del socio
 		const swal = await Swal.fire({
-			title: '¿Este es el socio que deseas agregar?',
-			text: nombreSocio.data,
+			title: '¿Deseas subir a nivel 2 con el socio?',
+			text: data.last_name_customer + ' ' + data.name_customer,
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Si, agregar',
@@ -40,10 +35,19 @@ const validateForm = async (data, navigate) => {
 		})
 
 		if (swal.isConfirmed) {
+			Swal.fire({
+				title: 'Por favor espere...',
+				text: 'Estamos ejecutando su petición',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading()
+				},
+			})
 			const result = await updateLevel(data)
 			// Muestro una alerta si se subio de nivel
 
 			if (result.status === 200) {
+				Swal.close()
 				Swal.fire({
 					title: '¡Has subido al nivel 2!',
 					text: 'Te pediremos que vuelvas a iniciar sesión',
@@ -63,33 +67,39 @@ const validateForm = async (data, navigate) => {
 			}
 		}
 	} catch (error) {
-		const { message } = error.response.data
-		const errorMessages = []
-
-		if (message === 'El socio no existe') {
-			Swal.fire({
-				title: 'Error',
-				text: message,
-				icon: 'error',
-			})
-			return
-		}
-
-		for (const i in message) {
-			if (i === 'user' || i === 'level') {
-				errorMessages.push('Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.')
-				break
-			}
-			errorMessages.push(...message[i])
-		}
-
-		const alertMessage = errorMessages.join('\n')
-
+		Swal.close()
 		Swal.fire({
-			title: 'Error',
-			text: alertMessage,
 			icon: 'error',
+			title: 'Error',
+			text: error,
 		})
+		// const { message } = error.response.data
+		// const errorMessages = []
+
+		// if (message === 'El socio no existe') {
+		// 	Swal.fire({
+		// 		title: 'Error',
+		// 		text: message,
+		// 		icon: 'error',
+		// 	})
+		// 	return
+		// }
+
+		// for (const i in message) {
+		// 	if (i === 'user' || i === 'level') {
+		// 		errorMessages.push('Ocurrio un error al intentar subir de nivel, por favor intente luego o pongase en contacto con el administrador del sistema.')
+		// 		break
+		// 	}
+		// 	errorMessages.push(...message[i])
+		// }
+
+		// const alertMessage = errorMessages.join('\n')
+
+		// Swal.fire({
+		// 	title: 'Error',
+		// 	text: alertMessage,
+		// 	icon: 'error',
+		// })
 	}
 }
 
