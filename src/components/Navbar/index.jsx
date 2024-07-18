@@ -11,6 +11,7 @@ import { UserContext } from '../../contexts/UserContext'
 import { request } from '../../utils/request'
 import { Box, Modal } from '@mui/material'
 import ModalSocio from '../ModalSocio'
+import { storage } from '../../storage/storage'
 
 const Navbar = () => {
 	const [OpenModal, setOpenModal] = useState(false)
@@ -57,6 +58,9 @@ const Navbar = () => {
 	const toggleDarkMode = () => {
 		updateDarkMode(!darkMode)
 		setDarkMode(!darkMode)
+		if (usuario.sub) {
+			storage.set('usuario', { ...usuario, dark: !darkMode })
+		}
 		setIconMode(!darkMode ? <FaMoon className='change' /> : <IoIosSunny className='change text-2xl' />)
 		setShadowMode(!darkMode ? 'styles.shadowDark' : 'styles.shadowLight')
 	}

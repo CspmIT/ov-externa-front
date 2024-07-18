@@ -4,8 +4,8 @@ const typePersonArray = [
 ]
 
 const sexArray = [
-	{ id: 'F', name: 'Femenino' },
-	{ id: 'M', name: 'Masculino' },
+	{ id: '1', name: 'Femenino' },
+	{ id: '2', name: 'Masculino' },
 ]
 
 const dniArray = [
@@ -67,16 +67,10 @@ const impositiveSituationArray = [
 	{ id: 1, name: 'IVA Responsable Inscripto' },
 	{ id: 2, name: 'IVA Responsable no Inscripto' },
 	{ id: 3, name: 'IVA no Responsable' },
-	{ id: 4, name: 'IVA Sujeto Exento' },
-	{ id: 5, name: 'Consumidor Final' },
+	{ id: 4, name: 'Consumidor Final' },
+	{ id: 5, name: 'IVA Sujeto Exento' },
 	{ id: 6, name: 'Responsable Monotributo' },
-	{ id: 7, name: 'Proveedor del Exterior' },
-	{ id: 8, name: 'Cliente del Exterior' },
-	{ id: 9, name: 'IVA Liberado – Ley Nº 19.640' },
-	{ id: 10, name: 'IVA Responsable Inscripto – Agente de Percepción' },
-	{ id: 11, name: 'Pequeño Contribuyente Eventual' },
-	{ id: 12, name: 'Monotributista Social' },
-	{ id: 13, name: 'Pequeño Contribuyente Eventual Social' },
+	{ id: 7, name: 'Sujeto no Categorizado' },
 ]
 
 const grossIncomeArray = [

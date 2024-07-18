@@ -2,8 +2,7 @@
 FROM node:alpine AS build
 WORKDIR /app
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json .
 
 # Instala las dependencias de desarrollo para poder ejecutar Vite
 RUN npm install
