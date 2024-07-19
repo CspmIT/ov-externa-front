@@ -1,8 +1,10 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import { separateCellPhone } from '../../../utils/cellphoneFunctions'
 import { validarFecha } from '../../../utils/dateFunction'
 import InputAdornment from '@mui/material/InputAdornment'
-import { dniArray, monthArray, impositiveSituationArray, daysArray, separateProcopDate } from '../../serviceProcedures/utils/data'
+import { dniArray, monthArray, daysArray, separateProcopDate } from '../../serviceProcedures/utils/data'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 
 const PersonalForm = ({ person, register, errors, watch }) => {
 	const { day, month, year } = separateProcopDate(person?.Person_physical?.born_date || person.FEC_NAC)
@@ -13,8 +15,33 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 		const dia = watch('dia')
 		return validarFecha(anio, mes, dia)
 	}
-	const { characteristic, number } = separateCellPhone(person?.cell_phone)
-	const { characteristic: characteristicFijo, number: numberFijo } = separateCellPhone(person?.fixed_phone)
+
+	const getSituationTax = async () => {
+		const baseUrl = import.meta.env.VITE_APP_API_URL
+		const url = `${baseUrl}/getSituationsIva`
+		try {
+			const { data } = await axios({
+				method: 'GET',
+				url,
+				withCredentials: true,
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+			})
+			return data
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const [situationsTax, setSituationsTax] = useState([])
+	useEffect(() => {
+		const fetchSituationTax = async () => {
+			const data = await getSituationTax()
+			setSituationsTax(data)
+		}
+		fetchSituationTax()
+	}, [])
+	// const { characteristic, number } = separateCellPhone(person?.cell_phone)
+	// const { characteristic: characteristicFijo, number: numberFijo } = separateCellPhone(person?.fixed_phone)
 	return (
 		<div className='flex flex-col w-full gap-3'>
 			<div className='w-full flex gap-3 max-sm:flex-col'>
@@ -32,7 +59,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 					<TextField
 						error={errors.last_name}
 						label='Apellido'
-						defaultValue={person?.Person_physical?.last_name || person.APELLIDOS || person.last_name}
+						defaultValue={person?.Person_physical?.last_name || person.last_name}
 						{...register('last_name', {
 							required: true,
 						})}
@@ -68,9 +95,14 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 					<TextField
 						error={errors.NUM_DNI}
 						label='Numero de Documento'
-						{...register('NUM_DNI', { required: true })}
+						{...register('NUM_DNI', {
+							required: { value: true, message: 'El campo es requerido' },
+							minLength: { value: 7, message: 'El numero debe tener al menos 7 digitos' },
+							maxLength: { value: 8, message: 'El numero debe tener maximo 8 digitos' },
+							pattern: { value: /^[0-9]+$/, message: 'Solo se permiten números' }, // Esta línea valida que solo se ingresen números
+						})}
 						className='w-2/3 max-sm:w-full '
-						helperText={errors.NUM_DNI && 'El campo es requerido'}
+						helperText={errors.NUM_DNI && errors.NUM_DNI.message}
 						defaultValue={person?.NUM_DNI || person.number_document}
 					/>
 				</div>
@@ -121,24 +153,24 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 				</div>
 				<div className='w-1/2 flex gap-3'>
 					<TextField
-						error={errors.caracteristica}
+						error={errors.characteristic}
 						label='Caracteristica celular'
 						{...register('characteristic', { required: true })}
 						className='w-1/4'
-						helperText={errors.caracteristica && 'El campo es requerido'}
-						defaultValue={characteristic || person?.characteristic}
+						helperText={errors.characteristic && 'El campo es requerido'}
+						defaultValue={''}
 						InputProps={{
 							maxLength: 4,
 							startAdornment: <InputAdornment position='start'>+549 0</InputAdornment>,
 						}}
 					/>
 					<TextField
-						error={errors.telefono}
+						error={errors.number}
 						label='Numero celular'
-						{...register('number', { required: true })}
+						{...register('number', { required: true, minlength: 6, maxLength: 8 })}
 						className='w-3/4'
-						defaultValue={number || person?.number}
-						helperText={errors.telefono && 'El campo es requerido'}
+						defaultValue={''}
+						helperText={errors.number && 'El campo es requerido'}
 						InputProps={{
 							startAdornment: <InputAdornment position='start'>15</InputAdornment>,
 						}}
@@ -151,24 +183,25 @@ const PersonalForm = ({ person, register, errors, watch }) => {
 						label='Caracteristica fijo'
 						{...register('caracteristicaFijo')}
 						className='w-1/4'
-						defaultValue={characteristicFijo || person?.caracteristicaFijo}
+						defaultValue={''}
 						InputProps={{
 							startAdornment: <InputAdornment position='start'>+549 0</InputAdornment>,
 						}}
 					/>
-					<TextField label='Numero fijo' defaultValue={numberFijo || person?.numeroFijo} {...register('numeroFijo')} className='w-3/4' />
+					<TextField label='Numero fijo' defaultValue={''} {...register('numeroFijo')} className='w-3/4' />
 				</div>
 
 				<FormControl className='w-1/2' error={errors.COD_SIT}>
 					<InputLabel id='situacionImpositiva'>Situación Impositiva</InputLabel>
 					<Select labelId='situacionImpositiva' label='Situación Impositiva' id='situacionImpositiva' {...register('COD_SIT', { required: true })} defaultValue={person?.situation_tax || person?.COD_SIT || ''}>
-						{impositiveSituationArray.map((item) => (
-							<MenuItem key={item.id} value={item.id}>
-								{item.name}
-							</MenuItem>
-						))}
+						{Array.isArray(situationsTax) &&
+							situationsTax.map((item, index) => (
+								<MenuItem key={index} value={item.cod_sit}>
+									{item.des_sit}
+								</MenuItem>
+							))}
 					</Select>
-					{errors.COD_SIT && <FormHelperText>El campo es requerido </FormHelperText>}
+					{errors.COD_SIT && <FormHelperText>Debe seleccionar una Situacion Impositiva</FormHelperText>}
 				</FormControl>
 			</div>
 		</div>

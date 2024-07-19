@@ -169,7 +169,7 @@ const ElectricPowerForm = () => {
 											error={errors.meterType}
 											label='Tipo de Medidor'
 											id='meterType'
-											defaultValue={state?.energiaElectrica?.meterType || ''}
+											defaultValue={state?.energiaElectrica?.meterType || 1}
 											{...register('meterType', { required: true })}
 										>
 											<MenuItem value='1'>Monofasico</MenuItem>
@@ -179,7 +179,7 @@ const ElectricPowerForm = () => {
 									<Modal open={open} onClose={handleClose}>
 										<Box sx={style}>
 											<h4 className={`text-center`} style={{ color: theme.palette.text.primary }}>
-												Tipos de medidores
+												¿Que medidor necesito?
 											</h4>
 											<p style={{ color: theme.palette.text.primary }}>
 												<b>Medidor Monofásico:</b> Eficiencia para Consumo Residencial y Pequeños Negocios El medidor monofásico es la elección común en hogares y pequeños negocios. Su diseño
@@ -193,7 +193,9 @@ const ElectricPowerForm = () => {
 											</p>
 										</Box>
 									</Modal>
-									<Button onClick={handleOpen}>Tipos de medidores</Button>
+									<Button onClick={handleOpen} variant='outlined'>
+										¿Que medidor necesito?
+									</Button>
 								</div>
 							)}
 							{typeActivity === '2' && (
