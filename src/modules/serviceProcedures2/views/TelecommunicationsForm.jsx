@@ -3,12 +3,15 @@ import { useRegForm } from '../providers/RegFormProvider'
 import { useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import AddIcon from '@mui/icons-material/Add'
 import ClearIcon from '@mui/icons-material/Clear'
+import { request } from '../../../utils/request'
+import CardServices from '../components/Telecommunications/CardServices'
+import { formatToArgentinePeso } from '../../../utils/currencyFunctions'
+import Swal from 'sweetalert2'
 
 const TelecommunicationsForm = () => {
 	const [state, dispatch] = useRegForm()
-	const [user, setTypeUser] = useState(0)
+	const [user, setTypeUser] = useState(null)
 	const [total, setTotal] = useState(0)
 	const [carrito, setCarrito] = useState([])
 	const [services, setServices] = useState([])
@@ -17,100 +20,50 @@ const TelecommunicationsForm = () => {
 	const navigate = useNavigate()
 	const currentStep = state?.step - 1
 	const step = state?.step
+	console.log(state)
+	// Funcion para verificar si el servicio que se quiere agregar ya existe en el carrito
+	const existInCarrito = (element) => {
+		const exist = carrito.find((item) => item.name === element.name)
+		if (exist) {
+			return true
+		}
+		return false
+	}
+
+	// Funcion para agregar servicios al carrito y sumar el total
 	const handleChangeTotal = async (item) => {
 		const { value } = item
-		setTotal(total + value)
-		setCarrito([...carrito, item])
-	}
-
-	// Función para agrupar servicios por nombre
-	const groupServicesByName = (services) => {
-		const grouped = {}
-		services.forEach((service) => {
-			if (!grouped[service.name]) {
-				grouped[service.name] = [service]
-			} else {
-				grouped[service.name].push(service)
-			}
-		})
-		return grouped
-	}
-
-	const groupedServices = groupServicesByName(services)
-
-	const getServices = async (typeUser) => {
-		if (typeUser === '1') {
-			return [
-				{
-					name: 'Telefonia',
-					description: 'Casa de familia',
-					value: 1800,
-				},
-				{
-					name: 'Television',
-					description: 'IPTV (televisión con el decodificador adicional)',
-					aditional: [
-						{
-							name: 'Decodificador adicional',
-							value: 1800,
-						},
-						{
-							name: 'Pack de futbol',
-							value: 3500,
-						},
-						{
-							name: 'Pack de adultos',
-							value: 3500,
-						},
-					],
-				},
-				{
-					name: 'Television',
-					description: 'El tv en android y se puede ver el contenido a traves de sensa',
-					aditional: [
-						{
-							name: 'Decodificador adicional',
-							value: 1800,
-						},
-						{
-							name: 'Pack de futbol',
-							value: 3500,
-						},
-					],
-				},
-				{
-					name: 'Television',
-					description: 'Sensa app (aplicacion para ver por streaming y es necesario que el tv sea android)',
-					aditional: [
-						{
-							name: 'Pack de futbol',
-							value: 3500,
-						},
-					],
-				},
-				{
-					name: 'Internet',
-					description: '60 MPS (IPTV)',
-					value: 1800,
-				},
-				{
-					name: 'Internet',
-					description: '100 MPS (IPTV/sensa box/sensa app)',
-					value: 1800,
-				},
-				{
-					name: 'Internet',
-					description: '300 MPS (IPTV/sensa box/sensa app)',
-					value: 1800,
-				},
-			]
+		item.value = formatToArgentinePeso(value)
+		if (!existInCarrito(item)) {
+			const newTotal = total + value
+			setTotal(newTotal)
+			setCarrito([...carrito, item])
 		}
 	}
 
+	const handleChangeTotalDelete = async (item) => {
+		const { value } = item
+		const newvalue = value.replace('$', '').replace('.', '').replace(',', '.')
+		const newCarrito = carrito.filter((element) => element.name !== item.name)
+		setTotal(total - parseFloat(newvalue))
+		setCarrito(newCarrito)
+	}
+
+	// Funcion que simula la obtencion de servicios segun el tipo de usuario
+	const getServices = async (typeUser) => {
+		const url = 'http://localhost:4000/searchServicesTelecomunications/' + typeUser
+		const response = await request(url, 'GET')
+		return [response.data]
+	}
+
+	// Funcion cuando se cambia el tipo de usuario, obtiene los servicios correspondientes
 	const handleChangeTypeUser = async (value) => {
 		const services = await getServices(value)
 		setTypeUser(value)
 		setServices(services)
+	}
+	const finalStep = () => {
+		return step === state?.services.length
 	}
 	return (
 		<>
@@ -135,129 +88,42 @@ const TelecommunicationsForm = () => {
 						</TextField>
 					</div>
 				</div>
+				<h3 className='text-center my-5'>Cotiza tu plan</h3>
 				<div className='col-span-12 flex gap-3'>
-					{user === '1' && (
+					{user && (
 						<>
 							<div className='flex flex-row w-3/4 gap-3'>
-								{Object.entries(groupedServices).map(([serviceName, serviceGroup], index) => (
-									<Paper elevation={3} variant='outlined' key={index} className='w-1/3 p-4'>
-										<h4 className='text-center'>{serviceName}</h4>
-										{serviceGroup.map((service, serviceIndex) => (
-											<div key={serviceIndex}>
-												{service.aditional && <h5 className='text-center'>{service.description}</h5>}
-												{service.aditional ? (
-													service.aditional.map((item, itemIndex) => (
-														<>
-															<div key={itemIndex} className='flex flex-row items-center gap-3 justify-between mb-3'>
-																<h5>{item.name}</h5>
-																<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: serviceName, description: item.name, value: item.value })}>
-																	<AddIcon />
-																</Button>
-															</div>
-														</>
-													))
-												) : (
-													<div className='flex flex-row items-center gap-3 justify-between'>
-														<h5>{service.description}</h5>
-														<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: serviceName, description: service.description, value: service.value })}>
-															<AddIcon />
-														</Button>
-													</div>
-												)}
-											</div>
-										))}
-									</Paper>
-								))}
-								{/* <Paper elevation={3} variant='outlined' className='w-1/3 p-4'>
-									<h4 className='text-center'>Telefonia</h4>
-									<div className='flex flex-row items-center gap-3 justify-between'>
-										<h5>Casa de familia</h5>
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-								</Paper>
-								<Paper elevation={3} variant='outlined' className='w-1/3 p-3'>
-									<h4 className='text-center'>Television</h4>
-									<h5 className='text-center'>IPTV (televisión con el decodificador adicional)</h5>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										Decodificador adicional
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', categoria: 'IPTV', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										Pack de futbol
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<div className='flex flex-row items-center gap-3 justify-between mb-2'>
-										Pack de adultos
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<h5 className='text-center'>El tv en android y se puede ver el contenido a traves de sensa</h5>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										Decodificador adicional
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										Pack de futbol
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<h5 className='text-center'>Sensa app (aplicacion para ver por streaming y es necesario que el tv sea android)</h5>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										Pack de futbol
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-								</Paper>
-								<Paper elevation={3} variant='outlined' className='w-1/3 p-4'>
-									<h4 className='text-center'>Internet</h4>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										60 MPS (IPTV)
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										100 MPS (IPTV/sensa box/sensa app)
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-									<div className='flex flex-row items-center gap-3 mb-2 justify-between'>
-										300 MPS (IPTV/sensa box/sensa app)
-										<Button variant='outlined' color='primary' onClick={() => handleChangeTotal({ name: 'Telefonia', description: 'Casa de familia', value: 1800 })}>
-											<AddIcon />
-										</Button>
-									</div>
-								</Paper> */}
+								{/* Desabilitar cards de tv y telefonia has ta que no selecciona internet */}
+								{/* Agregar a las cards la opcion no quiero este servicio */}
+								<CardServices title={'INTERNET'} service={services[0].internet} handleChangeTotal={handleChangeTotal} />
+								{/* Agregar un icono para ver info */}
+								<CardServices title={'TELEVISIÓN'} service={services[0].tv} handleChangeTotal={handleChangeTotal} />
+								{user !== '3' && <CardServices title={'TELEFONIA'} service={services[0].telefonia} handleChangeTotal={handleChangeTotal} />}
 							</div>
 							<div className='flex flex-col w-3/12 gap-3 items-start justify-center'>
 								<Paper elevation={3} className='items-start p-4 w-full'>
 									{carrito.map((item, index) => (
 										<>
 											<h5>
-												{item.name} <ClearIcon className='cursor-pointer' />
+												{item.name} <ClearIcon onClick={() => handleChangeTotalDelete(item)} className='cursor-pointer' />
 											</h5>
 											<div key={index} className='flex flex-row gap-3 mb-3 justify-between'>
 												<span>{item.description}</span>
-												<h5>$ {item.value}</h5>
+												<h5>{item.value}</h5>
 											</div>
 										</>
 									))}
 									<div className='flex flex-row gap-3 justify-center items-center'>
-										<h4>Costo total</h4>
-										<h3>$ {total}</h3>
+										<h4>Abono mensual sin impuestos</h4>
+										<h3>{formatToArgentinePeso(total)}</h3>
 									</div>
+									<p>Los precios estan sujetos a modificaciones sin previo aviso</p>
+									<div className='flex flex-row gap-3 justify-center items-center'>
+										<h4>Costo de instalacion sin impuestos</h4>
+										<h3>{formatToArgentinePeso(total)}</h3>
+									</div>
+									<p>Los costos de instalacion estan sujetos a modificaciones sin previo aviso</p>
+									<p>Los costos de instalacion se pueden abonar hasta en 3 cuotas sin interes</p>
 								</Paper>
 							</div>
 						</>
@@ -282,11 +148,32 @@ const TelecommunicationsForm = () => {
 						className='w-1/6'
 						variant='contained'
 						onClick={() => {
-							errors.typeUser ? console.log('error') : dispatch({ type: 'next' })
+							errors.typeUser
+								? console.log('error')
+								: finalStep()
+								? Swal.fire({
+										title: 'Atención',
+										text: '¿Desea finalizar la solicitud de servicios?',
+										icon: 'info',
+										confirmButtonText: 'Si',
+										showCancelButton: true,
+										cancelButtonText: 'No',
+								  }).then((result) => {
+										if (result.isConfirmed) {
+											// Muestro un mensaje de exito
+											Swal.fire({
+												title: 'Solicitud de servicios',
+												text: 'La solicitud se envio correctamente. Verificaremos los datos y nos pondremos en contacto.',
+												icon: 'success',
+												confirmButtonText: 'Okey',
+											})
+										}
+								  })
+								: dispatch({ type: 'next' })
 							navigate(`/multiStepForm/${state?.services[step].nombre}`)
 						}}
 					>
-						Siguiente
+						{finalStep ? 'Finalizar' : 'Siguiente'}
 					</Button>
 				</div>
 			</form>
