@@ -72,6 +72,7 @@ const Login = () => {
 					secure: false,
 					sameSite: 'Lax',
 				})
+				decoded.popup = true
 				localStorage.setItem('usuario', JSON.stringify(decoded))
 				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
 				let DataOtherUser = await otherCustomer.data.map((item) => {

@@ -21,7 +21,8 @@ const PopUp = () => {
 	}
 	const [showModal, setShowModal] = useState(false)
 	const [listImgs, setListImgs] = useState([])
-	const { usuario } = useContext(UserContext)
+	const { account } = useContext(UserContext)
+	const activeUser = JSON.parse(localStorage.getItem('usuario'))
 	const dataUser = async () => {
 		const response = await request(import.meta.env.VITE_APP_API_URL + '/activePopups', 'GET')
 		if (response.status !== 200) throw new Error('Error en consulta')
@@ -29,17 +30,21 @@ const PopUp = () => {
 		const today = new Date()
 		response.data.forEach((item) => {
 			if (item.date_start > today || (item.date_end && item.date_end < today)) return
-			if (usuario.level === item.level) {
+			if (account.level === item.level) {
 				const url = import.meta.env.VITE_FILE_API_URL + '/images/popup/' + item.img
 				imgs.push(url)
 			}
 		})
 		setListImgs(imgs)
 		setShowModal(true)
+		activeUser.popup = false
+		localStorage.setItem('usuario', JSON.stringify(activeUser))
 	}
 	useEffect(() => {
-		dataUser()
-	}, [])
+		if (activeUser.popup) {
+			dataUser()
+		}
+	}, [account])
 	return (
 		<Modal className='flex justify-center items-center !z-50' open={showModal} onClose={() => setShowModal(false)} aria-labelledby='parent-modal-title' aria-describedby='parent-modal-description'>
 			<Box className={'w-full flex justify-center items-center'}>
