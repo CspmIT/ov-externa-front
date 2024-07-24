@@ -62,6 +62,7 @@ const TelecommunicationsForm = () => {
 		setTypeUser(value)
 		setServices(services)
 	}
+
 	const finalStep = () => {
 		return step === state?.services.length
 	}

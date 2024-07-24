@@ -3,7 +3,7 @@ import ServiceCard from '../components/SelectServices/ServiceCard'
 import { useNavigate } from 'react-router-dom'
 import ListRequeriments from '../components/ListRequeriments'
 import Button from '@mui/material/Button'
-import seeRqueriments from '../../serviceProcedures/utils/seeRequirements'
+import seeRqueriments from '../utils/seeRequirements'
 import { useRegForm } from '../providers/RegFormProvider'
 import Swal from 'sweetalert2'
 import { request } from '../../../utils/request'
@@ -14,6 +14,7 @@ const SelectServices = ({ services }) => {
 	const [selectedServices, setSelectedServices] = useState([...services])
 	const [state, dispatch] = useRegForm()
 	useEffect(() => {
+		dispatch({ type: 'reset' })
 		const fetchData = async () => {
 			try {
 				if (!state?.services) {
