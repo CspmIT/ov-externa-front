@@ -27,6 +27,7 @@ const ElectricPowerForm = () => {
 		register,
 		handleSubmit,
 		watch,
+		getValues,
 		// setValue,
 		formState: { errors, isValid },
 	} = useForm()
@@ -250,7 +251,7 @@ const ElectricPowerForm = () => {
 							)}
 						</div>
 					) : (
-						<ElectricalEnergyDocumentation register={register} errors={errors} />
+						<ElectricalEnergyDocumentation getValues={getValues} register={register} errors={errors} />
 					)}
 				</div>
 
@@ -274,7 +275,7 @@ const ElectricPowerForm = () => {
 					</Button>
 					{documentation !== false ? (
 						<Button disabled={!state?.person} className='w-1/6' variant='contained' color='success' type='submit'>
-							{currentStep === state?.services?.length ? 'Finalizar' : 'Siguiente'}
+							{step === state?.services.length ? 'Finalizar' : 'Siguiente'}
 						</Button>
 					) : (
 						<Button className='w-1/6' variant='contained' color='warning' type='submit'>

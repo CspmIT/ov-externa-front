@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import { validarFecha } from '../../../utils/dateFunction'
 import InputAdornment from '@mui/material/InputAdornment'
-import { dniArray, monthArray, daysArray, separateProcopDate } from '../../serviceProcedures/utils/data'
+import { dniArray, monthArray, daysArray, separateProcopDate } from '../utils/data'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 // import { useEffect, useState } from 'react'

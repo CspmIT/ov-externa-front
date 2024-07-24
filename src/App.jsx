@@ -21,12 +21,12 @@ import BaseInitial from './views/BaseInitial'
 import RestorePassword from './modules/auth/views/RestorePassword'
 import ChangePassword from './modules/auth/views/ChangePassword'
 import Opinion from './views/Opinion'
-import SelectServices from './modules/serviceProcedures/views/selectServices'
+import SelectServicesView from './modules/serviceProcedures/views/selectServicesView'
 import FormServicesData from './modules/serviceProcedures/views/formServicesData'
 import { UserContext } from './contexts/UserContext'
 import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
-import MultiStepForm from './modules/serviceProcedures2/MultiStepForm'
+import MultiStepForm from './modules/serviceProcedures/MultiStepForm'
 import Profile from './modules/Profile/view/Index'
 function App() {
 	const { darkMode } = useContext(UserContext)
@@ -110,7 +110,7 @@ function App() {
 		{ path: '/authentication', element: <Authentication /> },
 		{ path: '/myconsumption', element: <MyConsumption /> },
 		{ path: '/Opinion', element: <Opinion /> },
-		{ path: '/selectServices', element: <SelectServices /> },
+		{ path: '/selectServices', element: <SelectServicesView /> },
 		{ path: '/formServicesData', element: <FormServicesData /> },
 		{
 			path: '/multiStepForm',
