@@ -27,14 +27,16 @@ const ServiceCard = ({ service, seeRqueriments, visibleService, setVisibleServic
 
 	return (
 		<div onClick={handleClick} className='w-full md:w-1/4 lg:w-1/4 justify-self-center '>
-			<div className='flex p-8 rounded-[2.5em] m-3 bg-white shadowCards cursor-pointer dark:bg-zinc-700 dark:text-gray-300 w-auto flex-col'>
+			<div className={`flex p-8 rounded-[2.5em] m-3 ${isChecked ? service?.bgColor : 'bg-white'} shadowCards cursor-pointer dark:bg-zinc-700 dark:text-gray-300 w-auto flex-col`}>
+				<div className='w-full flex justify-center text-4xl'>{service?.icon}</div>
 				<div className='w-full flex justify-center items-center'>
 					<h4 className='inline-flex'>{service.nombre}</h4>
 					<Checkbox className='float-right' checked={isChecked} color='success' inputProps={{ 'aria-label': 'secondary checkbox' }} />
 				</div>
 				<div className='w-full text-center'>
 					<Button
-						variant='text'
+						color='info'
+						variant='contained'
 						onClick={(e) => {
 							e.stopPropagation()
 							seeRqueriments(service, visibleService, setVisibleService)

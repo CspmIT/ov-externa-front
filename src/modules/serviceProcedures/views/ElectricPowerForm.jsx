@@ -27,6 +27,7 @@ const ElectricPowerForm = () => {
 		register,
 		handleSubmit,
 		watch,
+		getValues,
 		// setValue,
 		formState: { errors, isValid },
 	} = useForm()
@@ -169,7 +170,7 @@ const ElectricPowerForm = () => {
 											error={errors.meterType}
 											label='Tipo de Medidor'
 											id='meterType'
-											defaultValue={state?.energiaElectrica?.meterType || ''}
+											defaultValue={state?.energiaElectrica?.meterType || 1}
 											{...register('meterType', { required: true })}
 										>
 											<MenuItem value='1'>Monofasico</MenuItem>
@@ -179,7 +180,7 @@ const ElectricPowerForm = () => {
 									<Modal open={open} onClose={handleClose}>
 										<Box sx={style}>
 											<h4 className={`text-center`} style={{ color: theme.palette.text.primary }}>
-												Tipos de medidores
+												¿Que medidor necesito?
 											</h4>
 											<p style={{ color: theme.palette.text.primary }}>
 												<b>Medidor Monofásico:</b> Eficiencia para Consumo Residencial y Pequeños Negocios El medidor monofásico es la elección común en hogares y pequeños negocios. Su diseño
@@ -193,7 +194,9 @@ const ElectricPowerForm = () => {
 											</p>
 										</Box>
 									</Modal>
-									<Button onClick={handleOpen}>Tipos de medidores</Button>
+									<Button onClick={handleOpen} variant='outlined'>
+										¿Que medidor necesito?
+									</Button>
 								</div>
 							)}
 							{typeActivity === '2' && (
@@ -248,7 +251,7 @@ const ElectricPowerForm = () => {
 							)}
 						</div>
 					) : (
-						<ElectricalEnergyDocumentation register={register} errors={errors} />
+						<ElectricalEnergyDocumentation getValues={getValues} register={register} errors={errors} />
 					)}
 				</div>
 
@@ -272,7 +275,7 @@ const ElectricPowerForm = () => {
 					</Button>
 					{documentation !== false ? (
 						<Button disabled={!state?.person} className='w-1/6' variant='contained' color='success' type='submit'>
-							{currentStep === state?.services?.length ? 'Finalizar' : 'Siguiente'}
+							{step === state?.services.length ? 'Finalizar' : 'Siguiente'}
 						</Button>
 					) : (
 						<Button className='w-1/6' variant='contained' color='warning' type='submit'>

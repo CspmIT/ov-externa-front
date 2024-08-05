@@ -1,11 +1,14 @@
-import { Button, FormLabel, IconButton, TextField, Tooltip } from '@mui/material'
+import { Button, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, TextField, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import TaskIcon from '@mui/icons-material/Task'
+import SearchIcon from '@mui/icons-material/Search'
 import { Camera, CloudUpload } from '@mui/icons-material'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import { useRegForm } from '../../providers/RegFormProvider'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
-const ElectricalEnergyDocumentation = ({ errors, register }) => {
+const ElectricalEnergyDocumentation = ({ errors, register, getValues }) => {
 	const [state] = useRegForm()
 	// Archivos
 	const [municipalFile, setMunicipalFile] = useState(null)
@@ -15,6 +18,8 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 	const [garantiaComercial, setGarantiaComercial] = useState(null)
 	const [permisoConexion, setPermisoConexion] = useState(null)
 	const [planchetaCatastral, setPlanchetaCatastral] = useState(null)
+	const [typeGarante, setTypeGarante] = useState(null)
+	const [nameGarante, setNameGarante] = useState(null)
 
 	useEffect(() => {
 		if (state?.electricFiles?.impuestoMuni?.[0]?.name !== undefined) {
@@ -40,6 +45,56 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 		}
 	}, [])
 
+	const handleGarante = (e) => {
+		setTypeGarante(e.target.value)
+	}
+
+	const searchGarante = async () => {
+		const dniGarante = getValues('dniGarante')
+		if (dniGarante === state.person.DNI) {
+			Swal.fire({
+				icon: 'warning',
+				title: 'Atención',
+				text: 'El garante no puede ser el mismo que el solicitante',
+			})
+			return
+		}
+		const baseUrl = import.meta.env.VITE_APP_API_URL
+		const url = `${baseUrl}/searchPeopleByDocumentNumber`
+		try {
+			const { data } = await axios({
+				method: 'POST',
+				url,
+				data: { number_document: dniGarante, type_person: '1' },
+				withCredentials: true,
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+			})
+			if (data?.error) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: data.error,
+				})
+			}
+
+			console.log(data)
+			Swal.fire({
+				icon: 'success',
+				title: 'Garante encontrado',
+				text: `El garante que desea agregar es ${data[0].APELLIDOS}`,
+				confirmButtonText: 'Si, agregar',
+				showCancelButton: true,
+				cancelButtonText: 'No',
+			}).then((action) => {
+				if (action.isConfirmed) {
+					setNameGarante(data[0].APELLIDOS)
+				}
+			})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	const handleFileChange = (event) => {
 		const file = event.target.files[0]
 		if (event.target.name === 'impuestoMuni') setMunicipalFile(file.name)
@@ -50,7 +105,8 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 		if (event.target.name === 'permisoConexion') setPermisoConexion(file.name)
 		if (event.target.name === 'planchetaCatastral') setPlanchetaCatastral(file.name)
 	}
-
+	// TODO: Preguntar si el garante es socio de la coop, sino se piden 3 recibos de sueldo (archivos)
+	// TODO: Si selecciona socio debe buscar por dni y traer los datos
 	return (
 		<div className='flex flex-col w-full gap-3 mt-4 items-center justify-center'>
 			<div className='w-2/3 gap-3 flex items-center '>
@@ -59,7 +115,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 				</FormLabel>
 				<Button component='label' className='w-2/12' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 					Subir archivo
-					<input type='file' hidden {...register('impuestoMuni', { required: !municipalFile, onChange: (e) => handleFileChange(e) })} />
+					<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('impuestoMuni', { required: !municipalFile, onChange: (e) => handleFileChange(e) })} />
 				</Button>
 				<Button component='label' className='w-2/12' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 					Tomar foto
@@ -82,7 +138,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 
 				<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 					Subir archivo
-					<input type='file' hidden {...register('certificadoLey', { required: !leyFile, onChange: (e) => handleFileChange(e) })} />
+					<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('certificadoLey', { required: !leyFile, onChange: (e) => handleFileChange(e) })} />
 				</Button>
 				<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 					Tomar foto
@@ -101,7 +157,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 						</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('permisoConexion', { required: !permisoConexion, onChange: (e) => handleFileChange(e) })} />
+							<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('permisoConexion', { required: !permisoConexion, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -118,7 +174,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 						</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('planchetaCatastral', { required: !planchetaCatastral, onChange: (e) => handleFileChange(e) })} />
+							<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('planchetaCatastral', { required: !planchetaCatastral, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -138,7 +194,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 					</FormLabel>
 					<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 						Subir archivo
-						<input type='file' hidden {...register('tituloProp', { required: !titleFile, onChange: (e) => handleFileChange(e) })} />
+						<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('tituloProp', { required: !titleFile, onChange: (e) => handleFileChange(e) })} />
 					</Button>
 					<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 						Tomar foto
@@ -156,7 +212,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 						<FormLabel className='w-4/12'>Constancia de AFIP</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('constanciaAfip', { required: !constanciaAfip, onChange: (e) => handleFileChange(e) })} />
+							<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('constanciaAfip', { required: !constanciaAfip, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -171,7 +227,7 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 						<FormLabel className='w-4/12'>Garantia Comercial</FormLabel>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
 							Subir archivo
-							<input type='file' hidden {...register('garantiaComercial', { required: !garantiaComercial, onChange: (e) => handleFileChange(e) })} />
+							<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('garantiaComercial', { required: !garantiaComercial, onChange: (e) => handleFileChange(e) })} />
 						</Button>
 						<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
 							Tomar foto
@@ -186,12 +242,49 @@ const ElectricalEnergyDocumentation = ({ errors, register }) => {
 			)}
 
 			{state?.energiaElectrica?.typeActivity !== '2' && (
-				<div className='w-2/3 gap-3 flex items-center'>
-					<FormLabel error={errors.dniGarante} className='w-4/12'>
-						Garante con servicios activos en la coop y que no tenga deuda o tres ultimos recibos de sueldo (del garante)
-					</FormLabel>
-					<TextField className='w-4/12' label='DNI' defaultValue={state?.electricFiles?.dniGarante || ''} error={errors.dniGarante} {...register('dniGarante', { required: true })}></TextField>
-				</div>
+				<>
+					<div className='w-2/3 gap-3 flex items-center'>
+						<FormLabel error={errors.dniGarante} className='w-4/12'>
+							Garante con servicios activos en la coop y que no tenga deuda o tres ultimos recibos de sueldo (del garante)
+						</FormLabel>
+						<RadioGroup row {...register('typeGarante', { required: true, onChange: (e) => handleGarante(e) })}>
+							<FormControlLabel value={1} control={<Radio />} label='Socio' />
+							<FormControlLabel value={2} control={<Radio />} label='No socio' />
+						</RadioGroup>
+					</div>
+					{typeGarante === '1' && (
+						<>
+							<div className='w-2/3 gap-3 flex items-center'>
+								<FormLabel className='w-4/12'>Documento del Garante</FormLabel>
+								<TextField className='w-4/12' label='DNI del garante' {...register('dniGarante', { required: true })} />
+								<SearchIcon className='cursor-pointer' onClick={(e) => searchGarante(e)} />
+							</div>
+							{nameGarante && (
+								<div className='w-2/3 gap-3 mt-3 flex items-center'>
+									<FormLabel className='w-4/12'>Nombre y Apellido del garante</FormLabel>
+									<span className='w-4/12'>{nameGarante}</span>
+								</div>
+							)}
+						</>
+					)}
+					{typeGarante === '2' && (
+						<div className='w-2/3 gap-3 flex items-center'>
+							<FormLabel className='w-4/12'>Ultimos tres recibos de sueldo (Permite cargar multiples archivos)</FormLabel>
+							<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUpload />}>
+								Subir archivo
+								<input accept='.pdf, .jpg, .jpeg, .png, .svg' type='file' hidden {...register('paycheck', { required: !constanciaAfip, onChange: (e) => handleFileChange(e) })} />
+							</Button>
+							<Button className='w-2/12' component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<Camera />}>
+								Tomar foto
+							</Button>
+							{constanciaAfip && (
+								<div className='w-4/12'>
+									<TaskIcon /> {constanciaAfip}
+								</div>
+							)}
+						</div>
+					)}
+				</>
 			)}
 		</div>
 	)

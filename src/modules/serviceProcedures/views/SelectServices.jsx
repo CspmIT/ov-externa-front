@@ -3,7 +3,7 @@ import ServiceCard from '../components/SelectServices/ServiceCard'
 import { useNavigate } from 'react-router-dom'
 import ListRequeriments from '../components/ListRequeriments'
 import Button from '@mui/material/Button'
-import seeRqueriments from '../../serviceProcedures/utils/seeRequirements'
+import seeRqueriments from '../utils/seeRequirements'
 import { useRegForm } from '../providers/RegFormProvider'
 import Swal from 'sweetalert2'
 import { request } from '../../../utils/request'
@@ -14,6 +14,7 @@ const SelectServices = ({ services }) => {
 	const [selectedServices, setSelectedServices] = useState([...services])
 	const [state, dispatch] = useRegForm()
 	useEffect(() => {
+		dispatch({ type: 'reset' })
 		const fetchData = async () => {
 			try {
 				if (!state?.services) {
@@ -49,12 +50,8 @@ const SelectServices = ({ services }) => {
 								}
 								// Ordenar los servicios seleccionados por tipo
 								selectedServicesRequest.sort((a, b) => a.tipo - b.tipo)
-								console.log('serviceRequest.id', serviceRequest.id)
 								dispatch({ type: 'set_request_service_id', data: serviceRequest.id })
-
-								console.log('selectedServicesRequest', selectedServicesRequest)
 								dispatch({ type: 'select_services', data: selectedServicesRequest })
-
 								dispatch({ type: 'next' })
 								navigate(`/multiStepForm/Datos Personales`)
 							}
@@ -135,12 +132,9 @@ const SelectServices = ({ services }) => {
 		dispatch({ type: 'next' })
 		navigate(`/multiStepForm/Datos Personales`)
 	}
-
 	return (
 		<div>
-			<h2 className='text-center m-5'>Selecciona tus Servicios</h2>
-			<hr />
-			<h5 className='text-center mt-5'>Marcá todos los servicios a solicitar</h5>
+			<h2 className='text-center m-5'>Marca los servicios que deseas dar de alta</h2>
 			<div className='flex w-full flex-wrap'>
 				{services.map((service, index) => (
 					<ServiceCard key={index} service={service} onSelectionChange={handleSelectService} seeRqueriments={seeRqueriments} visibleService={visibleService} setVisibleService={setVisibleService} />
@@ -154,7 +148,7 @@ const SelectServices = ({ services }) => {
 
 			<div className='m-5'>
 				{services.map((service, index) => (
-					<div key={index} id={`${service.nombre}-${index}`} className='w-full bg-white p-3 rounded-md hidden'>
+					<div key={index} id={`${service.nombre}-1`} className='w-full bg-white p-3 rounded-md hidden'>
 						<h4 className='text-center'>{service.nombre}</h4>
 						<ListRequeriments servicio={service.nombre} />
 					</div>

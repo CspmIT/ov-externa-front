@@ -38,7 +38,7 @@ const DrinkingWaterForm = () => {
 													title: 'Atención',
 													text: 'Detectamos que ya completo los datos de conexión en el formulario anterior. ¿Desea utilizar los mismos datos?',
 													icon: 'info',
-													confirmButtonText: 'Okey',
+													confirmButtonText: 'Aceptar',
 													showCancelButton: true,
 													cancelButtonText: 'No, cargar datos nuevos',
 												}).then((result) => {

@@ -161,6 +161,7 @@ const PersonalData = () => {
 						variant='outlined'
 						onClick={() => {
 							dispatch({ type: 'back' })
+							dispatch({ type: 'reset' })
 							navigate(`/multiStepForm`)
 						}}
 					>
