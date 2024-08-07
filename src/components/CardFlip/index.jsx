@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
-import ReactCardFlip from "react-card-flip";
+import { useEffect, useState } from 'react'
+import ReactCardFlip from 'react-card-flip'
 function CardFlip({ children, action, className }) {
-    const [isFlipped, setIsFlipped] = useState(action);
-    useEffect(() => {
-        setIsFlipped(!isFlipped);
-    }, [action])
-    return (
-        <ReactCardFlip  isFlipped={isFlipped} flipDirection="horizontal" containerClassName={`${className ? className : ""}`}>
-            {children}
-        </ReactCardFlip>
-    );
+  const [isFlipped, setIsFlipped] = useState(action)
+  useEffect(() => {
+    setIsFlipped(!isFlipped)
+  }, [action])
+  return (
+    <ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal' containerClassName={`${className ?? ''}`}>
+      {children}
+    </ReactCardFlip>
+  )
 }
 
-export default CardFlip;
+export default CardFlip
 
-
-//EJEMPLO DE COMO DEBERIA CONSULTARSE LA CARD Y COMO GESTIONAR LAS FUNCIONES 
+// EJEMPLO DE COMO DEBERIA CONSULTARSE LA CARD Y COMO GESTIONAR LAS FUNCIONES
 
 // const [flippedCards, setFlippedCards] = useState({});
 // const handleHoverEnter = (index) => {
