@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { FaQuestion } from 'react-icons/fa'
 import ButtonAnimate from '../../components/ButtonAnimate'
 import TableNew from '../../components/TableNew'
@@ -7,6 +7,7 @@ import { columns, columnsCel, searchAllInvoice } from '../../utils/invoice'
 import { Box, Modal } from '@mui/material'
 import ModalHelpHome from '../../components/ModalHelpHome'
 import CardCustom from '../../components/CardCustom'
+import { UserContext } from '../../contexts/UserContext'
 
 const Invoice = () => {
   const [invoice, setInvoices] = useState([])
@@ -14,28 +15,31 @@ const Invoice = () => {
   const [openModalHelp, setOpenModalHelp] = useState(false)
   const handleOpenModalHelp = () => setOpenModalHelp(true)
   const handleCloseModalHelp = () => setOpenModalHelp(false)
+  const { usuario } = useContext(UserContext)
   useEffect(() => {
-    const allInvoice = async () => {
-      try {
-        const data = await searchAllInvoice()
-        let dataTable = []
-        if (window.innerWidth < 768) {
-          dataTable = data.map((item) => ({
-            account: item.account,
-            info: { ...item }
-          }))
-          setColumnsTable(columnsCel)
-        } else {
-          dataTable = data
-          setColumnsTable(columns)
+    if (usuario.length !== 0) {
+      const allInvoice = async () => {
+        try {
+          const data = await searchAllInvoice(usuario)
+          let dataTable = []
+          if (window.innerWidth < 768) {
+            dataTable = data.map((item) => ({
+              account: item.account,
+              info: { ...item }
+            }))
+            setColumnsTable(columnsCel)
+          } else {
+            dataTable = data
+            setColumnsTable(columns)
+          }
+          setInvoices(dataTable)
+        } catch (error) {
+          console.log('Error al obtener datos:', error)
         }
-        setInvoices(dataTable)
-      } catch (error) {
-        console.log('Error al obtener datos:', error)
       }
+      allInvoice()
     }
-    allInvoice()
-  }, [])
+  }, [usuario])
 
   return (
     <div>

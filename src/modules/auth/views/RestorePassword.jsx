@@ -1,26 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import InputGroup from '../../components/InputGroup'
-import Axios from 'axios'
+import InputGroup from '../../../components/InputGroup'
+// import Axios from 'axios'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { Button, CircularProgress } from '@mui/material'
-
+import { request } from '../../../utils/request'
 function RestorePassword() {
   const navigate = useNavigate()
   const [spinner, setSpinner] = useState(false)
 
   const passwordRecover = async (data) => {
     setSpinner(true)
-    const url = 'http://cooptech.com.ar:30888/api/password_recover'
-    // const url = "http://localhost:8000/api/password_recover";
-    // const info = { email }
+    const url = import.meta.env.VITE_APP_API_URL + '/password_recover'
     try {
-      const responseData = await Axios.post(url, data)
-      if (responseData === 'Error') {
-        alert('No existe el usuario')
-        return
+      const responseData = await request(url, 'POST', data)
+      // const responseData = await Axios.post(url, data)
+      if (responseData.status !== 200) {
+        throw new Error('No existe el usuario')
       }
       Swal.fire({
         icon: 'success',
