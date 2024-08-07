@@ -1,9 +1,8 @@
 import { Button, MenuItem, Paper, TextField } from '@mui/material'
 import { useRegForm } from '../providers/RegFormProvider'
 import { useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import ClearIcon from '@mui/icons-material/Clear'
 import { request } from '../../../utils/request'
 import CardServices from '../components/Telecommunications/CardServices'
 import { formatToArgentinePeso } from '../../../utils/currencyFunctions'
@@ -15,12 +14,14 @@ const TelecommunicationsForm = () => {
 	const [total, setTotal] = useState(0)
 	const [carrito, setCarrito] = useState([])
 	const [services, setServices] = useState([])
+	// const [currentService, setCurrentService] = useState(null)
+	const [internet, setInternet] = useState(false)
+	const [tv, setTv] = useState(false)
 
 	const { register, formState: errors } = useForm()
 	const navigate = useNavigate()
 	const currentStep = state?.step - 1
 	const step = state?.step
-	console.log(state)
 	// Funcion para verificar si el servicio que se quiere agregar ya existe en el carrito
 	const existInCarrito = (element) => {
 		const exist = carrito.find((item) => item.name === element.name)
@@ -28,6 +29,17 @@ const TelecommunicationsForm = () => {
 			return true
 		}
 		return false
+	}
+
+	const handleChangeCurrentService = async (codSer) => {
+		console.log(codSer)
+		if (codSer === 9) {
+			setInternet(!internet)
+			setTv(false)
+		}
+		if (codSer === 55 || codSer === 100 || codSer === 117) {
+			setTv(!tv)
+		}
 	}
 
 	// Funcion para agregar servicios al carrito y sumar el total
@@ -43,10 +55,16 @@ const TelecommunicationsForm = () => {
 
 	const handleChangeTotalDelete = async (item) => {
 		const { value } = item
-		const newvalue = value.replace('$', '').replace('.', '').replace(',', '.')
-		const newCarrito = carrito.filter((element) => element.name !== item.name)
-		setTotal(total - parseFloat(newvalue))
-		setCarrito(newCarrito)
+		if (typeof value === 'string') {
+			const newvalue = value.replace('$', '').replace('.', '').replace(',', '.')
+			const newCarrito = carrito.filter((element) => element.name !== item.name)
+			setTotal(total - parseFloat(newvalue))
+			setCarrito(newCarrito)
+		} else {
+			const newCarrito = carrito.filter((element) => element.name !== item.name)
+			setTotal(total - parseFloat(value))
+			setCarrito(newCarrito)
+		}
 	}
 
 	// Funcion que simula la obtencion de servicios segun el tipo de usuario
@@ -90,24 +108,44 @@ const TelecommunicationsForm = () => {
 					</div>
 				</div>
 				<h3 className='text-center my-5'>Cotiza tu plan</h3>
-				<div className='col-span-12 flex gap-3'>
+				<div className='col-span-12 flex gap-3 max-sm:flex-col'>
 					{user && (
 						<>
-							<div className='flex flex-row w-3/4 gap-3'>
-								{/* Desabilitar cards de tv y telefonia has ta que no selecciona internet */}
-								{/* Agregar a las cards la opcion no quiero este servicio */}
-								<CardServices title={'INTERNET'} service={services[0].internet} handleChangeTotal={handleChangeTotal} />
-								{/* Agregar un icono para ver info */}
-								<CardServices title={'TELEVISIÓN'} service={services[0].tv} handleChangeTotal={handleChangeTotal} />
-								{user !== '3' && <CardServices title={'TELEFONIA'} service={services[0].telefonia} handleChangeTotal={handleChangeTotal} />}
+							<div className='flex flex-col w-3/4 gap-3 max-sm:w-full'>
+								<CardServices
+									title={'INTERNET'}
+									service={services[0].internet}
+									handleChangeTotal={handleChangeTotal}
+									handleChangeTotalDelete={handleChangeTotalDelete}
+									currentService={handleChangeCurrentService}
+								/>
+								{internet && (
+									<CardServices
+										title={'TELEVISION'}
+										service={services[0].tv}
+										handleChangeTotal={handleChangeTotal}
+										handleChangeTotalDelete={handleChangeTotalDelete}
+										currentService={handleChangeCurrentService}
+									/>
+								)}
+								{internet && tv && user !== '3' && (
+									<CardServices
+										title={'TELEFONIA'}
+										service={services[0].telefonia}
+										handleChangeTotal={handleChangeTotal}
+										handleChangeTotalDelete={handleChangeTotalDelete}
+										currentService={handleChangeCurrentService}
+									/>
+								)}
+								{/* {user !== '3' &&  */}
 							</div>
-							<div className='flex flex-col w-3/12 gap-3 items-start justify-center'>
+							<div className='flex flex-col w-3/12 gap-3 items-start justify-center max-sm:w-full'>
 								<Paper elevation={3} className='items-start p-4 w-full'>
 									{carrito.map((item, index) => (
 										<>
-											<h5>
+											{/* <h5>
 												{item.name} <ClearIcon onClick={() => handleChangeTotalDelete(item)} className='cursor-pointer' />
-											</h5>
+											</h5> */}
 											<div key={index} className='flex flex-row gap-3 mb-3 justify-between'>
 												<span>{item.description}</span>
 												<h5>{item.value}</h5>
@@ -118,22 +156,22 @@ const TelecommunicationsForm = () => {
 										<h4>Abono mensual sin impuestos</h4>
 										<h3>{formatToArgentinePeso(total)}</h3>
 									</div>
-									<p>Los precios estan sujetos a modificaciones sin previo aviso</p>
+									<span className='text-sm'>Los precios estan sujetos a modificaciones sin previo aviso</span>
 									<div className='flex flex-row gap-3 justify-center items-center'>
 										<h4>Costo de instalacion sin impuestos</h4>
-										<h3>{formatToArgentinePeso(total)}</h3>
+										<h3>$0,00</h3>
 									</div>
-									<p>Los costos de instalacion estan sujetos a modificaciones sin previo aviso</p>
-									<p>Los costos de instalacion se pueden abonar hasta en 3 cuotas sin interes</p>
+									<span className='text-sm'>Los costos de instalacion estan sujetos a modificaciones sin previo aviso. </span>
+									<span className='text-sm'>Los costos de instalacion se pueden abonar hasta en 3 cuotas sin interes.</span>
 								</Paper>
 							</div>
 						</>
 					)}
 				</div>
 
-				<div className='col-span-12 flex mt-3 items-center justify-center gap-3'>
+				<div className='col-span-12 flex mt-3 items-center justify-center gap-3 max-sm:flex-col'>
 					<Button
-						className='w-1/6'
+						className='w-1/6 max-sm:w-auto'
 						variant='outlined'
 						onClick={() => {
 							dispatch({ type: 'back' })
@@ -142,11 +180,11 @@ const TelecommunicationsForm = () => {
 					>
 						Volver
 					</Button>
-					<Button className='w-1/9' variant='contained' color='secondary'>
+					<Button className='w-1/9 max-sm:w-auto' variant='contained' color='secondary'>
 						Guardar y continuar despues
 					</Button>
 					<Button
-						className='w-1/6'
+						className='w-1/6 max-sm:w-auto'
 						variant='contained'
 						onClick={() => {
 							errors.typeUser
@@ -161,6 +199,7 @@ const TelecommunicationsForm = () => {
 										cancelButtonText: 'No',
 								  }).then((result) => {
 										if (result.isConfirmed) {
+											console.log(state)
 											// Muestro un mensaje de exito
 											Swal.fire({
 												title: 'Solicitud de servicios',

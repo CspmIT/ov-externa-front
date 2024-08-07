@@ -168,6 +168,7 @@ const Login = () => {
 	return (
 		<>
 			<h2 className='mt-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white'>Iniciar Sesión </h2>
+			{import.meta.env.VITE_TEST}
 			<form onSubmit={handleSubmit(formulario)}>
 				<InputGroup required errors={errors} validation={register} id={'email'} name={'email'} title={'Email'} ph={'Ingrese un Email'} type={'email'} />
 				<InputGroup

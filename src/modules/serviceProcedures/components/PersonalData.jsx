@@ -18,7 +18,7 @@ const PersonalData = () => {
 		watch,
 		setValue,
 		formState: { errors, isValid },
-	} = useForm()
+	} = useForm({ defaultValues: { typePerson: state?.person?.typePerson } })
 	const navigate = useNavigate()
 
 	// Form values
@@ -116,7 +116,7 @@ const PersonalData = () => {
 		if (watchTypePerson === '1' && state?.person) {
 			return <PersonalForm watch={watch} person={state?.person} errors={errors} register={register} />
 		} else {
-			return <h1>Empresa</h1>
+			return <div></div>
 		}
 	}
 	return (
@@ -125,7 +125,7 @@ const PersonalData = () => {
 				<input type='hidden' {...register('id')} />
 				<FormControl className='col-span-8 col-start-3 max-sm:col-span-12' error={errors.typePerson}>
 					<InputLabel id='typePerson'>Tipo de Persona *</InputLabel>
-					<Select defaultValue='' labelId='typePerson' disabled={searchExecuted} label='Tipo de Persona *' id='typePerson' {...register('typePerson', { required: true })}>
+					<Select labelId='typePerson' disabled={searchExecuted} label='Tipo de Persona *' id='typePerson' {...register('typePerson', { required: true })}>
 						<MenuItem value='1'>Persona Fisica</MenuItem>
 						<MenuItem value='2'>Persona Juridica</MenuItem>
 					</Select>

@@ -16,6 +16,7 @@ import LevelUp2 from './views/LevelUp/leveldos'
 import Authentication from './views/LevelUp/authenticationPhotoSID'
 import MyConsumption from './views/MyConsumption'
 import Footer from './components/Footer'
+import GetIp from './views/getIp'
 // import Profile from './views/Profile'
 import BaseInitial from './views/BaseInitial'
 import RestorePassword from './modules/auth/views/RestorePassword'
@@ -47,6 +48,10 @@ function App() {
 	}, [darkMode])
 
 	const loginRoutes = [
+		{
+			name: '/getIp',
+			element: <GetIp />,
+		},
 		{
 			name: '/Login',
 			element: (
