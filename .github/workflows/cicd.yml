@@ -62,10 +62,6 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
         
         - name: Build and push
-          env:
-            VITE_APP_API_URL: ${{ secrets.VITE_APP_API_URL }}
-            VITE_COOPTECH_URL: ${{ secrets.VITE_COOPTECH_URL }}
-            VITE_FILE_API_URL: ${{ secrets.VITE_FILE_API_URL }}
           run: | 
             REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
             docker build \
