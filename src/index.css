@@ -4,18 +4,18 @@
 
 @font-face {
     font-family: "Aeromatics-Italic";
-    src: url("./assets/fuentes/Aeromatics/AeroMaticsItalic.ttf") format("ttf"), url('./assets/fuentes/Aeromatics/AeroMaticsItalic.ttf');
+    src: url("/assets/fuentes/Aeromatics/AeroMaticsItalic.ttf") format("ttf"), url('/assets/fuentes/Aeromatics/AeroMaticsItalic.ttf');
 
 }
 
 @font-face {
     font-family: "Aeromatics-Regular";
-    src: url("./assets/fuentes/Aeromatics/AeroMaticsRegular.ttf") format("ttf"), url("./assets/fuentes/Aeromatics/AeroMaticsRegular.ttf");
+    src: url("/assets/fuentes/Aeromatics/AeroMaticsRegular.ttf") format("ttf"), url("/assets/fuentes/Aeromatics/AeroMaticsRegular.ttf");
 }
 
 @font-face {
     font-family: "Roboto-Condensed";
-    src: url("./assets/fuentes/roboto/Roboto-Condensed.ttf") format("ttf"), url("./assets/fuentes/roboto/Roboto-Condensed.ttf");
+    src: url("/assets/fuentes/roboto/Roboto-Condensed.ttf") format("ttf"), url("/assets/fuentes/roboto/Roboto-Condensed.ttf");
 }
 
 *,

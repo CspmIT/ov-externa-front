@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import InputGroup from '../../components/InputGroup'
 import Button from '../../components/Button'
+import enojado from '../../../public/assets/img/opinion/enojado.png'
 
 const index = () => {
 	const [input, setInput] = useState('hidden')
@@ -18,10 +19,10 @@ const index = () => {
 			<div className='w-full flex flex-wrap justify-center'>
 				<div className='w-1/2 flex flex-wrap p-5'>
 					<div onClick={() => showInput()} className='w-1/4 p-2'>
-						<img className='w-full' src='/assets/img/opinion/enojado.png' />
+						<img className='w-full' src={enojado} />
 					</div>
 					<div onClick={() => showInput()} className='w-1/4 p-2'>
-						<img className='w-full' src='/assets/img/opinion/emoji.png' />
+						<img className='w-full' src='assets/img/opinion/emoji.png' />
 					</div>
 					<div onClick={() => showInput()} className='w-1/4 p-2'>
 						<img className='w-full' src='/assets/img/opinion/bien.png' />
