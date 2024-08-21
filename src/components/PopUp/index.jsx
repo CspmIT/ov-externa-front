@@ -29,14 +29,14 @@ const PopUp = () => {
 		const imgs = []
 		const today = new Date()
 		response.data.forEach((item) => {
-			if (item.date_start > today || (item.date_end && item.date_end < today)) return
+			if (item.date_start >= today || (item.date_end && item.date_end < today)) return
 			if (account.level === item.level) {
 				const url = import.meta.env.VITE_FILE_API_URL + '/images/popup/' + item.img
 				imgs.push(url)
 			}
 		})
 		setListImgs(imgs)
-		setShowModal(true)
+		setShowModal(response.data && response.data.length > 0)
 		activeUser.popup = false
 		localStorage.setItem('usuario', JSON.stringify(activeUser))
 	}
