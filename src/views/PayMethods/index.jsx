@@ -6,6 +6,7 @@ import { request } from '../../utils/request'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { Wallet, initMercadoPago } from '@mercadopago/sdk-react'
+import LoaderComponent from '../../components/Loader'
 
 const PayMethods = () => {
 	initMercadoPago('TEST-4bc41165-0753-4820-9c96-31085c50fe3c')
@@ -128,7 +129,12 @@ const PayMethods = () => {
 											Pagar con {method.PaysMethod.name}
 										</Button>
 									)}
-									{method.id_method === 1 && linkMp && <Wallet initialization={{ preferenceId: linkMp, redirectMode: 'blank' }} customization={{ texts: { valueProp: 'practicality' } }} />}
+									{method.id_method === 1 && !linkMp && <LoaderComponent text={false} />}
+									{method.id_method === 1 && linkMp && (
+										<span onClick={paymentStatusWindow}>
+											<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'blank' }} customization={{ texts: { valueProp: 'practicality' } }} />
+										</span>
+									)}
 								</AccordionActions>
 							</Accordion>
 						))}
