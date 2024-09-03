@@ -8,7 +8,7 @@ import { request } from '../../utils/request'
 const DropdownImage = ({ props }) => {
 	const [isDropdownOpen, setDropdownOpen] = useState(false)
 	const navigator = useNavigate()
-	const { setUsuario, usuario, setDarkMode } = useContext(UserContext)
+	const { setUsuario, usuario, setDarkMode, account } = useContext(UserContext)
 	const [imgProfile, setImgProfile] = useState('https://app.coopmorteros.coop/public/images/cooptech/Iso_Cooptech.png')
 	const toggleDropdown = () => {
 		setDropdownOpen(!isDropdownOpen)
@@ -82,7 +82,7 @@ const DropdownImage = ({ props }) => {
 					tabIndex='-1'
 				>
 					<div className='py-1' role='none'>
-						{usuario.level >= 2 ? (
+						{account.level >= 2 ? (
 							<Link
 								to='/Profile'
 								onClick={toggleDropdown}

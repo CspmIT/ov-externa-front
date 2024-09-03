@@ -29,6 +29,8 @@ import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
 import MultiStepForm from './modules/serviceProcedures/MultiStepForm'
 import Profile from './modules/Profile/view/Index'
+import PayMethods from './views/PayMethods'
+import PaymentWaiting from './views/PaymentWaiting'
 function App() {
 	const { darkMode } = useContext(UserContext)
 	const lightTheme = createTheme({
@@ -108,6 +110,8 @@ function App() {
 		{ path: '/information', element: <Information /> },
 		{ path: '/invoice', element: <Invoice /> },
 		{ path: '/payments', element: <Payments /> },
+		{ path: '/payMethods', element: <PayMethods /> },
+		{ path: '/payWaiting', element: <PaymentWaiting /> },
 		{ path: '/handle', element: <Handle /> },
 		{ path: '/myservices', element: <MyServices /> },
 		{ path: '/myservices/detail', element: <MyServicesD /> },

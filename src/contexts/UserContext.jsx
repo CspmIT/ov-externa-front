@@ -6,6 +6,7 @@ function UserProvider({ children }) {
 	const [darkMode, setDarkMode] = useState(0)
 	const [usuario, setUsuario] = useState([])
 	const [account, setAccount] = useState([])
+	const [payConcept, setPayConcept] = useState([])
 	useEffect(() => {
 		if (!usuario.length) {
 			const storedUser = localStorage.getItem('usuario')
@@ -14,6 +15,6 @@ function UserProvider({ children }) {
 		}
 	}, [children])
 
-	return <UserContext.Provider value={{ darkMode, setDarkMode, usuario, setUsuario, account, setAccount }}>{children}</UserContext.Provider>
+	return <UserContext.Provider value={{ darkMode, setDarkMode, usuario, setUsuario, account, setAccount, payConcept, setPayConcept }}>{children}</UserContext.Provider>
 }
 export { UserContext, UserProvider }
