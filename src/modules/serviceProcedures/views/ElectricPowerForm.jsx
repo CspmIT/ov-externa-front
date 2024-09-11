@@ -85,7 +85,6 @@ const ElectricPowerForm = () => {
 			}
 			dispatch({ type: 'energia_electrica', data: electricData })
 		} else {
-			console.log(values)
 			// Validar dni garante
 			const files = {
 				impuestoMuni: values.impuestoMuni,
@@ -95,6 +94,7 @@ const ElectricPowerForm = () => {
 				garantiaComercial: values.garantiaComercial,
 				permisoConexion: values.permisoConexion,
 				planchetaCatastral: values.planchetaCatastral,
+				typeGarante: values.typeGarante,
 				dniGarante: values.dniGarante,
 			}
 			dispatch({ type: 'electric_files', data: files })

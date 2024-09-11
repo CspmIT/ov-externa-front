@@ -12,10 +12,10 @@ import { MdElectricBolt, MdWaterDrop } from 'react-icons/md'
 import { BsFillRouterFill } from 'react-icons/bs'
 import { FaHandsHelping } from 'react-icons/fa'
 const services = [
-	{ nombre: 'Energia Electrica', tipo: 1, color: '#00953e', bgColor: '!bg-[#00953e]/[0.5]', icon: <MdElectricBolt /> },
-	{ nombre: 'Agua Potable', tipo: 2, color: '#007dbb', bgColor: '!bg-[#007dbb]/[0.5]', icon: <MdWaterDrop /> },
-	{ nombre: 'Telecomunicaciones', tipo: 3, color: '#14407f', bgColor: '!bg-[#14407f]/[0.5]', icon: <BsFillRouterFill /> },
-	{ nombre: 'Servicios Sociales', tipo: 4, color: '#ed6c23', bgColor: '!bg-[#ed6c23]/[0.5]', icon: <FaHandsHelping /> },
+	{ nombre: 'Energia Electrica', tipo: 1, color: '#00953e', text: 'text-[#00953e]', unselect: 'text-[#a7a7a7]', bgColor: '!bg-[#00953e]/[0.5]', icon: <MdElectricBolt /> },
+	{ nombre: 'Agua Potable', tipo: 2, color: '#007dbb', text: 'text-[#007dbb]', unselect: 'text-[#a7a7a7]', bgColor: '!bg-[#007dbb]/[0.5]', icon: <MdWaterDrop /> },
+	{ nombre: 'Telecomunicaciones', tipo: 3, color: '#14407f', text: 'text-[#14407f]', unselect: 'text-[#a7a7a7]', bgColor: '!bg-[#14407f]/[0.5]', icon: <BsFillRouterFill /> },
+	{ nombre: 'Servicios Sociales', tipo: 4, color: '#ed6c23', text: 'text-[#ed6c23]', unselect: 'text-[#a7a7a7]', bgColor: '!bg-[#ed6c23]/[0.5]', icon: <FaHandsHelping /> },
 ]
 
 const MultiStepForm = () => {
