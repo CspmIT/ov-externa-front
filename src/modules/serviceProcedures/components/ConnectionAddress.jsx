@@ -22,6 +22,7 @@ const ConnectionAddress = ({
     markerPosition,
     setMarkerPosition,
     useData = true,
+    catastralData = true,
 }) => {
     const [state] = useRegForm();
 
@@ -69,10 +70,10 @@ const ConnectionAddress = ({
 
     return (
         <>
-            <div className="w-full flex gap-3 items-start justify-center">
+            <div className="w-full flex col-span-12 gap-3 items-start justify-center">
                 <div className="w-3/5 flex flex-col gap-3">
                     <h4>Domicilio de conexion</h4>
-                    <FormControl className="w-full" error={errors.provincia}>
+                    <FormControl className="w-full" error={errors?.provincia}>
                         <InputLabel id="provincia">Provincia *</InputLabel>
                         {/* Si use data es true, pinto los datos del estado */}
                         <Select
@@ -86,7 +87,7 @@ const ConnectionAddress = ({
                         </Select>
                     </FormControl>
                     <div className="w-full flex gap-3">
-                        <FormControl className="w-1/2" error={errors.city}>
+                        <FormControl className="w-1/2" error={errors?.city}>
                             <InputLabel id="city">Localidad *</InputLabel>
                             <Select
                                 labelId="city"
@@ -121,7 +122,7 @@ const ConnectionAddress = ({
                             </Select>
                         </FormControl>
                         <TextField
-                            error={errors.street}
+                            error={errors?.street}
                             select={true}
                             label="Calle *"
                             id={'calle'}
@@ -141,7 +142,9 @@ const ConnectionAddress = ({
                                 required: 'El Campo es requerido',
                             })}
                             className="w-2/3"
-                            helperText={errors.street && errors.street.message}
+                            helperText={
+                                errors?.street && errors?.street.message
+                            }
                             defaultValue={
                                 useData
                                     ? state?.connectionAddress?.street || ''
@@ -155,7 +158,7 @@ const ConnectionAddress = ({
                             ))}
                         </TextField>
                         <TextField
-                            error={errors.numberAddress}
+                            error={errors?.numberAddress}
                             label="Nro *"
                             id={'numberAddress'}
                             {...register('numberAddress', {
@@ -163,8 +166,8 @@ const ConnectionAddress = ({
                             })}
                             className="w-1/3"
                             helperText={
-                                errors.numberAddress &&
-                                errors.numberAddress.message
+                                errors?.numberAddress &&
+                                errors?.numberAddress.message
                             }
                             defaultValue={
                                 useData
@@ -174,75 +177,85 @@ const ConnectionAddress = ({
                             }
                         />
                     </div>
-                    <h5>Dato catastral</h5>
-                    <div className="w-full flex gap-3">
-                        <TextField
-                            defaultValue={
-                                useData
-                                    ? state?.connectionAddress?.circ || ''
-                                    : ''
-                            }
-                            error={errors.circ}
-                            {...register('circ', { required: true })}
-                            className="w-[16.6%]"
-                            label="Circ. *"
-                        ></TextField>
-                        <TextField
-                            defaultValue={
-                                useData
-                                    ? state?.connectionAddress?.sec || ''
-                                    : ''
-                            }
-                            {...register('sec', { required: true })}
-                            error={errors.sec}
-                            className="w-[16.6%]"
-                            label="Sec. *"
-                        ></TextField>
-                        <TextField
-                            defaultValue={
-                                useData
-                                    ? state?.connectionAddress?.man || ''
-                                    : ''
-                            }
-                            {...register('man', { required: true })}
-                            error={errors.man}
-                            className="w-[16.6%]"
-                            label="Man. *"
-                        ></TextField>
-                        <TextField
-                            defaultValue={
-                                useData
-                                    ? state?.connectionAddress?.par || ''
-                                    : ''
-                            }
-                            {...register('par', { required: true })}
-                            error={errors.par}
-                            className="w-[16.6%]"
-                            label="Par. *"
-                        ></TextField>
-                        <TextField
-                            defaultValue={
-                                useData
-                                    ? state?.connectionAddress?.ph || ''
-                                    : ''
-                            }
-                            {...register('ph', { required: true })}
-                            error={errors.ph}
-                            className="w-[16.6%]"
-                            label="PH *"
-                        ></TextField>
-                        <TextField
-                            defaultValue={
-                                useData
-                                    ? state?.connectionAddress?.lote || ''
-                                    : ''
-                            }
-                            {...register('lote', { required: true })}
-                            error={errors.lote}
-                            className="w-[16.6%]"
-                            label="Lote *"
-                        ></TextField>
-                    </div>
+                    {catastralData && (
+                        <>
+                            <h5>Dato catastral</h5>
+                            <div className="w-full flex gap-3">
+                                <TextField
+                                    defaultValue={
+                                        useData
+                                            ? state?.connectionAddress?.circ ||
+                                              ''
+                                            : ''
+                                    }
+                                    error={errors?.circ}
+                                    {...register('circ', { required: true })}
+                                    className="w-[16.6%]"
+                                    label="Circ. *"
+                                ></TextField>
+                                <TextField
+                                    defaultValue={
+                                        useData
+                                            ? state?.connectionAddress?.sec ||
+                                              ''
+                                            : ''
+                                    }
+                                    {...register('sec', { required: true })}
+                                    error={errors?.sec}
+                                    className="w-[16.6%]"
+                                    label="Sec. *"
+                                ></TextField>
+                                <TextField
+                                    defaultValue={
+                                        useData
+                                            ? state?.connectionAddress?.man ||
+                                              ''
+                                            : ''
+                                    }
+                                    {...register('man', { required: true })}
+                                    error={errors?.man}
+                                    className="w-[16.6%]"
+                                    label="Man. *"
+                                ></TextField>
+                                <TextField
+                                    defaultValue={
+                                        useData
+                                            ? state?.connectionAddress?.par ||
+                                              ''
+                                            : ''
+                                    }
+                                    {...register('par', { required: true })}
+                                    error={errors?.par}
+                                    className="w-[16.6%]"
+                                    label="Par. *"
+                                ></TextField>
+                                <TextField
+                                    defaultValue={
+                                        useData
+                                            ? state?.connectionAddress?.ph || ''
+                                            : ''
+                                    }
+                                    {...register('ph', { required: true })}
+                                    error={errors?.ph}
+                                    className="w-[16.6%]"
+                                    label="PH *"
+                                ></TextField>
+                                <TextField
+                                    defaultValue={
+                                        useData
+                                            ? state?.connectionAddress?.lote ||
+                                              ''
+                                            : ''
+                                    }
+                                    {...register('lote', { required: true })}
+                                    error={errors?.lote}
+                                    className="w-[16.6%]"
+                                    label="Lote *"
+                                ></TextField>
+                            </div>
+                        </>
+                    )}
+
                     <div className="w-full flex">
                         <a
                             href="https://mapascordoba.gob.ar/viewer/mapa/3"
@@ -261,15 +274,17 @@ const ConnectionAddress = ({
                         </a>
                     </div>
                 </div>
-                <div className="w-2/5 h-[35vh] !max-w-[93vw] ">
+                <div className="w-2/5 h-full !max-w-[93vw] ">
                     <h5>
                         Puede arrastrar el marcador para indicar el domicilio en
                         el mapa
                     </h5>
-                    <LeafletMap
-                        markerPosition={markerPosition}
-                        setMarkerPosition={setMarkerPosition}
-                    />
+                    <div className="h-[30vh]">
+                        <LeafletMap
+                            markerPosition={markerPosition}
+                            setMarkerPosition={setMarkerPosition}
+                        />
+                    </div>
                 </div>
             </div>
             <ModalNewStreet

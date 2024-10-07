@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PersonalData from './components/PersonalData';
+import PersonalData from './views/PersonalData';
 import RegFormProvider from './providers/RegFormProvider';
 import HeaderForm from './components/HeaderForm';
 import SelectServices from './views/SelectServices';
@@ -52,25 +52,6 @@ const services = [
 ];
 
 const MultiStepForm = () => {
-    // Segun el step pinto un background diferente
-    // const bgColor = (step) => {
-    // 	switch (step) {
-    // 		case 'select-service':
-    // 			return '!bg-transparent'
-    // 		case 'Datos Personales':
-    // 			return '!bg-white'
-    // 		case 'Energia Electrica':
-    // 			return '!bg-[#00953e]/[0.5]'
-    // 		case 'Agua Potable':
-    // 			return '!bg-[#007dbb]/[0.3]'
-    // 		case 'Telecomunicaciones':
-    // 			return '!bg-[#14407f]/[0.5]'
-    // 		case 'Servicios Sociales':
-    // 			return '!bg-[#ed6c23]/[0.7]'
-    // 		default:
-    // 			return '!bg-transparent'
-    // 	}
-    // }
     const { step } = useParams(['step']);
     const [renderStep, setRenderStep] = useState(renderView(step));
     useEffect(() => {

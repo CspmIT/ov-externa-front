@@ -22,8 +22,10 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { request } from '../../../utils/request';
 // import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import ConnectionAddress from '../components/ConnectionAddress';
 import ElectricalEnergyDocumentation from '../components/ElectricalEnergy/ElectricalEnergyDocumentation';
+import FormButtons from '../components/FormButtons';
 const ElectricPowerForm = () => {
     const [isOwner, setIsOwner] = useState(null);
     const [markerPosition, setMarkerPosition] = useState([
@@ -36,9 +38,7 @@ const ElectricPowerForm = () => {
     const handleClose = () => setOpen(false);
     const theme = useTheme();
     const [state, dispatch] = useRegForm();
-    const currentStep = state?.step - 1;
     const navigate = useNavigate();
-    const step = state?.step;
 
     const {
         register,
@@ -49,6 +49,8 @@ const ElectricPowerForm = () => {
         formState: { errors, isValid },
     } = useForm();
 
+    const currentStep = state?.step - 1;
+    const step = state?.step;
     const typeActivity = watch('typeActivity');
 
     const getFormData = async () => {
@@ -75,6 +77,7 @@ const ElectricPowerForm = () => {
         if (!isValid) return;
         if (!documentation) {
             setDocumentation(true);
+
             // Obtengo los datos del formulario
             const connectionAddress = {
                 lat: markerPosition[0],
@@ -117,6 +120,30 @@ const ElectricPowerForm = () => {
                 dniGarante: values.dniGarante,
             };
             dispatch({ type: 'electric_files', data: files });
+
+            if (step === state?.services.length) {
+                const response = await Swal.fire({
+                    title: 'Atención',
+                    text: '¿Desea finalizar la solicitud de servicios?',
+                    icon: 'info',
+                    confirmButtonText: 'Si',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                });
+
+                if (response.isConfirmed) {
+                    Swal.fire({
+                        title: 'Solicitud de servicios',
+                        text: 'La solicitud se envio correctamente. Verificaremos los datos y nos pondremos en contacto.',
+                        icon: 'success',
+                        confirmButtonText: 'Okey',
+                    });
+                    dispatch({ type: 'reset' });
+                    navigate('/');
+                }
+                return;
+            }
+
             dispatch({ type: 'next' });
             navigate(`/multiStepForm/${state?.services[step].nombre}`);
         }
@@ -129,7 +156,7 @@ const ElectricPowerForm = () => {
         transform: 'translate(-50%, -50%)',
         width: 800,
         textColor: 'text.primary',
-        olor: 'text.primary',
+        color: 'text.primary',
         bgcolor: 'background.paper',
         border: 'none',
         borderRadius: 4,
@@ -440,55 +467,10 @@ const ElectricPowerForm = () => {
                     )}
                 </div>
 
-                <div className="col-span-12 flex mt-3 items-center justify-center gap-3">
-                    <Button
-                        className="w-1/6"
-                        variant="outlined"
-                        onClick={() => {
-                            if (documentation) {
-                                setDocumentation(false);
-                                return;
-                            }
-                            dispatch({ type: 'back' });
-                            navigate(
-                                `/multiStepForm/${
-                                    state?.services[currentStep - 1].nombre
-                                }`
-                            );
-                        }}
-                    >
-                        Volver
-                    </Button>
-                    <Button
-                        className="w-1/9"
-                        variant="contained"
-                        color="secondary"
-                    >
-                        Guardar y continuar despues
-                    </Button>
-                    {documentation !== false ? (
-                        <Button
-                            disabled={!state?.person}
-                            className="w-1/6"
-                            variant="contained"
-                            color="success"
-                            type="submit"
-                        >
-                            {step === state?.services.length
-                                ? 'Finalizar'
-                                : 'Siguiente'}
-                        </Button>
-                    ) : (
-                        <Button
-                            className="w-1/6"
-                            variant="contained"
-                            color="warning"
-                            type="submit"
-                        >
-                            Cargar documentacion
-                        </Button>
-                    )}
-                </div>
+                <FormButtons
+                    documentation={documentation}
+                    setDocumentation={setDocumentation}
+                />
             </form>
         </div>
     );
