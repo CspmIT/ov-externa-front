@@ -7,10 +7,13 @@ const services = [
 
 /**
  * Esta función maneja la visualización de los requisitos de un servicio en particular.
- *
+ * @author Agustin Comba
+ * @mail acombadev@gmail.com
  * @param {string} service - El servicio seleccionado.
  * @param {string} visibleService - El servicio que actualmente es visible.
  * @param {function} setVisibleService - Función para establecer el servicio visible.
+ *
+ * @returns {void} - No retorna ningún valor.
  */
 const seeRequirements = (service, visibleService, setVisibleService) => {
 	// Si hay un servicio visible, lo oculta.

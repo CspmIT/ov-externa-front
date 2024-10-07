@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 export const request = async (url, method, data = false) => {
 	if (!url || !method) {
 		throw new Error('URL o método no proporcionados')
