@@ -13,7 +13,9 @@ import Handle from './views/Handle'
 import MyServices from './views/MyServices'
 import MyServicesD from './views/MyServices/detail'
 import LevelUp2 from './views/LevelUp/leveldos'
-import Authentication from './views/LevelUp/authenticationPhotoSID'
+import LevelUp3 from './views/LevelUp/LevelTres/views/index'
+// import Authentication from './views/LevelUp/authenticationPhotoSID'
+import Authentication from './views/LevelUp/Authentication/views/index'
 import MyConsumption from './views/MyConsumption'
 import Footer from './components/Footer'
 import GetIp from './views/getIp'
@@ -31,6 +33,7 @@ import MultiStepForm from './modules/serviceProcedures/MultiStepForm'
 import Profile from './modules/Profile/view/Index'
 import PayMethods from './views/PayMethods'
 import PaymentWaiting from './views/PaymentWaiting'
+import ManageServices from './views/ManageServices/views/index'
 function App() {
 	const { darkMode } = useContext(UserContext)
 	const lightTheme = createTheme({
@@ -116,11 +119,13 @@ function App() {
 		{ path: '/myservices', element: <MyServices /> },
 		{ path: '/myservices/detail', element: <MyServicesD /> },
 		{ path: '/levelup2', element: <LevelUp2 /> },
+		{ path: '/LevelUp3', element: <LevelUp3 /> },
 		{ path: '/authentication', element: <Authentication /> },
 		{ path: '/myconsumption', element: <MyConsumption /> },
 		{ path: '/Opinion', element: <Opinion /> },
 		{ path: '/selectServices', element: <SelectServicesView /> },
 		{ path: '/formServicesData', element: <FormServicesData /> },
+		{path: '/ManageServices', element: <ManageServices />},
 		{
 			path: '/multiStepForm',
 			element: <MultiStepForm />,

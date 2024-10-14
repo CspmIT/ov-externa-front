@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { FaHouse, FaComments, FaPlus } from 'react-icons/fa6'
-import { FaRegListAlt, FaArchive, FaInfoCircle, FaMoon, FaUser, FaLayerGroup, FaFileAlt, FaArrowAltCircleUp, FaHandshake } from 'react-icons/fa'
+import { FaRegListAlt, FaArchive, FaInfoCircle, FaMoon, FaUser, FaLayerGroup, FaFileAlt, FaArrowAltCircleUp, FaHandshake, FaServer } from 'react-icons/fa'
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2'
 import { IoIosSunny, IoMdArrowDropdown } from 'react-icons/io'
 import styles from './Navbar.module.css'
@@ -83,10 +83,22 @@ const Navbar = () => {
 			],
 		},
 		{
+			name: 'Subir a Nivel 3',
+			icon: <FaArrowAltCircleUp />,
+			link: '/LevelUp3',
+			level: [2],
+		},
+		{
 			name: 'Solicitar un Servicio',
 			icon: <FaHandshake />,
 			link: '/MultiStepForm',
 			level: [1, 2, 3],
+		},
+		{
+			name: 'Administrar Servicios',
+			icon: <FaServer />,
+			link: '/ManageServices',
+			level: [3],
 		},
 		{
 			name: 'Estado de mi Trámite',
