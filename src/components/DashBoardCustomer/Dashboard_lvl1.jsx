@@ -7,6 +7,8 @@ import Button from '../Button'
 import { Link } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../contexts/UserContext'
+import StatusProcedure from '../../modules/serviceProcedures/components/StatusProcedure/StatusProcedure'
+
 function DashboardLvl1() {
 	//   var level = JSON.parse(localStorage.getItem('usuario')).level
 	const { usuario } = useContext(UserContext)
@@ -109,6 +111,10 @@ function DashboardLvl1() {
 						</CardCustom>
 					</Link>
 				</div>
+			</div>
+
+			<div className={`w-full rounded-xl px-7 mt-10`}>
+				<StatusProcedure estadoActual='Trámite tomado' />
 			</div>
 			<div className={`w-full rounded-xl px-7 mt-10`}>
 				<div className='flex w-full'>

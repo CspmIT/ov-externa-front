@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
+import React, { useContext, useEffect, useState } from 'react';
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 
 import Login from './modules/auth/views/Login'
 import Home from './views/Home'
@@ -35,77 +35,77 @@ import PayMethods from './views/PayMethods'
 import PaymentWaiting from './views/PaymentWaiting'
 import ManageServices from './views/ManageServices/views/index'
 function App() {
-	const { darkMode } = useContext(UserContext)
-	const lightTheme = createTheme({
-		palette: {
-			mode: 'light',
-		},
-	})
+    const { darkMode } = useContext(UserContext);
+    const lightTheme = createTheme({
+        palette: {
+            mode: 'light',
+        },
+    });
 
-	const darkTheme = createTheme({
-		palette: {
-			mode: 'dark',
-		},
-	})
-	const [theme, setTheme] = useState(darkMode ? darkTheme : lightTheme)
-	useEffect(() => {
-		setTheme(darkMode ? darkTheme : lightTheme)
-	}, [darkMode])
+    const darkTheme = createTheme({
+        palette: {
+            mode: 'dark',
+        },
+    });
+    const [theme, setTheme] = useState(darkMode ? darkTheme : lightTheme);
+    useEffect(() => {
+        setTheme(darkMode ? darkTheme : lightTheme);
+    }, [darkMode]);
 
-	const loginRoutes = [
-		{
-			name: '/getIp',
-			element: <GetIp />,
-		},
-		{
-			name: '/Login',
-			element: (
-				<BaseInitial>
-					<Login />
-				</BaseInitial>
-			),
-		},
-		{
-			name: '/Login/:token/:idUser',
-			element: (
-				<BaseInitial>
-					<Login />
-				</BaseInitial>
-			),
-		},
-		{
-			name: '/Register',
-			element: (
-				<BaseInitial>
-					<Register />
-				</BaseInitial>
-			),
-		},
-		{
-			name: '/RestorePassword',
-			element: (
-				<BaseInitial>
-					<RestorePassword />
-				</BaseInitial>
-			),
-		},
-		{
-			name: '/ChangePassword/:token',
-			element: (
-				<BaseInitial>
-					<ChangePassword />
-				</BaseInitial>
-			),
-		},
-		{
-			name: '/*',
-			element: (
-				<BaseInitial>
-					<Login />
-				</BaseInitial>
-			),
-		},
-	]
+    const loginRoutes = [
+        {
+            name: '/getIp',
+            element: <GetIp />,
+        },
+        {
+            name: '/Login',
+            element: (
+                <BaseInitial>
+                    <Login />
+                </BaseInitial>
+            ),
+        },
+        {
+            name: '/Login/:token/:idUser',
+            element: (
+                <BaseInitial>
+                    <Login />
+                </BaseInitial>
+            ),
+        },
+        {
+            name: '/Register',
+            element: (
+                <BaseInitial>
+                    <Register />
+                </BaseInitial>
+            ),
+        },
+        {
+            name: '/RestorePassword',
+            element: (
+                <BaseInitial>
+                    <RestorePassword />
+                </BaseInitial>
+            ),
+        },
+        {
+            name: '/ChangePassword/:token/:userId',
+            element: (
+                <BaseInitial>
+                    <ChangePassword />
+                </BaseInitial>
+            ),
+        },
+        {
+            name: '/*',
+            element: (
+                <BaseInitial>
+                    <Login />
+                </BaseInitial>
+            ),
+        },
+    ];
 
 	const userRoutes = [
 		{ path: '/', element: <Home /> },
@@ -150,11 +150,11 @@ function App() {
 						</Route>
 					</Routes>
 
-					<Footer />
-				</BrowserRouter>
-			</ThemeProvider>
-		</div>
-	)
+                    <Footer />
+                </BrowserRouter>
+            </ThemeProvider>
+        </div>
+    );
 }
 
-export default App
+export default App;
