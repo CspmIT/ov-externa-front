@@ -1,26 +1,25 @@
 import { Step, StepLabel, Stepper } from '@mui/material';
 import { useRegForm } from '../providers/RegFormProvider';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 
 const HeaderForm = () => {
     const [state] = useRegForm();
-    const navigate = useNavigate();
 
     let color, name;
     if (state?.services) {
-        color = state.services[state.step - 1]?.color;
-        name = state.services[state.step - 1]?.nombre;
+        color = state.services[state.currentStep]?.color;
+        name = state.services[state.currentStep]?.nombre;
     }
+
+
 
     // Función para aplicar el estilo al icono basado en el paso activo
     const getIconStyle = (index) => {
         // Si el paso actual es mayor que el índice, el paso está completado
-        const isCompleted = state.step - 1 > index;
+        const isCompleted = state.currentStep > index;
         return {
             color: isCompleted
                 ? '#007bff'
-                : state.step - 1 === index
+                : state.currentStep === index
                 ? color
                 : '#000', // Azul para completados, color específico para el actual, negro por defecto
             fontSize: '28px',
@@ -32,13 +31,13 @@ const HeaderForm = () => {
             <>
                 <Stepper
                     className="mb-8"
-                    activeStep={state.step - 1}
+                    activeStep={state.currentStep}
                     alternativeLabel
                 >
                     {state.services.map((service, index) => (
                         <Step
                             key={service.nombre}
-                            completed={state.step - 1 > index}
+                            completed={state.currentStep - 1 == index}
                         >
                             <StepLabel
                                 icon={service.icon}

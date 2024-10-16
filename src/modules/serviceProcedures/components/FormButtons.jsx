@@ -8,6 +8,7 @@ const FormButtons = ({ documentation = true, setDocumentation }) => {
     const [state, dispatch] = useRegForm();
     const currentStep = state?.step - 1;
     const step = state?.step;
+    console.log(state);
     return (
         <div className="col-span-12 flex mt-3 items-center justify-center gap-3">
             <Button

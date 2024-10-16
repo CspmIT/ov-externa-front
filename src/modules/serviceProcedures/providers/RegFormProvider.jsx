@@ -10,9 +10,11 @@ export const useRegForm = () => {
 const reducer = (state, action) => {
     switch (action.type) {
         case 'next':
-            return { ...state, step: state.step + 1 };
+            return { ...state, step: state.step + 1, currentStep: state.step };
         case 'back':
-            return { ...state, step: state.step - 1 };
+            return { ...state, step: state.step - 1, currentStep: state.step };
+        case 'set_step':
+            return { ...state, currentStep: action.data };
         case 'reset':
             return { step: 0, data: {} };
         case 'set_request_service_id':

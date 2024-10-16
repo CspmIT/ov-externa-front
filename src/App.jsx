@@ -31,6 +31,7 @@ import MultiStepForm from './modules/serviceProcedures/MultiStepForm';
 import Profile from './modules/Profile/view/Index';
 import PayMethods from './views/PayMethods';
 import PaymentWaiting from './views/PaymentWaiting';
+import MyRequest from './modules/serviceProcedures/views/MyRequest';
 function App() {
     const { darkMode } = useContext(UserContext);
     const lightTheme = createTheme({
@@ -129,6 +130,10 @@ function App() {
             path: '/multiStepForm/:step',
             element: <MultiStepForm />,
         },
+        {
+            path: '/myRequests',
+            element: <MyRequest/>
+        }
     ];
     return (
         <div className="flex flex-col min-h-screen w-screen h-screen overflow-y-auto overflow-x-hidden bg-gray-100 dark:bg-zinc-900 dark:text-gray-300 text-gray-700">

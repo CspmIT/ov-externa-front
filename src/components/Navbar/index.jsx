@@ -91,7 +91,7 @@ const Navbar = () => {
 		{
 			name: 'Estado de mi Trámite',
 			icon: <FaRegListAlt />,
-			link: '/LevelUp2',
+			link: '/myRequests',
 			level: [1, 2, 3],
 		},
 		{

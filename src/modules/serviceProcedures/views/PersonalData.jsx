@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { request } from '../../../utils/request';
 import PersonalForm from '../components/PersonalForm';
 import { useEffect, useState } from 'react';
+import { storage } from '../../../storage/storage';
 
 const PersonalData = () => {
     // Hooks
@@ -25,6 +26,7 @@ const PersonalData = () => {
         handleSubmit,
         watch,
         setValue,
+        getValues,
         formState: { errors, isValid },
     } = useForm({ defaultValues: { typePerson: state?.person?.typePerson } });
     const navigate = useNavigate();
@@ -34,53 +36,61 @@ const PersonalData = () => {
     const watchCUIT = watch('CUIT');
     const watchTypePerson = watch('typePerson');
 
-    useEffect(() => {
-        const getData = async () => {
-            if (state?.person) {
-                setValue('typePerson', state?.person?.typePerson);
-                return;
-            }
-            const baseUrl = import.meta.env.VITE_APP_API_URL;
-            const requestID = state?.requestServiceID;
-            const obj = { requestID };
-            const requestData = await request(
-                `${baseUrl}/getRequestsData`,
-                'POST',
-                obj
-            );
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         if (state?.person) {
+    //             setValue('typePerson', state?.person?.typePerson);
+    //             return;
+    //         }
+    //         const baseUrl = import.meta.env.VITE_APP_API_URL;
+    //         const requestID = state?.requestServiceID;
+    //         const obj = { requestID };
+    //         const requestData = await request(
+    //             `${baseUrl}/getRequestsData`,
+    //             'POST',
+    //             obj
+    //         );
 
-            if (requestData?.data) {
-                dispatch({
-                    type: 'set_person',
-                    data: requestData?.data?.People,
-                });
-                dispatch({
-                    type: 'set_services_items',
-                    data: requestData?.data?.ServiceItems,
-                });
-            }
-        };
-        getData();
-    }, []);
+    //         if (requestData?.data) {
+    //             dispatch({
+    //                 type: 'set_person',
+    //                 data: requestData?.data?.People,
+    //             });
+    //             dispatch({
+    //                 type: 'set_services_items',
+    //                 data: requestData?.data?.ServiceItems,
+    //             });
+    //         }
+    //     };
+    //     getData();
+    // }, []);
 
     const step = state?.step;
     const onSubmit = async (values) => {
-        if (isValid) {
-            // Guardo los datos en la DB
-            const baseUrl = import.meta.env.VITE_APP_API_URL;
-            const url = `${baseUrl}/createOrUpdatePeople`;
-            if (state?.person?.id) {
-                const sendData = {
-                    person: { ...values },
-                    serviceReques: state.requestServiceID,
-                };
+        // Guardo los datos en la DB
+        const baseUrl = import.meta.env.VITE_APP_API_URL;
+        const url = `${baseUrl}/firstStep`;
+        if (state?.person?.id) {
+            const sendData = {
+                person: { ...values },
+                serviceRequest: state.requestServiceID,
+            };
+            try {
                 const response = await request(url, 'POST', sendData);
                 console.log(response);
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: error.message,
+                });
+                return;
             }
-            dispatch({ type: 'set_person', data: values });
-            dispatch({ type: 'next' });
-            navigate(`/multiStepForm/${state?.services[step].nombre}`);
         }
+        dispatch({ type: 'set_person', data: values });
+        dispatch({ type: 'next' });
+        navigate(`/multiStepForm/${state?.services[step].nombre}`);
     };
 
     // Cuando se hace click en buscar limpio los datos del objeto person
@@ -117,20 +127,37 @@ const PersonalData = () => {
         setSearchExecuted(true);
     };
 
-    const SaveAndreturnLater = () => {
+    const SaveAndreturnLater = async () => {
+        const data = getValues();
         const baseURL = import.meta.env.VITE_APP_API_URL;
-        const url = `${baseURL}/updateServiceRequest`;
+        const url = `${baseURL}/returnLater`;
         const sendData = {
-            person: { ...state.person },
             serviceRequest: {
                 id: state.requestServiceID,
                 id_person: state.person.id,
                 return_later: true,
                 step: state.step - 1,
+                person_data: data,
+                status: 0,
+                id_user: storage.get('usuario').sub,
             },
             ServiceItems: state.serviceItems,
         };
-        request(url, 'POST', sendData);
+        try {
+            const response = await request(url, 'POST', sendData);
+            console.log(response);
+            Swal.fire({
+                icon: 'success',
+                title: '¡Guardado!',
+                text: `Los datos se guardaron correctamente.`,
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: error.message,
+            });
+        }
     };
 
     function renderForm() {
@@ -240,6 +267,7 @@ const PersonalData = () => {
                         className="w-1/9"
                         variant="contained"
                         color="secondary"
+                        type="button"
                     >
                         Guardar y continuar despues
                     </Button>

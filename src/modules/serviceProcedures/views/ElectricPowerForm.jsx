@@ -38,6 +38,7 @@ const ElectricPowerForm = () => {
     const handleClose = () => setOpen(false);
     const theme = useTheme();
     const [state, dispatch] = useRegForm();
+    console.log(state);
     const navigate = useNavigate();
 
     const {
@@ -45,7 +46,6 @@ const ElectricPowerForm = () => {
         handleSubmit,
         watch,
         getValues,
-        // setValue,
         formState: { errors, isValid },
     } = useForm();
 
@@ -53,23 +53,27 @@ const ElectricPowerForm = () => {
     const step = state?.step;
     const typeActivity = watch('typeActivity');
 
-    const getFormData = async () => {
-        const baseUrl = import.meta.env.VITE_APP_API_URL;
-        // Recorro services Items y obtengo el id del formulario cuando el service type sea igual al servicio actual
-        const serviceItems = state?.serviceItems;
-        const selectServices = state?.services;
-        if (!serviceItems || !selectServices) return;
-        const serviceItem = serviceItems.find(
-            (item) => item.service_type === selectServices[currentStep].tipo
-        );
-        const sendData = {
-            formID: serviceItem.id_service_form,
-            type: serviceItem.service_type,
-        };
-        await request(`${baseUrl}/getFormService`, 'POST', sendData);
-    };
 
     useEffect(() => {
+        const getFormData = async () => {
+            const baseUrl = import.meta.env.VITE_APP_API_URL;
+            // Recorro services Items y obtengo el id del formulario cuando el service type sea igual al servicio actual
+            const serviceItems = state?.serviceItems;
+            const selectServices = state?.services;
+            console.log(serviceItems);
+            console.log(selectServices);
+            if (!serviceItems || !selectServices) return;
+            const serviceItem = serviceItems.find(
+                (item) => item.service_type === selectServices[currentStep].tipo
+            );
+            console.log(serviceItem);
+            const sendData = {
+                formID: serviceItem.id_service_form,
+                type: serviceItem.service_type,
+            };
+            await request(`${baseUrl}/getFormService`, 'POST', sendData);
+            console.log(request);
+        };
         getFormData();
     }, []);
 

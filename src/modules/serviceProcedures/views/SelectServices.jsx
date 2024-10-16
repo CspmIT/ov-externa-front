@@ -8,6 +8,7 @@ import { useRegForm } from '../providers/RegFormProvider';
 import Swal from 'sweetalert2';
 import { request } from '../../../utils/request';
 import { formatDateForInput } from '../../../utils/dateFunction';
+import { data } from 'autoprefixer';
 
 const SelectServices = ({ services }) => {
     const [visibleService, setVisibleService] = useState(null);
@@ -50,6 +51,7 @@ const SelectServices = ({ services }) => {
                                     ServiceItems.map((item) => ({
                                         nombre: item.service_name,
                                         tipo: item.service_type,
+                                        id_form: item.id_service_form,
                                     }));
 
                                 // Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
@@ -77,11 +79,17 @@ const SelectServices = ({ services }) => {
                                     data: serviceRequest.id,
                                 });
                                 dispatch({
+                                    type: 'set_services_items',
+                                    data:  ServiceItems 
+                                })
+                                dispatch({
                                     type: 'select_services',
                                     data: selectedServicesRequest,
                                 });
+                                console.log(selectedServicesRequest)
                                 dispatch({ type: 'next' });
-                                navigate(`/multiStepForm/Datos Personales`);
+                                dispatch({type: 'set_step', data: serviceRequest.step})
+                                navigate(`/multiStepForm/${selectedServicesRequest[serviceRequest.step].nombre}`);
                             }
                         });
                     }
@@ -151,7 +159,13 @@ const SelectServices = ({ services }) => {
             const sendData = { services: selectedServices };
             try {
                 const data = await request(url, 'POST', sendData);
-                console.log(data);
+                console.log(data.data)
+                dispatch({
+                    type: 'set_request_service_id',
+                    data: data.data.id,
+                });
+
+                dispatch({type: 'set_step', data: data.data.step})
             } catch (error) {
                 const { message } = error.response.data;
                 Swal.fire({
@@ -163,7 +177,6 @@ const SelectServices = ({ services }) => {
             }
         }
 
-        console.log('selectedServices', selectedServices);
         dispatch({ type: 'select_services', data: selectedServices });
         dispatch({ type: 'next' });
         navigate(`/multiStepForm/Datos Personales`);
