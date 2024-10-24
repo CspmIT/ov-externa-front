@@ -12,6 +12,7 @@ import { request } from '../../utils/request'
 import { Box, Modal } from '@mui/material'
 import ModalSocio from '../ModalSocio'
 import { storage } from '../../storage/storage'
+import { json } from 'react-router-dom'
 
 const Navbar = () => {
 	const [OpenModal, setOpenModal] = useState(false)
@@ -81,18 +82,18 @@ const Navbar = () => {
 				{ name: 'Mis Consumos', link: '/MyConsumption' },
 			],
 		},
-		{
-			name: 'Solicitar un Servicio',
-			icon: <FaHandshake />,
-			link: '/MultiStepForm',
-			level: [1, 2, 3],
-		},
-		{
-			name: 'Estado de mi Trámite',
-			icon: <FaRegListAlt />,
-			link: '/LevelUp2',
-			level: [1, 2, 3],
-		},
+		// {
+		// 	name: 'Solicitar un Servicio',
+		// 	icon: <FaHandshake />,
+		// 	link: '/MultiStepForm',
+		// 	level: [1, 2, 3],
+		// },
+		// {
+		// 	name: 'Estado de mi Trámite',
+		// 	icon: <FaRegListAlt />,
+		// 	link: '/myRequests',
+		// 	level: [1, 2, 3],
+		// },
 		{
 			name: 'Información Últil',
 			icon: <FaInfoCircle />,
@@ -114,6 +115,12 @@ const Navbar = () => {
 	]
 	const getAccounts = async () => {
 		const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
+		// Busco en el localstorage('usuario') el campo active
+		const activeCustomer = JSON.parse(localStorage.getItem('usuario'))
+		if (!activeCustomer.active) {
+			activeCustomer.active = otherCustomer.data[0].id
+			localStorage.setItem('usuario', JSON.stringify(activeCustomer))
+		}
 		let DataOtherUser = await otherCustomer.data.map((item) => {
 			return {
 				id_relation: item.id,
@@ -121,6 +128,7 @@ const Navbar = () => {
 				num: item.data_Person.number_customer,
 				primary: item.primary_account,
 				level: item.level,
+				active: item.id === activeCustomer.active,
 			}
 		})
 		if (!DataOtherUser.length) {

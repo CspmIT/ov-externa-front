@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoMdArrowDropdown } from 'react-icons/io'
 import { UserContext } from '../../contexts/UserContext'
 import styles from './dropdown.module.css'
@@ -12,14 +12,33 @@ const Dropdown = ({ ...props }) => {
 		setDropdownOpen(!isDropdownOpen)
 	}
 
-	const handleChangeAccount = (item) => {
+	const handleChangeAccount = (item, drop = true) => {
 		if (item.num === account.num) {
 			return
 		}
+		const activeUser = JSON.parse(localStorage.getItem('usuario'))
+		activeUser.active = item.id_relation
+		localStorage.setItem('usuario', JSON.stringify(activeUser))
 		setAccount(item)
 		navigate('/')
-		toggleDropdown()
+		if (drop) {
+			toggleDropdown()
+		}
 	}
+
+	useEffect(() => {
+		// Para dejar la ultima cuenta activa en caso de recargar la página
+		if (usuario.accounts.length <= 1) {
+			return
+		}
+		usuario.accounts.forEach((item) => {
+			if (item.active) {
+				handleChangeAccount(item, false)
+			} else {
+				item.active = false
+			}
+		})
+	}, [usuario])
 	return (
 		<div className='relative inline-block text-left max-md:hidden'>
 			<div>

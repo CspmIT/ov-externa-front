@@ -23,12 +23,13 @@ function DashboardLvl2() {
 	const handleCloseModalHelp = () => setOpenModalHelp(false)
 	const handleOpenModalSocio = () => setOpenModalSocio(true)
 	const handleCloseModalSocio = () => setOpenModalSocio(false)
-	const { account } = useContext(UserContext)
+	const { account, setPayConcept } = useContext(UserContext)
 
 	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
 	const changeScreen = () => {
 		setWidthPhone(window.innerWidth <= 768)
 	}
+	const handlePayMethod = () => {}
 	useEffect(() => {
 		window.addEventListener('resize', changeScreen)
 		return () => {
@@ -65,6 +66,7 @@ function DashboardLvl2() {
 	const handleAmountPay = (amount) => {
 		setAmountpay(amount[0])
 		setAmountTotalpay(amount[1])
+		setPayConcept(amount[2])
 	}
 
 	return (
@@ -167,10 +169,12 @@ function DashboardLvl2() {
 						</div>
 					)}
 					{amountpay > 0 ? (
-						<ButtonFloating>
-							<p className='p-0 m-0'>Pagar</p>
-							<p className='p-0 m-0'>$ {amountpay}</p>
-						</ButtonFloating>
+						<Link to={'/payMethods'}>
+							<ButtonFloating>
+								<p className='p-0 m-0'>Pagar</p>
+								<p className='p-0 m-0'>$ {amountpay}</p>
+							</ButtonFloating>
+						</Link>
 					) : null}
 				</CardCustom>
 			</div>

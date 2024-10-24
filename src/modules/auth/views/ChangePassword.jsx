@@ -12,7 +12,8 @@ import { request } from '../../../utils/request'
 // Define el componente ChangePassword
 const ChangePassword = () => {
 	// Recupera el token de la URL
-	const { token } = useParams(['token'])
+	const { token, userId } = useParams(['token'])
+    console.log(token)
 	const [spinner] = useState(false)
 	const navigate = useNavigate()
 
