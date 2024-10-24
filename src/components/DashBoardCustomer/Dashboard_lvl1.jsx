@@ -113,7 +113,7 @@ function DashboardLvl1() {
 				</div>
 			</div>
 
-			{/* <div className={`w-full rounded-xl px-7 mt-10`}>
+			{/* <divclassName={`w-full rounded-xl px-7 mt-10`}>
 				<StatusProcedure estadoActual='Trámite tomado' />
 			</div> */}
 			<div className={`w-full rounded-xl px-7 mt-10`}>
