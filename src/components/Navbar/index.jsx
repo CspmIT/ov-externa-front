@@ -82,18 +82,18 @@ const Navbar = () => {
 				{ name: 'Mis Consumos', link: '/MyConsumption' },
 			],
 		},
-		{
-			name: 'Solicitar un Servicio',
-			icon: <FaHandshake />,
-			link: '/MultiStepForm',
-			level: [1, 2, 3],
-		},
-		{
-			name: 'Estado de mi Trámite',
-			icon: <FaRegListAlt />,
-			link: '/myRequests',
-			level: [1, 2, 3],
-		},
+		// {
+		// 	name: 'Solicitar un Servicio',
+		// 	icon: <FaHandshake />,
+		// 	link: '/MultiStepForm',
+		// 	level: [1, 2, 3],
+		// },
+		// {
+		// 	name: 'Estado de mi Trámite',
+		// 	icon: <FaRegListAlt />,
+		// 	link: '/myRequests',
+		// 	level: [1, 2, 3],
+		// },
 		{
 			name: 'Información Últil',
 			icon: <FaInfoCircle />,

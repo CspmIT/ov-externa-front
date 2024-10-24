@@ -53,6 +53,7 @@ const services = [
 
 const MultiStepForm = () => {
     const { step } = useParams(['step']);
+
     const [renderStep, setRenderStep] = useState(renderView(step));
     useEffect(() => {
         setRenderStep(renderView(step));

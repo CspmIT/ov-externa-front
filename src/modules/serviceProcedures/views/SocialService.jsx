@@ -31,7 +31,7 @@ const SocialService = () => {
     const [open, setOpen] = useState(false);
     const step = state?.step;
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, getValues } = useForm();
 
     useEffect(() => {
         if (!state?.energiaElectrica && !state?.connectionAddress) {
@@ -324,7 +324,7 @@ const SocialService = () => {
                         )}
                     </>
                 )}
-                <FormButtons documentation={true} />
+                <FormButtons documentation={true} getValues={getValues}/>
             </form>
         </div>
     );

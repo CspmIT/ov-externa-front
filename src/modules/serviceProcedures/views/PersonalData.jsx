@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useRegForm } from '../providers/RegFormProvider';
 import { useNavigate } from 'react-router-dom';
+import { backend } from '../../../routes/apiEndpoints'; 
 import {
     Button,
     FormControl,
@@ -65,19 +66,21 @@ const PersonalData = () => {
     //     getData();
     // }, []);
 
-    const step = state?.step;
     const onSubmit = async (values) => {
         // Guardo los datos en la DB
-        const baseUrl = import.meta.env.VITE_APP_API_URL;
-        const url = `${baseUrl}/firstStep`;
+        
+    const url = `${backend.OvExterna}/firstStep`;
         if (state?.person?.id) {
             const sendData = {
                 person: { ...values },
                 serviceRequest: state.requestServiceID,
             };
+            console.log(state);
             try {
-                const response = await request(url, 'POST', sendData);
-                console.log(response);
+                await request(url, 'POST', sendData);
+                dispatch({ type: 'set_person', data: values });
+                dispatch({ type: 'next' });
+                navigate(`/multiStepForm/${state?.services[state?.step].nombre}`);
             } catch (error) {
                 console.log(error);
                 Swal.fire({
@@ -88,9 +91,6 @@ const PersonalData = () => {
                 return;
             }
         }
-        dispatch({ type: 'set_person', data: values });
-        dispatch({ type: 'next' });
-        navigate(`/multiStepForm/${state?.services[step].nombre}`);
     };
 
     // Cuando se hace click en buscar limpio los datos del objeto person
@@ -132,6 +132,7 @@ const PersonalData = () => {
         const baseURL = import.meta.env.VITE_APP_API_URL;
         const url = `${baseURL}/returnLater`;
         const sendData = {
+            AllServices : {...state}, 
             serviceRequest: {
                 id: state.requestServiceID,
                 id_person: state.person.id,

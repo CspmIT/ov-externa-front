@@ -8,7 +8,6 @@ import { useRegForm } from '../providers/RegFormProvider';
 import Swal from 'sweetalert2';
 import { request } from '../../../utils/request';
 import { formatDateForInput } from '../../../utils/dateFunction';
-import { data } from 'autoprefixer';
 
 const SelectServices = ({ services }) => {
     const [visibleService, setVisibleService] = useState(null);
@@ -75,6 +74,10 @@ const SelectServices = ({ services }) => {
                                     (a, b) => a.tipo - b.tipo
                                 );
                                 dispatch({
+                                    type: 'set_request',
+                                    data: serviceRequest
+                                })
+                                dispatch({
                                     type: 'set_request_service_id',
                                     data: serviceRequest.id,
                                 });
@@ -86,8 +89,10 @@ const SelectServices = ({ services }) => {
                                     type: 'select_services',
                                     data: selectedServicesRequest,
                                 });
-                                console.log(selectedServicesRequest)
-                                dispatch({ type: 'next' });
+                                dispatch({
+                                    type: 'set_person',
+                                    data: serviceRequest.person_data
+                                })
                                 dispatch({type: 'set_step', data: serviceRequest.step})
                                 navigate(`/multiStepForm/${selectedServicesRequest[serviceRequest.step].nombre}`);
                             }
@@ -159,11 +164,15 @@ const SelectServices = ({ services }) => {
             const sendData = { services: selectedServices };
             try {
                 const data = await request(url, 'POST', sendData);
-                console.log(data.data)
                 dispatch({
                     type: 'set_request_service_id',
                     data: data.data.id,
                 });
+
+                dispatch({
+                    type: 'set_request',
+                    data: data.data
+                })
 
                 dispatch({type: 'set_step', data: data.data.step})
             } catch (error) {
@@ -178,7 +187,6 @@ const SelectServices = ({ services }) => {
         }
 
         dispatch({ type: 'select_services', data: selectedServices });
-        dispatch({ type: 'next' });
         navigate(`/multiStepForm/Datos Personales`);
     };
     return (

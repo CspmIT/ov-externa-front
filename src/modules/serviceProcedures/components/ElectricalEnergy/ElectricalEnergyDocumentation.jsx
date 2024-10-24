@@ -93,7 +93,6 @@ const ElectricalEnergyDocumentation = ({ errors, register, getValues }) => {
                 });
             }
 
-            console.log(data);
             Swal.fire({
                 icon: 'success',
                 title: 'Garante encontrado',
