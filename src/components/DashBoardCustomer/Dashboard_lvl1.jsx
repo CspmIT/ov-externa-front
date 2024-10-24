@@ -113,9 +113,9 @@ function DashboardLvl1() {
 				</div>
 			</div>
 
-			<div className={`w-full rounded-xl px-7 mt-10`}>
+			{/* <divclassName={`w-full rounded-xl px-7 mt-10`}>
 				<StatusProcedure estadoActual='Trámite tomado' />
-			</div>
+			</div> */}
 			<div className={`w-full rounded-xl px-7 mt-10`}>
 				<div className='flex w-full'>
 					<div onClick={() => dropModestatus('active')} className={`w-1/2 p-3 rounded-t-xl cursor-pointer text-center ${statusColorA}`}>
