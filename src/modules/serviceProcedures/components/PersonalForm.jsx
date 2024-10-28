@@ -18,15 +18,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 // import { useEffect, useState } from 'react'
 
-const PersonalForm = ({ person, register, errors, watch }) => {
+const PersonalForm = ({ person, register, errors, getValues}) => {
     const { day, month, year } = separateProcopDate(
         person?.Person_physical?.born_date || person.FEC_NAC
     );
+    console.log(person)
     // Valido la fecha de nacimiento
     const validateDate = () => {
-        const anio = watch('año');
-        const mes = watch('mes');
-        const dia = watch('dia');
+        const anio = getValues('año');
+        const mes = getValues('mes');
+        const dia = getValues('dia');
         return validarFecha(anio, mes, dia);
     };
 
@@ -255,7 +256,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
                         helperText={
                             errors.characteristic && 'El campo es requerido'
                         }
-                        defaultValue={''}
+                        defaultValue={person.characteristic|| ''}
                         InputProps={{
                             maxLength: 4,
                             startAdornment: (
@@ -274,7 +275,7 @@ const PersonalForm = ({ person, register, errors, watch }) => {
                             maxLength: 8,
                         })}
                         className="w-3/4"
-                        defaultValue={''}
+                        defaultValue={person.number||''}
                         helperText={errors.number && 'El campo es requerido'}
                         InputProps={{
                             startAdornment: (

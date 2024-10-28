@@ -1,7 +1,7 @@
-import { useForm } from 'react-hook-form';
-import { useRegForm } from '../providers/RegFormProvider';
-import { useNavigate } from 'react-router-dom';
-import { backend } from '../../../routes/apiEndpoints'; 
+import { useForm } from 'react-hook-form'
+import { useRegForm } from '../providers/RegFormProvider'
+import { useNavigate } from 'react-router-dom'
+import { backend } from '../../../routes/apiEndpoints'
 import {
     Button,
     FormControl,
@@ -10,32 +10,29 @@ import {
     MenuItem,
     Select,
     TextField,
-} from '@mui/material';
-import Swal from 'sweetalert2';
-import { request } from '../../../utils/request';
-import PersonalForm from '../components/PersonalForm';
-import { useEffect, useState } from 'react';
-import { storage } from '../../../storage/storage';
+} from '@mui/material'
+import Swal from 'sweetalert2'
+import { request } from '../../../utils/request'
+import PersonalForm from '../components/PersonalForm'
+import { useEffect, useState } from 'react'
+import { storage } from '../../../storage/storage'
 
 const PersonalData = () => {
     // Hooks
-    const [state, dispatch] = useRegForm();
-    const [searchExecuted, setSearchExecuted] = useState(false);
-    const [errorSearch, setErrorSearch] = useState(false);
+    const [state, dispatch] = useRegForm()
+    const [searchExecuted, setSearchExecuted] = useState(false)
+    const [errorSearch, setErrorSearch] = useState(false)
     const {
         register,
         handleSubmit,
-        watch,
         setValue,
         getValues,
         formState: { errors, isValid },
-    } = useForm({ defaultValues: { typePerson: state?.person?.typePerson } });
-    const navigate = useNavigate();
+    } = useForm()
+    const navigate = useNavigate()
 
     // Form values
-    const watchDNI = watch('DNI');
-    const watchCUIT = watch('CUIT');
-    const watchTypePerson = watch('typePerson');
+const [watchTypePerson, setWatchTypePerson] = useState(state?.person?.typePerson||'')
 
     // useEffect(() => {
     //     const getData = async () => {
@@ -68,71 +65,74 @@ const PersonalData = () => {
 
     const onSubmit = async (values) => {
         // Guardo los datos en la DB
-        
-    const url = `${backend.OvExterna}/firstStep`;
+
+        const url = `${backend.OvExterna}/firstStep`
         if (state?.person?.id) {
             const sendData = {
                 person: { ...values },
                 serviceRequest: state.requestServiceID,
-            };
-            console.log(state);
+            }
             try {
-                await request(url, 'POST', sendData);
-                dispatch({ type: 'set_person', data: values });
-                dispatch({ type: 'next' });
-                navigate(`/multiStepForm/${state?.services[state?.step].nombre}`);
+                await request(url, 'POST', sendData)
+                dispatch({ type: 'set_person', data: values })
+                dispatch({ type: 'next' })
+                navigate(
+                    `/multiStepForm/${state?.services[state?.step].nombre}`
+                )
             } catch (error) {
-                console.log(error);
+                console.log(error)
                 Swal.fire({
                     icon: 'error',
                     title: '¡Error!',
                     text: error.message,
-                });
-                return;
+                })
+                return
             }
         }
-    };
+    }
 
     // Cuando se hace click en buscar limpio los datos del objeto person
     const searchPerson = async () => {
-        dispatch({ type: 'reset_person' });
+        dispatch({ type: 'reset_person' })
         if (!isValid) {
-            setErrorSearch(true);
-            return false;
+            setErrorSearch(true)
+            return false
         }
-        setErrorSearch(false);
+        setErrorSearch(false)
+        const dni = getValues('DNI')
+        const cuit = getValues('CUIT')
         const sendData = {
-            number_document: watchTypePerson === '1' ? watchDNI : watchCUIT,
+            number_document: watchTypePerson === '1' ? dni : cuit,
             type_person: watchTypePerson,
-        };
-        const baseUrl = import.meta.env.VITE_APP_API_URL;
-        const url = `${baseUrl}/searchPeopleByDocumentNumber`;
+        }
+        const baseUrl = import.meta.env.VITE_APP_API_URL
+        const url = `${baseUrl}/searchPeopleByDocumentNumber`
 
         try {
-            const response = await request(url, 'POST', sendData);
-            setValue('id', response.data?.id);
+            const response = await request(url, 'POST', sendData)
+            setValue('id', response.data?.id)
             dispatch({
                 type: 'set_person',
                 data: response.data[0] ? response.data[0] : response.data,
-            });
+            })
         } catch (error) {
             Swal.fire({
                 icon: 'warning',
                 title: '¡Atencion!',
                 text: error.response.data,
             }).then(() => {
-                dispatch({ type: 'set_person', data: null });
-            });
+                dispatch({ type: 'set_person', data: null })
+            })
         }
-        setSearchExecuted(true);
-    };
+        setSearchExecuted(true)
+    }
 
     const SaveAndreturnLater = async () => {
-        const data = getValues();
-        const baseURL = import.meta.env.VITE_APP_API_URL;
-        const url = `${baseURL}/returnLater`;
+        const data = getValues()
+        const baseURL = import.meta.env.VITE_APP_API_URL
+        const url = `${baseURL}/returnLater`
         const sendData = {
-            AllServices : {...state}, 
+            AllServices: { ...state },
             serviceRequest: {
                 id: state.requestServiceID,
                 id_person: state.person.id,
@@ -143,38 +143,32 @@ const PersonalData = () => {
                 id_user: storage.get('usuario').sub,
             },
             ServiceItems: state.serviceItems,
-        };
+        }
         try {
-            const response = await request(url, 'POST', sendData);
-            console.log(response);
+            const response = await request(url, 'POST', sendData)
             Swal.fire({
                 icon: 'success',
                 title: '¡Guardado!',
                 text: `Los datos se guardaron correctamente.`,
-            });
+            })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: '¡Error!',
                 text: error.message,
-            });
-        }
-    };
-
-    function renderForm() {
-        if (watchTypePerson === '1' && state?.person) {
-            return (
-                <PersonalForm
-                    watch={watch}
-                    person={state?.person}
-                    errors={errors}
-                    register={register}
-                />
-            );
-        } else {
-            return <div></div>;
+            })
         }
     }
+
+    const watchTypePersonValue = (value) => {
+        setWatchTypePerson(value)
+    }
+    useEffect(() => {
+        if (state?.person?.typePerson !== undefined && state?.person?.typePerson === watchTypePerson) {
+            watchTypePersonValue(state?.person?.typePerson)
+        }
+    }, [watchTypePerson])
+
     return (
         <div>
             <form
@@ -192,8 +186,13 @@ const PersonalData = () => {
                         disabled={searchExecuted}
                         label="Tipo de Persona *"
                         id="typePerson"
-                        defaultValue={''}
-                        {...register('typePerson', { required: true })}
+                        defaultValue={state?.person?.typePerson || ''}
+                        {...register('typePerson', {
+                            required: true,
+                            onChange: (e) => {
+                                setWatchTypePerson(e.target.value)
+                            },
+                        })}
                     >
                         <MenuItem value="1">Persona Fisica</MenuItem>
                         <MenuItem value="2">Persona Juridica</MenuItem>
@@ -249,16 +248,23 @@ const PersonalData = () => {
                         </div>
                     ))}
                 <div className="col-span-12 flex items-center justify-center gap-3">
-                    {renderForm()}
+                    {watchTypePerson === '1' && state?.person && (
+                        <PersonalForm
+                            getValues={getValues}
+                            person={state?.person}
+                            errors={errors}
+                            register={register}
+                        />
+                    )}
                 </div>
                 <div className="col-span-12 flex items-center justify-center gap-3">
                     <Button
                         className="w-1/6"
                         variant="outlined"
                         onClick={() => {
-                            dispatch({ type: 'back' });
-                            dispatch({ type: 'reset' });
-                            navigate(`/multiStepForm`);
+                            dispatch({ type: 'back' })
+                            dispatch({ type: 'reset' })
+                            navigate(`/multiStepForm`)
                         }}
                     >
                         Volver
@@ -284,7 +290,7 @@ const PersonalData = () => {
                 </div>
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default PersonalData;
+export default PersonalData

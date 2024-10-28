@@ -1,9 +1,12 @@
-import { TextField } from '@mui/material';
-import { useRegForm } from '../../providers/RegFormProvider';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import { useForm } from 'react-hook-form';
+import { MenuItem, TextField } from '@mui/material'
+import { useRegForm } from '../../providers/RegFormProvider'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Modal from '@mui/material/Modal'
+import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { request } from '../../../../utils/request'
+import { backend } from '../../../../routes/apiEndpoints'
 
 const style = {
     position: 'absolute',
@@ -15,18 +18,37 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-};
+}
 
 const ModalAdherents = ({ open, setOpen, children }) => {
-    const handleClose = () => setOpen(false);
+    const handleClose = () => setOpen(false)
 
-    const [, dispatch] = useRegForm();
+    const [, dispatch] = useRegForm()
+
+    const [relationship, setRelationship] = useState([])
 
     const {
         register: registerAdherent,
         handleSubmit: handleSubmitAdherent,
         formState: { errors: errorsAdherent },
-    } = useForm();
+    } = useForm()
+
+    const getRelationships = async () => {
+        try {
+            const relations = await request(
+                `${backend.OvExterna}/getRelationships`,
+                'GET'
+            )
+            console.log(relations)
+            setRelationship(relations.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        // obtengo los datos de la api de procoop
+        getRelationships()
+    }, [])
 
     const handleAddAdherent = (data) => {
         const person = [
@@ -36,13 +58,13 @@ const ModalAdherents = ({ open, setOpen, children }) => {
                 groupBoold: data.groupBoold,
                 burn: data.birth_date,
             },
-        ];
+        ]
         dispatch({
             type: 'adherents',
             data: person,
-        });
-        setOpen(false);
-    };
+        })
+        setOpen(false)
+    }
 
     return (
         <>
@@ -77,6 +99,21 @@ const ModalAdherents = ({ open, setOpen, children }) => {
                                 {...registerAdherent('birth_date')}
                             />
                         </div>
+                        <div className="w-full flex gap-3">
+                            <TextField
+                                label="Grupo Sanguineo"
+                                {...registerAdherent('groupBoold')}
+                                className="w-full"
+                            />
+                            <TextField
+                                label="Parentesco"
+                                select
+                                {...registerAdherent('relationship')}
+                                className="w-full"
+                            >
+                                <MenuItem value={'hijos'}>Hijo</MenuItem>
+                            </TextField>
+                        </div>
 
                         <Button
                             variant="contained"
@@ -90,7 +127,7 @@ const ModalAdherents = ({ open, setOpen, children }) => {
                 </Box>
             </Modal>
         </>
-    );
-};
+    )
+}
 
-export default ModalAdherents;
+export default ModalAdherents

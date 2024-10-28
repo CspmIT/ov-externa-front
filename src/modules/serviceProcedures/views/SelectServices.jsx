@@ -173,6 +173,7 @@ const SelectServices = ({ services }) => {
                     type: 'set_request',
                     data: data.data
                 })
+                console.log(data.data)
 
                 dispatch({type: 'set_step', data: data.data.step})
             } catch (error) {

@@ -40,11 +40,11 @@ const ElectricPowerForm = () => {
     const theme = useTheme()
     const [state, dispatch] = useRegForm()
     const navigate = useNavigate()
+    const [residenceAddress, setResidenceAddress] = useState('')
 
     const {
         register,
         handleSubmit,
-        setValue,
         getValues,
         formState: { errors, isValid },
     } = useForm()
@@ -57,7 +57,7 @@ const ElectricPowerForm = () => {
         const getFormData = async () => {
             const baseUrl = import.meta.env.VITE_APP_API_URL
             const requestID = state?.requestServiceID
-            const typeService = state?.services[state.currentStep]?.tipo
+            const typeService = state?.services?.[state.currentStep]?.tipo
             console.log(requestID, typeService)
             try {
                 const data = await request(
@@ -158,7 +158,11 @@ const ElectricPowerForm = () => {
                     saveData
                 )
 
-                await Swal.fire('Solicitud de servicios', 'Datos guardados correctamente', 'success')
+                await Swal.fire(
+                    'Solicitud de servicios',
+                    'Datos guardados correctamente',
+                    'success'
+                )
                 dispatch({ type: 'next' })
             } catch (error) {
                 Swal.fire('Error', error.message, 'error')
@@ -377,9 +381,9 @@ const ElectricPowerForm = () => {
                                             residencia?
                                         </FormLabel>
                                         <RadioGroup
-                                            defaultValue={
+                                            value={
                                                 state?.energiaElectrica
-                                                    ?.residenceAddress || ''
+                                                    ?.residenceAddress || residenceAddress 
                                             }
                                             error={errors.residenceAddress}
                                             row
@@ -387,6 +391,9 @@ const ElectricPowerForm = () => {
                                             className="flex justify-center"
                                             {...register('residenceAddress', {
                                                 required: true,
+                                                onChange: (e) => {
+                                                    setResidenceAddress(e.target.value)
+                                                }
                                             })}
                                         >
                                             <FormControlLabel
@@ -430,24 +437,24 @@ const ElectricPowerForm = () => {
                                                 {
                                                     required:
                                                         'Este campo es requerido',
+                                                    onChange: (e) =>
+                                                        setIsOwner(
+                                                            e.target.value
+                                                        ),
                                                 }
                                             )}
-                                            onChange={(event) => {
-                                                const value = event.target.value
-                                                setIsOwner(value) // Solo se actualiza el estado de isOwner
-                                            }}
                                             defaultValue={
                                                 state?.energiaElectrica
                                                     ?.propietarioInmueble || ''
                                             }
                                         >
                                             <FormControlLabel
-                                                value="2"
+                                                value="1"
                                                 control={<Radio />}
                                                 label="Soy propietario"
                                             />
                                             <FormControlLabel
-                                                value="1"
+                                                value="2"
                                                 control={<Radio />}
                                                 label="No soy propietario"
                                             />
@@ -459,7 +466,7 @@ const ElectricPowerForm = () => {
                             {typeActivity && isOwner === '2' && (
                                 <div className="w-full flex gap-3 items-center justify-start">
                                     <TextField
-                                        className= "w-1/4"
+                                        className="w-1/4"
                                         {...register('nameProperty', {
                                             required: true,
                                         })}
