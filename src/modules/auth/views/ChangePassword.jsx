@@ -7,13 +7,13 @@ import { Button, CircularProgress } from '@mui/material'
 import { TbEye, TbEyeClosed } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import { request } from '../../../utils/request'
+import { backend } from '../../../routes/apiEndpoints'
 // import Axios from 'axios'
 
 // Define el componente ChangePassword
 const ChangePassword = () => {
 	// Recupera el token de la URL
 	const { token, userId } = useParams(['token'])
-    console.log(token)
 	const [spinner] = useState(false)
 	const navigate = useNavigate()
 
@@ -32,8 +32,8 @@ const ChangePassword = () => {
 
 	const changePassword = async (data) => {
 		// const url = "http://localhost:8000/change_password";
-		const url = import.meta.env.VITE_APP_API_URL + '/change_password'
-		const info = { password: data.password, token }
+		const url = backend.OvExterna + '/changePassword'
+		const info = { password: data.password, token, id_user:userId }
 		try {
 			const responseData = await request(url, 'POST', info)
 			// const responseData = await Axios.post(url, info)
@@ -61,11 +61,10 @@ const ChangePassword = () => {
 	}
 	const validationToken = async (token) => {
 		// const url = 'http://localhost:8000/validationToken'
-		const url = import.meta.env.VITE_APP_API_URL + '/validationToken'
-		const info = { token }
+		const url = backend.OvExterna + '/validationToken'
+		const info = { token_temp:token, id_user: userId }
 		try {
 			const responseData = await request(url, 'POST', info)
-			// const responseData = await Axios.post(url, info)
 			if (responseData.status === 200) {
 				return true
 			}
