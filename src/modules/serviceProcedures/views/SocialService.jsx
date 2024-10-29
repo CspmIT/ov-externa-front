@@ -7,47 +7,47 @@ import {
     FormLabel,
     MenuItem,
     TextField,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useRegForm } from '../providers/RegFormProvider';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import FormButtons from '../components/FormButtons';
-import SocialServiceDetail from '../../../components/SocialServiceDetail';
-import ModalAdherents from '../components/SocialService/ModalAdherents';
-import ConnectionAddress from '../components/ConnectionAddress';
-import { useForm } from 'react-hook-form';
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useRegForm } from '../providers/RegFormProvider'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import FormButtons from '../components/FormButtons'
+import SocialServiceDetail from '../../../components/SocialServiceDetail'
+import ModalAdherents from '../components/SocialService/ModalAdherents'
+import ConnectionAddress from '../components/ConnectionAddress'
+import { useForm } from 'react-hook-form'
 
 const SocialService = () => {
-    const [state, dispatch] = useRegForm();
-    const navigate = useNavigate();
-    const [question, setQuestion] = useState(true);
-    const [addrress, setAddress] = useState('');
-    const [hasEnergy, setHasEnergy] = useState('');
+    const [state, dispatch] = useRegForm()
+    const navigate = useNavigate()
+    const [question, setQuestion] = useState(true)
+    const [addrress, setAddress] = useState('')
+    const [hasEnergy, setHasEnergy] = useState('')
     const [markerPosition, setMarkerPosition] = useState([
         -30.71624815384811, -62.005226726953374,
-    ]);
-    const [adherents, setAdherents] = useState([]);
-    const [open, setOpen] = useState(false);
-    const step = state?.step;
+    ])
+    const [adherents, setAdherents] = useState([])
+    const [open, setOpen] = useState(false)
+    const step = state?.step
 
-    const { register, handleSubmit, errors, getValues } = useForm();
+    const { register, handleSubmit, errors, getValues } = useForm()
 
+    console.log(hasEnergy)
     useEffect(() => {
         if (!state?.energiaElectrica && !state?.connectionAddress) {
-            setQuestion(true);
+            setQuestion(true)
         }
-    }, []);
+    }, [])
 
     useEffect(() => {
-        console.log(state);
+        console.log(state)
         if (state?.adherents?.length > 0) {
-            setAdherents(state?.adherents);
+            setAdherents(state?.adherents)
         }
-    }, [state?.adherents]);
+    }, [state?.adherents])
 
     const onSubmit = async (data) => {
-        console.log(data);
         if (step === state?.services.length) {
             const response = await Swal.fire({
                 title: 'Atención',
@@ -56,21 +56,26 @@ const SocialService = () => {
                 confirmButtonText: 'Si',
                 showCancelButton: true,
                 cancelButtonText: 'No',
-            });
+            })
+
+            const saveData = {
+                serviceRequest: state?.serviceRequest,
+                form_data: data,
+                connection_address_tmp: state?.connectionAddress,
+            }
 
             if (response.isConfirmed) {
-                Swal.fire({
+                await Swal.fire({
                     title: 'Solicitud de servicios',
                     text: 'La solicitud se envio correctamente. Verificaremos los datos y nos pondremos en contacto.',
                     icon: 'success',
                     confirmButtonText: 'Okey',
-                });
-                dispatch({ type: 'reset' });
-                navigate('/');
+                })
             }
-            return;
+
+            return
         }
-    };
+    }
 
     return (
         <div>
@@ -94,7 +99,7 @@ const SocialService = () => {
                                         required: true,
                                     })}
                                     onChange={(e) => {
-                                        setAddress(e.target.value);
+                                        setAddress(e.target.value)
                                     }}
                                     defaultValue={''}
                                     error={errors?.residencia}
@@ -175,7 +180,7 @@ const SocialService = () => {
                                                         variant="contained"
                                                         color="secondary"
                                                         onClick={() => {
-                                                            setOpen(true);
+                                                            setOpen(true)
                                                         }}
                                                     >
                                                         Agregar
@@ -198,10 +203,13 @@ const SocialService = () => {
                                             className="w-1/2"
                                             label="¿Tiene servicio de ENERGIA ELECTRICA a su nombre?"
                                             select
-                                            onChange={(e) => {
-                                                setHasEnergy(e.target.value);
-                                            }}
-                                            defaultValue={''}
+                                            {...register('hasEnergy', {
+                                                required: true,
+                                                onChange: (e) => {
+                                                    setHasEnergy(e.target.value)
+                                                },
+                                            })}
+                                            defaultValue={hasEnergy}
                                         >
                                             <MenuItem value={true}>Si</MenuItem>
                                             <MenuItem value={false}>
@@ -311,7 +319,7 @@ const SocialService = () => {
                                                 variant="contained"
                                                 color="secondary"
                                                 onClick={() => {
-                                                    setOpen(true);
+                                                    setOpen(true)
                                                 }}
                                             >
                                                 Agregar
@@ -324,10 +332,10 @@ const SocialService = () => {
                         )}
                     </>
                 )}
-                <FormButtons documentation={true} getValues={getValues}/>
+                <FormButtons documentation={true} getValues={getValues} />
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default SocialService;
+export default SocialService
