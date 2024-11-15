@@ -10,7 +10,7 @@ import CardCustom from '../../components/CardCustom'
 import { UserContext } from '../../contexts/UserContext'
 
 const Invoice = () => {
-	const [invoice, setInvoices] = useState([])
+	const [invoice, setInvoices] = useState(undefined)
 	const [columnsTable, setColumnsTable] = useState([])
 	const [openModalHelp, setOpenModalHelp] = useState(false)
 	const handleOpenModalHelp = () => setOpenModalHelp(true)
@@ -50,12 +50,17 @@ const Invoice = () => {
 				</div>
 			</div>
 			<CardCustom className={'md:1/2 max-sm:p-0 max-sm:py-3 max-sm:m-0 p-5 mt-5 mr-5'}>
-				{invoice.length > 0 ? (
+                {invoice === undefined ? (
+                    <LoaderComponent />
+                ) : 
+				invoice?.length > 0 ? (
 					<div className={`relative overflow-x-auto w-full round  rounded-xl`}>
 						<TableNew data={invoice} columns={columnsTable} groupBy={'account'} />
 					</div>
 				) : (
-					<LoaderComponent />
+					<div className={`relative overflow-x-auto w-full round  rounded-xl text-center`}>
+                        <h1>No se encontraron facturas</h1>
+					</div>
 				)}
 			</CardCustom>
 			<Modal className='flex justify-center items-center' open={openModalHelp} onClose={handleCloseModalHelp} aria-labelledby='parent-modal-title' aria-describedby='parent-modal-description'>

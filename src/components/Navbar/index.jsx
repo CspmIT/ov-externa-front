@@ -118,7 +118,7 @@ const Navbar = () => {
 		// Busco en el localstorage('usuario') el campo active
 		const activeCustomer = JSON.parse(localStorage.getItem('usuario'))
 		if (!activeCustomer.active) {
-			activeCustomer.active = otherCustomer.data[0].id
+			activeCustomer.active = otherCustomer?.data?.[0]?.id || 0
 			localStorage.setItem('usuario', JSON.stringify(activeCustomer))
 		}
 		let DataOtherUser = await otherCustomer.data.map((item) => {
