@@ -62,6 +62,7 @@ const MyServices = () => {
 							<FaCircle className='text-red-500 mr-2' /> Servicio Inactivo
 						</span>
 					</div>
+                    {services && Object.entries(services).length === 0 && <h3 className='text-center'>No hay servicios disponibles para este socio</h3>}
 					{Object.entries(services).map(([service, serviceInfo], rowIndex) => {
 						const { icon, color, bgIcon, colorIcon, title } = setServiceInfo(service)
 						return <DropdownServices key={rowIndex} props={{ icon, title, color, bgIcon, colorIcon, accounts: serviceInfo }} />

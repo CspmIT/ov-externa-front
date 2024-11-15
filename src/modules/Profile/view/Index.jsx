@@ -13,6 +13,7 @@ function Profile() {
 		const url = import.meta.env.VITE_APP_API_URL + '/dataUserProfile'
 		const response = await request(url, 'GET')
 		// const response = await Axios.post(url, { user: id })
+        console.log(response.data)
 		return response.data
 	}
 	// const { setUsuario, usuario } = useContext(UserContext)
@@ -58,6 +59,7 @@ function Profile() {
 	// Función obtener los datos del usuario y cargarlos en el formulario.
 	const fetchData = async () => {
 		const data = await getUserDataProfile()
+        console.log(data.PersonData.Person_Address[0])
 		const Address = { ...data.PersonData.Person_Address[0].Address }
 		const birthdate = data.PersonData.Person_physical?.born_date || data.PersonData.Person_legal?.date_registration
 		const { day, month, year } = separateProcopDate(birthdate)
@@ -88,6 +90,7 @@ function Profile() {
 		}
 		delete user.num_dni
 		delete user.cuit
+        console.log(user)
 		setUserData(user)
 	}
 	useEffect(() => {

@@ -40,7 +40,7 @@ const Register = () => {
 			Swal.fire({
 				icon: 'success',
 				title: '¡Registrado!',
-				text: 'Ahora puedes iniciar sesión.',
+				text: 'Enviamos un mail a tu correo para confirmar la cuenta.',
 			})
 			navigate('/Login')
 		} catch (error) {

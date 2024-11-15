@@ -26,6 +26,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 	}, [])
 	useEffect(() => {
 		if (provinces.length) {
+            console.log(userData.state)
 			listCityXIdState(userData.state).then((cities) => {
 				setCities(cities)
 			})
@@ -285,7 +286,7 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 								defaultValue={editProfile ? userData.state : ''}
 							>
 								{provinces.map((item) => (
-									<MenuItem key={item.id} value={item.cod_pro}>
+									<MenuItem key={item.id} value={item.id}>
 										{item.name}
 									</MenuItem>
 								))}
