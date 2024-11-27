@@ -74,19 +74,32 @@ const Login = () => {
 				})
 				decoded.popup = true
 				localStorage.setItem('usuario', JSON.stringify(decoded))
+                // Esto se hace porque el usuario nivel 1 no tiene socios asociados
+                if(decoded.level === 1){
+                    const user = { ...decoded, accounts: [{ level: 1, primary: true }] }
+
+                    setAccount({ level: 1, primary: true })
+                    setDarkMode(decoded.dark)
+                    setUsuario(user)
+
+                    Swal.close()
+
+                    navigate('/')
+                    return true
+                }
+
 				const otherCustomer = await request(import.meta.env.VITE_APP_API_URL + '/allOther', 'GET')
+                // Se obtienen todos los socios de procoop relacionados al usuario logueado
 				let DataOtherUser = await otherCustomer.data.map((item) => {
 					return {
 						id_relation: item.id,
-						name: item.data_Person.procoop_last_name,
-						num: item.data_Person.number_customer,
+						name: item.procoop_last_name,
+						num: item.procoop_number,
 						primary: item.primary_account,
 						level: item.level,
 					}
 				})
-				if (!DataOtherUser.length) {
-					DataOtherUser = [{ level: 1, primary: true }]
-				}
+                // Se obtiene y se setea la cuenta principal del usuario logueado
 				setAccount(DataOtherUser.filter((item) => item.primary)[0])
 				const user = { ...decoded, accounts: DataOtherUser }
 				setDarkMode(decoded.dark)
