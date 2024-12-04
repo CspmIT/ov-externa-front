@@ -243,7 +243,6 @@ export const searchAllInvoice = async (user) => {
 }
 
 export const InvoiceDeus = async (user) => {
-    console.log('user', user)
 	const socio = user.num
 	const url = `${import.meta.env.VITE_APP_API_URL}/facturas?id_procoop=${socio}`
 	try {
