@@ -129,7 +129,7 @@ const Navbar = () => {
       return {
         id_relation: item.id,
         name: item.procoop_last_name,
-        num: item.number_customer,
+        num: item.procoop_number,
         primary: item.primary_account,
         level: item.level,
         active: item.id === activeCustomer.active,

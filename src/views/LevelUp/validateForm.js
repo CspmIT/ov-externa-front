@@ -17,8 +17,8 @@ const updateLevel = async (data) => {
     const { sub } = JSON.parse(user)
     Object.assign(data, { id: sub })
     Object.assign(data, { level: 2 })
-    const url = import.meta.env.VITE_APP_API_URL + '/upgradeLevelUser'
-    const res = await request(url, 'PATCH', data)
+    const url = import.meta.env.VITE_APP_API_URL + '/levelUp'
+    const res = await request(url, 'POST', data)
     // const res = await Axios.patch(url, data)
     return res
 }
@@ -27,7 +27,7 @@ const validateForm = async (data, navigate) => {
     try {
         const swal = await Swal.fire({
             title: '¿Deseas subir a nivel 2 con el socio?',
-            text: data.last_name_customer + ' ' + data.name_customer,
+            text: data.name_customer,
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Si, agregar',
