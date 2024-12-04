@@ -23,7 +23,7 @@ function DashboardLvl2() {
 	const handleCloseModalHelp = () => setOpenModalHelp(false)
 	const handleOpenModalSocio = () => setOpenModalSocio(true)
 	const handleCloseModalSocio = () => setOpenModalSocio(false)
-	const { account, setPayConcept } = useContext(UserContext)
+	const { usuario ,account, setPayConcept } = useContext(UserContext)
 
 	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
 	const changeScreen = () => {

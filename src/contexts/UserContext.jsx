@@ -10,6 +10,7 @@ function UserProvider({ children }) {
 	useEffect(() => {
 		if (!usuario.length) {
 			const storedUser = localStorage.getItem('usuario')
+            console.log(JSON.parse(storedUser))
 			setUsuario(JSON.parse(storedUser))
 			setDarkMode(JSON.parse(storedUser)?.dark)
 		}
