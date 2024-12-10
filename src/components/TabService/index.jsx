@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { CustomTabPanel, a11yProps } from '../PanelTab'
 import CardServiceDetail from '../CardServiceDetail'
 
-function TabService({ ...props }) {
+function TabService({ handleDetailClick = null, domicilio,...props}) {
   const [value, setValue] = useState(0)
   const [serviceActive, setServiceActive] = useState([])
   const [serviceInactive, setServiceInactive] = useState([])
@@ -16,6 +16,7 @@ function TabService({ ...props }) {
     ['!border-r-2 !bg-white !border-t-2 !border-l-2 dark:!bg-zinc-800 '],
     ['!border-b-2 !bg-gray-200 dark:!bg-zinc-900 ']
   ]
+
   useEffect(() => {
     if (props.service) {
       setServiceActive(props.service.filter((item) => item.status === 1))
@@ -54,17 +55,16 @@ function TabService({ ...props }) {
               <div
                 key={index}
                 onClick={() => {
-                  if (props.action)
-                    props.action(item.numService, item.account, item.service)
+                    handleDetailClick(item.cod_ser, item.account, item.graphic, item.address, item.unidad)
                 }}
                 className={`${
-                  props.action ? 'cursor-pointer' : ''
+                  handleDetailClick ? 'cursor-pointer' : ''
                 } w-1/4 max-sm:w-full`}
               >
                 <CardServiceDetail
                   detailService={props.detailService}
                   className={
-                    props.action
+                    handleDetailClick
                       ? 'transition ease-in hover:scale-105 duration-400 '
                       : null
                   }
