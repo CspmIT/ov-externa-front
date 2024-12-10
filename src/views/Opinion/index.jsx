@@ -8,14 +8,21 @@ import enojado from '/assets/img/opinion/enojado.png'
 import emoji from '/assets/img/opinion/emoji.png'
 import bien from '/assets/img/opinion/bien.png'
 import feliz from '/assets/img/opinion/feliz.png'
+import './index.css' // Asegúrate de importar el archivo de estilos
 
 const Opinion = () => {
   const [inputVisibility, setInputVisibility] = useState('hidden')
-  const [score, setScore] = useState()
+  const [score, setScore] = useState(null)
+  const [isLightMode, setIsLightMode] = useState(true) // Suponiendo que tienes una forma de determinar el modo
 
   const showInput = (variab) => {
-    setInputVisibility(variab === score ? (inputVisibility === 'hidden' ? '' : 'hidden') : '')
-    setScore(variab)
+    if (variab === score) {
+      setInputVisibility('hidden')
+      setScore(null)
+    } else {
+      setInputVisibility('')
+      setScore(variab)
+    }
   }
 
   const formulario = async (data) => {
@@ -27,6 +34,11 @@ const Opinion = () => {
           icon: 'success',
           title: '¡Opinión Guardada!',
           text: 'Muchas gracias',
+        }).then(() => {
+            //Vacio el formulario
+            document.getElementById('formInformation').reset()
+            setInputVisibility('hidden')
+            setScore(null)
         })
       }
     } catch (error) {
@@ -43,16 +55,16 @@ const Opinion = () => {
       <h5 className='text-center mt-5'>¿Como fue tu experiencia en la Oficina Virtual?</h5>
       <div className='w-full flex flex-wrap justify-center'>
         <div className='md:w-1/2 w-full flex flex-wrap p-5'>
-          <div onClick={() => showInput(1)} className='w-1/4 p-2'>
+          <div onClick={() => showInput(1)} className={`w-1/4 p-2 ${score === 1 ? (isLightMode ? 'selected-light' : 'selected') : ''}`}>
             <img className='w-full' src={enojado} />
           </div>
-          <div onClick={() => showInput(2)} className='w-1/4 p-2'>
+          <div onClick={() => showInput(2)} className={`w-1/4 p-2 ${score === 2 ? (isLightMode ? 'selected-light' : 'selected') : ''}`}>
             <img className='w-full' src={emoji} />
           </div>
-          <div onClick={() => showInput(3)} className='w-1/4 p-2'>
+          <div onClick={() => showInput(3)} className={`w-1/4 p-2 ${score === 3 ? (isLightMode ? 'selected-light' : 'selected') : ''}`}>
             <img className='w-full' src={bien} />
           </div>
-          <div onClick={() => showInput(4)} className='w-1/4 p-2'>
+          <div onClick={() => showInput(4)} className={`w-1/4 p-2 ${score === 4 ? (isLightMode ? 'selected-light' : 'selected') : ''}`}>
             <img className='w-full' src={feliz} />
           </div>
         </div>

@@ -276,7 +276,7 @@ const LevelDos = () => {
                 <div className="w-full flex justify-center mb-10">
                     <img
                         className="w-full md:w-3/4"
-                        src="/assets/img/levelUp/facturaOncativo.png"
+                        src="/assets/img/levelUp/NumeroSocioCesopol.png"
                     />
                 </div>
                 <form
@@ -319,7 +319,7 @@ const LevelDos = () => {
                                         pattern: /^[0-9]*$/,
                                         onBlur: (e) => controlNumberCustomer(),
                                     })}
-                                    className={`block w-full rounded-md border-0 p-2 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-1 ring-inset placeholder:text-gray-400 sm:text-sm sm:leading-6 ${
+                                    className={`block w-full rounded-md border-0 p-2 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset placeholder:text-gray-400 sm:text-sm sm:leading-6 ${
                                         errors.number_customer
                                             ? 'border-red-500'
                                             : ''
@@ -352,7 +352,7 @@ const LevelDos = () => {
                                     {...register('name_customer', {
                                         required: true,
                                     })}
-                                    className={`block w-full rounded-md border-0 bg-gray-300 border-gray-200 p-2 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-slate-300 ring-1 ring-inset placeholder:text-gray-400 sm:text-sm sm:leading-6 ${
+                                    className={`block w-full rounded-md border-0 bg-gray-300 border-gray-200 p-2 text-gray-900 dark:bg-zinc-700 dark:text-gray-200 shadow-sm ring-slate-300 ring-1 ring-inset placeholder:text-gray-400 sm:text-sm sm:leading-6 ${
                                         errors.name_customer
                                             ? 'border-red-500'
                                             : ''
@@ -696,10 +696,39 @@ const LevelDos = () => {
                                     )}
                                 </div>
                             </div>
+                            <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+                                <div className="mt-2">
+                                    <label
+                                        htmlFor="birthday"
+                                        className="block font-semibold ml-1 mb-2 dark:text-white"
+                                    >
+                                        {TypeUser === 1
+                                            ? 'Fecha de Nacimiento'
+                                            : 'Fecha de Registro'}{' '}
+                                        <span className="text-red-500 text-lg">
+                                            *
+                                        </span>
+                                    </label>
+                                    <input
+                                        disabled={disabledInputs}
+                                        {...register('birthdate', {
+                                            required: true,
+                                        })}
+                                        type="date"
+                                        id="birthday"
+                                        className="block  w-full rounded-md border-0 p-2 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-1  placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                    />
+                                    {errors.birthdate?.type === 'required' && (
+                                        <span className="text-red-500">
+                                            Este campo es obligatorio
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
                             <div className="w-full md:w-1/2 lg:w-1/3  p-2">
                                 <div className="mt-2">
                                     <label className="block font-semibold ml-1 mb-2 dark:text-white">
-                                        Caracteristica{' '}
+                                        Codigo de area (Celular){' '}
                                         <span className="text-red-500 text-lg">
                                             *
                                         </span>
@@ -770,35 +799,7 @@ const LevelDos = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className="w-full md:w-1/2 lg:w-1/3 p-2">
-                                <div className="mt-2">
-                                    <label
-                                        htmlFor="birthday"
-                                        className="block font-semibold ml-1 mb-2 dark:text-white"
-                                    >
-                                        {TypeUser === 1
-                                            ? 'Fecha de Nacimiento'
-                                            : 'Fecha de Registro'}{' '}
-                                        <span className="text-red-500 text-lg">
-                                            *
-                                        </span>
-                                    </label>
-                                    <input
-                                        disabled={disabledInputs}
-                                        {...register('birthdate', {
-                                            required: true,
-                                        })}
-                                        type="date"
-                                        id="birthday"
-                                        className="block  w-full rounded-md border-0 p-2 text-gray-900 dark:bg-zinc-800 dark:text-gray-200 shadow-sm ring-1  placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                                    />
-                                    {errors.birthdate?.type === 'required' && (
-                                        <span className="text-red-500">
-                                            Este campo es obligatorio
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
+
 
                             <div className="w-full flex justify-center p-2">
                                 <Button

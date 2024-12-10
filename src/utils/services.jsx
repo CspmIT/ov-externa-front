@@ -3,7 +3,6 @@ import Swal from 'sweetalert2'
 import { FaBolt, FaPhone, FaTint, FaTv, FaUsers, FaWifi } from 'react-icons/fa'
 import { request } from './request'
 export const searchDetailService = async (info) => {
-  // const urlConsulta = "http://localhost:8000/getDetailService";
   const urlConsulta = import.meta.env.VITE_APP_API_URL + '/getDetailService'
   try {
     const responseData = await request(urlConsulta, 'POST', info)
@@ -30,12 +29,12 @@ export const searchDetailService = async (info) => {
 
 export const statusDifService = (difConsumo) => {
   return {
-    bgColorClass: difConsumo < 0 ? '!bg-red-200' : '!bg-green-100',
-    borderColorClass: difConsumo < 0 ? 'border-red-400' : 'border-green-400',
-    textTitleColor: difConsumo < 0 ? 'text-red-500' : 'text-green-600',
-    textClass: difConsumo < 0 ? 'text-red-400' : 'text-green-500',
-    attentionText: difConsumo < 0 ? 'ATENCIÓN!' : 'FELICIDADES!',
-    comparacionText: difConsumo < 0 ? 'mas' : difConsumo === 0 ? 'igual ' : 'menos'
+    bgColorClass: difConsumo > 0 ? '!bg-red-200' : '!bg-green-100',
+    borderColorClass: difConsumo > 0 ? 'border-red-400' : 'border-green-400',
+    textTitleColor: difConsumo > 0 ? 'text-red-500' : 'text-green-600',
+    textClass: difConsumo > 0 ? 'text-red-400' : 'text-green-500',
+    attentionText: difConsumo > 0 ? 'ATENCIÓN!' : 'FELICIDADES!',
+    comparacionText: difConsumo > 0 ? 'mas' : difConsumo === 0 ? 'igual ' : 'menos'
   }
 }
 

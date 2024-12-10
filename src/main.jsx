@@ -7,9 +7,9 @@ import { UserProvider } from './contexts/UserContext.jsx'
 import { TabProvider } from './contexts/TabContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<TabProvider>
-		<UserProvider>
-			<App />
-		</UserProvider>
-	</TabProvider>
+    <TabProvider>
+        <UserProvider>
+                <App />
+        </UserProvider>
+    </TabProvider>
 )
