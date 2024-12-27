@@ -9,6 +9,6 @@ export const backend = {
             : 'https://cooptech.com.ar/api',
     Archivos:
         import.meta.env.VITE_ENTORNO == 'local'
-            ? 'http://localhost:5000'
-            : 'https://archivos.cooptech.com.ar',
-};
+            ? 'http://localhost:5000/minio'
+            : 'https://storageov.cooptech.com.ar/minio',
+}

@@ -32,21 +32,17 @@ const FormButtons = ({
     };
 
     const saveAndContinue = async () => {
-        console.log(getValues());
-        console.log(state);
         // Genero un objeto para guardar los datos del formulario registrados hasta el momento
         const data = {
             AllData: {...state},
             ServiceForm: getValues(),
         };
-        console.log(data);
         try {
             const result = await request(
                 `${backend.OvExterna}/returnLater`,
                 'POST',
                 data
             );
-            console.log(result);
         } catch (error) {
             Swal.fire({
                 title: 'Error',

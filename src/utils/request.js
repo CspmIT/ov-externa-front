@@ -4,7 +4,6 @@ export const statusBack = async () => {
     const url = import.meta.env.VITE_APP_API_URL + '/status'
     try {
         await axios({ method: 'GET', url: url })
-        console.log('execute')
     } catch (error) {
         throw error
     }

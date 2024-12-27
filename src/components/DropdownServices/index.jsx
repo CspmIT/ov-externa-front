@@ -8,7 +8,6 @@ const DropdownServices = ({ props }) => {
   const [iconMode, seticonMode] = useState(
     <IoMdArrowDropdown className='float-end text-gray-900 dark:text-gray-200' />
   )
-  console.log(props)
   const dropModehidden = () => {
     setdropMode(!dropMode)
     seticonMode(

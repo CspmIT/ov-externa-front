@@ -87,7 +87,6 @@ function ModalNewStreet({
                     });
                     resetModal();
                     handleModalStreet();
-                    console.log(userData);
                     listStreetXIdCity(userData.city).then((streets) => {
                         setStreets(streets);
                     });
