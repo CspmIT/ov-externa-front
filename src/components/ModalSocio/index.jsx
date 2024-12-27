@@ -30,7 +30,6 @@ const ModalSocio = ({ handleCloseModal }) => {
                  data
              )
             if (operation.status === 200) {
-                console.log(operation)
                 Swal.fire({
                     title: '¡Perfecto!',
                     text: 'El socio ha sido agregado con éxito',

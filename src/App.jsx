@@ -184,7 +184,6 @@ const LocationListener = () => {
     useEffect(() => {
         efect();
         const currentUrl = window.location.href;
-        console.log(currentUrl); // Esto imprimirá la URL actual en la consola
     }, [location]);
 
     return null;

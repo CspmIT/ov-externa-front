@@ -11,7 +11,6 @@ import CardCustom from '../CardCustom';
 import { useEffect, useState } from 'react';
 function CardServiceDetail({ ...props }) {
     const [item, setItem] = useState(props.serviceItem);
-    console.log(item);
     useEffect(() => {
         setItem(props.serviceItem);
     }, [props.serviceItem]);

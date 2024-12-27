@@ -26,7 +26,6 @@ function EditProfile({ value, editProfile, userData, setEditProfile, setValor, f
 	}, [])
 	useEffect(() => {
 		if (provinces.length) {
-            console.log(userData.state)
 			listCityXIdState(userData.state).then((cities) => {
 				setCities(cities)
 			})

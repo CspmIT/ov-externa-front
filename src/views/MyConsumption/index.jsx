@@ -32,7 +32,6 @@ const MyConsumption = () => {
                     import.meta.env.VITE_APP_API_URL
                 }/getAllByAccount?id_procoop=${socio}`
                 const { data } = await request(url, 'GET')
-                console.log(data)
                 setServices(data)
             } catch (error) {
                 await Swal.fire({
