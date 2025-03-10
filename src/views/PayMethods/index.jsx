@@ -58,7 +58,9 @@ const PayMethods = () => {
 		setLinkMp(preference)
 	}
 	const paymentStatusWindow = () => {
-		navigate('/payWaiting')
+		// SI SE USA EL SOCKET MAS ADELANTE USAREMOS ESTA
+		// navigate('/payWaiting')
+		navigate('/')
 	}
 	useEffect(() => {
 		getPayMethods()
