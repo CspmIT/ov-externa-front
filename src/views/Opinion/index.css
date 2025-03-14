@@ -1,0 +1,9 @@
+.selected {
+  border: 2px solid #FFD700; /* Color dorado para modo oscuro */
+  border-radius: 50%; /* Opcional: para hacer el borde redondeado */
+}
+
+.selected-light {
+  border: 2px solid #FFA500; /* Color naranja para modo claro */
+  border-radius: 50%; /* Opcional: para hacer el borde redondeado */
+}

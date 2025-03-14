@@ -20,20 +20,20 @@ const DropdownServices = ({ props }) => {
   }
 
   const navigate = useNavigate()
-  const handleDetalleClick = (parametro, codSum, NameService) => {
+  const handleDetalleClick = (service, account, medition, address, unidad) => {
     navigate('/myservices/detail', {
-      state: { parametro, codSum, NameService }
+      state: { service, account, medition, address, unidad }
     })
   }
   return (
     <div>
       <div
-        onClick={() => dropModehidden()}
-        className={`relative rounded-[2em] p-8 transition-all ease-in duration-500  m-2 w-1/2 max-sm:w-full ${props.color}  w-auto cursor-pointer mb-3 p-8 bg-white dark:bg-zinc-700`}
+        onClick={dropModehidden}
+        className={`relative rounded-[2em] p-8 transition-all ease-in duration-500  m-2 w-1/2 max-sm:w-full ${props?.color ?? 'text-yellow-500 dark:text-yellow-400'}  w-auto cursor-pointer mb-3 p-8 bg-white dark:bg-zinc-700`}
         style={{ boxShadow: `2px 2px 2px` }}
       >
         <h5>
-          {props.icon} {props.title}
+          {props?.icon} {props?.title}
           {iconMode}
         </h5>
       </div>
@@ -43,9 +43,10 @@ const DropdownServices = ({ props }) => {
         }`}
       >
         <TabService
-          action={handleDetalleClick}
+          handleDetailClick={handleDetalleClick}
           detailService={true}
-          service={props.accounts}
+          service={props?.accounts}
+          domicilio={props?.address}
         />
       </div>
     </div>

@@ -3,8 +3,7 @@ import HighchartsReact from 'highcharts-react-official'
 import { useContext } from 'react'
 import { UserContext } from '../../contexts/UserContext'
 
-const BarChar = ({ ...prop }) => {
-  const infoGraf = prop.data
+const BarChar = ({ consumo, periodo,...prop }) => {
   const { darkMode } = useContext(UserContext)
   const options = {
     title: {
@@ -19,7 +18,7 @@ const BarChar = ({ ...prop }) => {
       },
       style: { color: darkMode ? '#fff' : '#000000' },
       lineColor: darkMode ? '#fff' : '#000000',
-      categories: infoGraf.label
+      categories: periodo 
     },
     yAxis: {
       title: {
@@ -49,7 +48,7 @@ const BarChar = ({ ...prop }) => {
       {
         name: `${prop.nameSeria}`,
         type: 'column',
-        data: infoGraf.data
+        data: consumo
       }
     ]
   }

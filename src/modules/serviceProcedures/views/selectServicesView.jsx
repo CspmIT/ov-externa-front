@@ -1,61 +1,85 @@
 // MUI
-import { Button } from '@mui/material'
-import { useState } from 'react'
+import { Button } from '@mui/material';
+import { useEffect, useState } from 'react';
 // React
-import ListRequeriments from '../../serviceProcedures/components/ListRequeriments'
-import seeRqueriments from '../../serviceProcedures/utils/seeRequirements'
-import ServiceCard from '../components/SelectServices/ServiceCard'
-import { useNavigate } from 'react-router-dom'
+import ListRequeriments from '../../serviceProcedures/components/ListRequeriments';
+import seeRqueriments from '../../serviceProcedures/utils/seeRequirements';
+import ServiceCard from '../components/SelectServices/ServiceCard';
+import { useNavigate } from 'react-router-dom';
 
 const SelectServicesView = () => {
-	const services = ['Energia Electrica', 'Agua Potable', 'Telecomunicaciones', 'Servicios Sociales']
-	const [visibleService, setVisibleService] = useState(null)
-	const [selectedServices, setSelectedServices] = useState([...services])
 
-	const handleSelectService = (service) => {
-		if (selectedServices.includes(service)) {
-			setSelectedServices(selectedServices.filter((s) => s !== service))
-		} else {
-			setSelectedServices([...selectedServices, service])
-		}
-	}
-	const navigate = useNavigate()
+    const services = [
+        'Energia Electrica',
+        'Agua Potable',
+        'Telecomunicaciones',
+        'Servicios Sociales',
+    ];
+    useEffect(() => {
 
-	return (
-		<div>
-			<h2 className='text-center m-5'>Selecciona tus Servicios</h2>
-			<hr />
-			<h5 className='text-center mt-5'>Marcá todos los servicios a solicitar</h5>
-			<div className='flex w-full flex-wrap'>
-				{services.map((service, index) => (
-					<ServiceCard key={index} service={service} onSelectionChange={handleSelectService} seeRqueriments={seeRqueriments} visibleService={visibleService} setVisibleService={setVisibleService} />
-				))}
-			</div>
-			<div className='mt-5 flex justify-center'>
-				<Button
-					variant='contained'
-					color='success'
-					className='!bg-green-400 w-1/2'
-					onClick={() => {
-						navigate('/FormServicesData', {
-							state: selectedServices,
-						})
-					}}
-				>
-					Solicitar Servicios
-				</Button>
-			</div>
+    }, [])
+    
+    const [visibleService, setVisibleService] = useState(null);
+    const [selectedServices, setSelectedServices] = useState([...services]);
 
-			<div className='m-5'>
-				{services.map((service, index) => (
-					<div key={index} id={`${service}-${index}`} className='w-full bg-white p-3 rounded-md hidden'>
-						<h4 className='text-center'>{service}</h4>
-						<ListRequeriments servicio={service} />
-					</div>
-				))}
-			</div>
-		</div>
-	)
-}
+    const handleSelectService = (service) => {
+        if (selectedServices.includes(service)) {
+            setSelectedServices(selectedServices.filter((s) => s !== service));
+        } else {
+            setSelectedServices([...selectedServices, service]);
+        }
+    };
+    const navigate = useNavigate();
 
-export default SelectServicesView
+    return (
+        <div>
+            <img src="" alt="" />
+            <h2 className="text-center m-5">Selecciona tus Servicios</h2>
+            <hr />
+            <h5 className="text-center mt-5">
+                Marcá todos los servicios a solicitar
+            </h5>
+            <div className="flex w-full flex-wrap">
+                {services.map((service, index) => (
+                    <ServiceCard
+                        key={index}
+                        service={service}
+                        onSelectionChange={handleSelectService}
+                        seeRqueriments={seeRqueriments}
+                        visibleService={visibleService}
+                        setVisibleService={setVisibleService}
+                    />
+                ))}
+            </div>
+            <div className="mt-5 flex justify-center">
+                <Button
+                    variant="contained"
+                    color="success"
+                    className="!bg-green-400 w-1/2"
+                    onClick={() => {
+                        navigate('/FormServicesData', {
+                            state: selectedServices,
+                        });
+                    }}
+                >
+                    Solicitar Servicios
+                </Button>
+            </div>
+
+            <div className="m-5">
+                {services.map((service, index) => (
+                    <div
+                        key={index}
+                        id={`${service}-${index}`}
+                        className="w-full bg-white p-3 rounded-md hidden"
+                    >
+                        <h4 className="text-center">{service}</h4>
+                        <ListRequeriments servicio={service} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default SelectServicesView;

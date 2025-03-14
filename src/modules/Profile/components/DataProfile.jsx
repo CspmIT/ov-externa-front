@@ -40,7 +40,6 @@ function DataProfile({ editProfile, userData, setEditProfile, setValor }) {
 		try {
 			const response = await request(`${import.meta.env.VITE_FILE_API_URL}/existsFile`, 'POST', { directory })
 			if (response.status === 200) {
-				console.log(response)
 				setImgProfile(`${import.meta.env.VITE_FILE_API_URL}/images/profile/${usuario.img_profile}`)
 			}
 		} catch (error) {

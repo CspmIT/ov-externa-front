@@ -13,70 +13,70 @@ import {
     Select,
     TextField,
     Tooltip,
-} from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { useRegForm } from '../providers/RegFormProvider';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { useTheme } from '@emotion/react';
-import { request } from '../../../utils/request';
+} from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { useRegForm } from '../providers/RegFormProvider'
+import { useNavigate } from 'react-router-dom'
+import { get, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { useTheme } from '@emotion/react'
+import { request } from '../../../utils/request'
 // import Swal from 'sweetalert2'
-import Swal from 'sweetalert2';
-import ConnectionAddress from '../components/ConnectionAddress';
-import ElectricalEnergyDocumentation from '../components/ElectricalEnergy/ElectricalEnergyDocumentation';
-import FormButtons from '../components/FormButtons';
+import Swal from 'sweetalert2'
+import ConnectionAddress from '../components/ConnectionAddress'
+import ElectricalEnergyDocumentation from '../components/ElectricalEnergy/ElectricalEnergyDocumentation'
+import FormButtons from '../components/FormButtons'
+import { backend } from '../../../routes/apiEndpoints'
 const ElectricPowerForm = () => {
-    const [isOwner, setIsOwner] = useState(null);
+    const [isOwner, setIsOwner] = useState(null)
     const [markerPosition, setMarkerPosition] = useState([
         -30.71624815384811, -62.005226726953374,
-    ]);
-    const [open, setOpen] = useState(false);
-    const [documentation, setDocumentation] = useState(false);
+    ])
+    const [open, setOpen] = useState(false)
+    const [documentation, setDocumentation] = useState(false)
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const theme = useTheme();
-    const [state, dispatch] = useRegForm();
-    const navigate = useNavigate();
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+    const theme = useTheme()
+    const [state, dispatch] = useRegForm()
+    const navigate = useNavigate()
+    const [residenceAddress, setResidenceAddress] = useState('')
 
     const {
         register,
         handleSubmit,
-        watch,
         getValues,
-        // setValue,
         formState: { errors, isValid },
-    } = useForm();
+    } = useForm()
 
-    const currentStep = state?.step - 1;
-    const step = state?.step;
-    const typeActivity = watch('typeActivity');
-
-    const getFormData = async () => {
-        const baseUrl = import.meta.env.VITE_APP_API_URL;
-        // Recorro services Items y obtengo el id del formulario cuando el service type sea igual al servicio actual
-        const serviceItems = state?.serviceItems;
-        const selectServices = state?.services;
-        if (!serviceItems || !selectServices) return;
-        const serviceItem = serviceItems.find(
-            (item) => item.service_type === selectServices[currentStep].tipo
-        );
-        const sendData = {
-            formID: serviceItem.id_service_form,
-            type: serviceItem.service_type,
-        };
-        await request(`${baseUrl}/getFormService`, 'POST', sendData);
-    };
+    const step = state?.step
+    // const typeActivity = watch('typeActivity');
+    const [typeActivity, settypeActivit] = useState('')
 
     useEffect(() => {
-        getFormData();
-    }, []);
+        const getFormData = async () => {
+            const baseUrl = import.meta.env.VITE_APP_API_URL
+            const requestID = state?.requestServiceID
+            const typeService = state?.services?.[state.currentStep]?.tipo
+            console.log(requestID, typeService)
+            try {
+                const data = await request(
+                    `${baseUrl}/getFormService`,
+                    'POST',
+                    { requestID, typeService }
+                )
+                console.log(data)
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error')
+            }
+        }
+        getFormData()
+    }, [])
 
     const onSubmit = async (values) => {
-        if (!isValid) return;
+        if (!isValid) return
         if (!documentation) {
-            setDocumentation(true);
+            setDocumentation(true)
 
             // Obtengo los datos del formulario
             const connectionAddress = {
@@ -84,7 +84,7 @@ const ElectricPowerForm = () => {
                 lng: markerPosition[1],
                 provincia: values.provincia,
                 city: values.city,
-                street: values.street,
+                street: parseInt(values.street),
                 numberAddress: values.numberAddress,
                 circ: values.circ,
                 sec: values.sec,
@@ -92,20 +92,20 @@ const ElectricPowerForm = () => {
                 par: values.par,
                 ph: values.ph,
                 lote: values.lote,
-            };
-            dispatch({ type: 'connection_address', data: connectionAddress });
+            }
+            dispatch({ type: 'connection_address', data: connectionAddress })
             // Guardo los datos restantes del formulario
             const electricData = {
                 typeProcedure: values.typeProcedure,
-                typeActivity: values.typeActivity,
+                typeActivity: typeActivity,
                 meterType: values.meterType,
                 residenceAddress: values.residenceAddress,
                 propietarioInmueble: values.propietarioInmueble,
                 nameProperty: values.nameProperty,
                 lastNameProperty: values.lastNameProperty,
                 numberDocProperty: values.numberDocProperty,
-            };
-            dispatch({ type: 'energia_electrica', data: electricData });
+            }
+            dispatch({ type: 'energia_electrica', data: electricData })
         } else {
             // Validar dni garante
             const files = {
@@ -118,8 +118,8 @@ const ElectricPowerForm = () => {
                 planchetaCatastral: values.planchetaCatastral,
                 typeGarante: values.typeGarante,
                 dniGarante: values.dniGarante,
-            };
-            dispatch({ type: 'electric_files', data: files });
+            }
+            dispatch({ type: 'electric_files', data: files })
 
             if (step === state?.services.length) {
                 const response = await Swal.fire({
@@ -129,7 +129,7 @@ const ElectricPowerForm = () => {
                     confirmButtonText: 'Si',
                     showCancelButton: true,
                     cancelButtonText: 'No',
-                });
+                })
 
                 if (response.isConfirmed) {
                     Swal.fire({
@@ -137,17 +137,42 @@ const ElectricPowerForm = () => {
                         text: 'La solicitud se envio correctamente. Verificaremos los datos y nos pondremos en contacto.',
                         icon: 'success',
                         confirmButtonText: 'Okey',
-                    });
-                    dispatch({ type: 'reset' });
-                    navigate('/');
+                    })
+                    dispatch({ type: 'reset' })
+                    navigate('/')
                 }
-                return;
+                return
             }
 
-            dispatch({ type: 'next' });
-            navigate(`/multiStepForm/${state?.services[step].nombre}`);
+            const allForm = getValues()
+            state.serviceRequest.step = state.currentStep
+            const saveData = {
+                serviceRequest: state.serviceRequest,
+                form_data: allForm,
+                connection_address_tmp: state.connectionAddress,
+            }
+            try {
+                await request(
+                    `${backend.OvExterna}/saveElectricPower`,
+                    'POST',
+                    saveData
+                )
+
+                await Swal.fire(
+                    'Solicitud de servicios',
+                    'Datos guardados correctamente',
+                    'success'
+                )
+                dispatch({ type: 'next' })
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error')
+            }
+
+            return
+            dispatch({ type: 'next' })
+            navigate(`/multiStepForm/${state?.services[step].nombre}`)
         }
-    };
+    }
 
     const style = {
         position: 'absolute',
@@ -162,7 +187,7 @@ const ElectricPowerForm = () => {
         borderRadius: 4,
         boxShadow: 24,
         p: 4,
-    };
+    }
 
     return (
         <div>
@@ -229,6 +254,9 @@ const ElectricPowerForm = () => {
                                         }
                                         {...register('typeActivity', {
                                             required: true,
+                                            onChange: (e) => {
+                                                settypeActivit(e.target.value)
+                                            },
                                         })}
                                     >
                                         <MenuItem value="1">
@@ -353,9 +381,9 @@ const ElectricPowerForm = () => {
                                             residencia?
                                         </FormLabel>
                                         <RadioGroup
-                                            defaultValue={
+                                            value={
                                                 state?.energiaElectrica
-                                                    ?.residenceAddress || ''
+                                                    ?.residenceAddress || residenceAddress 
                                             }
                                             error={errors.residenceAddress}
                                             row
@@ -363,15 +391,18 @@ const ElectricPowerForm = () => {
                                             className="flex justify-center"
                                             {...register('residenceAddress', {
                                                 required: true,
+                                                onChange: (e) => {
+                                                    setResidenceAddress(e.target.value)
+                                                }
                                             })}
                                         >
                                             <FormControlLabel
-                                                value="1"
+                                                value={1}
                                                 control={<Radio />}
                                                 label="Si"
                                             />
                                             <FormControlLabel
-                                                value="2"
+                                                value={2}
                                                 control={<Radio />}
                                                 label="No"
                                             />
@@ -398,17 +429,20 @@ const ElectricPowerForm = () => {
                                             ¿Eres propietario del inmueble? *
                                         </FormLabel>
                                         <RadioGroup
-                                            error={errors.propietarioInmueble}
                                             row
                                             aria-labelledby="propietario-inmueble"
                                             className="flex justify-center ms-3"
                                             {...register(
                                                 'propietarioInmueble',
-                                                { required: true }
+                                                {
+                                                    required:
+                                                        'Este campo es requerido',
+                                                    onChange: (e) =>
+                                                        setIsOwner(
+                                                            e.target.value
+                                                        ),
+                                                }
                                             )}
-                                            onChange={(event) =>
-                                                setIsOwner(event.target.value)
-                                            }
                                             defaultValue={
                                                 state?.energiaElectrica
                                                     ?.propietarioInmueble || ''
@@ -417,12 +451,12 @@ const ElectricPowerForm = () => {
                                             <FormControlLabel
                                                 value="1"
                                                 control={<Radio />}
-                                                label="Si"
+                                                label="Soy propietario"
                                             />
                                             <FormControlLabel
                                                 value="2"
                                                 control={<Radio />}
-                                                label="No"
+                                                label="No soy propietario"
                                             />
                                         </RadioGroup>
                                     </div>
@@ -469,11 +503,12 @@ const ElectricPowerForm = () => {
 
                 <FormButtons
                     documentation={documentation}
+                    getValues={getValues}
                     setDocumentation={setDocumentation}
                 />
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default ElectricPowerForm;
+export default ElectricPowerForm

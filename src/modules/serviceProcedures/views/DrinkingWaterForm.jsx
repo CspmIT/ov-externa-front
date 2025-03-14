@@ -4,30 +4,88 @@ import {
     InputLabel,
     MenuItem,
     Select,
-} from '@mui/material';
-import { useRegForm } from '../providers/RegFormProvider';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import ConnectionAddress from '../components/ConnectionAddress';
-import Swal from 'sweetalert2';
-import FormButtons from '../components/FormButtons';
+} from '@mui/material'
+import { useRegForm } from '../providers/RegFormProvider'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import ConnectionAddress from '../components/ConnectionAddress'
+import Swal from 'sweetalert2'
+import FormButtons from '../components/FormButtons'
+import { request } from '../../../utils/request'
+import { backend } from '../../../routes/apiEndpoints'
 
 const DrinkingWaterForm = () => {
-    const [state, dispatch] = useRegForm();
-    const currentStep = state?.step - 1;
-    const navigate = useNavigate();
-    const step = state?.step;
-    const { register, formState: errors, handleSubmit } = useForm();
-    const [connectionState, setConnectionState] = useState('');
+    const [state, dispatch] = useRegForm()
+    const navigate = useNavigate()
+    const step = state?.step
+    const { register, formState: errors, handleSubmit, getValues } = useForm()
+    const [connectionState, setConnectionState] = useState('')
     const [markerPosition, setMarkerPosition] = useState([
         -30.71624815384811, -62.005226726953374,
-    ]);
-    const [documentation, setDocumentation] = useState(false);
-
-    const [firstData, setFirstData] = useState(true);
+    ])
+    const [documentation, setDocumentation] = useState(false)
+    const [sameDirection, setSameDirection] = useState(false)
+    const [firstData, setFirstData] = useState(true)
 
     const onSubmit = async (data) => {
+        const { connectionState } = data
+        state.serviceRequest.step = state.currentStep
+        const objToSend = {
+            serviceRequest: state?.serviceRequest,
+            form_data: { sameDirection, connectionState },
+            connection_address_tmp: state?.connectionAddress,
+        }
+        if (sameDirection) {
+            // Paso el estado de connexion y el connection address del estado global.
+            try {
+                const result = await request(
+                    `${backend.OvExterna}/guardarAgua`,
+                    'POST',
+                    objToSend
+                )
+                console.log(result)
+                await Swal.fire({
+                    title: 'Solicitud de servicios',
+                    text: `${result.data.message}`,
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                })
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error)
+                Swal.fire({
+                    title: 'Error',
+                    text: `Ocuirrio un error: ${error.message}`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                })
+                return
+            }
+        } else {
+            try {
+                await request(
+                    `${backend.OvExterna}/guardarAgua`,
+                    'POST',
+                    objToSend
+                )
+                await Swal.fire({
+                    title: 'Solicitud de servicios',
+                    text: 'Los datos se guardaron correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                })
+                dispatch({ type: 'next' })
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error)
+                Swal.fire({
+                    title: 'Error',
+                    text: `Ocuirrio un error: ${error.message}`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                })
+                return
+            }
+        }
         if (step === state?.services.length) {
             const response = await Swal.fire({
                 title: 'Atención',
@@ -36,7 +94,7 @@ const DrinkingWaterForm = () => {
                 confirmButtonText: 'Si',
                 showCancelButton: true,
                 cancelButtonText: 'No',
-            });
+            })
 
             if (response.isConfirmed) {
                 Swal.fire({
@@ -44,15 +102,15 @@ const DrinkingWaterForm = () => {
                     text: 'La solicitud se envio correctamente. Verificaremos los datos y nos pondremos en contacto.',
                     icon: 'success',
                     confirmButtonText: 'Okey',
-                });
-                dispatch({ type: 'reset' });
-                navigate('/');
+                })
+                dispatch({ type: 'reset' })
+                navigate('/')
             }
-            return;
+            return
         }
-        dispatch({ type: 'next' });
-        navigate(`/multiStepForm/${state?.services[step].nombre}`);
-    };
+        dispatch({ type: 'next' })
+        navigate(`/multiStepForm/${state?.services[step].nombre}`)
+    }
     return (
         <>
             <form
@@ -76,10 +134,10 @@ const DrinkingWaterForm = () => {
                                     defaultValue={
                                         state?.aguaPotable?.conectionState || ''
                                     }
-                                    {...register('typeProcedure', {
+                                    {...register('connectionState', {
                                         required: true,
                                         onChange: (e) => {
-                                            setConnectionState(e.target.value);
+                                            setConnectionState(e.target.value)
                                             if (
                                                 e.target.value === '1' &&
                                                 state?.connectionAddress
@@ -102,12 +160,16 @@ const DrinkingWaterForm = () => {
                                                             state
                                                                 ?.connectionAddress
                                                                 ?.lng,
-                                                        ]);
-                                                        setDocumentation(true);
+                                                        ])
+                                                        setDocumentation(true)
+                                                        setSameDirection(true)
+                                                        return
                                                     } else {
-                                                        setFirstData(false);
+                                                        setFirstData(false)
+                                                        setSameDirection(false)
+                                                        // Borro los datos que esta n en el formulario de conexión
                                                     }
-                                                });
+                                                })
                                             }
                                         },
                                     })}
@@ -131,10 +193,11 @@ const DrinkingWaterForm = () => {
                 <FormButtons
                     setDocumentation={setDocumentation}
                     documentation={documentation}
+                    getValues={getValues}
                 />
             </form>
         </>
-    );
-};
+    )
+}
 
-export default DrinkingWaterForm;
+export default DrinkingWaterForm

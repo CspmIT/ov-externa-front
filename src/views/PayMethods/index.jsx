@@ -17,6 +17,7 @@ const PayMethods = () => {
 	const [payMethods, setPayMethods] = useState([])
 	const [payLink, setPayLink] = useState([])
 	const [linkMp, setLinkMp] = useState(false)
+	const [loading, setLoading] = useState(true)
 	const total = payConcept.reduce((acc, concept) => acc + parseFloat(concept.amount), 0)
 
 	// BUSCO TODOS LOS METODOS DE PAGO QUE TIENE HABILITADOS LA EMPRESA
@@ -41,6 +42,7 @@ const PayMethods = () => {
 			const links = [...payLink]
 			links[index] = linkPayment.data.url
 			setPayLink(links)
+			setLoading(false)
 			return linkPayment.data.url
 		} catch (e) {
 			Swal.fire({
@@ -58,7 +60,9 @@ const PayMethods = () => {
 		setLinkMp(preference)
 	}
 	const paymentStatusWindow = () => {
-		navigate('/payWaiting')
+		// SI SE USA EL SOCKET MAS ADELANTE USAREMOS ESTA
+		// navigate('/payWaiting')
+		navigate('/')
 	}
 	useEffect(() => {
 		getPayMethods()
@@ -95,9 +99,9 @@ const PayMethods = () => {
 					</div>
 					<b className='text-xl'>$ {parseFloat(total).toFixed(2)}</b>
 				</div>
-
+				{loading && <LoaderComponent text={'Cargando metodos de pago'} />}
 				{payMethods.length === 1 ? (
-					<div className='w-full flex flex-row justify-center'>
+					<div className='w-full flex flex-row justify-center mt-5'>
 						{payMethods[0].id_method === 1 && linkMp && (
 							<span onClick={paymentStatusWindow}>
 								<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'blank' }} customization={{ texts: { valueProp: 'practicality' } }} />

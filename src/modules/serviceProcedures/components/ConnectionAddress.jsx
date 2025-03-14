@@ -147,12 +147,12 @@ const ConnectionAddress = ({
                             }
                             defaultValue={
                                 useData
-                                    ? state?.connectionAddress?.street || ''
+                                    ? parseInt(state?.connectionAddress?.street) || ''
                                     : ''
                             }
                         >
                             {streets.map((item) => (
-                                <MenuItem key={item.id} value={item.id}>
+                                <MenuItem key={item.id} value={parseInt(item.id)}>
                                     {item.name}
                                 </MenuItem>
                             ))}
@@ -164,6 +164,7 @@ const ConnectionAddress = ({
                             {...register('numberAddress', {
                                 required: 'El Campo es requerido',
                             })}
+                            type='number'
                             className="w-1/3"
                             helperText={
                                 errors?.numberAddress &&

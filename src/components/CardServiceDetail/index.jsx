@@ -24,16 +24,6 @@ function CardServiceDetail({ ...props }) {
         INTERNET: <FaWifi className="p-3 bg-blue-500 " />,
         'BANCO DE SANGRE': <FaTint className="p-3 bg-red-500" />,
     };
-    const textColor = {
-        ELECTRICIDAD: 'text-green-500 ',
-        AGUA: 'text-sky-500',
-        TELEFONO: 'text-blue-500',
-        SEPELIO: 'text-amber-500',
-        TV: 'text-purple-500',
-        SENSA: 'text-red-500',
-        INTERNET: 'text-blue-500',
-        'BANCO DE SANGRE': 'text-red-500',
-    };
     return (
         <CardCustom
             className={`relative mb-4 h-64 p-2 rounded-[2em] flex flex-col justify-center items-center !bg-zinc-200 dark:!bg-zinc-700 dark:!text-gray-300 ${props.className}`}
@@ -82,7 +72,7 @@ function CardServiceDetail({ ...props }) {
             {props.detailService && item.account ? (
                 <p
                     className={`text-lg mb-0 ${
-                        textColor[item.service]
+                        item.color
                     }  absolute left-5 bottom-5`}
                 >
                     {' '}

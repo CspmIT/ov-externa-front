@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../contexts/UserContext'
 import LoaderComponent from '../../components/Loader'
-import { useNavigate } from 'react-router-dom'
 import io from 'socket.io-client'
 
 const PaymentWaiting = () => {
@@ -12,7 +10,6 @@ const PaymentWaiting = () => {
 	const socket = io('http://localhost:4000/')
 	useEffect(() => {
 		socket.on('payment', (data) => {
-			console.log(data)
 			setStatusPayment(data.status)
 		})
 		if (statusPayment !== 0) {

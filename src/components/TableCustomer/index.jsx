@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper'
 import Button from '../Button'
 import { FaTrashCan, FaArrowUp } from 'react-icons/fa6'
 import { UserContext } from '../../contexts/UserContext'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { request } from '../../utils/request'
 import Swal from 'sweetalert2'
 import { storage } from '../../storage/storage'
@@ -212,7 +212,7 @@ export default function TableCustomer() {
 							</div>
 						</TableCell>
 					</TableRow>
-					{usuario.accounts.flat().map((row) => (
+					{usuario.accounts.sort((a, b) => b.primary - a.primary).map((row) => (
 						<TableRow key={row.num} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} className='dark:border-gray-700'>
 							<TableCell component='th' scope='row' align='left'>
 								<span className='dark:text-white'>{row.num}</span>

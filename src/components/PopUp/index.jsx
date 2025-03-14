@@ -7,6 +7,8 @@ import { Close } from '@mui/icons-material'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import { backend } from '../../routes/apiEndpoints'
+import { getImage } from '../../utils/getImages'
 
 const PopUp = () => {
 	const settings = {
@@ -23,23 +25,34 @@ const PopUp = () => {
 	const [listImgs, setListImgs] = useState([])
 	const { account } = useContext(UserContext)
 	const activeUser = JSON.parse(localStorage.getItem('usuario'))
-	const dataUser = async () => {
-		const response = await request(import.meta.env.VITE_APP_API_URL + '/activePopups', 'GET')
-		if (response.status !== 200) throw new Error('Error en consulta')
-		const imgs = []
-		const today = new Date()
-		response.data.forEach((item) => {
-			if (item.date_start >= today || (item.date_end && item.date_end < today)) return
-			if (account.level === item.level) {
-				const url = import.meta.env.VITE_FILE_API_URL + '/images/popup/' + item.img
-				imgs.push(url)
-			}
-		})
-		setListImgs(imgs)
-		setShowModal(response.data && response.data.length > 0)
-		activeUser.popup = false
-		localStorage.setItem('usuario', JSON.stringify(activeUser))
-	}
+const dataUser = async () => {
+    try {
+        const response = await request(backend.OvExterna + '/activePopups', 'GET')
+        if (response.status !== 200) throw new Error('Error en consulta')
+        
+        const today = new Date()
+        const credentials = await request(backend.OvExterna + '/getMinio', 'GET')
+
+        const urlPromises = response.data.map(async (item) => {
+            if (item.date_start >= today || (item.date_end && item.date_end < today)) return null
+            if (account.level === item.level) {
+                const imageUrl = await getImage(item.img, credentials.data)
+                return imageUrl
+            }
+            return null
+        })
+
+        const urls = await Promise.all(urlPromises)
+        const validUrls = urls.filter(url => url !== null)
+        setListImgs(validUrls)
+        setShowModal(validUrls.length > 0)
+        
+        activeUser.popup = false
+        localStorage.setItem('usuario', JSON.stringify(activeUser))
+    } catch (error) {
+        console.error('Error en la solicitud:', error)
+    }
+}
 	useEffect(() => {
 		if (activeUser.popup) {
 			dataUser()

@@ -50,6 +50,7 @@ const SelectServices = ({ services }) => {
                                     ServiceItems.map((item) => ({
                                         nombre: item.service_name,
                                         tipo: item.service_type,
+                                        id_form: item.id_service_form,
                                     }));
 
                                 // Verificar si 'Datos Personales' ya está en la lista de servicios seleccionados
@@ -73,15 +74,27 @@ const SelectServices = ({ services }) => {
                                     (a, b) => a.tipo - b.tipo
                                 );
                                 dispatch({
+                                    type: 'set_request',
+                                    data: serviceRequest
+                                })
+                                dispatch({
                                     type: 'set_request_service_id',
                                     data: serviceRequest.id,
                                 });
                                 dispatch({
+                                    type: 'set_services_items',
+                                    data:  ServiceItems 
+                                })
+                                dispatch({
                                     type: 'select_services',
                                     data: selectedServicesRequest,
                                 });
-                                dispatch({ type: 'next' });
-                                navigate(`/multiStepForm/Datos Personales`);
+                                dispatch({
+                                    type: 'set_person',
+                                    data: serviceRequest.person_data
+                                })
+                                dispatch({type: 'set_step', data: serviceRequest.step})
+                                navigate(`/multiStepForm/${selectedServicesRequest[serviceRequest.step].nombre}`);
                             }
                         });
                     }
@@ -151,7 +164,18 @@ const SelectServices = ({ services }) => {
             const sendData = { services: selectedServices };
             try {
                 const data = await request(url, 'POST', sendData);
-                console.log(data);
+                dispatch({
+                    type: 'set_request_service_id',
+                    data: data.data.id,
+                });
+
+                dispatch({
+                    type: 'set_request',
+                    data: data.data
+                })
+                console.log(data.data)
+
+                dispatch({type: 'set_step', data: data.data.step})
             } catch (error) {
                 const { message } = error.response.data;
                 Swal.fire({
@@ -163,9 +187,7 @@ const SelectServices = ({ services }) => {
             }
         }
 
-        console.log('selectedServices', selectedServices);
         dispatch({ type: 'select_services', data: selectedServices });
-        dispatch({ type: 'next' });
         navigate(`/multiStepForm/Datos Personales`);
     };
     return (

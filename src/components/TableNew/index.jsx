@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react'
 import { UserContext } from '../../contexts/UserContext'
 import NoRegisterTable from '../NoRegisterTable'
 import { calcValues } from '../../utils/invoice'
+import ExpandRowButton from './ExpandRowButton'
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
 	const { darkMode } = useContext(UserContext)
@@ -45,7 +46,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 				maxSize: 5,
 				Cell: ({ row, table }) => {
 					if (!row.depth) {
-						return <MRT_ExpandAllButton row={row} table={table} />
+                        return <ExpandRowButton row={row} />
 					}
 				},
 			},
