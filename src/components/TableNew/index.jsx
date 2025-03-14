@@ -1,11 +1,13 @@
-import { MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../../contexts/UserContext'
-import NoRegisterTable from '../NoRegisterTable'
-import { calcValues } from '../../utils/invoice'
-import ExpandRowButton from './ExpandRowButton'
+import { MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import NoRegisterTable from '../NoRegisterTable';
+import { calcValues } from '../../utils/invoice';
+import ExpandRowButton from './ExpandRowButton';
+import { Checkbox } from '@mui/material';
 
 const TableNew = ({ data, columns, amountPay, ...prop }) => {
+
 	const { darkMode } = useContext(UserContext)
 	// creo una constante con las configuracion inicial para poder modificar con props
 	const tableInitialState = {
@@ -50,14 +52,28 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 					}
 				},
 			},
+			'mrt-row-select': {
+                Cell: ({ row }) => {
+                    if (row.original.checkbox) {
+                        return (
+                            <Checkbox
+								style={{padding: 0, marginLeft: "2px"}}
+                                checked={row.getIsSelected()}
+                                onChange={(e) => row.toggleSelected(e.target.checked)}
+                            />
+                        );
+                    }
+                    return null;
+                },
+            },
 		},
 		muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
+
 		// HABILITACION DE ROWS
-		enableBatchRowSelection: prop.checkbox ?? false,
-		enableMultiRowSelection: prop.checkbox ?? false,
+
 		enableRowSelection: prop.checkbox ?? false,
-		enableSelectAll: prop.checkbox ?? false,
-		enableSubRowSelection: prop.checkbox ?? false,
+		enableMultiRowSelection: prop.checkbox ?? false,
+
 		// HABILITACION DE COLUMNA
 		// si esta true te deja copiar el campo de la tabla
 		enableClickToCopy: false,
@@ -123,7 +139,10 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 		mrtTheme: () => ({
 			baseBackgroundColor: !darkMode ? 'rgba(238, 238, 238, 0.39)' : 'rgba(238, 238, 238, 0.11)',
 		}),
-	})
+
+
+	}) 
+
 
 	useEffect(() => {
 		const data = calcValues(table)
@@ -131,6 +150,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 			if (data) amountPay(data)
 		}
 	}, [table.getState().rowSelection, table.getCoreRowModel()])
+
 	useEffect(() => {
 		const handleResize = () => {
 			table.setColumnOrder([`${window.innerWidth > 768 ? 'mrt-row-expand' : ''}`, ...columns.map((e) => e.accessorKey), 'mrt-row-select'])
@@ -143,6 +163,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 			window.removeEventListener('resize', handleResize)
 		}
 	}, [table, columns])
+
 	return <MaterialReactTable table={table} />
 }
 

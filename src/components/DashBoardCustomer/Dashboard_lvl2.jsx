@@ -55,6 +55,13 @@ function DashboardLvl2() {
 						dataTable = data
 						setColumnsTable(columns)
 					}
+
+					dataTable.sort((a, b) => {
+						if (b.status < a.status) return 1;
+						if (b.status > a.status) return -1;
+						return 0;
+					}); 
+
 					setInvoices(dataTable)
 				} catch (error) {
 					console.log('Error al obtener datos:', error)
