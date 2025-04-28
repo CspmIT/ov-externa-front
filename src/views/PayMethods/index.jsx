@@ -50,6 +50,7 @@ const PayMethods = () => {
 				title: 'Error',
 				text: 'No se pudo realizar el pago, intente nuevamente',
 			})
+			navigate('/')
 			throw new Error(e.message)
 		}
 	}
