@@ -33,7 +33,7 @@ const PayMethods = () => {
 	// OBTENGO EL LINK DE PAGO DE LA FACTURA Y REDIRIJO A LA PAGINA DE PAGO (EXCEPTO QUE SEA MERCADO PAGO)
 	const handleGetLink = async (method, index) => {
 		const link = payLink[index] || (await getLinkPayment(method.id_method, index))
-		window.open(link, '_blank')
+		window.location.href(link)
 		paymentStatusWindow()
 	}
 	const getLinkPayment = async (method, index) => {
@@ -60,11 +60,7 @@ const PayMethods = () => {
 		const preference = await getLinkPayment(1, 0)
 		setLinkMp(preference)
 	}
-	const paymentStatusWindow = () => {
-		// SI SE USA EL SOCKET MAS ADELANTE USAREMOS ESTA
-		// navigate('/payWaiting')
-		navigate('/')
-	}
+
 	useEffect(() => {
 		getPayMethods()
 	}, [])
@@ -104,9 +100,7 @@ const PayMethods = () => {
 				{payMethods.length === 1 ? (
 					<div className='w-full flex flex-row justify-center mt-5'>
 						{payMethods[0].id_method === 1 && linkMp && (
-							<span onClick={paymentStatusWindow}>
-								<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'blank' }} customization={{ texts: { valueProp: 'practicality' } }} />
-							</span>
+							<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'self' }} customization={{ texts: { valueProp: 'practicality' } }} />
 						)}
 						{payMethods[0].id_method !== 1 && (
 							<Button onClick={() => handleGetLink(payMethods[0], 0)} variant='contained' style={{ backgroundColor: 'rgb(252, 211, 77)' }}>
@@ -136,9 +130,8 @@ const PayMethods = () => {
 									)}
 									{method.id_method === 1 && !linkMp && <LoaderComponent text={false} />}
 									{method.id_method === 1 && linkMp && (
-										<span onClick={paymentStatusWindow}>
-											<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'blank' }} customization={{ texts: { valueProp: 'practicality' } }} />
-										</span>
+										<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'self' }} customization={{ texts: { valueProp: 'practicality' } }} />
+
 									)}
 								</AccordionActions>
 							</Accordion>

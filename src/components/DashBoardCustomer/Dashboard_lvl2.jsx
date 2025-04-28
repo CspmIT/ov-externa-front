@@ -23,13 +23,13 @@ function DashboardLvl2() {
 	const handleCloseModalHelp = () => setOpenModalHelp(false)
 	const handleOpenModalSocio = () => setOpenModalSocio(true)
 	const handleCloseModalSocio = () => setOpenModalSocio(false)
-	const { usuario ,account, setPayConcept } = useContext(UserContext)
+	const { usuario, account, setPayConcept } = useContext(UserContext)
 
 	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
 	const changeScreen = () => {
 		setWidthPhone(window.innerWidth <= 768)
 	}
-	const handlePayMethod = () => {}
+	const handlePayMethod = () => { }
 	useEffect(() => {
 		window.addEventListener('resize', changeScreen)
 		return () => {
@@ -55,6 +55,11 @@ function DashboardLvl2() {
 						dataTable = data
 						setColumnsTable(columns)
 					}
+					dataTable.sort((a, b) => {
+						if (b.status < a.status) return 1;
+						if (b.status > a.status) return -1;
+						return 0;
+					});
 					setInvoices(dataTable)
 				} catch (error) {
 					console.log('Error al obtener datos:', error)
