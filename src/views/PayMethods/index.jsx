@@ -9,7 +9,6 @@ import { Wallet, initMercadoPago } from '@mercadopago/sdk-react'
 import LoaderComponent from '../../components/Loader'
 
 const PayMethods = () => {
-	initMercadoPago('TEST-4bc41165-0753-4820-9c96-31085c50fe3c')
 	const navigate = useNavigate()
 	const { payConcept, account } = useContext(UserContext)
 	// SI NO HAY FACTURAS SELECCIONADAS REDIRIJO AL HOME
@@ -25,14 +24,19 @@ const PayMethods = () => {
 		const dataMethods = await request(import.meta.env.VITE_APP_API_URL + '/payMethods', 'GET')
 		if (dataMethods.status !== 200) throw new Error('Error en consulta')
 		if (dataMethods.data.length === 0) throw new Error('No se encontraron metodos de pago')
+		dataMethods.data.map((method) => {
+			if (method.id === 1) {
+				initMercadoPago(method.api_key)
+			}
+		})
 		// SI LA EMPRESA SOLO TIENE UN PAGO Y ESTE ES MERCADO PAGO GENERO EL BOTON AL MOSTRAR LA VENTANA
-		if (dataMethods.data.length === 1 && dataMethods.data[0].id_method === 1) checkMethod(dataMethods.data[0])
+		if (dataMethods.data.length === 1 && dataMethods.data[0].id === 1) checkMethod(dataMethods.data[0])
 		setPayMethods(dataMethods.data)
 	}
 
 	// OBTENGO EL LINK DE PAGO DE LA FACTURA Y REDIRIJO A LA PAGINA DE PAGO (EXCEPTO QUE SEA MERCADO PAGO)
 	const handleGetLink = async (method, index) => {
-		const link = payLink[index] || (await getLinkPayment(method.id_method, index))
+		const link = payLink[index] || (await getLinkPayment(method.id, index))
 		window.location.href(link)
 		paymentStatusWindow()
 	}
@@ -56,7 +60,7 @@ const PayMethods = () => {
 	}
 	// FUNCION PARA GENERAR EL BOTON DE PAGO DE MERCADO PAGO CUANDO SE ABRA EL ACORDEON DE MERCADO PAGO
 	const checkMethod = async (method) => {
-		if (method.id_method !== 1 || linkMp) return
+		if (method.id !== 1 || linkMp) return
 		const preference = await getLinkPayment(1, 0)
 		setLinkMp(preference)
 	}
@@ -99,10 +103,10 @@ const PayMethods = () => {
 				{loading && <LoaderComponent text={'Cargando metodos de pago'} />}
 				{payMethods.length === 1 ? (
 					<div className='w-full flex flex-row justify-center mt-5'>
-						{payMethods[0].id_method === 1 && linkMp && (
+						{payMethods[0].id === 1 && linkMp && (
 							<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'self' }} customization={{ texts: { valueProp: 'practicality' } }} />
 						)}
-						{payMethods[0].id_method !== 1 && (
+						{payMethods[0].id !== 1 && (
 							<Button onClick={() => handleGetLink(payMethods[0], 0)} variant='contained' style={{ backgroundColor: 'rgb(252, 211, 77)' }}>
 								Ir a pagar
 							</Button>
@@ -114,7 +118,7 @@ const PayMethods = () => {
 						{payMethods.map((method, index) => (
 							<Accordion key={index}>
 								<AccordionSummary onClick={() => checkMethod(method)} expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
-									<img src={`${method.PaysMethod.logo}`} alt={method.PaysMethod.name} className='w-32' />
+									<img src={`${method.logo}`} alt={method.name} className='w-32' />
 								</AccordionSummary>
 								<AccordionDetails className='text-start'>
 									<ul>
@@ -123,13 +127,13 @@ const PayMethods = () => {
 									</ul>
 								</AccordionDetails>
 								<AccordionActions>
-									{method.id_method !== 1 && (
+									{method.id !== 1 && (
 										<Button onClick={() => handleGetLink(method, index)} variant='contained' style={{ backgroundColor: 'rgb(252, 211, 77)', color: 'black' }}>
 											Pagar con {method.PaysMethod.name}
 										</Button>
 									)}
-									{method.id_method === 1 && !linkMp && <LoaderComponent text={false} />}
-									{method.id_method === 1 && linkMp && (
+									{method.id === 1 && !linkMp && <LoaderComponent text={false} />}
+									{method.id === 1 && linkMp && (
 										<Wallet initialization={{ preferenceId: linkMp, redirectMode: 'self' }} customization={{ texts: { valueProp: 'practicality' } }} />
 
 									)}
