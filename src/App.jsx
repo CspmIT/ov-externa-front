@@ -31,6 +31,7 @@ import PaymentWaiting from './views/PaymentWaiting';
 import MyRequest from './modules/serviceProcedures/views/MyRequest';
 import MaintenancePage from './views/Maintenance/Maintenance';
 import { statusBack } from './utils/request';
+import PaymentStatus from './views/PaymentStatus';
 
 function App() {
     const { darkMode } = useContext(UserContext);
@@ -112,7 +113,7 @@ function App() {
         { path: '/invoice', element: <Invoice /> },
         { path: '/payments', element: <Payments /> },
         { path: '/payMethods', element: <PayMethods /> },
-        { path: '/payWaiting', element: <PaymentWaiting /> },
+        // { path: '/payWaiting', element: <PaymentWaiting /> },
         { path: '/handle', element: <Handle /> },
         { path: '/myservices', element: <MyServices /> },
         { path: '/myservices/detail', element: <MyServicesD /> },
@@ -121,6 +122,7 @@ function App() {
         { path: '/myconsumption', element: <MyConsumption /> },
         { path: '/Opinion', element: <Opinion /> },
         { path: '/selectServices', element: <SelectServicesView /> },
+        { path: '/paymentStatus/:status', element: <PaymentStatus /> },
         {
             path: '/multiStepForm',
             element: <MultiStepForm />,
@@ -134,8 +136,8 @@ function App() {
             element: <MyRequest />,
         },
     ];
-    const {backOk} = useContext(UserContext);
-    if(!backOk){
+    const { backOk } = useContext(UserContext);
+    if (!backOk) {
         return <MaintenancePage />
     }
     return (
@@ -170,7 +172,7 @@ function App() {
 
 const LocationListener = () => {
 
-    const {setBackOk} = useContext(UserContext);
+    const { setBackOk } = useContext(UserContext);
     const location = useLocation();
 
     const efect = async () => {

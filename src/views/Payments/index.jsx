@@ -1,7 +1,40 @@
 import { FaCircleExclamation } from 'react-icons/fa6'
 import { FaCircle } from 'react-icons/fa'
+import { useContext, useEffect, useState } from 'react'
+import { request } from '../../utils/request'
+import { UserContext } from '../../contexts/UserContext'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Payments = () => {
+  const navigate = useNavigate()
+  const [pays, setPays] = useState([])
+  const { account } = useContext(UserContext)
+  const formattedData = (date) => {
+    const d = new Date(date)
+    // formato local
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+    return d.toLocaleDateString('es-AR', options)
+
+  }
+  const getPayments = async () => {
+    const socio = account.num
+    const url = `${import.meta.env.VITE_APP_API_URL}/getBillsCustomer?customer=${socio}`
+    try {
+      const { data } = await request(url, 'get')
+      setPays(data)
+    } catch (e) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No se han podido cargar los pagos realizados, intente luego nuevamente'
+      })
+      navigate('/')
+    }
+  }
+  useEffect(() => {
+    getPayments()
+  }, [account])
   return (
     <>
       <div className='flex relative flex-wrap w-full mt-5 justify-center items-center'>
@@ -16,16 +49,13 @@ const Payments = () => {
             <thead className='text-xs text-black fondoPrincipal'>
               <tr>
                 <th scope='col' className='px-6 py-3 text-center text-lg'>
-                  Cuenta
+                  Socio
                 </th>
                 <th scope='col' className='px-6 py-3 text-center text-lg'>
                   Fecha
                 </th>
                 <th scope='col' className='px-6 py-3 text-center text-lg'>
                   Comprobante
-                </th>
-                <th scope='col' className='px-6 py-3 text-center text-lg'>
-                  Código
                 </th>
                 <th scope='col' className='px-6 py-3 text-center text-lg'>
                   Importe
@@ -37,57 +67,27 @@ const Payments = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className='odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
-                <th scope='row' className='px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                  16758
-                </th>
-                <td className='px-6 py-4 text-center'>07/01/2024</td>
-                <td className='px-6 py-4 text-center'>SPB-0015-01299048</td>
-                <td className='px-6 py-4 text-center'>-</td>
-                <td className='px-6 py-4 text-center'>$2752.36</td>
-                <td className='px-6 py-4 text-center'>
-                  <FaCircle />
-                </td>
-                {/* <td className='px-6 py-4 text-center'>
+              {pays.map((pay, i) =>
+              (
+                <tr key={i} className='odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
+                  <th scope='row' className='px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                    {pay.customer}
+                  </th>
+                  <td className='px-6 py-4 text-center'>{formattedData(pay.createdAt)} </td>
+                  <td className='px-6 py-4 text-center'>{pay.id_external}</td>
+                  <td className='px-6 py-4 text-center font-bold'>$ {pay.total} </td>
+                  <td className='px-6 py-4 text-center'>
+                    <FaCircle />
+                  </td>
+
+                  {/* <td className='px-6 py-4 text-center'>
                   <button className='bg-blue-400 p-2 rounded text-white'>
                     <FaFileAlt />
                   </button>
                 </td> */}
-              </tr>
-              <tr className='odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-zinc-800  border-b dark:border-gray-700'>
-                <th scope='row' className='px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                  16758
-                </th>
-                <td className='px-6 py-4 text-center'>07/01/2024</td>
-                <td className='px-6 py-4 text-center'>SPB-0015-01299048</td>
-                <td className='px-6 py-4 text-center'>-</td>
-                <td className='px-6 py-4 text-center'>$2752.36</td>
-                <td className='px-6 py-4 text-center'>
-                  <FaCircle />
-                </td>
-                {/* <td className='px-6 py-4 text-center'>
-                  <button className='bg-blue-400 p-2 rounded text-white'>
-                    <FaFileAlt />
-                  </button>
-                </td> */}
-              </tr>
-              <tr className='odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
-                <th scope='row' className='px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                  16758
-                </th>
-                <td className='px-6 py-4 text-center'>07/01/2024</td>
-                <td className='px-6 py-4 text-center'>SPB-0015-01299048</td>
-                <td className='px-6 py-4 text-center'>-</td>
-                <td className='px-6 py-4 text-center'>$2752.36</td>
-                <td className='px-6 py-4 text-center'>
-                  <FaCircle />
-                </td>
-                {/* <td className='px-6 py-4 text-center'>
-                  <button className='bg-blue-400 p-2 rounded text-white'>
-                    <FaFileAlt />
-                  </button>
-                </td> */}
-              </tr>
+                </tr>
+              )
+              )}
             </tbody>
           </table>
         </div>
