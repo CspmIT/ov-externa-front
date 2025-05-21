@@ -22,7 +22,8 @@ const Payments = () => {
     const url = `${import.meta.env.VITE_APP_API_URL}/getBillsCustomer?customer=${socio}`
     try {
       const { data } = await request(url, 'get')
-      setPays(data)
+      const safeData = Array.isArray(data) ? data : []
+      setPays(safeData)
     } catch (e) {
       Swal.fire({
         icon: 'error',
