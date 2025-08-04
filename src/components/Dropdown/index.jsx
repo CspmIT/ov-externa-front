@@ -19,6 +19,7 @@ const Dropdown = ({ ...props }) => {
 		const activeUser = JSON.parse(localStorage.getItem('usuario'))
 		activeUser.active = item.id_relation
 		localStorage.setItem('usuario', JSON.stringify(activeUser))
+		item.active = true
 		setAccount(item)
 		navigate('/')
 		if (drop) {

@@ -38,7 +38,7 @@ function DashboardLvl2() {
 	}, [])
 
 	useEffect(() => {
-		if (account.length !== 0) {
+		if (account.length !== 0 && account.active) {
 			const invoiceList = async () => {
 				try {
 					const data = await InvoiceDeus(account)
