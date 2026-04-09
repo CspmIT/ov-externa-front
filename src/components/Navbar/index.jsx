@@ -12,6 +12,8 @@ import { request } from '../../utils/request'
 import { Box, Modal } from '@mui/material'
 import ModalSocio from '../ModalSocio'
 import { storage } from '../../storage/storage'
+import logoImg from '../../assets/img/Logo/OficinaVirtual_cuadrado.png'
+import logoCesopol from '../../assets/img/Logo/LogoCesopol.jpg'
 
 const Navbar = () => {
   const [OpenModal, setOpenModal] = useState(false)
@@ -151,8 +153,13 @@ const Navbar = () => {
     <div>
       <aside id='mobileMenu' className={`fixed top-16 sm:top-0 left-0 z-40 w-56 h-screen transition-transform ${isMobileMenuVisible ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}>
         <div className='h-full px-3 py-4 overflow-y-auto bg-zinc-200 dark:bg-zinc-800 noScrollbar'>
-          <div className='m-2'>
-            <img src={`https://app.coopmorteros.coop/public/images/logos/Ofi_Virtual_${img}`} />
+          <div className="w-full flex justify-center items-center mt-3">
+            <div className='w-1/2 flex justify-end items-center px-2'>
+              <img className="w-[100%]" src={logoImg} />
+            </div>
+            <div className='w-1/2 flex justify-start items-center px-2 border-l border-l-slate-300'>
+              <img className="w-[100%]" src={logoCesopol} />
+            </div>
           </div>
           <hr className='m-2' />
           <ul className='space-y-2 font-medium'>
