@@ -12,6 +12,10 @@ import { Link } from 'react-router-dom'
 import { InvoiceDeus, columns, columnsCel } from '../../utils/invoice'
 import { UserContext } from '../../contexts/UserContext'
 import ModalSocio from '../ModalSocio'
+import logoImg from '../../assets/img/Logo/OficinaVirtual_cuadrado.png'
+import logoCesopol from '../../assets/img/Logo/LogoCesopol.jpg'
+
+
 function DashboardLvl2() {
 	const [invoices, setInvoices] = useState([])
 	const [columnsTable, setColumnsTable] = useState([])
@@ -23,13 +27,13 @@ function DashboardLvl2() {
 	const handleCloseModalHelp = () => setOpenModalHelp(false)
 	const handleOpenModalSocio = () => setOpenModalSocio(true)
 	const handleCloseModalSocio = () => setOpenModalSocio(false)
-	const { usuario ,account, setPayConcept } = useContext(UserContext)
+	const { usuario, account, setPayConcept } = useContext(UserContext)
 
 	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
 	const changeScreen = () => {
 		setWidthPhone(window.innerWidth <= 768)
 	}
-	const handlePayMethod = () => {}
+	const handlePayMethod = () => { }
 	useEffect(() => {
 		window.addEventListener('resize', changeScreen)
 		return () => {
@@ -38,7 +42,7 @@ function DashboardLvl2() {
 	}, [])
 
 	useEffect(() => {
-		if (account.length !== 0) {
+		if (account.length !== 0 && account.active) {
 			const invoiceList = async () => {
 				try {
 					const data = await InvoiceDeus(account)
@@ -55,13 +59,11 @@ function DashboardLvl2() {
 						dataTable = data
 						setColumnsTable(columns)
 					}
-
 					dataTable.sort((a, b) => {
 						if (b.status < a.status) return 1;
 						if (b.status > a.status) return -1;
 						return 0;
-					}); 
-
+					});
 					setInvoices(dataTable)
 				} catch (error) {
 					console.log('Error al obtener datos:', error)
@@ -80,8 +82,14 @@ function DashboardLvl2() {
 		<>
 			<div className='w-full px-2 max-md:px-3'>
 				<div className={`relative rounded-[2.5em] p-8 shadowCards bg-white dark:bg-zinc-700 w-full flex flex-wrap md:hidden`}>
-					<img src='https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Texto_Recortada.png' className='w-full' />
-					<div className='pt-4 w-3/4 mt-2'>
+					<div className="w-full flex justify-center items-center mb-5">
+                        <div className='w-1/2 flex justify-end items-center px-2'>
+                            <img className="w-[70%] md:w-[40%]" src={logoImg} />
+                        </div>
+                        <div className='w-1/2 flex justify-start items-center px-2 border-l border-l-slate-300'>
+                            <img className="w-[70%] md:w-[45%]" src={logoCesopol} />
+                        </div>
+					</div>					<div className='pt-4 w-3/4 mt-2'>
 						<p className='mb-2'>
 							NIVEL: <b>{account.level}</b>
 						</p>

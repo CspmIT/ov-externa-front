@@ -1,9 +1,18 @@
+import logoImg from '../../assets/img/Logo/OficinaVirtual_cuadrado.png'
+import logoCesopol from '../../assets/img/Logo/LogoCesopol.jpg'
 function BaseInitial({ children }) {
     return (
         <div className="flex flex-row h-full justify-center items-center select-none">
             <div className="w-full  p-5 flex justify-center">
-                <div className="w-full md:w-3/5">
-                    <img className="mx-auto h-24 w-auto " src="https://app.coopmorteros.coop/public/images/logos/Iso_OfiVirtual_Logo_Recortado.png?random=6582f0b2a7340" alt="Your Company" />
+            <div className="w-full md:w-3/5 mt-10">
+                    <div className="w-full flex justify-center items-center mb-5">
+                        <div className='w-1/2 flex justify-end items-center px-2'>
+                            <img className="w-[70%] md:w-[40%]" src={logoImg} />
+                        </div>
+                        <div className='w-1/2 flex justify-start items-center px-2 border-l border-l-slate-300'>
+                            <img className="w-[70%] md:w-[45%]" src={logoCesopol} />
+                        </div>
+				    </div>
                     {children}
                 </div>
             </div>

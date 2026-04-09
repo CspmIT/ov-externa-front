@@ -265,24 +265,24 @@ export const InvoiceDeus = async (user) => {
 }
 
 export const calcValues = (table) => {
-    let values = 0;
-    let value2 = 0;
-    let facts = [];
+	let values = 0;
+	let value2 = 0;
+	let facts = [];
 
-    table.getCoreRowModel().rows.forEach((element) => {
-        if (element.original.amount) {
-            value2 += parseFloat(element.original.amount);
-        }
-    });
+	table.getCoreRowModel().rows.forEach((element) => {
+		if (element.original.amount) {
+			value2 += parseFloat(element.original.amount);
+		}
+	});
 
-    table.getSelectedRowModel().rows.forEach((element) => {
-        if (element.original.checkbox && element.original.amount) {
-            values += parseFloat(element.original.amount);
-            facts.push(element.original);
-        }
-    });
+	table.getSelectedRowModel().rows.forEach((element) => {
+		if (element.original.checkbox && element.original.amount) {
+			values += parseFloat(element.original.amount);
+			facts.push(element.original);
+		}
+	});
 
-    values = values.toFixed(2);
-    value2 = value2.toFixed(2);
-    return [values, value2, facts];
+	values = values.toFixed(2);
+	value2 = value2.toFixed(2);
+	return [values, value2, facts];
 };

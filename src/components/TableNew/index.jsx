@@ -1,5 +1,5 @@
-import { MRT_ExpandAllButton, MaterialReactTable, useMaterialReactTable } from 'material-react-table';
-import { useContext, useEffect, useState } from 'react';
+import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import NoRegisterTable from '../NoRegisterTable';
 import { calcValues } from '../../utils/invoice';
@@ -48,24 +48,24 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 				maxSize: 5,
 				Cell: ({ row, table }) => {
 					if (!row.depth) {
-                        return <ExpandRowButton row={row} />
+						return <ExpandRowButton row={row} />
 					}
 				},
 			},
 			'mrt-row-select': {
-                Cell: ({ row }) => {
-                    if (row.original.checkbox) {
-                        return (
-                            <Checkbox
-								style={{padding: 0, marginLeft: "2px"}}
-                                checked={row.getIsSelected()}
-                                onChange={(e) => row.toggleSelected(e.target.checked)}
-                            />
-                        );
-                    }
-                    return null;
-                },
-            },
+				Cell: ({ row }) => {
+					if (row.original.checkbox) {
+						return (
+							<Checkbox
+								style={{ padding: 0, marginLeft: "2px" }}
+								checked={row.getIsSelected()}
+								onChange={(e) => row.toggleSelected(e.target.checked)}
+							/>
+						);
+					}
+					return null;
+				},
+			},
 		},
 		muiTableContainerProps: { sx: { maxHeight: prop.pagination ? 500 : 50000 } },
 
@@ -141,7 +141,7 @@ const TableNew = ({ data, columns, amountPay, ...prop }) => {
 		}),
 
 
-	}) 
+	})
 
 
 	useEffect(() => {
