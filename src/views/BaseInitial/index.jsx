@@ -1,5 +1,5 @@
 import logoImg from '../../assets/img/Logo/OficinaVirtual_cuadrado.png'
-import logoCesopol from '../../assets/img/Logo/LogoCesopol.jpg'
+import logoCesopol from '../../assets/img/Logo/logo_2.png'
 function BaseInitial({ children }) {
     return (
         <div className="flex flex-row h-full justify-center items-center select-none">
@@ -10,7 +10,7 @@ function BaseInitial({ children }) {
                             <img className="w-[70%] md:w-[40%]" src={logoImg} />
                         </div>
                         <div className='w-1/2 flex justify-start items-center px-2 border-l border-l-slate-300'>
-                            <img className="w-[70%] md:w-[45%]" src={logoCesopol} />
+                            <img style={{borderRadius: '25px', padding: '11px'}} className="w-[70%] md:w-[45%]" src={logoCesopol} />
                         </div>
 				    </div>
                     {children}

@@ -40,6 +40,7 @@ const Detail = () => {
     const [nameService, setNameService] = useState('')
     const navigate = useNavigate()
     const [mesInvoice, setMesInvoice] = useState([])
+    const [anioInvoice, setAnioInvoice] = useState([])
     const [datosGral, setDatosGral] = useState(null)
     const [datosGraf, setDatosGraf] = useState(null)
     const [adherentes, setAdherentes] = useState(null)
@@ -76,7 +77,14 @@ const Detail = () => {
                     const mesConsumos = obtenerNombreDelMes(
                         periodos[periodos.length - 1].split('/')[0]
                     )
+                    const anioConsumos = periodos[periodos.length - 1].split('/')[1]
+                    const anioAnterior = parseInt(anioConsumos, 10) - 1;
+                    console.log(anioConsumos);
                     setMesInvoice(mesConsumos)
+                    setAnioInvoice({
+                        'anio': anioConsumos,
+                        'anioAnterior': anioAnterior,
+                    })
                     setMedidor(data[0].cod_med)
                     calcularDiferenciaConsumos(consumos)
                     setColorsConsuption(statusDifService(difConsumo))
@@ -94,6 +102,24 @@ const Detail = () => {
                     showConfirmButton: true,
                 })
                 navigate('/MyServices')
+            }
+
+            if ([13, 4, 90, 3].includes(service)) {
+                try {
+                    const url =
+                        import.meta.env.VITE_APP_API_URL +
+                        '/getDataServiceSocial'
+
+                    const { data } = await request(
+                        `${url}?service=${service}&cod_sum=${account}`,
+                        'GET'
+                    )
+                    
+                    setAdherentes(data.adheridos)
+
+                } catch (error) {
+                    console.log("Error al traer adherentes sociales:", error)
+                }
             }
         }
         getDetailConsumption()
@@ -154,8 +180,7 @@ const Detail = () => {
                                             <p
                                                 className={`${colorsConsuption.textClass}`}
                                             >
-                                                En {mesInvoice} de 2024
-                                                consumiste{' '}
+                                                En {mesInvoice} de {anioInvoice.anio} consumiste{' '}
                                                 {difConsumo === 0
                                                     ? ''
                                                     : `${parseFloat(
@@ -172,7 +197,7 @@ const Detail = () => {
                                                         ? 'menos'
                                                         : 'más'}
                                                 </b>{' '}
-                                                que en {mesInvoice} de 2023.
+                                                que en {mesInvoice} de  {anioInvoice.anioAnterior}.
                                             </p>
                                         </CardCustom>
                                     ) : null}

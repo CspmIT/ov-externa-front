@@ -13,7 +13,7 @@ import { Box, Modal } from '@mui/material'
 import ModalSocio from '../ModalSocio'
 import { storage } from '../../storage/storage'
 import logoImg from '../../assets/img/Logo/OficinaVirtual_cuadrado.png'
-import logoCesopol from '../../assets/img/Logo/LogoCesopol.jpg'
+import logoCesopol from '../../assets/img/Logo/logo_2.png'
 
 const Navbar = () => {
   const [OpenModal, setOpenModal] = useState(false)
@@ -158,7 +158,7 @@ const Navbar = () => {
               <img className="w-[100%]" src={logoImg} />
             </div>
             <div className='w-1/2 flex justify-start items-center px-2 border-l border-l-slate-300'>
-              <img className="w-[100%]" src={logoCesopol} />
+              <img style={{borderRadius: '17px', padding: '2px'}} className="w-[100%]" src={logoCesopol} />
             </div>
           </div>
           <hr className='m-2' />

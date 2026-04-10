@@ -86,6 +86,7 @@ const Register = () => {
                 id="formRegister"
                 onSubmit={handleSubmit((data) => formulario(data))}
                 autoComplete={'new-password'}
+                className='overflow-y-auto max-h-[65vh]'
             >
                 <div className="w-full justify-center flex">
                     <ToggleTypePerson changeSelect={setTypePerson} />

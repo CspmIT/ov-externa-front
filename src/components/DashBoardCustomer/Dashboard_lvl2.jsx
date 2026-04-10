@@ -13,7 +13,7 @@ import { InvoiceDeus, columns, columnsCel } from '../../utils/invoice'
 import { UserContext } from '../../contexts/UserContext'
 import ModalSocio from '../ModalSocio'
 import logoImg from '../../assets/img/Logo/OficinaVirtual_cuadrado.png'
-import logoCesopol from '../../assets/img/Logo/LogoCesopol.jpg'
+import logoCesopol from '../../assets/img/Logo/logo_2.png'
 
 
 function DashboardLvl2() {
@@ -28,6 +28,7 @@ function DashboardLvl2() {
 	const handleOpenModalSocio = () => setOpenModalSocio(true)
 	const handleCloseModalSocio = () => setOpenModalSocio(false)
 	const { usuario, account, setPayConcept } = useContext(UserContext)
+	const [loading, setLoading] = useState(true);
 
 	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
 	const changeScreen = () => {
@@ -42,7 +43,7 @@ function DashboardLvl2() {
 	}, [])
 
 	useEffect(() => {
-		if (account.length !== 0 && account.active) {
+		if (account.length != 0 && account.active) {
 			const invoiceList = async () => {
 				try {
 					const data = await InvoiceDeus(account)
@@ -65,6 +66,7 @@ function DashboardLvl2() {
 						return 0;
 					});
 					setInvoices(dataTable)
+					setLoading(false);
 				} catch (error) {
 					console.log('Error al obtener datos:', error)
 				}
@@ -87,8 +89,8 @@ function DashboardLvl2() {
                             <img className="w-[70%] md:w-[40%]" src={logoImg} />
                         </div>
                         <div className='w-1/2 flex justify-start items-center px-2 border-l border-l-slate-300'>
-                            <img className="w-[70%] md:w-[45%]" src={logoCesopol} />
-                        </div>
+							<img style={{borderRadius: '17px', padding: '11px'}} className="w-[70%] md:w-[45%]" src={logoCesopol} />
+                        </div> 
 					</div>					<div className='pt-4 w-3/4 mt-2'>
 						<p className='mb-2'>
 							NIVEL: <b>{account.level}</b>
@@ -174,7 +176,7 @@ function DashboardLvl2() {
 							<ButtonAnimate onClick={handleOpenModalHelp} icon={<FaQuestion className='text-white' />} text={'Ayuda'} bgIcon={'bg-gray-400'} color={'text-white'} />
 						</div>
 					</div>
-					{columnsTable.length < 1 ? (
+					{loading ? (
 						<div className='flex w-full justify-center items-center'>
 							<LoaderComponent />
 						</div>
