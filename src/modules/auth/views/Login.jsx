@@ -97,6 +97,7 @@ const Login = () => {
 						num: item.procoop_number,
 						primary: item.primary_account,
 						level: item.level,
+						active: item.primary_account,
 					}
 				})
                 // Se obtiene y se setea la cuenta principal del usuario logueado
