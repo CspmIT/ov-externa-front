@@ -41,7 +41,7 @@ const Dropdown = ({ ...props }) => {
 		})
 	}, [usuario])
 	return (
-		<div className='relative inline-block text-left max-md:hidden'>
+		<div className={`relative inline-block text-left ${props.className ?? ''}`}>
 			<div>
 				<button
 					type='button'

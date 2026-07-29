@@ -188,13 +188,20 @@ const Navbar = () => {
                 </button>
               </div>
               <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
+                {account.level >= 2 && (
+                  <button onClick={handleOpenModal} className='sm:hidden bg-amber-300 hover:bg-amber-400 text-gray-900 font-medium rounded px-3 py-1 flex items-center max-w-[190px]'>
+                    <FaUser className='mr-2 shrink-0' />
+                    <span className='truncate'>{account?.name}</span>
+                    <IoMdArrowDropdown className='ml-1 shrink-0' />
+                  </button>
+                )}
                 <div className='hidden sm:ml-3 sm:block'>
                   {account.level >= 2 ? (
                     <div className='flex space-x-4'>
                       <div className='pl-3 pr-4 py-2 md:p-0 font-medium flex dark:text-white items-center justify-between w-full md:w-auto text-gray-900'>
                         <FaUser />
                       </div>
-                      <Dropdown data={account} titleColor='bg-amber-300 text-gray-900 hover:bg-amber-400' childrenColor='text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800' />
+                      <Dropdown data={account} className='max-md:hidden' titleColor='bg-amber-300 text-gray-900 hover:bg-amber-400' childrenColor='text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800' />
                       <span href='#' className='text-gray-900 font-medium px-2 dark:text-white hidden md:flex items-center justify-between w-full md:w-auto'>
                         <FaFileAlt className='mr-2' /> {account?.num}
                       </span>
