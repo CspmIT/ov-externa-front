@@ -8,12 +8,13 @@ import TableCustomer from '../TableCustomer'
 import { request } from '../../utils/request'
 import Swal from 'sweetalert2'
 import { UserContext } from '../../contexts/UserContext'
-import Dropdown from '../Dropdown'
-import { FaSearch } from 'react-icons/fa'
+import { FaSearch, FaCheckCircle } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 const ModalSocio = ({ handleCloseModal }) => {
-    const { usuario, setUsuario, account } = useContext(UserContext)
+    const { usuario, setUsuario, account, setAccount } = useContext(UserContext)
+    const navigate = useNavigate()
     const [value, setValor] = useState(0)
     const [dataSocio, setDataSocio] = useState(false)
     const handleChange = (event, newValue) => {
@@ -21,6 +22,18 @@ const ModalSocio = ({ handleCloseModal }) => {
     }
     const handleChangeCustomer = (e) => {
         setValue('num_customer', e.target.value)
+    }
+    const handleChangeAccount = (item) => {
+        if (item.num === account.num) {
+            return
+        }
+        const activeUser = JSON.parse(localStorage.getItem('usuario'))
+        activeUser.active = item.id_relation
+        localStorage.setItem('usuario', JSON.stringify(activeUser))
+        item.active = true
+        setAccount(item)
+        handleCloseModal()
+        navigate('/')
     }
     const handleAddCustomer = async (data) => {
         try {
@@ -163,7 +176,7 @@ const ModalSocio = ({ handleCloseModal }) => {
                                 {widthPhone ? (
                                     <Tab label="Cambiar" {...a11yProps(2)} />
                                 ) : null}
-                                <Tab label="listado" {...a11yProps(0)} />
+                                <Tab label="Listado" {...a11yProps(0)} />
                                 <Tab label="Agregar" {...a11yProps(1)} />
                             </Tabs>
                         </Box>
@@ -286,12 +299,37 @@ const ModalSocio = ({ handleCloseModal }) => {
                                     value={value}
                                     index={0}
                                 >
-                                    <div className="w-full flex flex-row justify-evenly items-center">
-                                        <Dropdown
-                                            data={account}
-                                            titleColor="bg-slate-100 text-gray-900 hover:bg-slate-300"
-                                            childrenColor="text-gray-700 dark:text-white block  hover:bg-gray-200 dark:hover:bg-gray-800"
-                                        />
+                                    <p className="mb-3 dark:text-white">
+                                        Seleccioná el socio con el que querés
+                                        operar:
+                                    </p>
+                                    <div className="w-full flex flex-col gap-2">
+                                        {usuario.accounts.map((item) => (
+                                            <button
+                                                key={item.num}
+                                                type="button"
+                                                onClick={() =>
+                                                    handleChangeAccount(item)
+                                                }
+                                                className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left ${
+                                                    item.num === account.num
+                                                        ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30'
+                                                        : 'border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                                }`}
+                                            >
+                                                <div className="flex flex-col">
+                                                    <span className="font-medium dark:text-white">
+                                                        {item.name}
+                                                    </span>
+                                                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                                                        Socio N° {item.num}
+                                                    </span>
+                                                </div>
+                                                {item.num === account.num ? (
+                                                    <FaCheckCircle className="text-emerald-500 shrink-0 ml-2" />
+                                                ) : null}
+                                            </button>
+                                        ))}
                                     </div>
                                 </CustomTabPanel>
                             ) : null}
