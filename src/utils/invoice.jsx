@@ -136,9 +136,10 @@ export const columnsCel = [
 		AggregatedCell: ({ row }) => {
 			return <p className='m-0 text-sm font-bold'>Cuenta Nº: {row.original.account}</p>
 		},
-		Cell: ({ row, cell }) => {
+		Cell: ({ cell }) => {
 			const { darkMode } = useContext(UserContext)
 			const amount = cell.row.original.info?.amount ?? cell.row.original.amount
+			const status = cell.row.original.info?.status ?? cell.row.original.status
 			return (
 				<Box
 					component='span'
@@ -157,7 +158,7 @@ export const columnsCel = [
 					<p className='m-0'>
 						<b>Vencimiento:</b> {formatDateForInput(cell.row.original.info?.vto ?? cell.row.original.vto)}
 					</p>
-					<p className={`m-0 ${row.original?.status > 0 ? (row.original?.status === 1 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`}>
+					<p className={`m-0 ${status > 0 ? (status === 2 ? 'text-yellow-500' : 'text-green-500') : 'text-red-500'}`}>
 						<b>Importe:</b>{' '}
 						{amount.toLocaleString?.('es-AR', {
 							style: 'currency',
