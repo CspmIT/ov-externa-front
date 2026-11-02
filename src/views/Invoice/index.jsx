@@ -12,6 +12,7 @@ import { UserContext } from '../../contexts/UserContext'
 const Invoice = () => {
 	const [invoice, setInvoices] = useState(undefined)
 	const [columnsTable, setColumnsTable] = useState([])
+	const [loadError, setLoadError] = useState(false)
 	const [openModalHelp, setOpenModalHelp] = useState(false)
 	const handleOpenModalHelp = () => setOpenModalHelp(true)
 	const handleCloseModalHelp = () => setOpenModalHelp(false)
@@ -21,20 +22,26 @@ const Invoice = () => {
 			const allInvoice = async () => {
 				try {
 					const data = await searchAllInvoice(account)
-					let dataTable = []
-					if (window.innerWidth < 768) {
-						dataTable = data.map((item) => ({
-							account: item.account,
-							info: { ...item },
-						}))
-						setColumnsTable(columnsCel)
-					} else {
-						dataTable = data
-						setColumnsTable(columns)
+					setColumnsTable(window.innerWidth < 768 ? columnsCel : columns)
+					// undefined = fallo la consulta al servidor de facturas
+					if (!Array.isArray(data)) {
+						setLoadError(true)
+						setInvoices([])
+						return
 					}
+					setLoadError(false)
+					const dataTable =
+						window.innerWidth < 768
+							? data.map((item) => ({
+									account: item.account,
+									info: { ...item },
+							  }))
+							: data
 					setInvoices(dataTable)
 				} catch (error) {
 					console.log('Error al obtener datos:', error)
+					setLoadError(true)
+					setInvoices([])
 				}
 			}
 			allInvoice()
@@ -52,7 +59,12 @@ const Invoice = () => {
 			<CardCustom className={'md:1/2 max-sm:p-0 max-sm:py-3 max-sm:m-0 p-5 mt-5 mr-5'}>
                 {invoice === undefined ? (
                     <LoaderComponent />
-                ) : 
+                ) : loadError ? (
+					<div className={`relative overflow-x-auto w-full round  rounded-xl text-center`}>
+						<h1>En este momento no podemos mostrar tus facturas</h1>
+						<p>El servicio de facturación no está disponible. Volvé a intentar en unos minutos.</p>
+					</div>
+				) :
 				invoice?.length > 0 ? (
 					<div className={`relative overflow-x-auto w-full round  rounded-xl`}>
 						<TableNew data={invoice} columns={columnsTable} groupBy={'account'} />

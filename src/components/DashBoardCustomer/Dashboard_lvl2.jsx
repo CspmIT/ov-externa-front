@@ -29,6 +29,7 @@ function DashboardLvl2() {
 	const handleCloseModalSocio = () => setOpenModalSocio(false)
 	const { usuario, account, setPayConcept } = useContext(UserContext)
 	const [loading, setLoading] = useState(true);
+	const [loadError, setLoadError] = useState(false)
 
 	const [widthPhone, setWidthPhone] = useState(window.innerWidth <= 768)
 	const changeScreen = () => {
@@ -47,28 +48,35 @@ function DashboardLvl2() {
 			const invoiceList = async () => {
 				try {
 					const data = await InvoiceDeus(account)
-					let dataTable = []
-					if (widthPhone) {
-						if (typeof data === 'object') {
-							dataTable = data.map((item) => ({
-								account: item.account,
-								...item,
-							}))
-						}
-						setColumnsTable(columnsCel)
-					} else {
-						dataTable = data
-						setColumnsTable(columns)
+					setColumnsTable(widthPhone ? columnsCel : columns)
+					// undefined = fallo la consulta al servidor de facturas (false = sin deudas)
+					if (data === undefined) {
+						setLoadError(true)
+						setInvoices([])
+						return
 					}
-					dataTable.sort((a, b) => {
-						if (b.status < a.status) return 1;
-						if (b.status > a.status) return -1;
-						return 0;
-					});
+					setLoadError(false)
+					let dataTable = []
+					if (Array.isArray(data)) {
+						dataTable = widthPhone
+							? data.map((item) => ({
+									account: item.account,
+									...item,
+							  }))
+							: [...data]
+						dataTable.sort((a, b) => {
+							if (b.status < a.status) return 1;
+							if (b.status > a.status) return -1;
+							return 0;
+						});
+					}
 					setInvoices(dataTable)
-					setLoading(false);
 				} catch (error) {
 					console.log('Error al obtener datos:', error)
+					setLoadError(true)
+					setInvoices([])
+				} finally {
+					setLoading(false)
 				}
 			}
 			invoiceList()
@@ -179,6 +187,11 @@ function DashboardLvl2() {
 					{loading ? (
 						<div className='flex w-full justify-center items-center'>
 							<LoaderComponent />
+						</div>
+					) : loadError ? (
+						<div className='w-full text-center p-5'>
+							<p className='font-bold mb-2'>En este momento no podemos mostrar tus facturas.</p>
+							<p className='m-0'>El servicio de facturación no está disponible y el pago online está deshabilitado temporalmente. Volvé a intentar en unos minutos.</p>
 						</div>
 					) : (
 						<div className={`relative overflow-x-auto w-full rounded-xl`}>
